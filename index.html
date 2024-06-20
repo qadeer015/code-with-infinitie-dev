@@ -16,7 +16,7 @@
 
         header {
             position: sticky;
-            top: 2px;
+            top: 0;
             background-color: #333;
             color: #fff;
             padding: 1rem 0;
@@ -35,7 +35,8 @@
         }
 
         main {
-            padding: 2rem;
+            padding: 2rem 1rem;
+            margin-bottom: 5rem; /* Ensure there's space for the fixed footer */
         }
 
         .repo-list h3 {
@@ -56,10 +57,17 @@
         }
 
         .repo-list img {
+            background-color: rgba(0, 255, 255, 0.153);
             width: 50px;
             height: 50px;
             border-radius: 50%;
             margin-right: 1rem;
+            transition: border 0.3s ease, background-color 0.3s ease;
+        }
+
+        .repo-list img:hover {
+            border: 4px solid rgba(0, 0, 255, 0.322);
+            background-color: rgba(0, 0, 0, 0.227);
         }
 
         .repo-list a {
@@ -81,6 +89,10 @@
             width: 100%;
             bottom: 0;
         }
+
+        .qadeer-img:hover {
+            background-image: url('./qadeer-6.jpeg');
+        }
     </style>
 </head>
 
@@ -93,41 +105,42 @@
         <section class="repo-list">
             <h3>Students</h3>
             <ul>
-                <li><img src="qadeer-6.jpeg" alt="Abdul Qadeer"><a
-                        href="https://abdulqadeeeer.github.io/Learn_with-Qadeer/" target="_blank">Abdul Qadeer</a>
+                <li>
+                    <img src="qadeer-6-removebg-preview.png" alt="Abdul Qadeer" class="qadeer-img">
+                    <a href="https://abdulqadeeeer.github.io/Learn_with-Qadeer/" target="_blank">Abdul Qadeer</a>
                     &nbsp;
                     <h4>
                         <a href="https://github.com/AbdulQadeeeer/code-with-Qadeer.dev">Repo</a>
                     </h4>
                 </li>
-                <li><img src="images/zaheer_ahmed.jpg" alt="Zaheer Ahmed"><a
-                        href="https://zaheerahmedkhan65.github.io/learn-with-zaheer/" target="_blank">Zaheer Ahmed</a>
-                        &nbsp;
-                        <h4>
-                            <a href="https://github.com/zaheerahmedkhan65/learn-with-zaheer/">Repo</a>
-                        </h4>
+                <li><img src="images/zaheer_ahmed.jpg" alt="Zaheer Ahmed">
+                    <a href="https://zaheerahmedkhan65.github.io/learn-with-zaheer/" target="_blank">Zaheer Ahmed</a>
+                    &nbsp;
+                    <h4>
+                        <a href="https://github.com/zaheerahmedkhan65/learn-with-zaheer/">Repo</a>
+                    </h4>
                 </li>
-                <li><img src="samar.jpg" alt="Samar Altaf"><a href="https://ranasamar660.github.io/second-week-work/"
-                        target="_blank">Samar Altaf</a>
-                        &nbsp;
-                        <h4>
-                            <a href="https://github.com/ranasamar660/second-week-work/">Repo</a>
-                        </h4>
-                    </li>
-                <li><img src="images/kafil_anwar.jpg" alt="Kafil Anwar"><a
-                        href="https://ranakafilanwar.github.io/learn-with-kafil/" target="_blank">Kafil Anwar</a>
-                        &nbsp;
-                        <h4>
-                            <a href="https://github.com/ranakafilanwar/learn-with-kafil/">Repo</a>
-                        </h4>
-                    </li>
-                <li><img src="images/arham.jpg" alt="Arham-2"><a
-                        href="https://arham-coding.github.io/learn-with-arham-2/" target="_blank">Arham-2</a>
-                        &nbsp;
-                        <h4>
-                            <a href="https://github.com/arham-coding/learn-with-arham-2/">Repo</a>
-                        </h4>
-                    </li>
+                <li><img src="samar-removebg-preview.png" alt="Samar Altaf">
+                    <a href="https://ranasamar660.github.io/second-week-work/" target="_blank">Samar Altaf</a>
+                    &nbsp;
+                    <h4>
+                        <a href="https://github.com/ranasamar660/second-week-work/">Repo</a>
+                    </h4>
+                </li>
+                <li><img src="images/kafil_anwar.jpg" alt="Kafil Anwar">
+                    <a href="https://ranakafilanwar.github.io/learn-with-kafil/" target="_blank">Kafil Anwar</a>
+                    &nbsp;
+                    <h4>
+                        <a href="https://github.com/ranakafilanwar/learn-with-kafil/">Repo</a>
+                    </h4>
+                </li>
+                <li><img src="images/arham.jpg" alt="Arham-2">
+                    <a href="https://arham-coding.github.io/learn-with-arham-2/" target="_blank">Arham-2</a>
+                    &nbsp;
+                    <h4>
+                        <a href="https://github.com/arham-coding/learn-with-arham-2/">Repo</a>
+                    </h4>
+                </li>
                 <!-- Add more student repos as needed -->
             </ul>
         </section>
