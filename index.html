@@ -5,108 +5,162 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code with Infinite Dev - Student Repositories</title>
-<style>
-    body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
-}
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
 
-header {
-    position: sticky;
-    top: 0;
-    background-color: #333;
-    color: #fff;
-    padding: 1rem 0;
-    text-align: center;
-}
+        header {
+            position: sticky;
+            top: 0;
+            background-color: #333;
+            color: #fff;
+            padding: 1rem 0 0 0;
 
-header h1 {
-    margin: 0;
-    font-size: 2.5rem;
-}
+        }
 
-header h2 {
-    margin: 0;
-    font-size: 1.5rem;
-    font-weight: 300;
-}
+        header h1 {
+            margin: 0;
+            font-size: 2.5rem;
+            text-align: center;
+        }
 
-main {
-    padding: 2rem 1rem;
-    margin-bottom: 5rem; /* Ensure there's space for the fixed footer */
-}
+        header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 300;
+        }
 
-.repo-list h3 {
-    font-size: 1.75rem;
-    margin-bottom: 1rem;
-    color: #333;
-}
+        main {
+            padding: 2rem 1rem;
+            margin-bottom: 5rem;
+            /* Ensure there's space for the fixed footer */
+        }
 
-.repo-list ul {
-    list-style: none;
-    padding: 0;
-}
+        .repo-list h3 {
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+            color: #333;
+        }
 
-.repo-list li {
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-}
+        .repo-list ul {
+            list-style: none;
+            padding: 0;
+        }
 
-.repo-list img {
-    background-color: rgba(0, 255, 255, 0.153);
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    margin-right: 1rem;
-    transition: border 0.3s ease, background-color 0.3s ease;
-}
+        .repo-list li {
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+        }
 
-.repo-list img:hover {
-    border: 4px solid rgba(0, 0, 255, 0.322);
-    background-color: rgba(0, 0, 0, 0.227);
-}
+        .repo-list img {
+            background-color: rgba(0, 255, 255, 0.153);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-right: 1rem;
+            transition: border 0.3s ease, background-color 0.3s ease;
+        }
 
-.repo-list a {
-    text-decoration: none;
-    color: #1a73e8;
-    transition: color 0.3s ease;
-}
+        .repo-list img:hover {
+            border: 4px solid rgba(0, 0, 255, 0.322);
+            background-color: rgba(0, 0, 0, 0.227);
+        }
 
-.repo-list a:hover {
-    color: #0049b7;
-}
+        .repo-list a {
+            text-decoration: none;
+            color: #1a73e8;
+            transition: color 0.3s ease;
+        }
 
-footer {
-    background-color: #333;
-    color: #fff;
-    text-align: center;
-    padding: 1rem 0;
-    position: fixed;
-    width: 100%;
-    bottom: 0;
-}
+        .repo-list a:hover {
+            color: #0049b7;
+        }
 
-.qadeer-img:hover {
-    background-image: url('../img/qadeer-6.jpeg');
-}
+        footer {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            bottom: 0;
+        }
 
-ul{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 40px;
-    
-}
-</style>
+        .qadeer-img:hover {
+            background-image: url('../img/qadeer-6.jpeg');
+        }
+
+        ul {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 40px;
+
+        }
+
+        .d-flex {
+            display: flex;
+            gap: 0 10px;
+        }
+
+        hr {
+            color: white;
+        }
+    </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
 </head>
 
 <body>
     <header>
         <h1>Code with Infinite Dev</h1>
-        <h2>Student Git Repositories</h2>
+        <hr>
+        <div class="d-flex">
+            <!-- Example single danger button -->
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Important Links </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item"
+                            href="https://www.w3schools.com/cssref/playdemo.php?filename=playcss_letter-spacing">css
+                            properties</a></li>
+                    <li><a class="dropdown-item" href="#">#perfmatters</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#">Separated link</a></li>
+                </ul>
+            </div>
+
+            <div class="btn-group">
+                <button type="button" class="btn btn-danger dropdown-toggle" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Video Leactures
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item"
+                            href="https://www.w3schools.com/cssref/playdemo.php?filename=playcss_letter-spacing">css
+                            properties</a></li>
+                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <li>
+                        <hr class="dropdown-divider">
+                    </li>
+                    <li><a class="dropdown-item" href="#">Separated link</a></li>
+                </ul>
+            </div>
+        </div>
+        <hr>
     </header>
     <main>
         <section class="repo-list">
@@ -139,6 +193,13 @@ ul{
                     &nbsp;
                     <h4>
                         <a href="https://github.com/ranakafilanwar/learn-with-kafil/">Repo</a>
+                    </h4>
+                </li>
+                <li><img src="images/arham.jpg" alt="Arham">
+                    <a href="https://hafizarham404.github.io/code-arham-work/" target="_blank">Arham</a>
+                    &nbsp;
+                    <h4>
+                        <a href="https://github.com/hafizarham404/code-arham-work/">Repo</a>
                     </h4>
                 </li>
                 <li><img src="images/arham.jpg" alt="Arham-2">
