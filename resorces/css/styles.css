@@ -1,34 +1,33 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
     color: #333;
+    overflow-x: hidden;
 }
 
 header {
-    position: sticky;
-    top: 0;
     background-color: #333;
     color: #fff;
-    padding: 1rem 0;
-    text-align: center;
+    padding: 1rem 0 0 0;
 }
 
 header h1 {
     margin: 0;
     font-size: 2.5rem;
-}
-
-header h2 {
-    margin: 0;
-    font-size: 1.5rem;
-    font-weight: 300;
+    text-align: center;
 }
 
 main {
     padding: 2rem 1rem;
-    margin-bottom: 5rem; /* Ensure there's space for the fixed footer */
+    margin-bottom: 5rem;
+    /* Ensure there's space for the fixed footer */
 }
 
 .repo-list h3 {
@@ -68,8 +67,8 @@ main {
     transition: color 0.3s ease;
 }
 
-.repo-list a:hover {
-    color: #0049b7;
+a:hover {
+    color: red;
 }
 
 footer {
@@ -77,18 +76,48 @@ footer {
     color: #fff;
     text-align: center;
     padding: 1rem 0;
-    position: fixed;
     width: 100%;
-    bottom: 0;
 }
 
-.qadeer-img:hover {
-    background-image: url('../img/qadeer-6.jpeg');
-}
-
-ul{
+.repo-list-wrapper {
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
     gap: 40px;
-    
+}
+
+.d-flex {
+    display: flex;
+    gap: 0 10px;
+}
+
+hr {
+    color: white;
+}
+
+.btn-group {
+    margin: 0 6px;
+}
+.content-container{
+    width: 100%;
+}
+.videosSection{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    margin: 15px 0px;
+}
+.active{
+    background-color:#333;
+}
+.video{
+    width: 100%;
+    border: 1px solid black;
+    height: 250px;
+    margin: 0px 15px;
+}
+@media (max-width:700px) {
+    .repo-list-wrapper {
+        flex-direction: column;
+    }
 }
