@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Search Engine by Class Name</title>
+    <style>
+        .result {
+            display: none;
+            border: 1px solid #000;
+            margin-top: 10px;
+            padding: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simple Search Engine by Class Name</h1>
+    <input type="text" id="searchBox" placeholder="Enter class name(s) to search (separate with space)">
+    <button onclick="searchElement()">Search</button>
+    <div id="searchResult" class="result"></div>
+
+    <div class="class1 searchable">This is element with class1</div>
+    <div class="class2 searchable">This is element with class2</div>
+    <div class="class3 searchable">This is element with class3</div>
+    <div class="class1 class2 searchable">This is element with class1 and class2</div>
+    <div class="class2 class3 searchable">This is element with class2 and class3</div>
+
+    <script>
+        function searchElement() {
+            // Get the search term and split it into an array of classes
+            const searchClasses = document.getElementById('searchBox').value.trim().split(/\s+/);
+            
+            // Get all searchable elements
+            const elements = document.getElementsByClassName('searchable');
+            
+            // Initialize search result
+            let result = document.getElementById('searchResult');
+            result.innerHTML = '';
+            result.style.display = 'none';
+            
+            // Create an array to store matched elements
+            let matchedElements = [];
+            
+            // Loop through all elements and check if class names match
+            for (let element of elements) {
+                let matches = searchClasses.every(searchClass => element.classList.contains(searchClass));
+                if (matches) {
+                    matchedElements.push(element.outerHTML);
+                }
+            }
+            
+            // Check if any matches were found
+            if (matchedElements.length > 0) {
+                result.innerHTML = `Matched Elements:<br>${matchedElements.join('<br>')}`;
+                result.style.display = 'block';
+            } else {
+                result.innerHTML = 'No matching elements found';
+                result.style.display = 'block';
+            }
+        }
+    </script>
+</body>
+</html>
