@@ -39,9 +39,11 @@ main {
     list-style: none;
     padding: 0;
 }
-#searchResult{
+
+#searchResult {
     width: 30%;
 }
+
 .repo-list li {
     margin-bottom: 0.5rem;
     display: flex;
@@ -98,53 +100,63 @@ hr {
 .btn-group {
     margin: 0 6px;
 }
-.content-container{
+
+.content-container {
     width: 100%;
 }
-.videosSection{
+
+.videosSection {
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: space-around;
     margin: 15px 0px;
 }
-.active{
-    background-color:#333;
+
+.active {
+    background-color: #333;
 }
-.video{
+
+.video {
     width: 100%;
     border: 1px solid black;
     height: 250px;
     margin: 0px 15px;
 }
-.search-body{
+
+.search-body {
     width: 40%;
-    border:1px solid #1a73e8;
+    border: 1px solid #1a73e8;
     border-radius: 8px;
-    display:flex;
+    display: flex;
     overflow: hidden;
 }
-.search-wrapper{
+
+.search-wrapper {
     display: flex;
     width: 100%;
     align-items: center;
     justify-content: center;
-    margin-top:5px;
+    margin-top: 5px;
 }
-.search-input{
+
+.search-input {
     width: 90%;
-    background-color:white;
+    background-color: white;
 }
-.search-input input{
-    background-color:white;
+
+.search-input input {
+    background-color: white;
     border: none;
     outline: none;
     padding: 10px 2px;
 }
-::placeholder{
-    color: #1a73e8; 
+
+::placeholder {
+    color: #1a73e8;
 }
-.search-btn button{
+
+.search-btn button {
     background-color: #1a73e8;
     width: 100%;
     border: none;
@@ -152,11 +164,13 @@ hr {
     color: white;
     padding: 10px 0px;
 }
-.search-btn{
+
+.search-btn {
     width: 10%;
-    background-color:#1a73e8;
+    background-color: #1a73e8;
 }
-.results-wrapper{
+
+.results-wrapper {
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -164,34 +178,42 @@ hr {
     justify-content: center;
     gap: 10px;
 }
-#searchResult{
+
+#searchResult {
     width: 40%;
 }
-.lect{
+
+.lect {
     margin-left: 10px;
 }
+
 @media (max-width:1200px) {
     .repo-list-wrapper {
         flex-direction: column;
     }
-    .videosSection{
+
+    .videosSection {
         flex-direction: column;
         gap: 10px;
         margin: 0px;
     }
-    .wrapper{
+
+    .wrapper {
         display: flex;
         flex-direction: column;
         gap: 10px;
         margin-bottom: 10px;
     }
-    .search-body{
+
+    .search-body {
         width: 60%;
     }
-    #searchResult{
-          width: 60%;
+
+    #searchResult {
+        width: 60%;
     }
-    .lect{
+
+    .lect {
         margin: 0px;
     }
 }
