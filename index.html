@@ -15,10 +15,17 @@
 </head>
 
 <body>
+
+    <!-- Placeholder -->
+    <div id="placeholder" class="placeholder">
+        <div class="spinner"></div>
+    </div>
+
     <header>
         <h1>Code with Infiniti Dev</h1>
         <hr>
         <div class="d-flex">
+            <!-- Example single danger button -->
             <div class="btn-group">
                 <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
                     aria-expanded="false">
@@ -39,10 +46,10 @@
 
             <div class="btn-group">
                 <a href="videos.html">
-                <button type="button" class="btn btn-primary">
-                    Video Leactures
-                </button>
-            </a>
+                    <button type="button" class="btn btn-primary">
+                        Video Leactures
+                    </button>
+                </a>
             </div>
         </div>
         <hr>
@@ -149,7 +156,7 @@
                 <li>
                     <a href="https://adeeba401.github.io/html-projects/" target="_blank">
                         <img src="2.jpg" alt="hammad ">
-                       Adeeba
+                        Adeeba
                     </a>
                     &nbsp;
                     <h5>
@@ -163,6 +170,14 @@
     <footer>
         <p>&copy; 2024 Code with Infiniti Dev. All rights reserved.</p>
     </footer>
+
+    <script>
+        // JavaScript to hide the placeholder once the page is fully loaded
+        window.addEventListener('load', function () {
+            document.getElementById('placeholder').style.display = 'none';
+        });
+    </script>
+
 </body>
 
 </html>

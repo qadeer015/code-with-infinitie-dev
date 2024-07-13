@@ -43,11 +43,9 @@ main {
 #searchResult {
     width: 30%;
 }
-
-#searchResult .video {
+#searchResult .video{
     margin: 0px;
 }
-
 .repo-list li {
     margin-bottom: 0.5rem;
     display: flex;
@@ -217,57 +215,10 @@ hr {
     #searchResult {
         width: 60%;
     }
-
-    .search-btn {
+    .search-btn{
         width: 20%;
     }
-
-    .lect {
+    .lect{
         margin: 0px;
     }
-}
-
-/* Placeholder styling */
-.placeholder {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #ffffff;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-}
-
-/* Spinner styling */
-.spinner {
-    position: fixed;
-    top: 12%;
-    left: 50%;
-    border: 16px solid #f3f3f3;
-    border-top: 16px solid #3498db;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
-}
-
-/* Loading text */
-.placeholder p {
-    margin-top: 20px;
-    font-size: 1.5rem;
-    color: #3498db;
 }
