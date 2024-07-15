@@ -5,7 +5,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Code with Infinite Dev</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+        integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link rel="stylesheet" href="./resorces/css/styles.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -16,6 +18,14 @@
 </head>
 
 <body>
+
+
+    <!-- Placeholder -->
+    <div id="placeholder" class="placeholder">
+        <div class="spinner"></div>
+    </div>
+
+
     <header>
         <h1>Code with Infiniti Dev</h1>
         <hr>
@@ -39,55 +49,102 @@
             </div>
 
             <div class="btn-group">
-                <a href="#">
-                <button type="button" class="btn btn-primary active">
-                    Video Leactures
-                </button>
-            </a>
-            </div>
-            <div class="btn-group">
-                <a href="index.html"><div class="btn btn-primary">back</div></a>
+                <a href="index.html">
+                    <div class="btn btn-primary">Back To Home</div>
+                </a>
             </div>
         </div>
         <hr>
         <br>
     </header>
-<div class="content-container">
-    <div class="search-wrapper">
-        <div class="search-body">
-   <div class="search-input"><input type="text" onfocus="this.value=''" value="Search Lectures" id="searchBox" placeholder="Search Lectures"><div class="cancel-body"><i id="cancelBtn" class="fa-solid fa-xmark cancel-btn"></i></div></div>
-   <div class="search-btn"><button onclick="searchElement()"><i class="fa-solid fa-magnifying-glass"></i></button></div>
+    <div class="content-container">
+        <div class="search-wrapper">
+            <div class="search-body">
+                <div class="search-input"><input type="text" onfocus="this.value=''" value="Search Lectures"
+                        id="searchBox" placeholder="Search Lectures">
+                    <div class="cancel-body"><i id="cancelBtn" class="fa-solid fa-xmark cancel-btn"></i></div>
+                </div>
+                <div class="search-btn"><button onclick="searchElement()"><i
+                            class="fa-solid fa-magnifying-glass"></i></button></div>
+            </div>
+        </div>
+        <div class="results-wrapper">
+            <div id="searchResult" class="result"></div>
+        </div>
+
+        <h3 class="lect">Video Lectures</h3>
+        <div class="wrapper">
+            <section class="videosSection">
+                <iframe class="week 1 part-1 how to install vs code intro video"
+                    src="https://www.youtube.com/embed/ovDrOacVET4?si=EjRiBaVdtD3VnEvd" title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe class="week 1 part-2 learn basic html and css video"
+                    src="https://www.youtube.com/embed/YK1xR1TmnIY?si=f32bT2k0eHhtQ_jR" title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe class="week 2 learn css basic to advance video"
+                    src="https://www.youtube.com/embed/Uj36nI2J7Ac?si=Slq1j50aP2km1HK3" title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe class="week 3 part-1 how to link web pages togather video"
+                    src="https://www.youtube.com/embed/fi5E3RFRf_k?si=JxdLl4Qoc_fS5ZMS" title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </section>
+            <section class="videosSection">
+
+                <iframe class="week 3 part-2 how to add input type check box video"
+                    src="https://www.youtube.com/embed/MPl-7sN0AUs?si=QfpEywPhkSwTCyY_" title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe class="how to install git and github hub in windows week 5  video"
+                    src="https://www.youtube.com/embed/qHYBkS1dyFE?si=06Wa1eqN8kDEOuol" title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe class="how to create new repository and clone git week 5 video"
+                    src="https://www.youtube.com/embed/7MNFquqlDTA?si=n8Aqr7e9pem8R87R" title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe class="week 4 part-1 learn css floats position  video"
+                    src="https://www.youtube.com/embed/HnaOek-PqSY?si=f1J10i_aKtCN5u4I" title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </section>
+            <section class="videosSection">
+
+                <iframe class="week 4 part-2  learn css display flex in details video"
+                    src="https://www.youtube.com/embed/BQzwyYMQYCU?si=H_S8KQmwGkV83pL6" title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe class="week 6 part-1 java javascript first class learn functions  video"
+                    src="https://www.youtube.com/embed/Y5fqxw0jokY?si=ht354gV_JsDYn-lY" title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe class="week 6 part-2 java javascript second class learn functions  video"
+                    src="https://www.youtube.com/embed/zcTBPvWhm5k?si=8h3t91W6pNZ_YI1W" title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                <iframe class="week 7 javascript java primitive data types video"
+                    src="https://www.youtube.com/embed/tcMvxFGvcfs?si=H-J6nirw_nSJvR0V" title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            </section>
+
         </div>
     </div>
-    <div class="results-wrapper">
-    <div id="searchResult" class="result"></div>
-    </div>
-
-    <h3 class="lect">Video Lectures</h3>
-    <div class="wrapper">
-<section class="videosSection">
-    <iframe class="week 1 part-1 how to install vs code intro video" src="https://www.youtube.com/embed/ovDrOacVET4?si=EjRiBaVdtD3VnEvd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    <iframe class="week 1 part-2 learn basic html and css video" src="https://www.youtube.com/embed/YK1xR1TmnIY?si=f32bT2k0eHhtQ_jR" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    <iframe class="week 2 learn css basic to advance video" src="https://www.youtube.com/embed/Uj36nI2J7Ac?si=Slq1j50aP2km1HK3" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    <iframe class="week 3 part-1 how to link web pages togather video" src="https://www.youtube.com/embed/fi5E3RFRf_k?si=JxdLl4Qoc_fS5ZMS" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</section>
-<section class="videosSection">
-   
-    <iframe class="week 3 part-2 how to add input type check box video" src="https://www.youtube.com/embed/MPl-7sN0AUs?si=QfpEywPhkSwTCyY_" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    <iframe class="how to install git and github hub in windows week 5  video" src="https://www.youtube.com/embed/qHYBkS1dyFE?si=06Wa1eqN8kDEOuol" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    <iframe class="how to create new repository and clone git week 5 video" src="https://www.youtube.com/embed/7MNFquqlDTA?si=n8Aqr7e9pem8R87R" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    <iframe class="week 4 part-1 learn css floats position  video" src="https://www.youtube.com/embed/HnaOek-PqSY?si=f1J10i_aKtCN5u4I" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</section>
-<section class="videosSection">
-    
-    <iframe  class="week 4 part-2  learn css display flex in details video" src="https://www.youtube.com/embed/BQzwyYMQYCU?si=H_S8KQmwGkV83pL6" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    <iframe  class="week 6 part-1 java javascript first class learn functions  video" src="https://www.youtube.com/embed/Y5fqxw0jokY?si=ht354gV_JsDYn-lY" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    <iframe  class="week 6 part-2 java javascript second class learn functions  video" src="https://www.youtube.com/embed/zcTBPvWhm5k?si=8h3t91W6pNZ_YI1W" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-    <iframe  class="week 7 javascript java primitive data types video" src="https://www.youtube.com/embed/tcMvxFGvcfs?si=H-J6nirw_nSJvR0V" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-</section>
-
-</div>
-</div>
 
 
     <footer>
@@ -95,26 +152,26 @@
     </footer>
     <script>
         function searchElement() {
-        let matchedElements = [];
-        const searchClasses = document.getElementById('searchBox').value.trim().split(/\s+/);
-        const elements = document.getElementsByClassName('video');
-    
-        let result = document.getElementById('searchResult');
-        result.innerHTML = '';
-        result.style.display = 'none';
-    
-        for (let element of elements) {
-            let matches = searchClasses.every(searchClass => element.classList.contains(searchClass));
-            if (matches) {
-                matchedElements.push(element.outerHTML);
+            let matchedElements = [];
+            const searchClasses = document.getElementById('searchBox').value.trim().split(/\s+/);
+            const elements = document.getElementsByClassName('video');
+
+            let result = document.getElementById('searchResult');
+            result.innerHTML = '';
+            result.style.display = 'none';
+
+            for (let element of elements) {
+                let matches = searchClasses.every(searchClass => element.classList.contains(searchClass));
+                if (matches) {
+                    matchedElements.push(element.outerHTML);
+                }
             }
-        }
-        
-        if (matchedElements.length > 0) {
-            result.innerHTML = `<h3> Search Results : </h3>${matchedElements.join('<br>')}`;
-            result.style.display = 'block';
-        } else {
-            result.innerHTML = `
+
+            if (matchedElements.length > 0) {
+                result.innerHTML = `<h3> Search Results : </h3>${matchedElements.join('<br>')}`;
+                result.style.display = 'block';
+            } else {
+                result.innerHTML = `
     <div><span class="did-u-mean"> Did you mean: </span><span class="search-text-color"> ${searchClasses}</span></div> 
     <div> No results containing all your search terms were found.</div>
     <div> Your search -<span class="search-text-color"> ${searchClasses}</span> - did not match any documents.</div>
@@ -126,22 +183,30 @@
     <li>Try fewer keywords.</li>
 </ul>
 `;
-result.style.display = 'block';
+                result.style.display = 'block';
+            }
         }
-    }
-   document.getElementById('searchBox').addEventListener('click' , function(){
- document.getElementById('cancelBtn').style.display="block";
-   }); 
-document.getElementById('cancelBtn').addEventListener('click', function(){
-document.getElementById('searchBox').value = '';
-});
+        document.getElementById('searchBox').addEventListener('click', function () {
+            document.getElementById('cancelBtn').style.display = "block";
+        });
+        document.getElementById('cancelBtn').addEventListener('click', function () {
+            document.getElementById('searchBox').value = '';
+        });
 
-    window.onkeydown=(event)=>{
-        switch (event.key){
-            case 'Enter':
-                searchElement();  
+        window.onkeydown = (event) => {
+            switch (event.key) {
+                case 'Enter':
+                    searchElement();
+            }
         }
-    }
-</script>
+    </script>
+
+    <script>
+        // JavaScript to hide the placeholder once the page is fully loaded
+        window.addEventListener('load', function () {
+            document.getElementById('placeholder').style.display = 'none';
+        });
+    </script>
 </body>
+
 </html>
