@@ -173,7 +173,7 @@
             }
 
             if (matchedElements.length > 0) {
-                result.innerHTML = `<h3> Search Results : </h3>${matchedElements.join('<br>')}`;
+                result.innerHTML = `<h3> Search Results : <span class="search-text-color">${searchClasses}</span> </h3>${matchedElements.join('<br>')}`;
                 result.style.display = 'block';
             } else {
                 result.innerHTML = `
