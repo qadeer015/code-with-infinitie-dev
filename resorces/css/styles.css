@@ -131,7 +131,7 @@ hr {
 .search-body {
     width: 40%;
     border: 1px solid #1a73e8;
-    border-radius: 8px;
+    border-radius:100px;
     display: flex;
     overflow: hidden;
 }
@@ -147,13 +147,33 @@ hr {
 .search-input {
     width: 90%;
     background-color: white;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
-
+.cancel-btn{
+    font-size: 25px;
+}
+#cancelBtn{
+    display: none;
+}
+.cancel-body{
+    margin-right: 10px;
+    border-radius: 50%;
+    width: 35px;
+    height: 30px;  
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.cancel-body:hover{
+    background-color: #b4b2b2;  
+}
 .search-input input {
     background-color: white;
     border: none;
     outline: none;
-    padding: 10px 2px;
+    padding: 10px 12px;
     width: 100%;
 }
 
@@ -187,7 +207,16 @@ hr {
 #searchResult {
     width: 40%;
 }
-
+.did-u-mean{
+    color: red;
+    font-size: 20px;
+    font-weight: 500;
+}
+.search-text-color{
+    color: #1a73e8;
+    font-weight: 600;
+    font-size: 19px;
+}
 .lect {
     margin-left: 10px;
 }

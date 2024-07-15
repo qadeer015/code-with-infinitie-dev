@@ -55,7 +55,7 @@
 <div class="content-container">
     <div class="search-wrapper">
         <div class="search-body">
-   <div class="search-input"><input type="text" id="searchBox" placeholder="Search Lectures"></div>
+   <div class="search-input"><input type="text" onfocus="this.value=''" value="Search Lectures" id="searchBox" placeholder="Search Lectures"><div class="cancel-body"><i id="cancelBtn" class="fa-solid fa-xmark cancel-btn"></i></div></div>
    <div class="search-btn"><button onclick="searchElement()"><i class="fa-solid fa-magnifying-glass"></i></button></div>
         </div>
     </div>
@@ -114,10 +114,28 @@
             result.innerHTML = `<h3> Search Results : </h3>${matchedElements.join('<br>')}`;
             result.style.display = 'block';
         } else {
-            result.innerHTML = 'No matching elements found';
-            result.style.display = 'block';
+            result.innerHTML = `
+    <div><span class="did-u-mean"> Did you mean: </span><span class="search-text-color"> ${searchClasses}</span></div> 
+    <div> No results containing all your search terms were found.</div>
+    <div> Your search -<span class="search-text-color"> ${searchClasses}</span> - did not match any documents.</div>
+  <h5> Suggestions: </h5>
+<ul>
+    <li> Make sure that all words are spelled correctly.</li>
+    <li>Try different keywords.</li>
+    <li>Try more general keywords.</li>
+    <li>Try fewer keywords.</li>
+</ul>
+`;
+result.style.display = 'block';
         }
     }
+   document.getElementById('searchBox').addEventListener('click' , function(){
+ document.getElementById('cancelBtn').style.display="block";
+   }); 
+document.getElementById('cancelBtn').addEventListener('click', function(){
+document.getElementById('searchBox').value = '';
+});
+
     window.onkeydown=(event)=>{
         switch (event.key){
             case 'Enter':
