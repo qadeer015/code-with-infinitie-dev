@@ -153,21 +153,20 @@ hr {
 }
 .cancel-btn{
     font-size: 25px;
+    padding: 5px 10px;
 }
 #cancelBtn{
     display: none;
 }
 .cancel-body{
     margin-right: 10px;
-    border-radius: 50%;
-    width: 35px;
-    height: 30px;  
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.cancel-body:hover{
-    background-color: #b4b2b2;  
+.cancel-btn:hover{
+    background-color: #b4b2b2;
+    border-radius: 50%;
 }
 .search-input input {
     background-color: white;
