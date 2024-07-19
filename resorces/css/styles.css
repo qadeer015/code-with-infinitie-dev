@@ -131,7 +131,7 @@ hr {
 .search-body {
     width: 40%;
     border: 1px solid #1a73e8;
-    border-radius:100px;
+    border-radius: 100px;
     display: flex;
     overflow: hidden;
 }
@@ -151,23 +151,28 @@ hr {
     align-items: center;
     justify-content: space-between;
 }
-.cancel-btn{
+
+.cancel-btn {
     font-size: 25px;
     padding: 5px 10px;
 }
-#cancelBtn{
+
+#cancelBtn {
     display: none;
 }
-.cancel-body{
+
+.cancel-body {
     margin-right: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.cancel-btn:hover{
+
+.cancel-btn:hover {
     background-color: #b4b2b2;
     border-radius: 50%;
 }
+
 .search-input input {
     background-color: white;
     border: none;
@@ -206,27 +211,26 @@ hr {
 #searchResult {
     width: 40%;
 }
-.did-u-mean{
+
+.did-u-mean {
     color: red;
     font-size: 20px;
     font-weight: 500;
 }
-.search-text-color{
+
+.search-text-color {
     color: #1a73e8;
     font-weight: 600;
     font-size: 19px;
 }
+
 .lect {
     margin-left: 10px;
 }
+
 /* Placeholder styling */
 .placeholder {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: #ffffff;
+    color: #333;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -236,14 +240,11 @@ hr {
 
 /* Spinner styling */
 .spinner {
-    position: fixed;
-    top: 12%;
-    left: 50%;
-    border: 16px solid #f3f3f3;
-    border-top: 16px solid #3498db;
+    border: 9px solid #f3f3f3;
+    border-top: 9px solid #3498db;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
     animation: spin 2s linear infinite;
 }
 
@@ -257,12 +258,6 @@ hr {
     }
 }
 
-/* Loading text */
-.placeholder p {
-    margin-top: 20px;
-    font-size: 1.5rem;
-    color: #3498db;
-}
 
 @media (max-width:1200px) {
     .repo-list-wrapper {
@@ -274,9 +269,11 @@ hr {
         gap: 10px;
         margin: 0px;
     }
-    #cancelBtn{
+
+    #cancelBtn {
         display: none !important;
     }
+
     .wrapper {
         display: flex;
         flex-direction: column;
@@ -295,10 +292,9 @@ hr {
     .search-btn {
         width: 20%;
     }
+
     .lect {
         margin: 0px;
     }
-    .spinner{
-    left: 40%;
-    }
+
 }

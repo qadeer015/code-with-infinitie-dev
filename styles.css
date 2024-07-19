@@ -43,9 +43,11 @@ main {
 #searchResult {
     width: 30%;
 }
-#searchResult .video{
+
+#searchResult .video {
     margin: 0px;
 }
+
 .repo-list li {
     margin-bottom: 0.5rem;
     display: flex;
@@ -215,10 +217,12 @@ hr {
     #searchResult {
         width: 60%;
     }
-    .search-btn{
+
+    .search-btn {
         width: 20%;
     }
-    .lect{
+
+    .lect {
         margin: 0px;
     }
 }
