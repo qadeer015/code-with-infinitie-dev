@@ -153,21 +153,20 @@ hr {
 }
 .cancel-btn{
     font-size: 25px;
+    padding: 5px 10px;
 }
 #cancelBtn{
     display: none;
 }
 .cancel-body{
     margin-right: 10px;
-    border-radius: 50%;
-    width: 35px;
-    height: 30px;  
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.cancel-body:hover{
-    background-color: #b4b2b2;  
+.cancel-btn:hover{
+    background-color: #b4b2b2;
+    border-radius: 50%;
 }
 .search-input input {
     background-color: white;
@@ -220,42 +219,6 @@ hr {
 .lect {
     margin-left: 10px;
 }
-
-@media (max-width:1200px) {
-    .repo-list-wrapper {
-        flex-direction: column;
-    }
-
-    .videosSection {
-        flex-direction: column;
-        gap: 10px;
-        margin: 0px;
-    }
-
-    .wrapper {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-bottom: 10px;
-    }
-
-    .search-body {
-        width: 90%;
-    }
-
-    #searchResult {
-        width: 90%;
-    }
-
-    .search-btn {
-        width: 20%;
-    }
-
-    .lect {
-        margin: 0px;
-    }
-}
-
 /* Placeholder styling */
 .placeholder {
     position: fixed;
@@ -299,4 +262,43 @@ hr {
     margin-top: 20px;
     font-size: 1.5rem;
     color: #3498db;
+}
+
+@media (max-width:1200px) {
+    .repo-list-wrapper {
+        flex-direction: column;
+    }
+
+    .videosSection {
+        flex-direction: column;
+        gap: 10px;
+        margin: 0px;
+    }
+    #cancelBtn{
+        display: none !important;
+    }
+    .wrapper {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+
+    .search-body {
+        width: 90%;
+    }
+
+    #searchResult {
+        width: 90%;
+    }
+
+    .search-btn {
+        width: 20%;
+    }
+    .lect {
+        margin: 0px;
+    }
+    .spinner{
+    left: 40%;
+    }
 }
