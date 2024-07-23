@@ -76,9 +76,8 @@
         <div class="results-wrapper">
             <div id="searchResult" class="result"></div>
         </div>
-
-        <h3 class="lect">Video Lectures</h3>
         <div class="wrapper">
+            <h3 class="lect">Video Lectures</h3>
             <section class="videosSection">
                 <iframe class="week 1 part-1 how to install vs code intro video"
                     src="https://www.youtube.com/embed/ovDrOacVET4?si=EjRiBaVdtD3VnEvd" title="YouTube video player"
@@ -199,11 +198,14 @@
         document.getElementById('cancelBtn').addEventListener('click', function () {
             document.getElementById('searchBox').value = '';
             document.getElementById('cancelBtn').style.display = "none";
+            document.querySelector("#searchResult").style.display="none";
+            document.querySelector(".wrapper").style.visibility="visible";
         });
 
         window.onkeydown = (event) => {
             if (event.key === 'Enter') {
                 searchElement();
+                document.querySelector(".wrapper").style.visibility="hidden";
             }
         }
 
@@ -215,7 +217,6 @@
     </script>
 
     <script>
-        // JavaScript to hide the placeholder once the page is fully loaded
         window.addEventListener('load', function () {
             document.getElementById('placeholder').style.display = 'none';
         });
