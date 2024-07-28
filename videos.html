@@ -19,44 +19,28 @@
 
 <body>
     <header>
-        <h1>Code with Infiniti Dev</h1>
-        <hr>
-        <div class="d-flex">
-            <div class="btn-group">
-                <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    Important Links
-                </button>
-                <ul class="dropdown-menu">
-                    <li><a class="dropdown-item"
-                            href="https://www.w3schools.com/cssref/playdemo.php?filename=playcss_letter-spacing">CSS
-                            properties</a></li>
-                    <li><a class="dropdown-item" href="https://roadmap.sh/javascript">JS roadmap</a></li>
-                    <li><a class="dropdown-item" href="https://www.codeguage.com/courses/js/introduction">JS Course</a>
-                    </li>
-                    <li>
-                        <hr class="dropdown-divider">
-                    </li>
-                    <li><a class="dropdown-item" href="https://roadmap.sh/">Roadmaps</a></li>
-                </ul>
-            </div>
-
-            <div class="btn-group">
-                <a href="index.html">
-                    <div class="btn btn-primary">Back To Home</div>
-                </a>
-            </div>
-
-            <!-- Placeholder -->
-            <div id="placeholder" class="placeholder">
-                <div class="spinner"></div>
-            </div>
-
+        <div class="logo-wrapper">
+            <img src="infiniti-dev_logo.png" alt="infiniti logo">
         </div>
-        <hr>
-        <br>
-    </header>
+    <div class="nav-wrapper">
+        <a class="nav-tabs1" href="index.html">Home</a>
+        <a href="#" class="active-page nav-tabs1">Lectures</a>
+        <a href="annoumcements.html" class="nav-tabs1">Announcements</a>
+        <a href="#" class="dropdown-toggle nav-tabs1" data-bs-toggle="dropdown" aria-expanded="false">Important Links </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item"href="https://www.w3schools.com/cssref/playdemo.php?filename=playcss_letter-spacing">Css Properties</a></li>
+                <li><a class="dropdown-item" href="https://roadmap.sh/javascript">Js roadmap</a></li>
+                <li><a class="dropdown-item" href="https://www.codeguage.com/courses/js/introduction">Js Course</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="https://roadmap.sh/">Roadmap's</a></li>
+            </ul>
+            <a class="nav-tabs1" href="https://discord.gg/aSYMZPgh" target="_blank">Join <i class="fa-brands fa-discord"></i></a>
+        <!-- <div id="placeholder" class="placeholder">
+            <div class="spinner"></div>
+        </div> -->
 
+    </div>
+</header>
     <div class="content-container">
         <div class="search-wrapper">
             <div class="search-body">
@@ -64,7 +48,7 @@
                     <input type="text" onfocus="this.value=''" value="Search Lectures" id="searchBox"
                         placeholder="Search Lectures">
                     <div class="cancel-body">
-                        <i id="cancelBtn" class="fa-solid fa-xmark cancel-btn"></i>
+                        <i id="cancelBtn" class="fa-solid fa-xmark search-cancel-btn"></i>
                     </div>
                 </div>
                 <div class="search-btn">
@@ -194,6 +178,7 @@
 
         document.getElementById('searchBox').addEventListener('click', function () {
             document.getElementById('cancelBtn').style.display = "block";
+            
         });
 
         document.getElementById('cancelBtn').addEventListener('click', function () {
