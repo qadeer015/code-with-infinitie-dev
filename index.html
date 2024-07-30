@@ -30,84 +30,86 @@
         <div class="search-mirror">
             <i class="fa-solid fa-magnifying-glass"></i>
         </div>
-    <div class="nav-wrapper">
-           <!-- <i onclick="cancel()" class="fa-solid fa-xmark menu-cancel-btn"></i> -->
-           <a class="nav-tabs1 active-page" href="#">Home</a>
-           <a class="nav-tabs1" href="videos.html">Lectures</a>
-           <a href="annoumcements.html" class="nav-tabs1" >Announcements</a>
-           <a href="#" class="dropdown-toggle nav-tabs1" data-bs-toggle="dropdown" aria-expanded="false">
-           Important Links </a>
-       <ul class="dropdown-menu">
-           <li><a class="dropdown-item"
-                   href="https://www.w3schools.com/cssref/playdemo.php?filename=playcss_letter-spacing">css
-                   properties</a></li>
-           <li><a class="dropdown-item" href="https://roadmap.sh/javascript">js roadmap</a></li>
-           <li><a class="dropdown-item" href="https://www.codeguage.com/courses/js/introduction">Js Course</a>
-           </li>
-           <li>
-               <hr class="dropdown-divider">
-           </li>
-           <li><a class="dropdown-item" href="https://roadmap.sh/">roadmap's</a></li>
-       </ul>
-       <a class="nav-tabs1" href="https://discord.gg/aSYMZPgh" target="_blank">Join <i class="fa-brands fa-discord"></i></a>
+        <div class="nav-wrapper">
+            <!-- <i onclick="cancel()" class="fa-solid fa-xmark menu-cancel-btn"></i> -->
+            <a class="nav-tabs1 active-page" href="#">Home</a>
+            <a class="nav-tabs1" href="videos.html">Lectures</a>
+            <a href="annoumcements.html" class="nav-tabs1">Announcements</a>
+            <a href="#" class="dropdown-toggle nav-tabs1" data-bs-toggle="dropdown" aria-expanded="false">
+                Important Links </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item"
+                        href="https://www.w3schools.com/cssref/playdemo.php?filename=playcss_letter-spacing">css
+                        properties</a></li>
+                <li><a class="dropdown-item" href="https://roadmap.sh/javascript">js roadmap</a></li>
+                <li><a class="dropdown-item" href="https://www.codeguage.com/courses/js/introduction">Js Course</a>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="https://roadmap.sh/">roadmap's</a></li>
+            </ul>
+            <a class="nav-tabs1" href="https://discord.gg/aSYMZPgh" target="_blank">Join <i
+                    class="fa-brands fa-discord"></i></a>
 
 
-        
-        <!-- <div id="placeholder" class="placeholder">
+
+            <!-- <div id="placeholder" class="placeholder">
             <div class="spinner"></div>
         </div> -->
 
-    </div>
-    <div class="Col">
-    <div class="search-wrapper display-none">
-        <div class="search-body">
-            <div class="search-input">
-                <input type="text" onfocus="this.value=''"  id="myInput" onkeyup="filterStudents()" value="Search Students" id="searchBox"
-                    placeholder="Search Students">
-                <div class="cancel-body">
-                    <i id="cancelBtn" class="fa-solid fa-xmark search-cancel-btn"></i>
+        </div>
+        <div class="Col">
+            <div class="search-wrapper display-none">
+                <div class="search-body">
+                    <div class="search-input">
+                        <input type="text" onfocus="this.value=''" id="myInput" onkeyup="filterStudents()"
+                            value="Search Students" id="searchBox" placeholder="Search Students">
+                        <div class="cancel-body">
+                            <i id="cancelBtn" class="fa-solid fa-xmark search-cancel-btn"></i>
+                        </div>
+                    </div>
+                    <div class="search-btn">
+                        <button onclick="filterStudents()">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="search-btn">
-                <button onclick="filterStudents()">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
+            <div class="searchCancelBtn" onclick="removeSearchResults()"><i class="fa-solid fa-xmark"></i></div>
+            <div class="theme-changer">
+                <i class="fa-solid fa-circle-half-stroke"></i>
             </div>
         </div>
-    </div>
-    <div class="searchCancelBtn" onclick="removeSearchResults()"><i class="fa-solid fa-xmark"></i></div>
-    <div class="theme-changer">
-        <i class="fa-solid fa-circle-half-stroke"></i>
-    </div>
-    </div>
-</header>
-<div class="mobile">
-    <div class="cover">
-    <div class="cancelBtnbody"><i class="fa-solid fa-xmark menu-cancel-btn"></i></div>
-    <a class="nav-tabs1 active-page" href="#">Home</a>
-    <a class="nav-tabs1" href="videos.html">Lectures</a>
-    <a href="annoumcements.html" class="nav-tabs1" >Announcements</a>
-    <a href="#" class="dropdown-toggle nav-tabs1" data-bs-toggle="dropdown" aria-expanded="false">
-    Important Links </a>
-<ul class="dropdown-menu">
-    <li><a class="dropdown-item"
-            href="https://www.w3schools.com/cssref/playdemo.php?filename=playcss_letter-spacing">css
-            properties</a></li>
-    <li><a class="dropdown-item" href="https://roadmap.sh/javascript">js roadmap</a></li>
-    <li><a class="dropdown-item" href="https://www.codeguage.com/courses/js/introduction">Js Course</a>
-    </li>
-    <li>
-        <hr class="dropdown-divider">
-    </li>
-    <li><a class="dropdown-item" href="https://roadmap.sh/">roadmap's</a></li>
-</ul>
-<a class="nav-tabs1" href="https://discord.gg/aSYMZPgh" target="_blank">Join <i class="fa-brands fa-discord"></i></a>
- <!-- <div id="placeholder" class="placeholder">
+    </header>
+    <div class="mobile">
+        <div class="cover">
+            <div class="cancelBtnbody"><i class="fa-solid fa-xmark menu-cancel-btn"></i></div>
+            <a class="nav-tabs1 active-page" href="#">Home</a>
+            <a class="nav-tabs1" href="videos.html">Lectures</a>
+            <a href="annoumcements.html" class="nav-tabs1">Announcements</a>
+            <a href="#" class="dropdown-toggle nav-tabs1" data-bs-toggle="dropdown" aria-expanded="false">
+                Important Links </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item"
+                        href="https://www.w3schools.com/cssref/playdemo.php?filename=playcss_letter-spacing">css
+                        properties</a></li>
+                <li><a class="dropdown-item" href="https://roadmap.sh/javascript">js roadmap</a></li>
+                <li><a class="dropdown-item" href="https://www.codeguage.com/courses/js/introduction">Js Course</a>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="https://roadmap.sh/">roadmap's</a></li>
+            </ul>
+            <a class="nav-tabs1" href="https://discord.gg/aSYMZPgh" target="_blank">Join <i
+                    class="fa-brands fa-discord"></i></a>
+            <!-- <div id="placeholder" class="placeholder">
      <div class="spinner"></div>
  </div> -->
 
-</div>
-</div>
+        </div>
+    </div>
     <!-- <div id="searchResult" class="result"></div> -->
     <main class="wrapper">
         <div class="results-wrapper">
@@ -125,7 +127,8 @@
             <div class="box">
                 <div class="bag-img">
                     <a class="white" href="https://epicbuzz.github.io/web-development/" target="_blank">
-                        <img src="../code-with-infinitie-dev/resorces/img/avatar-1.png" alt="Abdul Qadeer" class="qadeer-img">
+                        <img src="../code-with-infinitie-dev/resorces/img/avatar-1.png" alt="Abdul Qadeer"
+                            class="qadeer-img">
                         Main Page
                     </a>
                 </div>
@@ -146,7 +149,8 @@
         <section class="repo-list">
             <div class="box abdul qadeer">
                 <div class="bag-img">
-                    <img src="qadeer-6-removebg-preview.png" alt="Abdul Qadeer" class="qadeer-img">
+                    <img src="../code-with-infinitie-dev/resorces/img/qadeer-6-removebg-preview.png" alt="Abdul Qadeer"
+                        class="qadeer-img">
                     <a class="white" href="https://abdulqadeeeer.github.io/code-with-Qadeer.dev/" target="_blank">
                         Abdul Qadeer
                     </a>
@@ -163,7 +167,7 @@
             </div>
             <div class="box zaheer ahmed khan">
                 <div class="bag-img">
-                    <img src="zaheer.png" alt="Zaheer Ahmed">
+                    <img src="../code-with-infinitie-dev/resorces/img/zaheer.png" alt="Zaheer Ahmed">
                     <a class="white" href="https://zaheerahmedkhan65.github.io/learn-with-zaheer/" target="_blank">
                         Zaheer Ahmed
                     </a>
@@ -180,7 +184,7 @@
             </div>
             <div class="box samar altaf">
                 <div class="bag-img">
-                    <img src="samar-removebg-preview.png" alt="Samar Altaf">
+                    <img src="../code-with-infinitie-dev/resorces/img/samar-removebg-preview.png" alt="Samar Altaf">
                     <a class="white" href="https://ranasamar660.github.io/second-week-work/" target="_blank">
                         Samar Altaf
                     </a>
@@ -199,7 +203,7 @@
         <section class="repo-list">
             <div class="box kafil anwar">
                 <div class="bag-img">
-                    <img src="kafil-removebg-preview.png" alt="Kafil Anwar">
+                    <img src="../code-with-infinitie-dev/resorces/img/kafil-removebg-preview.png" alt="Kafil Anwar">
                     <a class="white" href="https://ranakafilanwar.github.io/learn-with-kafil/" target="_blank">
                         Kafil Anwar
                     </a>
@@ -216,7 +220,7 @@
             </div>
             <div class="box adeeba">
                 <div class="bag-img">
-                    <img src="2.png" alt="adeeba">
+                    <img src="../code-with-infinitie-dev/resorces/img/2.png" alt="adeeba">
                     <a class="white" href="https://adeeba401.github.io/html-projects/" target="_blank">
                         Adeeba
                     </a>
@@ -250,8 +254,8 @@
     <!--  for ads -->
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9292583891027825"
         crossorigin="anonymous"></script>
-<script src="./resorces/js/script.js">
-</script>
+    <script src="./resorces/js/script.js">
+    </script>
 
 </body>
 

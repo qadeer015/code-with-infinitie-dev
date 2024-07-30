@@ -515,15 +515,14 @@ hr {
     .Col {
         width: 100%;
     }
-<<<<<<< HEAD
+
     #myUL{
         width: 100%;
     }
-    .cover{
-=======
+    
+
 
     .cover {
->>>>>>> d709c16e7729b5445c4b031417cce45f854fcb14
         display: flex;
         flex-direction: column;
         background-color: #333;
