@@ -18,46 +18,94 @@
 </head>
 
 <body>
-    <header>
+    <header class="header1">
         <div class="logo-wrapper">
             <img src="infiniti-dev_logo.png" alt="infiniti logo">
         </div>
+        <div class="menu-bar">
+            <i class="fa-solid fa-bars"></i>
+        </div>
+        <div class="search-mirror">
+            <i class="fa-solid fa-magnifying-glass"></i>
+        </div>
     <div class="nav-wrapper">
-        <a class="nav-tabs1" href="index.html">Home</a>
-        <a href="#" class="active-page nav-tabs1">Lectures</a>
-        <a href="annoumcements.html" class="nav-tabs1">Announcements</a>
-        <a href="#" class="dropdown-toggle nav-tabs1" data-bs-toggle="dropdown" aria-expanded="false">Important Links </a>
-            <ul class="dropdown-menu">
-                <li><a class="dropdown-item"href="https://www.w3schools.com/cssref/playdemo.php?filename=playcss_letter-spacing">Css Properties</a></li>
-                <li><a class="dropdown-item" href="https://roadmap.sh/javascript">Js roadmap</a></li>
-                <li><a class="dropdown-item" href="https://www.codeguage.com/courses/js/introduction">Js Course</a></li>
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="https://roadmap.sh/">Roadmap's</a></li>
-            </ul>
-            <a class="nav-tabs1" href="https://discord.gg/aSYMZPgh" target="_blank">Join <i class="fa-brands fa-discord"></i></a>
+           <!-- <i onclick="cancel()" class="fa-solid fa-xmark menu-cancel-btn"></i> -->
+           <a class="nav-tabs1" href="index.html">Home</a>
+           <a class="nav-tabs1 active-page" href="#">Lectures</a>
+           <a href="annoumcements.html" class="nav-tabs1" >Announcements</a>
+           <a href="#" class="dropdown-toggle nav-tabs1" data-bs-toggle="dropdown" aria-expanded="false">
+           Important Links </a>
+       <ul class="dropdown-menu">
+           <li><a class="dropdown-item"
+                   href="https://www.w3schools.com/cssref/playdemo.php?filename=playcss_letter-spacing">css
+                   properties</a></li>
+           <li><a class="dropdown-item" href="https://roadmap.sh/javascript">js roadmap</a></li>
+           <li><a class="dropdown-item" href="https://www.codeguage.com/courses/js/introduction">Js Course</a>
+           </li>
+           <li>
+               <hr class="dropdown-divider">
+           </li>
+           <li><a class="dropdown-item" href="https://roadmap.sh/">roadmap's</a></li>
+       </ul>
+       <a class="nav-tabs1" href="https://discord.gg/aSYMZPgh" target="_blank">Join <i class="fa-brands fa-discord"></i></a>
+
+
+        
         <!-- <div id="placeholder" class="placeholder">
             <div class="spinner"></div>
         </div> -->
 
     </div>
-</header>
-    <div class="content-container">
-        <div class="search-wrapper">
-            <div class="search-body">
-                <div class="search-input">
-                    <input type="text" onfocus="this.value=''" value="Search Lectures" id="searchBox"
-                        placeholder="Search Lectures">
-                    <div class="cancel-body">
-                        <i id="cancelBtn" class="fa-solid fa-xmark search-cancel-btn"></i>
-                    </div>
-                </div>
-                <div class="search-btn">
-                    <button onclick="searchElement()">
-                        <i class="fa-solid fa-magnifying-glass"></i>
-                    </button>
+    <div class="Col">
+    <div class="search-wrapper display-none">
+        <div class="search-body">
+            <div class="search-input">
+                <input type="text" onfocus="this.value=''" value="Search Lectures" id="searchBox"
+                    placeholder="Search Lectures">
+                <div class="cancel-body">
+                    <i id="cancelBtn" class="fa-solid fa-xmark search-cancel-btn"></i>
                 </div>
             </div>
+            <div class="search-btn">
+                <button onclick="searchElement()">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+            </div>
         </div>
+    </div>
+    <div class="searchCancelBtn"><i class="fa-solid fa-xmark"></i></div>
+    <div class="theme-changer">
+        <i class="fa-solid fa-circle-half-stroke"></i>
+    </div>
+    </div>
+</header>
+<div class="mobile">
+    <div class="cover">
+    <div class="cancelBtnbody"><i class="fa-solid fa-xmark menu-cancel-btn"></i></div>
+    <a class="nav-tabs1" href="index.html">Home</a>
+    <a class="nav-tabs1 active-page" href="#">Lectures</a>
+    <a href="annoumcements.html" class="nav-tabs1" >Announcements</a>
+    <a href="#" class="dropdown-toggle nav-tabs1" data-bs-toggle="dropdown" aria-expanded="false">
+    Important Links </a>
+<ul class="dropdown-menu">
+    <li><a class="dropdown-item"
+            href="https://www.w3schools.com/cssref/playdemo.php?filename=playcss_letter-spacing">css
+            properties</a></li>
+    <li><a class="dropdown-item" href="https://roadmap.sh/javascript">js roadmap</a></li>
+    <li><a class="dropdown-item" href="https://www.codeguage.com/courses/js/introduction">Js Course</a>
+    </li>
+    <li>
+        <hr class="dropdown-divider">
+    </li>
+    <li><a class="dropdown-item" href="https://roadmap.sh/">roadmap's</a></li>
+</ul>
+<a class="nav-tabs1" href="https://discord.gg/aSYMZPgh" target="_blank">Join <i class="fa-brands fa-discord"></i></a>
+ <!-- <div id="placeholder" class="placeholder">
+     <div class="spinner"></div>
+ </div> -->
+
+</div>
+</div>
         <div class="results-wrapper">
             <div id="searchResult" class="result"></div>
         </div>
@@ -207,7 +255,7 @@
             document.getElementById('placeholder').style.display = 'none';
         });
     </script>
-
+<script src="./resorces/js/script.js"></script>
 </body>
 
 </html>
