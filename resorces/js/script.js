@@ -1,42 +1,31 @@
-function searchElement() {
-    let matchedElements = [];
-    const searchClasses = document.getElementById('searchBox').value.trim().split(/\s+/);
-    const elements = document.getElementsByClassName('video');
 
-    let result = document.getElementById('searchResult');
-    result.innerHTML = '';
-    result.style.display = 'none';
-
-    for (let element of elements) {
-        let matches = searchClasses.every(searchClass => element.classList.contains(searchClass));
-        if (matches) {
-            matchedElements.push(element.outerHTML);
+function filterStudents() {
+    var input, filter, ul, li, a, i, txtValue;
+    input = document.getElementById("myInput");
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("myUL");
+    li = ul.getElementsByTagName("li");
+    let results = document.querySelector(".results-wrapper");
+    for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("a")[0];
+        txtValue = a.textContent || a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1 && input.value != '' ) {
+            li[i].style.display = "block";
+            ul.style.display="block";
+    }
+     else {
+            li[i].style.display = "none";
         }
     }
-    
-    if (matchedElements.length > 0) {
-        result.innerHTML = `<h3> Search Results :<span class="search-text-color">${searchClasses}</span>  </h3>${matchedElements.join('<br>')}`;
-        result.style.display = 'block';
-    } else {
-        result.innerHTML = `
-                    <div><span class="did-u-mean"> Did you mean: </span><span class="search-text-color">${searchClasses}</span></div>
-                    <div>No results containing all your search terms were found.</div>
-                    <div>Your search - <span class="search-text-color">${searchClasses}</span> - did not match any documents.</div>
-                    <h5> Suggestions: </h5>
-                    <ul>
-                        <li>Make sure that all words are spelled correctly.</li>
-                        <li>Try different keywords.</li>
-                        <li>Try more general keywords.</li>
-                        <li>Try fewer keywords.</li>
-                    </ul>
-                `;
-                result.style.display = 'block';
-    }
+}
+function removeSearchResults(){
+    ul = document.getElementById("myUL");
+    ul.style.display = "none";
 }
 window.onkeydown=(event)=>{
     switch (event.key){
         case 'Enter':
-            searchElement();  
+            filterStudents();  
     }
 }
 //   menu open function
@@ -67,16 +56,19 @@ menuCancelBtn.addEventListener('click',()=>{
 // theme changer function
 let theme = document.querySelector(".theme-changer");
 let header = document.querySelector(".header1");
+let footer = document.querySelector(".footer");
 theme.addEventListener('click',()=>{
     let body = document.querySelector('body');
 if(header.style.color == "white"){
     header.classList.toggle("theme-color-blue");
+    footer.classList.toggle("theme-color-blue");
     body.style.transition="1.5s";
     theme.classList.toggle('left');
-    theme.classList.toggle('right')
+    theme.classList.toggle('right');
 }
 else{
     header.classList.toggle("theme-color-black");
+    footer.classList.toggle("theme-color-black");
     header.style.color="white";
     body.style.transition="1.5s";
     theme.classList.toggle('right');

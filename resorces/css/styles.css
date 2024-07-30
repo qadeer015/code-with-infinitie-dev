@@ -103,7 +103,7 @@ a:hover {
 }
 
 footer {
-    background-color: #333;
+    background-color: #2066b7;
     color: #fff;
     text-align: center;
     padding: 1rem 0;
@@ -192,6 +192,7 @@ hr {
 
 #cancelBtn {
     display: none;
+    color: #2066b7;
 }
 
 .cancel-body {
@@ -229,7 +230,6 @@ hr {
 
 .search-btn {
     width: 10%;
-    background-color: #1a73e8;
 }
 
 .results-wrapper {
@@ -368,6 +368,34 @@ hr {
 .theme-changer{
     font-size: 25px;
 }
+#myUL {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    width: 40%;
+    margin: auto;
+  }
+.studentSearchCancelBtn{
+    position: relative;
+    left: 189px;
+    color: red;
+}
+  #myUL li a {
+    border: 1px solid #ddd;
+    margin-top: -1px; /* Prevent double borders */
+    background-color: #f6f6f6;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px;
+    color: black;
+    display: block;
+  }
+  #myUL{
+      display: none;
+  }
+  #myUL li a:hover:not(.header) {
+    background-color: #eee;
+  }
 .left{
     transform: rotate(0deg);
 }
@@ -415,12 +443,16 @@ hr {
     .Col{
         width: 100%;
     }
+    #myUL{
+        width: 100%;
+    }
     .cover{
         display: flex;
         flex-direction: column;
         background-color: #333;
         padding: 20px 0px 100px 0px;
-        height: 100vh;
+        /* height: 100vh; */
+
     }
     .cover a{
         text-decoration: none;
