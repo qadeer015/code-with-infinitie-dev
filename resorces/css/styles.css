@@ -292,18 +292,13 @@ hr {
     margin-left: 10px;
 }
 
-
-.container {
-    border: 1px solid black;
-}
-
 /* a{
     color:rgb(58, 58, 204);
 } */
 .container {
     width: 50%;
     height: max-content;
-    padding: 10px 50px;
+    padding: 10px 50px 30px;
 }
 
 .accordian {
@@ -557,7 +552,7 @@ hr {
     } */
     .menu-cancel-btn {
         font-size: 40px;
-        margin: 1px 25px 0px 0px;
+        margin: -20px 5px 0px 0px;
         color: white;
     }
 

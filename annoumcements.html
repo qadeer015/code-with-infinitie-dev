@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta name="google-adsense-account" content="ca-pub-9292583891027825">
     <meta charset="UTF-8">
@@ -16,6 +17,7 @@
         crossorigin="anonymous"></script>
     <title>Document</title>
 </head>
+
 <body>
     <header class="header1">
         <div class="logo-wrapper">
@@ -27,166 +29,181 @@
         <div class="search-mirror">
             <i class="fa-solid fa-magnifying-glass"></i>
         </div>
-    <div class="nav-wrapper">
-           <!-- <i onclick="cancel()" class="fa-solid fa-xmark menu-cancel-btn"></i> -->
-           <a class="nav-tabs1" href="index.html">Home</a>
-           <a class="nav-tabs1" href="videos.html">Lectures</a>
-           <a href="#" class="active-page nav-tabs1" >Announcements</a>
-           <a href="#" class="dropdown-toggle nav-tabs1" data-bs-toggle="dropdown" aria-expanded="false">
-           Important Links </a>
-       <ul class="dropdown-menu">
-           <li><a class="dropdown-item"
-                   href="https://www.w3schools.com/cssref/playdemo.php?filename=playcss_letter-spacing">css
-                   properties</a></li>
-           <li><a class="dropdown-item" href="https://roadmap.sh/javascript">js roadmap</a></li>
-           <li><a class="dropdown-item" href="https://www.codeguage.com/courses/js/introduction">Js Course</a>
-           </li>
-           <li>
-               <hr class="dropdown-divider">
-           </li>
-           <li><a class="dropdown-item" href="https://roadmap.sh/">roadmap's</a></li>
-       </ul>
-       <a class="nav-tabs1" href="https://discord.gg/aSYMZPgh" target="_blank">Join <i class="fa-brands fa-discord"></i></a>
+        <div class="nav-wrapper">
+            <!-- <i onclick="cancel()" class="fa-solid fa-xmark menu-cancel-btn"></i> -->
+            <a class="nav-tabs1" href="index.html">Home</a>
+            <a class="nav-tabs1" href="videos.html">Lectures</a>
+            <a href="#" class="active-page nav-tabs1">Announcements</a>
+            <a href="#" class="dropdown-toggle nav-tabs1" data-bs-toggle="dropdown" aria-expanded="false">
+                Important Links </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item"
+                        href="https://www.w3schools.com/cssref/playdemo.php?filename=playcss_letter-spacing">css
+                        properties</a></li>
+                <li><a class="dropdown-item" href="https://roadmap.sh/javascript">js roadmap</a></li>
+                <li><a class="dropdown-item" href="https://www.codeguage.com/courses/js/introduction">Js Course</a>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="https://roadmap.sh/">roadmap's</a></li>
+            </ul>
+            <a class="nav-tabs1" href="https://discord.gg/aSYMZPgh" target="_blank">Join <i
+                    class="fa-brands fa-discord"></i></a>
 
 
-        
-        <!-- <div id="placeholder" class="placeholder">
+
+            <!-- <div id="placeholder" class="placeholder">
             <div class="spinner"></div>
         </div> -->
 
-    </div>
-    <div class="Col">
-    <div class="search-wrapper display-none">
-        <div class="search-body">
-            <div class="search-input">
-                <input type="text" onfocus="this.value=''" value="Search Lectures" id="searchBox"
-                    placeholder="Search Lectures">
-                <div class="cancel-body">
-                    <i id="cancelBtn" class="fa-solid fa-xmark search-cancel-btn"></i>
+        </div>
+        <div class="Col">
+            <div class="search-wrapper display-none">
+                <div class="search-body">
+                    <div class="search-input">
+                        <input type="text" onfocus="this.value=''" value="Search Lectures" id="searchBox"
+                            placeholder="Search Lectures">
+                        <div class="cancel-body">
+                            <i id="cancelBtn" class="fa-solid fa-xmark search-cancel-btn"></i>
+                        </div>
+                    </div>
+                    <div class="search-btn">
+                        <button onclick="searchElement()">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-            <div class="search-btn">
-                <button onclick="searchElement()">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
+            <div class="searchCancelBtn"><i class="fa-solid fa-xmark"></i></div>
+            <div class="theme-changer">
+                <i class="fa-solid fa-circle-half-stroke"></i>
             </div>
         </div>
-    </div>
-    <div class="searchCancelBtn"><i class="fa-solid fa-xmark"></i></div>
-    <div class="theme-changer">
-        <i class="fa-solid fa-circle-half-stroke"></i>
-    </div>
-    </div>
-</header>
-<div class="mobile">
-    <div class="cover">
-    <div class="cancelBtnbody"><i class="fa-solid fa-xmark menu-cancel-btn"></i></div>
-    <a class="nav-tabs1" href="index.html">Home</a>
-    <a class="nav-tabs1" href="videos.html">Lectures</a>
-    <a href="#" class="active-page nav-tabs1" >Announcements</a>
-    <a href="#" class="dropdown-toggle nav-tabs1" data-bs-toggle="dropdown" aria-expanded="false">
-    Important Links </a>
-<ul class="dropdown-menu">
-    <li><a class="dropdown-item"
-            href="https://www.w3schools.com/cssref/playdemo.php?filename=playcss_letter-spacing">css
-            properties</a></li>
-    <li><a class="dropdown-item" href="https://roadmap.sh/javascript">js roadmap</a></li>
-    <li><a class="dropdown-item" href="https://www.codeguage.com/courses/js/introduction">Js Course</a>
-    </li>
-    <li>
-        <hr class="dropdown-divider">
-    </li>
-    <li><a class="dropdown-item" href="https://roadmap.sh/">roadmap's</a></li>
-</ul>
-<a class="nav-tabs1" href="https://discord.gg/aSYMZPgh" target="_blank">Join <i class="fa-brands fa-discord"></i></a>
- <!-- <div id="placeholder" class="placeholder">
+    </header>
+    <div class="mobile">
+        <div class="cover">
+            <div class="cancelBtnbody"><i class="fa-solid fa-xmark menu-cancel-btn"></i></div>
+            <a class="nav-tabs1" href="index.html">Home</a>
+            <a class="nav-tabs1" href="videos.html">Lectures</a>
+            <a href="#" class="active-page nav-tabs1">Announcements</a>
+            <a href="#" class="dropdown-toggle nav-tabs1" data-bs-toggle="dropdown" aria-expanded="false">
+                Important Links </a>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item"
+                        href="https://www.w3schools.com/cssref/playdemo.php?filename=playcss_letter-spacing">css
+                        properties</a></li>
+                <li><a class="dropdown-item" href="https://roadmap.sh/javascript">js roadmap</a></li>
+                <li><a class="dropdown-item" href="https://www.codeguage.com/courses/js/introduction">Js Course</a>
+                </li>
+                <li>
+                    <hr class="dropdown-divider">
+                </li>
+                <li><a class="dropdown-item" href="https://roadmap.sh/">roadmap's</a></li>
+            </ul>
+            <a class="nav-tabs1" href="https://discord.gg/aSYMZPgh" target="_blank">Join <i
+                    class="fa-brands fa-discord"></i></a>
+            <!-- <div id="placeholder" class="placeholder">
      <div class="spinner"></div>
  </div> -->
 
-</div>
-</div>
+        </div>
+    </div>
     <div class="wrapper">
-      <div class="container">
-       <div class="annoumcements-header bag-img">Announcements</div>
-        <div class="accordian">
-          <div class="accordian-content">Week 1</div>
-          <div class="btn">
-            <i class="fa-solid fa-plus"></i>
+        <div class="container">
+            <div class="annoumcements-header bag-img">Announcements</div>
+            <div class="accordian">
+                <div class="accordian-content">Week 1</div>
+                <div class="btn">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+            </div>
+            <div class="text">
+                <p>VS CODE ,Basic HTML ,Basic CSS.</p>
+            </div>
+            <div class="accordian">
+                <div class="accordian-content">Week 2</div>
+                <div class="btn">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+            </div>
+            <div class="text">
+                <p>HTML ,Basic to advance CSS.</p>
+            </div>
+            <div class="accordian">
+                <div class="accordian-content">Week 3</div>
+                <div class="btn">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+            </div>
+            <div class="text">
+                <p>Links ,Add images ,Create Forms.</p>
+            </div>
+            <div class="accordian">
+                <div class="accordian-content">Week 4</div>
+                <div class="btn">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+            </div>
+            <div class="text">
+                <p>Positions ,Floats ,Display.</p>
+            </div>
+            <div class="accordian">
+                <div class="accordian-content">Week 5</div>
+                <div class="btn">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+            </div>
+
+            <div class="text">
+                <p>Install Git and Github ,Create Github Repository.</p>
+            </div>
+            <div class="accordian">
+                <div class="accordian-content">Week 6</div>
+                <div class="btn">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+            </div>
+            <div class="text">
+                <p>Introduction to JavaScript ,JavaScript functions.</p>
+            </div>
+            <div class="accordian">
+                <div class="accordian-content">Week 7</div>
+                <div class="btn">
+                    <i class="fa-solid fa-plus"></i>
+                </div>
+            </div>
+            <div class="text">
+                <p>JavaScript Variables ,Operators.</p>
+            </div>
         </div>
-      </div>
-    <div class="text">
-          <p>VS CODE ,Basic HTML ,Basic CSS.</p>
-    </div>
-    <div class="accordian">
-        <div class="accordian-content">Week 2</div>
-        <div class="btn">
-            <i class="fa-solid fa-plus"></i>
-        </div>
-    </div>
-    <div class="text"><p>HTML ,Basic to advance CSS.</p></div>
-    <div class="accordian">
-        <div class="accordian-content">Week 3</div>
-        <div class="btn">
-            <i class="fa-solid fa-plus"></i>
-        </div>
-    </div>
-    <div class="text"><p>Links ,Add images ,Create Forms.</p></div>
-    <div class="accordian">
-        <div class="accordian-content">Week 4</div>
-        <div class="btn">
-            <i class="fa-solid fa-plus"></i>
-        </div>
-    </div>
-    <div class="text"><p>Positions ,Floats ,Display.</p></div>
-    <div class="accordian">
-        <div class="accordian-content">Week 5</div>
-        <div class="btn">
-            <i class="fa-solid fa-plus"></i>
-        </div>
-    </div>
-    
-    <div class="text"><p>Install Git and Github ,Create Github Repository.</p></div>
-    <div class="accordian">
-        <div class="accordian-content">Week 6</div>
-        <div class="btn">
-            <i class="fa-solid fa-plus"></i>
-        </div>
-    </div>
-    <div class="text"><p>Introduction to JavaScript ,JavaScript functions.</p></div>
-    <div class="accordian">
-        <div class="accordian-content">Week 7</div>
-        <div class="btn">
-            <i class="fa-solid fa-plus"></i>
-        </div>
-    </div>
-    <div class="text"><p>JavaScript Variables ,Operators.</p></div>
-  </div>
     </div>
     <footer class="footer">
         <p>&copy; 2024 Code with Infiniti Dev. All rights reserved.</p>
     </footer>
     <script>
-//   announcement open function
-  var accordions = document.getElementsByClassName("accordian");
-  
-  for (var i = 0; i < accordions.length; i++) {
-    accordions[i].addEventListener("click", function() {
-      this.classList.toggle("active");
-      var panel = this.nextElementSibling;
-      var icon = this.querySelector(".fa-solid");
-      
-      if (panel.style.display === "block") {
-        panel.style.display = "none";
-        icon.classList.remove("fa-minus");
-        icon.classList.add("fa-plus");
-      } else {
-        panel.style.display = "block";
-        icon.classList.remove("fa-plus");
-        icon.classList.add("fa-minus");
-      }
-    });
-  }
+        //   announcement open function
+        var accordions = document.getElementsByClassName("accordian");
+
+        for (var i = 0; i < accordions.length; i++) {
+            accordions[i].addEventListener("click", function () {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                var icon = this.querySelector(".fa-solid");
+
+                if (panel.style.display === "block") {
+                    panel.style.display = "none";
+                    icon.classList.remove("fa-minus");
+                    icon.classList.add("fa-plus");
+                } else {
+                    panel.style.display = "block";
+                    icon.classList.remove("fa-plus");
+                    icon.classList.add("fa-minus");
+                }
+            });
+        }
     </script>
     <script src="./resorces/js/script.js"></script>
 </body>
+
 </html>

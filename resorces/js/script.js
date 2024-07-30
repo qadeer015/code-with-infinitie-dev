@@ -44,6 +44,7 @@ else{
     mobile.style.display="block";
     mobile.style.position="relative";
     mobile.style.bottom = "0px";
+    menuCancelBtn.style.display="block";
     content.style.display="none";
 }
 });
