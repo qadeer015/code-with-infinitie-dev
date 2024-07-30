@@ -428,7 +428,6 @@ hr {
 .theme-changer {
     font-size: 25px;
 }
-<<<<<<< HEAD
 #myUL {
     list-style-type: none;
     padding: 0;
@@ -458,10 +457,6 @@ hr {
     background-color: #eee;
   }
 .left{
-=======
-
-.left {
->>>>>>> d709c16e7729b5445c4b031417cce45f854fcb14
     transform: rotate(0deg);
 }
 
