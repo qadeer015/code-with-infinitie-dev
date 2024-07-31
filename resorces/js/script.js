@@ -104,3 +104,20 @@ if(searchCancelBtn.style.display=="block"){
     enableSearch.style.display="none";
 }
 });
+
+window.addEventListener('resize', function() {
+    if (window.innerWidth > 768) {
+        content.style.display = '';
+        mobile.style.display = '';
+        searchCancelBtn.style.display='';
+        theme.style.display='';
+        menu.style.display='none';
+        mirror.style.display='';
+        enableSearch.style.display='';
+    }
+    else{
+        searchCancelBtn.style.display=' ';
+        menu.style.display='';
+        enableSearch.style.display='none';
+    }
+});
