@@ -131,7 +131,7 @@ footer {
 
 .nav-wrapper {
     display: flex;
-    gap: 0 35px;
+    gap: 0 25px;
 }
 
 hr {
@@ -171,14 +171,22 @@ hr {
 .active {
     background-color: #333;
 }
-
+#myLectures{
+display: none;
+}
 .video {
     width: 100%;
     border: 1px solid black;
-    height: 250px;
+    height: 280px;
     margin: 0px 15px;
 }
-
+.video iframe{
+    width: 100%;
+    height: 80%;
+}
+.tags{
+    display: none;
+}
 .search-mirror {
     display: none;
 }
@@ -347,8 +355,8 @@ hr {
 
 .bag-img {
     background: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf6urqhvsJDLLesVuNhNmVb5hpkjY9_1ej7g&s);
+    background-repeat:no-repeat;
     background-size: cover;
-    background-repeat: no-repeat;
 }
 
 .white {
@@ -361,6 +369,9 @@ hr {
     border: 1px solid black;
     padding: 25px;
     font-size: 25px;
+    background: url(https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSf6urqhvsJDLLesVuNhNmVb5hpkjY9_1ej7g&s);
+    background-repeat:no-repeat;
+    background-size: cover;
 
 }
 
@@ -391,7 +402,73 @@ hr {
     height: 40px;
     animation: spin 2s linear infinite;
 }
-
+.visibility-hidden{
+    visibility: hidden;
+}
+.img-wrapper{
+    display: flex;
+    gap: 20px;
+}
+.display-flex {
+    display: flex;
+}
+.align-items-center{
+align-items: center;
+}
+.justify-content-center{
+    justify-content: center;
+}
+.gap-10{
+    gap: 10px;
+}
+.text img{
+    width: 100%;
+    height: 130px;
+}
+.course-details{
+    border: 1px solid;
+    width: 100%;
+    padding: 20px 30px;
+    margin: 30px 0px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+.course-name{
+    width: 100%;
+}
+.example-wrapper{
+    margin: 10px 15px;
+    padding: 10px;
+}
+.exampleBox{
+    width:100%;
+    border: 1px solid #2066b7;
+    background-color: #2066b7;
+    color: white;
+    padding: 10px 5px;
+    border-radius: 10px;
+}   
+.exampleBox b{
+ padding: 10px 4px;
+}
+.example{
+    background-color: #333;
+    margin: 10px 5px;
+}
+.brown{
+    color:rgb(252, 155, 171);
+}
+.purple{
+ color: rgb(179, 133, 179);
+}
+.green{
+    color: rgb(159, 245, 159);
+}
+.yellow{
+    color: rgb(244, 244, 161);
+}
 @keyframes spin {
     0% {
         transform: rotate(0deg);
@@ -423,13 +500,6 @@ hr {
 .theme-changer {
     font-size: 25px;
 }
-#myUL {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-    width: 40%;
-    margin: auto;
-  }
 .studentSearchCancelBtn{
     position: relative;
     left: 189px;
@@ -440,17 +510,63 @@ hr {
     margin-top: -1px; /* Prevent double borders */
     background-color: #f6f6f6;
     padding: 12px;
+    margin: 0px 0px 2px;
     text-decoration: none;
     font-size: 18px;
     color: black;
     display: block;
   }
+  #myUL li a{
+    display: flex;
+    gap: 20px;
+  }
+  #myUL li a img{
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgb(144, 143, 143);
+    border-radius: 50%;
+  }
   #myUL{
       display: none;
+      position: absolute;
+      width: 379px;
+      top: 111px;
+      right: 87.5px;
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+      background-color: white;
   }
   #myUL li a:hover:not(.header) {
     background-color: #eee;
   }
+  #myLectures {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    position: absolute;
+    width: 379px;
+    top: 111px;
+    right: 87.5px;
+    background-color: aliceblue;
+}
+#myLectures li a iframe{
+    width: 200px;   
+}
+#myLectures li a{
+    border: 1px solid black;
+    display: flex;
+    flex-direction: row;
+    text-decoration: none;
+    height: 100px;
+    margin: 5px 0px ;
+}
+.video p{
+    margin: 0px 10px;
+}
+.tags {
+    color: gray;
+}
 .left{
     transform: rotate(0deg);
 }
@@ -496,13 +612,21 @@ hr {
     HEAD header {
         flex-direction: column;
     }
-
+    .text img{
+        width: 100%;
+        height: 70px;
+    }
+    .img-wrapper{
+    gap: 10px;
+    }
     .logo-wrapper img {
         width: 100px;
         height: 100px;
         margin: -6px 10px -20px;
     }
-
+    .course-details{
+        flex-direction: column;
+    }
     .search-mirror {
         display: block;
     }
@@ -513,8 +637,15 @@ hr {
 
     #myUL{
         width: 100%;
+        position: absolute;
+        top: 76px;
+        left: 0px;
     }
-    
+    #myLectures{
+        position: absolute;
+        top: 76px;
+        left: 0pc;
+    }
 
 
     .cover {
@@ -522,8 +653,6 @@ hr {
         flex-direction: column;
         background-color: #333;
         padding: 20px 0px 100px 0px;
-        /* height: 100vh; */
-
     }
 
     .cover a {
@@ -539,17 +668,6 @@ hr {
         padding: 0px 5px;
         background-color: #33333388;
     }
-
-    /* header{ */
-    /* flex-direction: column; */
-    /* } */
-
-
-    /* .menu-response{
-        border: 1px solid black;
-        background-color: #1a73e8d8; 
-        width: 100%;
-    } */
     .menu-cancel-btn {
         font-size: 40px;
         margin: -20px 5px 0px 0px;
@@ -563,8 +681,7 @@ hr {
         font-size: 25px;
         margin: 10px 15px 0px 0px;
     }
-
-    */ .nav-wrapper {
+    .nav-wrapper {
         flex-direction: column;
     }
 
@@ -577,7 +694,6 @@ hr {
     }
 
     .nav-wrapper {
-        /* flex-direction: column; */
         display: none;
     }
 

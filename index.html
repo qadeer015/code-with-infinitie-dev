@@ -22,7 +22,7 @@
 <body>
     <header class="header1">
         <div class="logo-wrapper">
-            <img src="../code-with-infinitie-dev/resorces/img/infiniti-dev_logo.png" alt="infiniti logo">
+            <img src="./resorces/img/infiniti-dev_logo.png" alt="infiniti logo">
         </div>
         <div class="menu-bar">
             <i class="fa-solid fa-bars"></i>
@@ -33,7 +33,9 @@
         <div class="nav-wrapper">
             <!-- <i onclick="cancel()" class="fa-solid fa-xmark menu-cancel-btn"></i> -->
             <a class="nav-tabs1 active-page" href="#">Home</a>
+            <a class="nav-tabs1" href="students.html">Students</a>
             <a class="nav-tabs1" href="videos.html">Lectures</a>
+            <a class="nav-tabs1" href="assignments.html">Assignments</a>
             <a href="annoumcements.html" class="nav-tabs1">Announcements</a>
             <a href="#" class="dropdown-toggle nav-tabs1" data-bs-toggle="dropdown" aria-expanded="false">
                 Important Links </a>
@@ -64,7 +66,7 @@
                 <div class="search-body">
                     <div class="search-input">
                         <input type="text" onfocus="this.value=''" id="myInput" onkeyup="filterStudents()"
-                            value="Search Students" id="searchBox" placeholder="Search Students">
+                            value="Search Courses" id="searchBox" placeholder="Search Courses">
                         <div class="cancel-body">
                             <i id="cancelBtn" class="fa-solid fa-xmark search-cancel-btn"></i>
                         </div>
@@ -86,7 +88,9 @@
         <div class="cover">
             <div class="cancelBtnbody"><i class="fa-solid fa-xmark menu-cancel-btn"></i></div>
             <a class="nav-tabs1 active-page" href="#">Home</a>
+            <a class="nav-tabs1" href="students.html">Students</a>
             <a class="nav-tabs1" href="videos.html">Lectures</a>
+            <a class="nav-tabs1" href="annoumcements.html">Assignments</a>
             <a href="annoumcements.html" class="nav-tabs1">Announcements</a>
             <a href="#" class="dropdown-toggle nav-tabs1" data-bs-toggle="dropdown" aria-expanded="false">
                 Important Links </a>
@@ -104,142 +108,181 @@
             </ul>
             <a class="nav-tabs1" href="https://discord.gg/aSYMZPgh" target="_blank">Join <i
                     class="fa-brands fa-discord"></i></a>
-            <!-- <div id="placeholder" class="placeholder">
-     <div class="spinner"></div>
- </div> -->
 
         </div>
     </div>
-    <!-- <div id="searchResult" class="result"></div> -->
-
     <main class="wrapper">
-        <div class="results-wrapper">
-            <div id="searchResult" class="result"></div>
+        <h3>Learn WEB DEVELOPMENT</h3>
+       <p>WEB DEVELOPMENT begins with</p>
+       <div class="course-details">
+        <div  class="course-name">
+           <h2>HTML</h2>
+           <p>HTML stands for Hyper Text Markup Language.</p>
+           <p>HTML provides basic structure for a web page.</p> 
         </div>
-        <ul id="myUL">
-            <li><a href="https://abdulqadeeeer.github.io/code-with-Qadeer.dev/" target="_blank">Abdul Qadeer</a></li>
-            <li><a href="https://zaheerahmedkhan65.github.io/learn-with-zaheer/" target="_blank">Zaheer Ahmed</a></li>
-            <li><a href="https://ranasamar660.github.io/second-week-work/" target="_blank">Samar Altaf</a></li>
-            <li><a href="https://ranakafilanwar.github.io/learn-with-kafil/" target="_blank">Kafil</a></li>
-            <li><a href="https://adeeba401.github.io/html-projects/" target="_blank">Adeeba</a></li>
-        </ul>
-        <h3>Main Repo</h3>
-        <section class="repo-list">
-            <div class="box">
-                <div class="bag-img">
-                    <a class="white" href="https://epicbuzz.github.io/web-development/" target="_blank">
-                        <img src="../code-with-infinitie-dev/resorces/img/avatar-1.png" alt="Abdul Qadeer"
-                            class="qadeer-img">
-                        Main Page
-                    </a>
-                </div>
-                <hr>
-                <div class="work-wrapper">
-                    <h5>
-                        <a href="https://epicbuzz.github.io/web-development/">Work</a>
-                    </h5>
-                    <h5>
-                        <a href="https://github.com/epicbuzz/web-development">Repository</a>
-                    </h5>
-                </div>
+        <div class="exampleBox">
+          <b>HTML Example :</b>
+          <div class="example">
+            <div class="example-wrapper">
+            <div>
+                <span class="green"><</span>
+                <span class="brown">!DOCTYPE 
+                    <span class="purple">html</span>
+                </span>
+                <span class="green">></span>
             </div>
-            <div class="box dummy"></div>
-            <div class="box dummy"></div>
-        </section>
-        <h3>Students</h3>
-        <section class="repo-list">
-            <div class="box abdul qadeer">
-                <div class="bag-img">
-                    <img src="../code-with-infinitie-dev/resorces/img/qadeer-6-removebg-preview.png" alt="Abdul Qadeer"
-                        class="qadeer-img">
-                    <a class="white" href="https://abdulqadeeeer.github.io/code-with-Qadeer.dev/" target="_blank">
-                        Abdul Qadeer
-                    </a>
-                </div>
-                <hr>
-                <div class="work-wrapper">
-                    <h5>
-                        <a href="https://abdulqadeeeer.github.io/code-with-Qadeer.dev/">Work</a>
-                    </h5>
-                    <h5>
-                        <a href="https://github.com/AbdulQadeeeer/code-with-Qadeer.dev">Repository</a>
-                    </h5>
-                </div>
+            <div>
+                <span class="green"><</span>
+                <span class="brown">html</span>
+                <span class="green">></span>
             </div>
-            <div class="box zaheer ahmed khan">
-                <div class="bag-img">
-                    <img src="../code-with-infinitie-dev/resorces/img/zaheer.png" alt="Zaheer Ahmed">
-                    <a class="white" href="https://zaheerahmedkhan65.github.io/learn-with-zaheer/" target="_blank">
-                        Zaheer Ahmed
-                    </a>
-                </div>
-                <hr>
-                <div class="work-wrapper">
-                    <h5>
-                        <a href="https://zaheerahmedkhan65.github.io/learn-with-zaheer/" target="_blank">Work</a>
-                    </h5>
-                    <h5>
-                        <a href="https://github.com/zaheerahmedkhan65/learn-with-zaheer/">Repository</a>
-                    </h5>
-                </div>
+            <div>
+                <span class="green"><</span>
+                <span class="brown">head</span>
+                <span class="green">></span>
             </div>
-            <div class="box samar altaf">
-                <div class="bag-img">
-                    <img src="../code-with-infinitie-dev/resorces/img/samar-removebg-preview.png" alt="Samar Altaf">
-                    <a class="white" href="https://ranasamar660.github.io/second-week-work/" target="_blank">
-                        Samar Altaf
-                    </a>
-                </div>
-                <hr>
-                <div class="work-wrapper">
-                    <h5>
-                        <a href="https://ranasamar660.github.io/second-week-work/" target="_blank">Work</a>
-                    </h5>
-                    <h5>
-                        <a href="https://github.com/ranasamar660/second-week-work/">Repository</a>
-                    </h5>
-                </div>
+            <div>
+                <span class="green"><</span>
+                <span class="brown">title</span>
+                <span class="green">></span>
+                <span >HTML Page</span>
+                <span class="green"><</span>
+                <span class="brown">/title</span>
+                <span class="green">></span>
             </div>
-        </section>
-        <section class="repo-list">
-            <div class="box kafil anwar">
-                <div class="bag-img">
-                    <img src="../code-with-infinitie-dev/resorces/img/kafil-removebg-preview.png" alt="Kafil Anwar">
-                    <a class="white" href="https://ranakafilanwar.github.io/learn-with-kafil/" target="_blank">
-                        Kafil Anwar
-                    </a>
-                </div>
-                <hr>
-                <div class="work-wrapper">
-                    <h5>
-                        <a href="https://ranakafilanwar.github.io/learn-with-kafil/" target="_blank">Work</a>
-                    </h5>
-                    <h5>
-                        <a href="https://github.com/ranakafilanwar/learn-with-kafil/">Repository</a>
-                    </h5>
-                </div>
+            <div>
+            <span class="green"><</span>
+            <span class="brown">title</span>
+            <span class="green">></span>
             </div>
-            <div class="box adeeba">
-                <div class="bag-img">
-                    <img src="../code-with-infinitie-dev/resorces/img/2.png" alt="adeeba">
-                    <a class="white" href="https://adeeba401.github.io/html-projects/" target="_blank">
-                        Adeeba
-                    </a>
-                </div>
-                <hr>
-                <div class="work-wrapper">
-                    <h5>
-                        <a href="https://adeeba401.github.io/html-projects/" target="_blank">Work</a>
-                    </h5>
-                    <h5>
-                        <a href="https://github.com/adeeba401/html-projects.git">Repository</a>
-                    </h5>
-                </div>
+            <div>
+                <span class="green"><</span>
+                <span class="brown">/head</span>
+                <span class="green">></span>    
             </div>
-            <div class="box">
+            <div>
+            <span class="green"><</span>
+            <span class="brown">body</span>
+            <span class="green">></span>
+            </div>
+            &nbsp;&nbsp;
+            <div>
+            <span class="green"><</span>
+            <span class="brown">h1</span>
+            <span class="green">></span>
+            <span>This is heading.</span>
+            <span class="green"><</span>
+            <span class="brown">/h1</span>
+            <span class="green">></span>
+            </div>
+            <div>
+                <span class="green"><</span>
+                <span class="brown">p</span>
+                <span class="green">></span>
+                <span>This is paragraph.</span>
+                <span class="green"><</span>
+                <span class="brown">/p</span>
+                <span class="green">></span>
+            </div>
+            &nbsp;&nbsp;
+            <div>
+                <span class="green"><</span>
+                <span class="brown">/body</span>
+                <span class="green">></span>
+            </div>
+            <div>
+                <span class="green"><</span>
+                <span class="brown">/html</span>
+                <span class="green">></span>
+            </div>
+        </div>
+    </div>
 
             </div>
-        </section>
+          </div>
+       <div class="course-details">
+        <div  class="course-name">
+            <h2>CSS</h2>
+            <p>CSS stands for Cascading Style Sheet.</p>
+            <p>CSS is used to beautify  the web page.</p> 
+         </div>
+        <div class="exampleBox">
+            <b>CSS Example :</b>
+            <div class="example">
+                <div class="example-wrapper">
+           <div>
+            <span class="brown">body</span>
+            <span class="yellow">{</span>
+            <div class="purple">background-color <span class="yellow">:</span> <span class="green"> black</span><span class="yellow"> ;</span></div>
+            <span class="yellow">}</span>
+           </div>
+           <div>
+            <span class="brown">h1</span>
+            <span class="yellow">{</span>
+            <div class="purple"> color <span class="yellow">:</span><span class="green"> white</span><span class="yellow"> ;</span></div>
+            <div class="purple">text-align <span class="yellow">:</span><span class="green"> center</span><span class="yellow"> ;</span></div>
+            <span class="yellow">}</span>
+           </div>
+           <div>
+            <span class="brown">p</span>
+            <span class="yellow">{</span>
+            <div class="purple">font-family <span>:</span> <span class="green"> sans-serif</span><span class="yellow"> ;</span></div>
+            <span class="yellow">}</span>
+           </div>
+          </div>
+        </div>
+       </div>
+    </div>
+       <div class="course-details">
+        <div class="course-name">
+            <h2>JavaScript</h2>
+            <p>JavaScript is the actual programming language of web.</p>
+            <p>JavaScript is the most famous programming language.</p> 
+         </div>
+        <div class="exampleBox">
+            <b>JavaScript Example :</b>
+            <div class="example">
+                <div class="example-wrapper">
+                <div>
+                    <span class="green"><</span>
+                    <span class="brown">button</span>
+                    <span class="purple">onclick</span>
+                    <span class="green"> = "myFunction()" ></span>
+                    <span class="yellow"> Click Here</span>
+                    <span class="green">></span>
+                    <div>
+                        <span class="green"><</span>
+                        <span class="brown">/button</span>
+                        <span class="green">></span>
+                    </div>
+                </div>
+                <div>
+                    <span class="green"><</span>
+                    <span class="brown">script</span>
+                    <span class="green">></span>
+                </div>
+                <div>
+                    <span class="purple">function </span>
+                    <span class="yellow">myFunction() {</span>
+                </div>
+                <div>
+                    <span class="purple">let </span>
+                    <span class="yellow">x = document.getElementById(<span class="green">"demo"</span>);</sp an>
+                </div>
+                <div>
+                <span class="yellow">x.style.fontSize = <span class="green">"20px"</span>;</span>
+                <span class="yellow">x.style.color = <span class="green">"red"</span>;</span>
+                <div class="yellow">}</div>
+                </div>
+                <div>
+                    <span class="green"><</span>
+                    <span class="brown">/script</span>
+                    <span class="green">></span>
+                </div>
+            </div>
+            </div>
+        </div>
+       </div>
     </main>
     <footer class="footer">
         <p>&copy; 2024 Code with Infiniti Dev. All rights reserved.</p>

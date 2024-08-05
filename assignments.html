@@ -15,8 +15,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
-    <title>Document</title>
+
 </head>
+
 
 <body>
     <header class="header1">
@@ -31,11 +32,11 @@
         </div>
         <div class="nav-wrapper">
             <!-- <i onclick="cancel()" class="fa-solid fa-xmark menu-cancel-btn"></i> -->
-            <a class="nav-tabs1" href="index.html">Home</a>
-            <a class="nav-tabs1" href="videos.html">Lectures</a>
-            <a class="nav-tabs1" href="assignments.html">Assignments</a>
+            <a class="nav-tabs1 " href="index.html">Home</a>
             <a class="nav-tabs1" href="students.html">Students</a>
-            <a href="#" class="active-page nav-tabs1">Announcements</a>
+            <a class="nav-tabs1" href="videos.html">Lectures</a>
+            <a class="nav-tabs1 active-page" href="#">Assignments</a>
+            <a href="annoumcements.html" class="nav-tabs1">Announcements</a>
             <a href="#" class="dropdown-toggle nav-tabs1" data-bs-toggle="dropdown" aria-expanded="false">
                 Important Links </a>
             <ul class="dropdown-menu">
@@ -64,20 +65,20 @@
             <div class="search-wrapper display-none">
                 <div class="search-body">
                     <div class="search-input">
-                        <input type="text" onfocus="this.value=''" value="Search Announcements" id="searchBox"
-                            placeholder="Search Announcements">
+                        <input type="text" onfocus="this.value=''" id="myInput" onkeyup="filterStudents()"
+                            value="Search Assignments" id="searchBox" placeholder="Search Assignments">
                         <div class="cancel-body">
                             <i id="cancelBtn" class="fa-solid fa-xmark search-cancel-btn"></i>
                         </div>
                     </div>
                     <div class="search-btn">
-                        <button onclick="searchElement()">
+                        <button onclick="filterStudents()">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </div>
                 </div>
             </div>
-            <div class="searchCancelBtn"><i class="fa-solid fa-xmark"></i></div>
+            <div class="searchCancelBtn" onclick="removeSearchResults()"><i class="fa-solid fa-xmark"></i></div>
             <div class="theme-changer">
                 <i class="fa-solid fa-circle-half-stroke"></i>
             </div>
@@ -89,8 +90,8 @@
             <a class="nav-tabs1" href="index.html">Home</a>
             <a class="nav-tabs1" href="students.html">Students</a>
             <a class="nav-tabs1" href="videos.html">Lectures</a>
-            <a class="nav-tabs1" href="assignments.html">Assignments</a>
-            <a href="#" class="active-page nav-tabs1">Announcements</a>
+            <a class="nav-tabs1 active-page" href="#">Assignments</a>
+            <a href="annoumcements.html" class="nav-tabs1">Announcements</a>
             <a href="#" class="dropdown-toggle nav-tabs1" data-bs-toggle="dropdown" aria-expanded="false">
                 Important Links </a>
             <ul class="dropdown-menu">
@@ -113,9 +114,10 @@
 
         </div>
     </div>
+    <!-- <div id="searchResult" class="result"></div> -->
     <div class="wrapper">
         <div class="container">
-            <div class="annoumcements-header bag-img">Announcements</div>
+            <div class="annoumcements-header bag-img">Assignments</div>
             <div class="accordian">
                 <div class="accordian-content">Week 1</div>
                 <div class="btn">
@@ -123,7 +125,12 @@
                 </div>
             </div>
             <div class="text">
-                <p>VS CODE ,Basic HTML ,Basic CSS.</p>
+                <div class="img-wrapper">
+                <img src="./resorces/img/assignments/week1.png" alt="week 1 assignments 1" >
+                <img src="./resorces/img/assignments/week1-2.png" alt="week 1 assignments 2">
+                <img src="./resorces/img/assignments/week1-3.png" alt="week 1 assignments 3">
+                </div>
+                <!-- <p>VS CODE ,Basic HTML ,Basic CSS.</p> -->
             </div>
             <div class="accordian">
                 <div class="accordian-content">Week 2</div>
@@ -132,7 +139,12 @@
                 </div>
             </div>
             <div class="text">
-                <p>HTML ,Basic to advance CSS.</p>
+                <div class="img-wrapper">
+                <img src="./resorces/img/assignments/week2.png" alt="week 2 assignments 1">
+                <img src="./resorces/img/assignments/week2-2.png" alt="week 2 assignments 2">
+                <img class="visibility-hidden" src="" alt="">    
+            </div>
+                <!-- <p>HTML ,Basic to advance CSS.</p> -->
             </div>
             <div class="accordian">
                 <div class="accordian-content">Week 3</div>
@@ -141,7 +153,12 @@
                 </div>
             </div>
             <div class="text">
-                <p>Links ,Add images ,Create Forms.</p>
+                <div class="img-wrapper">
+                <img src="./resorces/img/assignments/week3.png" alt="week 3 assignments 1" >
+                <img src="./resorces/img/assignments/week3 -2.png" alt="week 3 assignments 2">
+                <img class="visibility-hidden" src="" alt="">     
+            </div>
+                <!-- <p>Links ,Add images ,Create Forms.</p> -->
             </div>
             <div class="accordian">
                 <div class="accordian-content">Week 4</div>
@@ -150,7 +167,12 @@
                 </div>
             </div>
             <div class="text">
-                <p>Positions ,Floats ,Display.</p>
+                <div class="img-wrapper">
+                <img src="./resorces/img/assignments/week4.png" alt="week 4"  width="100px" height="80px">
+                <img class="visibility-hidden" src="" alt="">
+                <img class="visibility-hidden" src="" alt="">
+            </div>
+                <!-- <p>Positions ,Floats ,Display.</p> -->
             </div>
             <div class="accordian">
                 <div class="accordian-content">Week 5</div>
@@ -160,6 +182,9 @@
             </div>
 
             <div class="text">
+                <img src="./resorces/img/assignments/week5.png" alt="week 1 assignments 1">
+                <img src="" alt="">
+                <img class="visibility-hidden" src="" alt="">
                 <p>Install Git and Github ,Create Github Repository.</p>
             </div>
             <div class="accordian">
@@ -185,7 +210,20 @@
     <footer class="footer">
         <p>&copy; 2024 Code with Infiniti Dev. All rights reserved.</p>
     </footer>
-    <script src="./resorces/js/script.js"></script>
+
+    <script>
+        // JavaScript to hide the placeholder once the page is fully loaded
+        window.addEventListener('load', function () {
+            document.getElementById('placeholder').style.display = 'none';
+        });
+    </script>
+
+    <!--  for ads -->
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9292583891027825"
+        crossorigin="anonymous"></script>
+    <script src="./resorces/js/script.js">
+    </script>
+
 </body>
 
 </html>

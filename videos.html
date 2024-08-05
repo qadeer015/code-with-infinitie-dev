@@ -16,7 +16,6 @@
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
 </head>
-
 <body>
     <header class="header1">
         <div class="logo-wrapper">
@@ -31,7 +30,9 @@
         <div class="nav-wrapper">
             <!-- <i onclick="cancel()" class="fa-solid fa-xmark menu-cancel-btn"></i> -->
             <a class="nav-tabs1" href="index.html">Home</a>
+            <a class="nav-tabs1" href="students.html">Students</a>
             <a class="nav-tabs1 active-page" href="#">Lectures</a>
+            <a class="nav-tabs1" href="assignments.html">Assignments</a>
             <a href="annoumcements.html" class="nav-tabs1">Announcements</a>
             <a href="#" class="dropdown-toggle nav-tabs1" data-bs-toggle="dropdown" aria-expanded="false">
                 Important Links </a>
@@ -63,14 +64,14 @@
             <div class="search-wrapper display-none">
                 <div class="search-body">
                     <div class="search-input">
-                        <input type="text" onfocus="this.value=''" onkeyup="searchElement()" value="Search Lectures" id="searchBox"
-                            placeholder="Search Students">
+                        <input type="text" onfocus="this.value=''" onkeyup="filterLectures()" value="Search Lectures" id="searchBox"
+                            placeholder="Search Lectures">
                         <div class="cancel-body">
                             <i id="cancelBtn" class="fa-solid fa-xmark search-cancel-btn"></i>
                         </div>
                     </div>
                     <div class="search-btn">
-                        <button onclick="searchElement()">
+                        <button onclick="filterLectures()">
                             <i class="fa-solid fa-magnifying-glass"></i>
                         </button>
                     </div>
@@ -86,7 +87,9 @@
         <div class="cover">
             <div class="cancelBtnbody"><i class="fa-solid fa-xmark menu-cancel-btn"></i></div>
             <a class="nav-tabs1" href="index.html">Home</a>
+            <a class="nav-tabs1" href="students.html">Students</a>
             <a class="nav-tabs1 active-page" href="#">Lectures</a>
+            <a class="nav-tabs1" href="annoumcements.html">Assignments</a>
             <a href="annoumcements.html" class="nav-tabs1">Announcements</a>
             <a href="#" class="dropdown-toggle nav-tabs1" data-bs-toggle="dropdown" aria-expanded="false">
                 Important Links </a>
@@ -113,77 +116,283 @@
     <div class="results-wrapper">
         <div id="searchResult" class="result"></div>
     </div>
-    <div class="wrapper">
-        <h3 class="lect">Video Lectures</h3>
-        <section class="videosSection">
-            <iframe class="week 1 part-1 how to install vs code intro video"
+<ul id="myLectures">
+    <li>
+        <a href="#week-1-part-1">
+            <iframe
                 src="https://www.youtube.com/embed/ovDrOacVET4?si=EjRiBaVdtD3VnEvd" title="YouTube video player"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            <iframe class="week 1 part-2 learn basic html and css video"
-                src="https://www.youtube.com/embed/YK1xR1TmnIY?si=f32bT2k0eHhtQ_jR" title="YouTube video player"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            <iframe class="week 2 learn css basic to advance video"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>
+        <div>
+            <p>How to install VS CODE. | week 1 | part 1</p>
+            <p class="tags">#install vscode #vs code #intro</p>
+        </div>
+        </a>
+    </li>
+    <li>
+        <a href="#week-1-part-2"> 
+            <iframe
+            src="https://www.youtube.com/embed/YK1xR1TmnIY?si=f32bT2k0eHhtQ_jR" title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>
+            <p>Learn basic HTML and CSS. | week 1 | part 2</p>
+            <p class="tags">#html #HTML #css #cascading style sheet #Hyper Text Markup Language #basic html and css</p>
+           
+        </a>
+    </li>
+    <li>
+        <a href="#week-2"> 
+            <iframe 
                 src="https://www.youtube.com/embed/Uj36nI2J7Ac?si=Slq1j50aP2km1HK3" title="YouTube video player"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            <iframe class="week 3 part-1 how to link web pages together video"
-                src="https://www.youtube.com/embed/fi5E3RFRf_k?si=JxdLl4Qoc_fS5ZMS" title="YouTube video player"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </section>
-        <section class="videosSection">
-
-            <iframe class="week 3 part-2 how to add input type checkbox video"
-                src="https://www.youtube.com/embed/MPl-7sN0AUs?si=QfpEywPhkSwTCyY_" title="YouTube video player"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            <iframe class="how to install git and github in windows week 5 video"
-                src="https://www.youtube.com/embed/qHYBkS1dyFE?si=06Wa1eqN8kDEOuol" title="YouTube video player"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            <iframe class="how to create new repository and clone git week 5 video"
-                src="https://www.youtube.com/embed/7MNFquqlDTA?si=n8Aqr7e9pem8R87R" title="YouTube video player"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            <iframe class="week 4 part-1 learn css floats position video"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>
+            <p>Learn css basic to advance. | week 2</p>
+           <p class="tags">#html #HTML #css basic to advance #Hyper Text Markup Language #css #cascading style sheet</p> 
+        </a>
+    </li>
+    <li>
+        <a href="#week-3-part-1">
+            <iframe 
+            src="https://www.youtube.com/embed/fi5E3RFRf_k?si=JxdLl4Qoc_fS5ZMS" title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>
+            <p>How to link Web Pages. | week 3 | part 1</p>
+            <p class="tags">#html #HTML #Hyper Text Markup Language #link tag #link web pages</p>
+        </a>
+    </li>
+    <li>
+        <a href="#week-3-part-2">
+            <iframe 
+            src="https://www.youtube.com/embed/MPl-7sN0AUs?si=QfpEywPhkSwTCyY_" title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+        </iframe>
+        <p>How to add input type checkbox? | week 3 | part 2</p>
+        <p class="tags">#html #HTML #Hyper Text Markup Language</p>
+        </a>
+    </li>
+    <li>
+        <a href="#week-4-part-1">
+            <iframe 
                 src="https://www.youtube.com/embed/HnaOek-PqSY?si=f1J10i_aKtCN5u4I" title="YouTube video player"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-        </section>
-        <section class="videosSection">
-
-            <iframe class="week 4 part-2 learn css display flex in details video"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>           
+            <p>Learn css position , floats .| week 4 | part 1</p>
+            <p class="tags">#html #css #cascading style sheet #floats #position</p>
+        </a>
+    </li>
+    <li>
+        <a href="#week-4-part-2">
+            <iframe 
                 src="https://www.youtube.com/embed/BQzwyYMQYCU?si=H_S8KQmwGkV83pL6" title="YouTube video player"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            <iframe class="week 6 part-1 java javascript first class learn functions video"
-                src="https://www.youtube.com/embed/Y5fqxw0jokY?si=ht354gV_JsDYn-lY" title="YouTube video player"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>           
+            <p>Learn css display flex in details. | week 4 | part 2</p>
+            <p class="tags">#html #css #cascading style sheet #display #flex #display flex</p>
+        </a>
+    </li>
+    <li>
+        <a href="#week-5-part-1">
+            <iframe 
+            src="https://www.youtube.com/embed/qHYBkS1dyFE?si=06Wa1eqN8kDEOuol" title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>          
+            <p>How to install git and github in windows ? | week 5 | part 1</p>
+            <p class="tags">#git #github #Git #GitHub</p>
+        </a>
+    </li>
+    <li>
+        <a href="#week-5-part-2">
+            <iframe 
+                src="https://www.youtube.com/embed/7MNFquqlDTA?si=n8Aqr7e9pem8R87R" title="YouTube video player"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            <iframe class="week 6 part-2 java javascript second class learn functions video"
-                src="https://www.youtube.com/embed/zcTBPvWhm5k?si=8h3t91W6pNZ_YI1W" title="YouTube video player"
-                frameborder="0"
-                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            <iframe class="week 7 javascript java primitive data types video"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>           
+            <p>How to create new repository and clone ? | week 5 | part 2</p>
+            <p class="tags">#git #repository #git clone #git repository</p>
+        </a>
+    </li>
+    <li>
+        <a href="#week-6-part-1">
+            <iframe 
+            src="https://www.youtube.com/embed/Y5fqxw0jokY?si=ht354gV_JsDYn-lY" title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>         
+            <p>Learn JavaScript Functions. | week 6 | part 1</p>
+            <p class="tags">#javascript #functions #first class</p>
+        </a>
+    </li>
+    <li>
+        <a href="#week-6-part-2">
+            <iframe 
+            src="https://www.youtube.com/embed/zcTBPvWhm5k?si=8h3t91W6pNZ_YI1W" title="YouTube video player"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+            referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>           
+            <p>Learn JavaScript Functions. | week 6 | part 2</p>
+            <p class="tags">#javascript #functions #first class</p>
+        </a>
+    </li>
+    <li>
+        <a href="#week-7">
+            <iframe 
                 src="https://www.youtube.com/embed/tcMvxFGvcfs?si=H-J6nirw_nSJvR0V" title="YouTube video player"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>          
+            <p>Learn JavaScript Primitive Data Types. | week 7</p>
+            <p class="tags">#javascript #data types #primitive</p>
+        </a>
+    </li>
+</ul>
+<h3 class="lect">Video Lectures</h3>
+        <section class="videosSection">
+            <div class="video">
+            <iframe id="week-1-part-1"
+                src="https://www.youtube.com/embed/ovDrOacVET4?si=EjRiBaVdtD3VnEvd" title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>
+            <p>How to install VS CODE. | week 1 | part 1</p>
+            <p class="tags">#install vscode #vs code #intro</p>
+            </div>
+            <div class="video" >
+            <iframe id="week-1-part-2"
+                src="https://www.youtube.com/embed/YK1xR1TmnIY?si=f32bT2k0eHhtQ_jR" title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>
+            <p>Learn basic HTML and CSS. | week 1 | part 2</p>
+            <p class="tags">#html #HTML #css #cascading style sheet #Hyper Text Markup Language #basic html and css</p>
+            </div>
+            <div class="video">
+            <iframe id="week-2"
+                src="https://www.youtube.com/embed/Uj36nI2J7Ac?si=Slq1j50aP2km1HK3" title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>
+           <p>Learn css basic to advance. | week 2</p>
+           <p class="tags">#html #HTML #css basic to advance #Hyper Text Markup Language #css #cascading style sheet</p>
+        </div>
+            <div class="video">
+            <iframe id="week-3-part-1"
+                src="https://www.youtube.com/embed/fi5E3RFRf_k?si=JxdLl4Qoc_fS5ZMS" title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>
+            <p>How to link Web Pages. | week 3 | part 1</p>
+            <p class="tags">#html #HTML #Hyper Text Markup Language #link tag #link web pages</p>
+        </div>
         </section>
-
+        <section class="videosSection">
+        <div class="video">
+            <iframe id="week-3-part-2"
+                src="https://www.youtube.com/embed/MPl-7sN0AUs?si=QfpEywPhkSwTCyY_" title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>
+            <p>How to add input type checkbox? | week 3 | part 2</p>
+            <p class="tags">#html #HTML #Hyper Text Markup Language</p>
+        </div>
+        <div class="video">
+            <iframe id="week-5-part-1"
+                src="https://www.youtube.com/embed/qHYBkS1dyFE?si=06Wa1eqN8kDEOuol" title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>
+            <p>How to install git and github in windows ? | week 5 | part 1</p>
+            <p class="tags">#git #github #Git #GitHub</p>
+        </div>
+        <div class="video">
+            <iframe id="week-5-part-2"
+                src="https://www.youtube.com/embed/7MNFquqlDTA?si=n8Aqr7e9pem8R87R" title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>
+            <p>How to create new repository and clone ? | week 5 | part 2</p>
+            <p class="tags">#git #repository #git clone #git repository</p>
+        </div>
+        <div class="video">
+            <iframe id="week-4-part-1"
+                src="https://www.youtube.com/embed/HnaOek-PqSY?si=f1J10i_aKtCN5u4I" title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>
+            <p>Learn css position , floats .| week 4 | part 1</p>
+            <p class="tags">#html #css #cascading style sheet #floats #position</p>
+        </div>
+        </section>
+        <section class="videosSection">
+        <div class="video">
+            <iframe id="week-4-part-2"
+                src="https://www.youtube.com/embed/BQzwyYMQYCU?si=H_S8KQmwGkV83pL6" title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>
+            <p>Learn css display flex in details. | week 4 | part 2</p>
+            <p class="tags">#html #css #cascading style sheet #display #flex #display flex</p>
+        </div>
+        <div class="video">
+            <iframe id="week-6-part-1"
+                src="https://www.youtube.com/embed/Y5fqxw0jokY?si=ht354gV_JsDYn-lY" title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>
+            <p>Learn JavaScript Functions. | week 6 | part 1</p>
+            <p class="tags">#javascript #functions #first class #js</p>
+        
+        </div>
+        <div class="video">
+            <iframe id="week-6-part-2"
+                src="https://www.youtube.com/embed/zcTBPvWhm5k?si=8h3t91W6pNZ_YI1W" title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>
+            <p>Learn JavaScript Functions. | week 6 | part 2</p>
+            <p class="tags">#javascript #functions #first class #js</p>
+        </div>
+        <div class="video">
+            <iframe id="week-7"
+                src="https://www.youtube.com/embed/tcMvxFGvcfs?si=H-J6nirw_nSJvR0V" title="YouTube video player"
+                frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+            </iframe>
+            <p>Learn JavaScript Primitive Data Types. | week 7</p>
+            <p class="tags">#javascript #data types #primitive #js</p>
+        </div>
+        </section>
     </div>
     </div>
 
