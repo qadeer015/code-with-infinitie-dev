@@ -670,10 +670,12 @@ align-items: center;
         text-align: center;
         /* width: 110px; */
     }
-
-    HEAD header {
-        flex-direction: column;
+    .searchCancelBtn {
+        display: none;
     }
+    /* HEAD header {
+        flex-direction: column;
+    } */
     .text img{
         width: 100%;
         height: 70px;
@@ -683,6 +685,7 @@ align-items: center;
     }
     .exampleBox{
         margin-top: 20px;
+        width: 100%;
     }
     .logo-wrapper img {
         width: 100px;
@@ -800,8 +803,8 @@ align-items: center;
     .wrapper {
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        margin-bottom: 10px;
+        /* gap: 10px; */
+        /* margin-bottom: 10px; */
         overflow: hidden;
     }
 
