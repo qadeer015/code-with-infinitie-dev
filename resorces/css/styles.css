@@ -67,14 +67,10 @@ header a {
     cursor: pointer;
     text-decoration: none;
 }
-
-main {
-    padding: 1rem;
-}
-
+/* 
 main section {
     margin: 20px 0px;
-}
+} */
 
 .repo-list h3 {
     font-size: 1.75rem;
@@ -148,8 +144,11 @@ hr {
     display: flex;
     flex-direction: row;
     gap: 15px;
+    margin: 0px 0px 15px;
 }
-
+main{
+    margin: 0px 10px;
+}
 .repo-list-wrapper {
     display: flex;
     flex-direction: row;
@@ -179,10 +178,26 @@ display: none;
     border: 1px solid black;
     height: 280px;
     margin: 0px 15px;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 .video iframe{
     width: 100%;
     height: 80%;
+    border-radius: 10px;
+}
+.video:hover{
+    transition: 0.5s;
+    border-top-left-radius: 0px;
+    border-top-right-radius: 0px;
+}
+.video iframe:hover{
+    border-radius:0px;
+    transition: 0.5s;
+}
+.description{
+    background-color: #333;
+    color: white;
 }
 .tags{
     display: none;
@@ -425,25 +440,72 @@ align-items: center;
     width: 100%;
     height: 130px;
 }
+.grey-bg{
+    background-color: #D9EEE1;
+}
+.yellow-bg{
+    background-color: #FFF4A3;
+}
+.black-bg{
+    background-color: #282A35;
+}
+.black{
+    color: black !important;
+}
 .course-details{
-    border: 1px solid;
     width: 100%;
     padding: 20px 30px;
-    margin: 30px 0px;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    color: white;
+}
+.course-details h2{
+    text-align: center;
+    font-size: 50px;
+    font-weight: 700;
 }
 .course-name{
     width: 100%;
+}
+.course-name p{
+    margin: 1px;
+    text-align: center;
+}
+.books{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+    justify-content: center;
+    margin: 30px 0px;
+}
+.books-row{
+    display: flex;
+    flex-direction:row;
+    gap: 20px;
+}
+.books .books-row div{
+    width: 140px;
+    padding: 10px;
+    border: 1px solid;
+    border-radius: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color:rgb(252, 155, 171);
+}
+.books .books-row div a{
+    color: black;
+    text-decoration: none;
 }
 .example-wrapper{
     margin: 10px 15px;
     padding: 10px;
 }
 .exampleBox{
-    width:100%;
+    width:40%;
     border: 1px solid #2066b7;
     background-color: #2066b7;
     color: white;
@@ -619,6 +681,9 @@ align-items: center;
     .img-wrapper{
     gap: 10px;
     }
+    .exampleBox{
+        margin-top: 20px;
+    }
     .logo-wrapper img {
         width: 100px;
         height: 100px;
@@ -647,7 +712,12 @@ align-items: center;
         left: 0pc;
     }
 
-
+    .books-row{
+        display: flex;
+        flex-direction:row;
+        gap: 10px;
+        flex-wrap:wrap;
+    }
     .cover {
         display: flex;
         flex-direction: column;
