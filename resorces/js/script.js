@@ -57,31 +57,14 @@ menuCancelBtn.addEventListener('click',()=>{
 });
 // theme changer function
 let theme = document.querySelector(".theme-changer");
-let header = document.querySelector(".header1");
-let footer = document.querySelector(".footer");
-let examplebox = document.querySelector(".exampleBox");
-let example = document.querySelector(".example");
 theme.addEventListener('click',()=>{
-    let body = document.querySelector('body');
-if(header.style.color == "white"){
-    header.classList.toggle("theme-color-blue");
-    footer.classList.toggle("theme-color-blue");
-    // examplebox.classList.toggle("theme-color-blue");
-    // example.classList.toggle("theme-color-black");
-    body.style.transition="1.5s";
-    theme.classList.toggle('left');
+    document.body.classList.toggle("dark-theme");
+if(document.body.classList.contains("dark-theme")){
     theme.classList.toggle('right');
 }
 else{
-    header.classList.toggle("theme-color-black");
-    footer.classList.toggle("theme-color-black");
-    // examplebox.classList.toggle("theme-color-black");
-    // example.classList.toggle("theme-color-blue");
-    header.style.color="white";
-    body.style.transition="1.5s";
-    theme.classList.toggle('right');
     theme.classList.remove('left');
-
+    theme.classList.toggle('right');
 }
 });
 // search open onclick with mirror
@@ -113,7 +96,7 @@ if(searchCancelBtn.style.display=="block"){
 });
 
 window.addEventListener('resize', function() {
-    if (window.innerWidth > 768) {
+    if (window.innerWidth > 1200) {
         mobile.style.display = '';
         searchCancelBtn.style.display='';
         theme.style.display='';

@@ -2,13 +2,17 @@
     margin: 0;
     padding: 0;
 }
+:root{
+    --primary-color: #2066b7;
+    --secendory-color:#333;
+    }
 
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
-    color: #333;
+    color:var(--secendory-color);
     overflow-x: hidden;
 }
 
@@ -37,7 +41,7 @@ header {
     width: 100%;
     height: 15%;
     border-bottom: 1px solid white;
-    background-color: #2066b7;
+    background-color:var(--primary-color);
     display: flex;
     align-items: center;
     gap: 20px;
@@ -53,7 +57,7 @@ header {
 
 .work-wrapper h5 {
     padding: 10px;
-    background-color: #2066b7;
+    background-color:var(--primary-color);
     border-radius: 10px;
 }
 
@@ -75,7 +79,7 @@ main section {
 .repo-list h3 {
     font-size: 1.75rem;
     margin-bottom: 1rem;
-    color: #333;
+    color:var(--secendory-color);
 }
 
 
@@ -117,7 +121,7 @@ a:hover {
 }
 
 footer {
-    background-color: #2066b7;
+    background-color:var(--primary-color);
     color: #fff;
     text-align: center;
     padding: 1rem 0;
@@ -168,7 +172,7 @@ main{
 }
 
 .active {
-    background-color: #333;
+    background-color: var(--secendory-color);
 }
 #myLectures{
 display: none;
@@ -196,7 +200,7 @@ display: none;
     transition: 0.5s;
 }
 .description{
-    background-color: #333;
+    background-color: var(--secendory-color);
     color: white;
 }
 .tags{
@@ -246,7 +250,7 @@ display: none;
 
 #cancelBtn {
     display: none;
-    color: #2066b7;
+    color:var(--primary-color);
 }
 
 .cancel-body {
@@ -400,7 +404,7 @@ display: none;
 
 /* Placeholder styling */
 .placeholder {
-    color: #333;
+    color: var(--secendory-color);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -523,8 +527,8 @@ background-repeat:inherit;
 }
 .exampleBox{
     width:40%;
-    border: 1px solid #2066b7;
-    background-color: #2066b7;
+    border: 1px solid var(--primary-color);
+    background-color:var(--primary-color);
     color: white;
     padding: 10px 5px;
     border-radius: 10px;
@@ -533,7 +537,7 @@ background-repeat:inherit;
  padding: 10px 4px;
 }
 .example{
-    background-color: #333;
+    background-color: var(--secendory-color);
     margin: 10px 5px;
 }
 .brown{
@@ -654,17 +658,11 @@ background-repeat:inherit;
     transform: rotate(180deg);
 }
 
-.theme-color-black {
-    background-color: #333;
+.dark-theme {
+    --primary-color:#333;
+    --secendory-color:#2066b7;
     color: white;
     transition: 1.5s;
-}
-
-.theme-color-blue {
-    background-color: #2066b7;
-    color: white;
-    transition: 1.5s;
-
 }
 
 .searchCancelBtn {
@@ -750,7 +748,7 @@ background-repeat:inherit;
     .cover {
         display: flex;
         flex-direction: column;
-        background-color: #333;
+        background-color: var(--secendory-color);
         padding: 20px 0px 100px 0px;
     }
 
@@ -811,7 +809,7 @@ background-repeat:inherit;
 
     .nav-tabs1 {
         border-bottom: 1px solid black;
-        background-color: #333;
+        background-color: var(--secendory-color);
         margin: 5px 0px;
         padding: 20px 10px;
     }
@@ -850,4 +848,9 @@ background-repeat:inherit;
         margin: 0px;
     }
 
+}
+@media (max-width:800px) {
+    .webdev{
+        font-size: 35px !important;
+    }
 }
