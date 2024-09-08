@@ -56,9 +56,9 @@ header {
 }
 
 .work-wrapper h5 {
-    padding: 10px;
+    padding: 5px 10px 6px;
     background-color:var(--primary-color);
-    border-radius: 10px;
+    border-radius: 20px;
 }
 
 .work-wrapper h5 a {
