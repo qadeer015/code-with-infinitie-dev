@@ -24,8 +24,7 @@ body {
 
 .logo-wrapper img {
     width: 140px;
-    height: 110px;
-    margin: 0px 10px;
+    margin: 10px;
 }
 
 .menu-bar {
@@ -452,7 +451,7 @@ align-items: center !important;
 .padding-top-bottom-130{
     padding: 130px 0px !important;
 }
-.text img{
+.text img,.text a{
     width: 100%;
     height: 130px;
 }
@@ -692,14 +691,11 @@ background-repeat:inherit;
     .logo-wrapper {
         flex-direction: row;
         text-align: center;
-        /* width: 110px; */
     }
     .searchCancelBtn {
         display: none;
     }
-    /* HEAD header {
-        flex-direction: column;
-    } */
+   
     .text img{
         width: 100%;
         height: 70px;
@@ -713,8 +709,7 @@ background-repeat:inherit;
     }
     .logo-wrapper img {
         width: 100px;
-        height: 100px;
-        margin: -6px 10px -20px;
+        margin: 0px 10px;
     }
     .course-details{
         flex-direction: column;
