@@ -1,0 +1,59 @@
+<%- include("partials/_header",{title:"user profile"}) %>
+  
+    <div class="card bg-secondary-subtle">
+        <div class="card-header bg-transparent border-bottom border-3 border-primary">
+            <h2 class="card-title"><%= userProfile.name %></h2>
+        </div>
+        <div class="card-body">
+            <div class="d-lg-flex justify-content-between">
+                <div class="">
+                    <div class="card-text">
+                        <span class="fw-bold">Email : </span>
+                        <%= userProfile.email %>
+                    </div>
+                    <% if(userProfile.page_link){ %>
+                        <div class="card-text">
+                            <span class="fw-bold">Page Link : </span>
+                            <a href="<%= userProfile.page_link %>" target="_blank" ><%= userProfile.page_link %></a>
+                        </div>
+                    <% } %>
+                    <% if(userProfile.repository_link){ %>
+                        <div class="card-text">
+                            <span class="fw-bold">Repository Link : </span>
+                            <a href="<%= userProfile.repository_link %>" target="_blank" ><%= userProfile.repository_link %></a>
+                        </div>
+                    <% } %>
+    
+                    <% if(userProfile.id == user.id || user.role == "admin"){ %>
+                        <div class="d-flex gap-3 my-3">
+                        <div><a class="btn btn-primary fw-bold" href="/users/edit/<%=userProfile.id%>">Edit</a></div>
+                        <% if(userProfile.role == "deleted"){ %>
+                            <p class="text-warning">Account deleted</p>
+                        <% }else{ %>
+                            <form action="/users/delete/<%=userProfile.id%>" method="POST" onclick="return confirm('Are you sure you want to delete your account?')">
+                              <input type="submit" class="btn btn-danger fw-bold" value="Delete Account">
+                            </form>
+                        <% } %>
+                        </div>
+                    <% } %>
+                </div>
+                <div class="my-2">
+                    <img src="<%= userProfile.avatar %>" alt="user avatar" class="border border-1 border-primary" width="200px">
+                    <div>
+                        <span class="text-muted"><% if (userProfile.role=="student") { %>
+                            Student
+                            <% }else if(userProfile.role=="admin"){ %>
+                            Admin
+                            <% }else if(userProfile.role=="teacher") { %>
+                            Teacher
+                            <% } else { %>
+                            Deleted
+                            <% } %>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+       
+<%- include("partials/_footer") %>
