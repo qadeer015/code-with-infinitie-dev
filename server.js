@@ -95,6 +95,14 @@ app.get("/search",async(req,res)=>{
         }
 });
 
+app.get("/about", (req, res) => {
+    res.render("about");
+});
+
+app.get("/faqs", (req, res) => {
+    res.render("faqs");
+});
+
 app.get("/assignments", (req, res) => {
     res.render("assignments");
 });

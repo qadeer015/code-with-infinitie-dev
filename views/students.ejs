@@ -3,7 +3,7 @@
     
     <h4>All Students</h4>
     <% students.forEach(student=>{ %>
-        <div class="col-lg-3 mt-2">
+        <div class="col-lg-3  mt-2">
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex align-items-center gap-2">
@@ -35,5 +35,45 @@
             </div>
         </div>
     <% }) %>
+
+    <% if(user.role==="admin"){%>
+    <h4>Deleted Students</h4>
+    <% deleteUsers.forEach(student=>{ %>
+        <div class="col-lg-3  mt-2">
+            <div class="card">
+                <div class="card-header">
+                    <div class="d-flex align-items-center gap-2">
+                        <a href="/users/profile/<%= student.id %>">
+                            <img class="rounded-circle border border-3 border-primary" src="<%= student.avatar %>" alt="<%= student.name %>" width="80px" height="80px">
+                        </a>
+                        <div>
+                            <a href="/users/profile/<%= student.id %>" class="text-decoration-none text-dark">
+                                <h5 class="card-title m-0"><%= student.name %></h5>
+                            </a>
+                            <% if(user.role == "admin"){ %>
+                                <a href="/users/profile/<%= student.id %>" class="text-decoration-none text-dark">
+                                    <p class="card-text m-0" style="font-size: 12px;"><%= student.email %></p>
+                                </a>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex align-items-center justify-content-between">
+                        <% if(student.page_link){ %>
+                            <p class="card-text m-0"><a href="<%= student.page_link %>" class="text-decoration-none" target="_blank" >Page Link</a></p>
+                        <% } %>
+                        <% if(student.repository_link){ %>
+                            <p class="card-text m-0"><a href="<%= student.repository_link %>" class="text-decoration-none" target="_blank" >Repository Link</a></p>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <% }) %>
+
+    <%}%>
+
+    
     
 <%- include('partials/_footer') %>

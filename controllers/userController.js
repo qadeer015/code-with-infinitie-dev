@@ -30,7 +30,8 @@ const editUser = async (req, res) => {
 const getStudents = async (req, res) => {
     try {
         const students = await User.findAll('student');
-        res.render('students', { students });
+        const deleteUsers = await User.findAll('deleted');
+        res.render('students', { students,deleteUsers });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error retrieving students' });
