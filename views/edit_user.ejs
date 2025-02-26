@@ -1,0 +1,50 @@
+<%- include('partials/_header', { title: 'Sign Up' }) %>
+   
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h1>Edit User</h1>
+            </div>
+            <div class="card-body">
+                <form action="/users/edit/<%= userProfile.id %>" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label for="name" class="form-label fw-bold">Name</label>
+                        <input type="text" id="name" name="name" value="<%= userProfile.name %>" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email" class="form-label fw-bold">Email</label>
+                        <input type="email" id="email" name="email" value="<%= userProfile.email %>" class="form-control" required>
+                    </div>
+                    <% if(user.role==="admin"){ %>
+                    <div class="form-group">
+                        <label for="role" class="form-label fw-bold">Role</label>
+                        <select id="role" name="role" class="form-control">
+                            <option value="<%= userProfile.role %>"><%= userProfile.role %></option>
+                            <option value="student">Student</option>
+                            <option value="teacher">Teacher</option>
+                            <option value="admin">Admin</option>
+                            <option value="deleted">Delete</option>
+                        </select>
+                    </div>
+                    <%}%>
+                    <div class="form-group">
+                        <label for="avatar" class="form-label fw-bold">Avatar</label>
+                        <input type="file" id="avatar" name="avatar" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="repository_link" class="form-label fw-bold">Repository Link</label>
+                        <input type="text" id="repository_link" name="repository_link" value="<%= userProfile.repository_link %>" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label for="page_link" class="form-label fw-bold">Page Link</label>
+                        <input type="text" id="page_link" name="page_link" value="<%= userProfile.page_link %>" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-sm btn-primary mt-3">update</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+   
+<%- include('partials/_footer') %>

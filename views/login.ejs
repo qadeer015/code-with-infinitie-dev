@@ -1,0 +1,29 @@
+<%- include('partials/_header', { title: 'Login' ,user: user }) %>
+
+    <div class="col-lg-6 mt-5"></div>
+    <div class="col-lg-6 mt-5">
+        <div class="card">
+            <div class="card-header">
+                <h1>Login</h1>
+            </div>
+            <form action="/auth/login" method="post" class="card-body">
+                <div class="form-group">
+                    <label for="email" class="form-label fw-bold">Email</label>
+                    <input type="email" id="email" name="email" class="form-control" required>
+                    <!-- Ensure name="email" -->
+                </div>
+                <div class="form-group">
+                    <label for="password" class="form-label fw-bold">Password</label>
+                    <input type="password" id="password" name="password" class="form-control" required>
+                    <!-- Ensure name="password" -->
+                </div>
+                <div class="form-group mt-3">
+                    <button type="submit" class="btn btn-sm btn-primary m-0 fw-bold">Login</button>
+                </div>
+                <p class="card-text mt-3">Don't have an account? <a class="text-decoration-none"
+                        href="/auth/signup">Sign Up</a></p>
+            </form>
+        </div>
+    </div>
+
+    <%- include('partials/_footer') %>
