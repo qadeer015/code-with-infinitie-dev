@@ -10,10 +10,26 @@ require('dotenv').config();
 const auththenticateUser = require("./middleware/auththenticateUser.js");
 app.use(cookieParser());
 
+const http = require("http");
+const socketIo = require("socket.io");
+
+const server = http.createServer(app);
+const io = socketIo(server, {
+  cors: {
+    origin: "*",
+    methods: ["GET", "POST"]
+  }
+});
+
+const connection = require('./socket/connection.js');
+connection(io);
+
 const db = require("./config/db.js");
+const AnnouncementView = require("./models/AnnouncementView.js")
 const authRoutes = require("./routes/authRoutes.js");
 const userRoutes = require("./routes/userRoutes.js");
 const videosRoutes = require("./routes/videosRoutes.js");
+const announcementRoutes = require("./routes/announcementRoutes.js");
 
 // Set up EJS as the view engine
 app.set('view engine', 'ejs');
@@ -47,7 +63,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({
     storage: storage,
-    limits: { fileSize: 2 * 1024 * 1024 }, // allow up to 2MB
+    limits: { fileSize: 2 * 1024 * 1024 }, // allowoing up to 2MB
     fileFilter: (req, file, cb) => {
         const allowedFileTypes = /jpeg|jpg|png/;
         const extname = allowedFileTypes.test(path.extname(file.originalname).toLowerCase());
@@ -61,22 +77,40 @@ const upload = multer({
 });
 
 app.use((req, res, next) => {
-    res.locals.url = req.path; // Make `url` available in all views
+    res.locals.url = req.path; // Making `url` available in all views
     next();
 });
 
-app.use(auththenticateUser); // Attach user to req
+app.use(auththenticateUser); // Attaching user to req
 
 app.use((req, res, next) => {
-    res.locals.user = req.user; // Makes `user` available in EJS
+    res.locals.user = req.user; // setting user in ejs
     next();
 });
+
+app.use(async (req, res, next) => {
+    if (req.user) {
+        try {
+            const [unviewed] = await AnnouncementView.unViewedCount(req.user.id);
+            res.locals.unviewedCount = unviewed.unviewed_count || 0;
+        } catch (error) {
+            console.error("Error fetching unviewed announcements:", error);
+            res.locals.unviewedCount = 0;
+        }
+    } else {
+        res.locals.unviewedCount = 0;
+    }
+    next();
+}); 
+
+
 app.get("/",(req,res)=>{
     res.render("index");
 });
 app.use("/auth",authRoutes);
 app.use("/users",userRoutes);
-app.use("/api",videosRoutes)
+app.use("/api",videosRoutes);
+app.use("/announcements",announcementRoutes);
 
 app.get("/search",async(req,res)=>{
         const {query} = req.query;
@@ -115,6 +149,6 @@ app.get('*', (req, res) => {
     res.status(404).render('notfound');
 });
 
-app.listen(port, () => {
+server.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });

@@ -1,4 +1,204 @@
 <%- include('partials/_header', { title: 'Announcements' }) %>
-    <h5>Announcements</h5>
-    <i class="bi bi-plus"></i>
+
+<h5>Announcements</h5>
+<% if (user.role == "admin") { %>
+    <div class="col-lg-12">
+        <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#newAnnouncement">
+            New announcement
+        </button>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="newAnnouncement" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">New Announcement</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="announcementForm">
+                        <div class="form-group">
+                            <label for="title" class="form-label fw-bold">Announcement Title</label>
+                            <input type="text" class="form-control" id="title" name="title" placeholder="Enter Announcement title">
+                        </div>
+                        <div class="form-group">
+                            <label for="content" class="form-label fw-bold">Content</label>
+                            <textarea class="form-control" id="content" name="content" placeholder="Enter Announcement Content"></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <input type="submit" class="btn btn-primary" value="Create">
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+<% } %>
+
+<% if (announcements.length > 0) { %>
+    <div class="card">
+        <div class="card-body">
+            <% announcements.forEach(announcement => { %>
+                <% if(announcement.is_deleted != 1) { %>
+                <div class="accordion my-1" id="announcementAccordion_<%= announcement.id %>">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="heading<%= announcement.id %>">
+                            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse<%= announcement.id %>" aria-expanded="false" aria-controls="collapse<%= announcement.id %>">
+                                <div class="d-flex flex-column">
+                                    <strong><%= announcement.title %></strong>
+                                    <p class="text-muted m-0" style="font-size: 10px;"><%= announcement.created_at.toLocaleString() %></p>
+                                </div>
+                            </button>
+                        </h2>
+                        <div id="collapse<%= announcement.id %>" class="accordion-collapse collapse" aria-labelledby="heading<%= announcement.id %>" data-bs-parent="#announcementAccordion_<%= announcement.id %>">
+                            <div class="accordion-body">
+                                <%= announcement.content %>
+                                <div class="mx-auto d-flex gap-2">
+                                    <button id="editAnnouncement_<%= announcement.id %>"><i class="bi bi-pencil"></i></button>
+                                    <button id="deleteAnnouncement_<%= announcement.id %>"><i class="bi bi-trash3"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <script>
+                    document.getElementById("heading<%= announcement.id %>").addEventListener("click", function () {
+                        const user_id = "<%= user.id %>";
+                        const announcement_id = "<%= announcement.id %>";
+                        socket.emit("mark viewed", { user_id, announcement_id });
+                    });
+
+                    document.getElementById("deleteAnnouncement_<%= announcement.id %>").addEventListener("click", function (){
+                        const announcement_id = "<%= announcement.id %>";
+                        if(!confirm("Are you sure to delete this announcement ?"))return;
+                        socket.emit("delete announcement",{announcement_id});
+                    });
+
+                    document.getElementById("editAnnouncement_<%= announcement.id %>").addEventListener("click", function (){
+                        const announcement_id = "<%= announcement.id %>";
+                        const accordionBox = document.getElementById("announcementAccordion_<%= announcement.id %>");
+                        accordionBox.innerHTML = `
+                        <div id="announcementForm">
+                            <div class="form-group">
+                                <label for="title" class="form-label fw-bold">Announcement Title</label>
+                                <input type="text" class="form-control" id="title" name="title" value="<%= announcement.title %>" placeholder="Enter Announcement title">
+                            </div>
+                            <div class="form-group">
+                                <label for="content" class="form-label fw-bold">Content</label>
+                                <textarea class="form-control" id="content" name="content" placeholder="Enter Announcement Content"><%= announcement.content %></textarea>
+                            </div>
+                            <button class="my-2" id="updatebutton">Update</button>
+                         </div>
+                        `;
+                        document.getElementById("updatebutton").addEventListener("click", function (){
+                            const title = document.getElementById("title").value;
+                            const content = document.getElementById("content").value;
+                            const announcement_id = "<%= announcement.id %>";
+                            socket.emit("edit announcement",{announcement_id,title,content});
+                        });
+                    });
+
+                    
+                </script>
+                <% } %>
+            <% }); %>
+        </div>
+    </div>
+<% } else { %>
+    <p>No announcements found.</p>
+<% } %>
+
+<%- include("partials/_js") %>
+<script>
+    window.userRole = '<%= user.role %>';
+    if (window.userRole == "admin") {
+        document.getElementById("announcementForm").addEventListener("submit", function (event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            const title = document.getElementById("title").value;
+            const content = document.getElementById("content").value;
+            const user_id = "<%= user.id %>";
+            
+            if (title && content) {
+                socket.emit("create announcement", { title, content, user_id });
+                document.getElementById("title").value = "";
+                document.getElementById("content").value = "";
+            }
+        });
+    }
+
+    socket.on("new announcement", (announcement) => {
+        const announcementsContainer = document.querySelector(".card-body");
+        const newAnnouncementHTML = `
+            <div class="accordion my-1" id="announcementAccordion_${announcement.id}">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="heading${announcement.id}">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${announcement.id}" aria-expanded="false" aria-controls="collapse${announcement.id}">
+                            <div class="d-flex flex-column">
+                                <strong>${announcement.title}</strong>
+                                <p class="text-muted m-0" style="font-size: 10px;">${new Date(announcement.created_at).toLocaleString()}</p>
+                            </div>
+                        </button>
+                    </h2>
+                    <div id="collapse${announcement.id}" class="accordion-collapse collapse" aria-labelledby="heading${announcement.id}" data-bs-parent="#announcementAccordion_${announcement.id}">
+                        <div class="accordion-body">
+                            ${announcement.content}
+                        </div>
+                    </div>
+                </div>
+            </div>`;
+        
+        announcementsContainer.insertAdjacentHTML("afterbegin", newAnnouncementHTML);
+    });
+
+    socket.on("update announcement count", function (data) {
+        if (data.user_id === "<%= user.id %>") {
+            const badge = document.querySelector(".nav-item .bg-danger");
+            if (data.count > 0) {
+                if (!badge) {
+                    let newBadge = document.createElement("span");
+                    newBadge.className = "position-absolute bg-danger rounded-circle px-1";
+                    newBadge.style = "left: 8px; top: 5px !important; font-size: 10px;";
+                    newBadge.innerText = data.count;
+                    document.querySelector(".nav-item a").appendChild(newBadge);
+                } else {
+                    badge.innerText = data.count;
+                }
+            } else {
+                if (badge) {
+                    badge.remove();
+                }
+            }
+        }
+    });
+
+    socket.on("deleted announcement",(data)=>{
+        document.getElementById(`announcementAccordion_${data.announcement_id}`).remove();
+    });
+
+    socket.on("updated announcement",(announcement)=>{
+        const accordionBox = document.getElementById(`announcementAccordion_${announcement.announcement_id}`);
+        accordionBox.innerHTML = `
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="heading${announcement.id}">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse${announcement.id}" aria-expanded="false" aria-controls="collapse${announcement.id}">
+                    <div class="d-flex flex-column">
+                        <strong>${announcement.title}</strong>
+                        <p class="text-muted m-0" style="font-size: 10px;">${new Date(announcement.created_at).toLocaleString()}</p>
+                    </div>
+                </button>
+            </h2>
+            <div id="collapse${announcement.id}" class="accordion-collapse collapse" aria-labelledby="heading${announcement.id}" data-bs-parent="#announcementAccordion_${announcement.id}">
+                <div class="accordion-body">
+                    ${announcement.content}
+                </div>
+            </div>
+        </div>
+        `;
+    });
+
+</script>
+
 <%- include('partials/_footer') %>

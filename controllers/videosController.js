@@ -3,7 +3,6 @@ require('dotenv').config();
 
 const getAllVideos = async (req, res) => {
     try {
-        const id = req.params.id || 1;
         const videos = await Video.getAll();
         res.render('videos', { videos });
     } catch (error) {

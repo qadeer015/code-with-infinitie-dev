@@ -27,8 +27,18 @@
                     <li class="nav-item"><a class="nav-link text-white fw-bold" href="/">Home</a></li>
                     <li class="nav-item"><a class="nav-link text-white fw-bold" href="/users/students">Students</a></li>
                     <li class="nav-item"><a class="nav-link text-white fw-bold" href="/api/videos">Lectures</a></li>
-                    <!-- <li class="nav-item"><a class="nav-link text-white fw-bold" href="/assignments">Assignments</a></li>
-                    <li class="nav-item"><a class="nav-link text-white fw-bold" href="/announcements">Announcements</a></li> -->
+                    <li class="nav-item"><a class="nav-link text-white fw-bold" href="/assignments">Assignments</a></li>
+                    <li class="nav-item position-relative">
+                        <a class="nav-link text-white fw-bold" href="/announcements">
+                            <i class="bi bi-bell"></i>
+                            <% if (unviewedCount > 0) { %>
+                                <span class="position-absolute bg-danger rounded-circle px-1" 
+                                    style="left: 8px; top: 5px !important; font-size: 10px;">
+                                    <%= unviewedCount %>
+                                </span>
+                            <% } %>
+                        </a>
+                </li>
                 </ul>
             </div>
             <div class="d-flex align-items-center gap-5">
