@@ -55,10 +55,12 @@
                         <div id="collapse<%= announcement.id %>" class="accordion-collapse collapse" aria-labelledby="heading<%= announcement.id %>" data-bs-parent="#announcementAccordion_<%= announcement.id %>">
                             <div class="accordion-body">
                                 <%= announcement.content %>
+                                <% if(user.role=="admin"){ %>
                                 <div class="mx-auto d-flex gap-2">
                                     <button id="editAnnouncement_<%= announcement.id %>"><i class="bi bi-pencil"></i></button>
                                     <button id="deleteAnnouncement_<%= announcement.id %>"><i class="bi bi-trash3"></i></button>
                                 </div>
+                                <% } %>
                             </div>
                         </div>
                     </div>
@@ -76,31 +78,36 @@
                         socket.emit("delete announcement",{announcement_id});
                     });
 
-                    document.getElementById("editAnnouncement_<%= announcement.id %>").addEventListener("click", function (){
+                    document.getElementById("editAnnouncement_<%= announcement.id %>").addEventListener("click", function () {
                         const announcement_id = "<%= announcement.id %>";
                         const accordionBox = document.getElementById("announcementAccordion_<%= announcement.id %>");
-                        accordionBox.innerHTML = `
-                        <div id="announcementForm">
-                            <div class="form-group">
-                                <label for="title" class="form-label fw-bold">Announcement Title</label>
-                                <input type="text" class="form-control" id="title" name="title" value="<%= announcement.title %>" placeholder="Enter Announcement title">
-                            </div>
-                            <div class="form-group">
-                                <label for="content" class="form-label fw-bold">Content</label>
-                                <textarea class="form-control" id="content" name="content" placeholder="Enter Announcement Content"><%= announcement.content %></textarea>
-                            </div>
-                            <button class="my-2" id="updatebutton">Update</button>
-                         </div>
-                        `;
-                        document.getElementById("updatebutton").addEventListener("click", function (){
-                            const title = document.getElementById("title").value;
-                            const content = document.getElementById("content").value;
-                            const announcement_id = "<%= announcement.id %>";
-                            socket.emit("edit announcement",{announcement_id,title,content});
-                        });
-                    });
-
                     
+                        // Replace content with the edit form
+                        accordionBox.innerHTML = `
+                            <div id="announcementForm">
+                                <div class="form-group">
+                                    <label for="title_<%= announcement.id %>" class="form-label fw-bold">Announcement Title</label>
+                                    <input type="text" class="form-control" id="title_<%= announcement.id %>" name="title" value="<%= announcement.title %>" placeholder="Enter Announcement title">
+                                </div>
+                                <div class="form-group">
+                                    <label for="content_<%= announcement.id %>" class="form-label fw-bold">Content</label>
+                                    <textarea class="form-control" id="content_<%= announcement.id %>" name="content" placeholder="Enter Announcement Content"><%= announcement.content %></textarea>
+                                </div>
+                                <button class="my-2 btn btn-primary" id="updatebutton_<%= announcement.id %>">Update</button>
+                            </div>`;
+                        // Now add the event listener for the update button after the new content is inserted
+                        document.getElementById(`updatebutton_<%= announcement.id %>`).addEventListener("click", function () {
+                            const title = document.getElementById(`title_<%= announcement.id %>`).value;
+                            const content = document.getElementById(`content_<%= announcement.id %>`).value;
+                            console.log("Updating announcement...");
+                            console.log("Title:", title);
+                            console.log("Content:", content);
+                            console.log("Announcement ID:", announcement_id);
+                    
+                            // Emit update event
+                            socket.emit("edit announcement", { announcement_id, title, content });
+                        });
+                    }); 
                 </script>
                 <% } %>
             <% }); %>
@@ -179,7 +186,8 @@
     });
 
     socket.on("updated announcement",(announcement)=>{
-        const accordionBox = document.getElementById(`announcementAccordion_${announcement.announcement_id}`);
+        console.log(`announcementAccordion_${announcement.id}`);
+        const accordionBox = document.getElementById(`announcementAccordion_${announcement.id}`);
         accordionBox.innerHTML = `
         <div class="accordion-item">
             <h2 class="accordion-header" id="heading${announcement.id}">
@@ -193,6 +201,12 @@
             <div id="collapse${announcement.id}" class="accordion-collapse collapse" aria-labelledby="heading${announcement.id}" data-bs-parent="#announcementAccordion_${announcement.id}">
                 <div class="accordion-body">
                     ${announcement.content}
+                    <% if(user.role=="admin"){ %>
+                    <div class="mx-auto d-flex gap-2">
+                        <button id="editAnnouncement_${announcement.id}"><i class="bi bi-pencil"></i></button>
+                        <button id="deleteAnnouncement_${announcement.id}"><i class="bi bi-trash3"></i></button>
+                    </div>
+                    <% } %>
                 </div>
             </div>
         </div>

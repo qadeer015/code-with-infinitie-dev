@@ -54,10 +54,12 @@ module.exports = (io) => {
       try {
           const updatedAnnouncement = await Announcement.updateAnnouncement(announcement_id, title, content);
           
-          console.log("Updated Announcement:", updatedAnnouncement);
-          
-          // Emit the updated announcement back to all clients
-          socket.emit("updated announcement", updatedAnnouncement);
+          if (updatedAnnouncement) {
+            console.log("Updated Announcement:", updatedAnnouncement);
+            socket.emit("updated announcement", updatedAnnouncement);
+        } else {
+            console.log("No announcement found with the given ID.");
+        }
       } catch (error) {
           console.error("Error updating announcement:", error);
       }
