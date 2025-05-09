@@ -30,6 +30,8 @@ const authRoutes = require("./routes/authRoutes.js");
 const userRoutes = require("./routes/userRoutes.js");
 const videosRoutes = require("./routes/videosRoutes.js");
 const announcementRoutes = require("./routes/announcementRoutes.js");
+const courseRoutes = require("./routes/coursesRoutes.js");
+
 
 // Set up EJS as the view engine
 app.set('view engine', 'ejs');
@@ -111,6 +113,7 @@ app.use("/auth",authRoutes);
 app.use("/users",userRoutes);
 app.use("/api",videosRoutes);
 app.use("/announcements",announcementRoutes);
+app.use("/courses",courseRoutes);
 
 app.get("/search",async(req,res)=>{
         const {query} = req.query;
@@ -135,14 +138,6 @@ app.get("/about", (req, res) => {
 
 app.get("/faqs", (req, res) => {
     res.render("faqs");
-});
-
-app.get("/assignments", (req, res) => {
-    res.render("assignments");
-});
-
-app.get("/announcements", (req, res) => {
-    res.render("announcements");
 });
 
 app.get('*', (req, res) => {
