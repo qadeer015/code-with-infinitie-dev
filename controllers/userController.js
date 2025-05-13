@@ -30,8 +30,8 @@ const editUser = async (req, res) => {
 const getStudents = async (req, res) => {
     try {
         const students = await User.findAll('student');
-        const deleteUsers = await User.findAll('deleted');
-        res.render('students', { students,deleteUsers });
+        console.log("students");
+        res.status(200).json(students);
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error retrieving students' });
@@ -41,9 +41,10 @@ const getStudents = async (req, res) => {
 const deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
+        console.log(id);
         const deleted = await User.deleteUser(id);
         if (deleted) {
-            res.redirect("/");
+            res.status(200).json({ message: 'User deleted successfully' });
         } else {
             res.status(400).json({ message: 'Failed to delete user' });
         }
@@ -53,4 +54,36 @@ const deleteUser = async (req, res) => {
     }
 }
 
-module.exports = {editUser, getStudents, deleteUser};
+const blockUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        console.log(id);
+        const blocked = await User.blockUser(id);
+        if (blocked) {
+            res.status(200).json({ message: 'User blocked successfully' });
+        } else {
+            res.status(400).json({ message: 'Failed to block user' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error blocking user' });
+    }
+}
+
+const unblockUser = async (req, res) => {
+    try {
+        const { id } = req.params;
+        console.log(id);
+        const unblocked = await User.unblockUser(id);
+        if (unblocked) {
+            res.status(200).json({ message: 'User unblocked successfully' });
+        } else {
+            res.status(400).json({ message: 'Failed to unblock user' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error unblocking user' });
+    }
+}
+
+module.exports = {editUser, getStudents, deleteUser, blockUser, unblockUser};

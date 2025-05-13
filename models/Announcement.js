@@ -1,11 +1,11 @@
 const db = require('../config/db');
 
 class Announcement {
-    static async createAnnouncement(title,content,id){
+    static async createAnnouncement(title,content,course_id){
         try {
             const [result] = await db.execute(
-                'INSERT INTO announcements (title, content, user_id) VALUES (?, ?, ?)',
-                [title, content, id]
+                'INSERT INTO announcements (title, content, course_id) VALUES (?, ?, ?)',
+                [title, content, course_id]
             );
             return result;
         } catch (error) {
@@ -16,10 +16,12 @@ class Announcement {
 
     static async getAllAnnouncements(){
         try{
-            const [result] = await db.execute(
-                'SELECT * FROM announcements'
-            );
-            return result;
+            const [rows] = await db.execute(`
+            SELECT announcements.*, courses.title AS course_title 
+            FROM announcements 
+            INNER JOIN courses ON announcements.course_id = courses.id;
+        `);
+            return rows;
         }catch (error) {
             console.log("Error getting announcements:",error);
             throw error;
@@ -39,11 +41,11 @@ class Announcement {
         }
     }
 
-    static async updateAnnouncement(id, title, content) {
+    static async updateAnnouncement(id, title, content, course_id) {
         try {
             const [result] = await db.execute(
-                'UPDATE announcements SET title = ?, content = ? WHERE id = ?',
-                [title, content, id]
+                'UPDATE announcements SET title = ?, content = ?, course_id = ? WHERE id = ?',
+                [title, content, course_id, id]
             );
     
             if (result.affectedRows > 0) {
@@ -62,7 +64,7 @@ class Announcement {
 
     static async deleteAnnouncement(id){
         try {
-            const [result] = await db.execute('UPDATE announcements SET is_deleted = "1" WHERE id = ?', [id]);
+            const [result] = await db.execute('DELETE FROM announcements WHERE id = ?', [id]);
             return result.affectedRows > 0;
         } catch (error) {
             console.error("Error deleting announcement:", error);

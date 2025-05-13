@@ -15,7 +15,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // Render signup page
-router.get('/signup', (req, res) => {
+router.get('/register', (req, res) => {
     res.render('signup',{user:req.session.user || null});
 });
 

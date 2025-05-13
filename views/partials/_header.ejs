@@ -25,7 +25,6 @@
                 </a>
                 <ul class="navbar-nav flex-row gap-2">
                     <li class="nav-item"><a class="nav-link text-white fw-bold" href="/">Home</a></li>
-                    <li class="nav-item"><a class="nav-link text-white fw-bold" href="/users/students">Students</a></li>
                     <li class="nav-item"><a class="nav-link text-white fw-bold" href="/api/videos">Lectures</a></li>
                     <li class="nav-item position-relative">
                         <a class="nav-link text-white fw-bold" href="/announcements">
@@ -55,18 +54,11 @@
                         <ul class="dropdown-menu">
                             <li><p class="dropdown-item lead"><%= user.name %></p></li>
                             <li><p class="dropdown-item m-0">(<%= user.role %>)</p></li>
-                            <li><a class="dropdown-item" href="/users/profile/<%= user.id %>">Profile</a></li>
+                            <li><a class="dropdown-item" href="/users/<%= user.id %>/profile">Profile</a></li>
                             <li><a class="dropdown-item" href="/auth/logout" onclick="return confirm('Are you sure you want to logout?')" >Logout</a></li>
                         </ul>
                     </div>
-                    <% }else{ %>  
-                        <div class="position-relative overflow-hidden rounded-pill">
-                            <div class="rounded-pill bg-white position-relative" style="right: 12px;">
-                                <a class="btn btn-success position-relative rounded-pill fw-bold m-0" href="/auth/signup" role="button" style="left: 12px;">Sign Up</a>
-                                <a class="btn text-success position-relative rounded-pill fw-bold m-0" href="/auth/login" role="button">Log in</a>
-                            </div> 
-                        </div>
-                    <% } %>
+                    <% } %>  
                 </div>
             </div>
         </div>
@@ -95,7 +87,6 @@
                 <div class="offcanvas-body">
                     <ul class="navbar-nav">
                         <li class="nav-item"><a class="nav-link fw-bold" href="/">Home</a></li>
-                        <li class="nav-item"><a class="nav-link fw-bold" href="/users/students">Students</a></li>
                         <li class="nav-item"><a class="nav-link fw-bold" href="/api/videos">Lectures</a></li>
                         <!-- <li class="nav-item"><a class="nav-link fw-bold" href="/announcements">Announcements</a></li> -->
                     </ul>
@@ -117,13 +108,6 @@
                                     <li><a class="dropdown-item" href="/auth/logout" onclick="return confirm('Are you sure you want to logout?')" >Logout</a></li>
                                 </ul>
                             </div>
-                        <% }else{ %>
-                            <div class="position-relative overflow-hidden rounded-pill">
-                                <div class="rounded-pill bg-white position-relative" style="right: 12px;">
-                                    <a class="btn btn-success position-relative rounded-pill fw-bold m-0" href="/auth/signup" role="button" style="left: 12px;">Sign Up</a>
-                                    <a class="btn text-success position-relative rounded-pill fw-bold m-0" href="/auth/login" role="button">Log in</a>
-                                </div> 
-                            </div>
                         <% } %>
                     </div>
                 </div>
@@ -133,6 +117,6 @@
     
 <% if (url !== '/') { %>
     <div class="container mt-5  min-vh-100">
-        <div class="row mt-5">
+        <div class="row mt-5 py-5">
 <% } %>
             

@@ -67,6 +67,26 @@ class User {
             throw error;
         }
     }
+
+    static async blockUser(id) {
+        try {
+            const [result] = await db.execute('UPDATE users SET status = "blocked" WHERE id = ?', [id]);
+            return result.affectedRows > 0; // Returns true if a row was blocked
+        } catch (error) {
+            console.error("Error blocking user:", error);
+            throw error;
+        }
+    }
+
+    static async unblockUser(id) {
+        try {
+            const [result] = await db.execute('UPDATE users SET status = "active" WHERE id = ?', [id]);
+            return result.affectedRows > 0; // Returns true if a row was active
+        } catch (error) {
+            console.error("Error unblocking user:", error);
+            throw error;
+        }
+    }
 }
 
 module.exports = User;

@@ -18,7 +18,7 @@ const getAllAnnouncements = async (req, res) => {
             created_at: formatTimestamp(announcement.created_at)
         }));
 
-        res.render('announcements', { announcements: formattedAnnouncements });
+        res.status(200).json(formattedAnnouncements);
     } catch (error) {
         console.error("Error retrieving announcements:", error);
         res.status(500).json({ message: 'Error retrieving announcements' });
@@ -28,11 +28,9 @@ const getAllAnnouncements = async (req, res) => {
 // Create a new announcement
 const createAnnouncement = async (req, res) => {
     try {
-        const { title, content } = req.body;
-        const id = req.params.id;
-        console.log("id:", id);
+        const { title, content, course_id } = req.body;
 
-        await Announcement.createAnnouncement(title, content, id);
+        await Announcement.createAnnouncement(title, content, course_id);
         res.redirect('/announcements');
     } catch (error) {
         console.error("Error creating announcement:", error);

@@ -20,7 +20,7 @@ class UserCourse {
                 `
             SELECT 
                 c.id AS course_id,
-                c.name,
+                c.title,
                 c.description,
                 c.course_duration,
                 c.course_fee,

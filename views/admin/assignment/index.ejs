@@ -1,0 +1,84 @@
+<%- include('../partials/_header', { title: 'Assignments' }) %>
+    <div class="row m-0">
+        <div class="col-2 min-vh-100 position-fixed bg-primary-subtle">
+            <%- include('../partials/_sidebar') %>
+        </div>
+        <div class="col-10 bg-warning-subtle p-0" style="margin-left: auto;">
+            <div class="position-sticky bg-danger-subtle" style="top: 0px;z-index: 1000;">
+                <div class="navbar px-3">
+                    <div class="nav-item">
+                        <h3>Dashboard</h3>
+                    </div>
+                    <div class="nav-item">
+                        <a href="/auth/logout" class="btn btn-danger">Logout</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 px-3">
+                <h4>Assignments</h4>
+                <div class="row pb-5">
+                    <div id="assignments-data"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+    <script>
+
+        const assignmentsData = document.getElementById('assignments-data');
+
+        document.addEventListener("DOMContentLoaded", function () {
+            fetchCourses();
+        })
+
+        function fetchCourses() {
+            const response = fetch("/assignments/get-all", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                cache: "no-cache",
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                return response.json();
+            }).then(data => {
+                assignmentsData.innerHTML = '';
+                data.forEach(assignment => {
+                    assignmentsData.innerHTML += renderAssignments(assignment);
+                });
+            }).catch(error => {
+                console.error("Error fetching assignments:", error);
+                assignmentsData.innerHTML = `
+                    <div class="error-message">
+                        <p>Failed to load assignments. Please try again later.</p>
+                    </div>
+                `;
+            });
+        }
+
+
+        function renderAssignments(assignment) {
+            return `
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">${assignment.title}</div>
+                            <div class="card-subtitle mb-2 text-muted">${assignment.course_title}</div>
+                            <div class="card-subtitle mb-2 text-muted">${assignment.due_date}</div>
+                            <div class="card-subtitle mb-2 text-muted">${assignment.total_marks}</div>
+                            <div class="card-subtitle mb-2 text-muted">${assignment.details}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+    <%- include('../partials/_footer') %>

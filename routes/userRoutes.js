@@ -2,9 +2,10 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path'); // path module
 const User = require('../models/User');
-const { editUser, getStudents, deleteUser } = require('../controllers/userController');
+const { editUser, getStudents, deleteUser, blockUser, unblockUser } = require('../controllers/userController');
 // const { get } = require('http');
-const auth = require('../middleware/auth.js');
+const auththenticateUser = require('../middleware/auththenticateUser.js');
+const isAdmin = require('../middleware/isAdmin.js');
 
 
 const router = express.Router();
@@ -19,8 +20,14 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
+router.get("/students",auththenticateUser,isAdmin,(req, res) => {
+    res.render("admin/student/index");
+});
+
+router.get("/get-students",auththenticateUser,isAdmin,getStudents);
+
 // render edit form page
-router.get("/edit/:id",auth,async (req, res) => {
+router.get("/edit/:id",auththenticateUser,async (req, res) => {
     try {
         const userId = req.params.id;
         const userProfile = await User.findById(userId);
@@ -34,7 +41,7 @@ router.get("/edit/:id",auth,async (req, res) => {
     }
 });
 
-router.get("/profile/:id", async (req,res)=>{
+router.get("/:id/profile",auththenticateUser, async (req,res)=>{
     try {
         const userId = req.params.id;
         const userProfile = await User.findById(userId);
@@ -52,6 +59,15 @@ router.post("/edit/:id", upload.single('avatar'), editUser);
 
 router.post("/delete/:id", deleteUser);
 
-router.get("/students", getStudents);
+router.post("/block/:id",isAdmin, blockUser);
+
+router.post("/unblock/:id",isAdmin, unblockUser);
+
+
+// Render home page
+router.get('/admin/dashboard',auththenticateUser,isAdmin, (req, res) => {
+    res.render('admin/dashboard',{req:req.session.user || null});
+});
+
 
 module.exports = router;

@@ -32,4 +32,14 @@ const submitAssignment = async (req, res) =>{
     }
 }
 
-module.exports = { createAssignment, submitAssignment };
+const getAllAssignments = async (req, res) => {
+    try {
+        const assignments = await Assignment.getAllAssignments();
+        res.status(200).json(assignments);
+    } catch (error) {
+        console.error("Error retrieving announcements:", error);
+        res.status(500).json({ message: 'Error retrieving announcements' });
+    }
+};
+
+module.exports = { createAssignment, submitAssignment, getAllAssignments };

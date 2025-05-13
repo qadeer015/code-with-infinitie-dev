@@ -1,92 +1,153 @@
 <%- include("partials/_header",{title:"FAQs"}) %>
 
-    <div class="card">
-        <div class="card-body">
-            <h2>Frequently Asked Questions (FAQs)</h2>
-            <ol>
-                <strong class="lead fw-bold">
-                    <li>
-                        What is CodeWithInfinitidev?
-                        <p class="lead">
-                            CodeWithInfinitidev is a free online learning platform that teaches web development to
-                            students through structured classes and hands-on projects.
-                        </p>
-                    </li>
-                </strong>
-                <strong class="lead fw-bold">
-                    <li>
-                        Who can join the classes?
-                        <p class="lead">
-                            Anyone interested in learning web development can join. There are no prerequisites, and our
-                            classes are open to beginners and advanced learners alike. </p>
-                    </li>
-                </strong>
-                <strong class="lead fw-bold">
-                    <li>
-                        When are the classes conducted?
-                        <p class="lead">
+<div class="container py-5">
+    <div class="card shadow">
+        <div class="card-body p-4 p-md-5">
+            <h1 class="text-center mb-5">Frequently Asked Questions (FAQs)</h1>
+            <div class="accordion" id="faqAccordion">
+                
+                <!-- FAQ Item 1 -->
+                <div class="accordion-item mb-3 border rounded-3">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fs-4 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            What is CodeWithInfinitidev?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body lead">
+                            CodeWithInfinitidev is a free online learning platform that teaches web development to students through structured classes and hands-on projects.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 2 -->
+                <div class="accordion-item mb-3 border rounded-3">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fs-4 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            Who can join the classes?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body lead">
+                            Anyone interested in learning web development can join. There are no prerequisites, and our classes are open to beginners and advanced learners alike.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 3 -->
+                <div class="accordion-item mb-3 border rounded-3">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fs-4 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            When are the classes conducted?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body lead">
                             Our web development classes are conducted every Saturday online.
-                        </p>
-                    </li>
-                </strong>
-                <strong class="lead fw-bold">
-                    <li>
-                        What topics are covered in the classes?
-                        <p class="lead">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 4 -->
+                <div class="accordion-item mb-3 border rounded-3">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fs-4 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                            What topics are covered in the classes?
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body lead">
                             We cover a range of topics including HTML, CSS, JavaScript, Ruby, Rails, and other essential web technologies.
-                        </p>
-                    </li>
-                </strong>
-                <strong class="lead fw-bold">
-                    <li>
-                        How do students submit their work?
-                        <p class="lead">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 5 -->
+                <div class="accordion-item mb-3 border rounded-3">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fs-4 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                            How do students submit their work?
+                        </button>
+                    </h2>
+                    <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body lead">
                             Students maintain their own GitHub repositories, and the links to these repositories are embedded in our website for review.
-                        </p>
-                    </li>
-                </strong>
-                <strong class="lead fw-bold">
-                    <li>
-                        Do I need to pay any fees to attend the classes?
-                        <p class="lead">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 6 -->
+                <div class="accordion-item mb-3 border rounded-3">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fs-4 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                            Do I need to pay any fees to attend the classes?
+                        </button>
+                    </h2>
+                    <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body lead">
                             No, all our web development classes are completely free.
-                        </p>
-                    </li>
-                </strong>
-                <strong class="lead fw-bold">
-                    <li>
-                        How can I join the classes?
-                        <p class="lead">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 7 -->
+                <div class="accordion-item mb-3 border rounded-3">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fs-4 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">
+                            How can I join the classes?
+                        </button>
+                    </h2>
+                    <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body lead">
                             You can join our classes by reaching out through our contact page or following our official announcements.
-                        </p>
-                    </li>
-                </strong>
-                <strong class="lead fw-bold">
-                    <li>
-                        Can I get support if I have questions or need help with assignments?
-                        <p class="lead">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 8 -->
+                <div class="accordion-item mb-3 border rounded-3">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fs-4 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq8">
+                            Can I get support if I have questions or need help with assignments?
+                        </button>
+                    </h2>
+                    <div id="faq8" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body lead">
                             Yes! We encourage students to ask questions during classes and participate in discussions. We also provide additional support through our community channels.
-                        </p>
-                    </li>
-                </strong>
-                <strong class="lead fw-bold">
-                    <li>
-                        How do I access past class materials?
-                        <p class="lead">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 9 -->
+                <div class="accordion-item mb-3 border rounded-3">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fs-4 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq9">
+                            How do I access past class materials?
+                        </button>
+                    </h2>
+                    <div id="faq9" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body lead">
                             Recorded sessions and learning resources are shared with students after each session through YouTube.
-                        </p>
-                    </li>
-                </strong>
-                <strong class="lead fw-bold">
-                    <li>
-                        Can I showcase my work through CodeWithInfinitidev?
-                        <p class="lead">
-                            Absolutely! students' GitHub repositories are embedded on our website so that their work is visible and accessible.                        
-                        </p>
-                    </li>
-                </strong>
-            </ol>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FAQ Item 10 -->
+                <div class="accordion-item mb-3 border rounded-3">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed fs-4 fw-bold" type="button" data-bs-toggle="collapse" data-bs-target="#faq10">
+                            Can I showcase my work through CodeWithInfinitidev?
+                        </button>
+                    </h2>
+                    <div id="faq10" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body lead">
+                            Absolutely! students' GitHub repositories are embedded on our website so that their work is visible and accessible.
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</div>
 
-    <%- include("partials/_footer") %>
+<%- include("partials/_footer") %>

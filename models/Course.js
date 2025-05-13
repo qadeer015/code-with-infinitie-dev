@@ -14,6 +14,16 @@ class Course {
         }
     }
 
+    static async findAll() {
+        try {
+            const [rows] = await db.execute('SELECT * FROM courses ORDER BY id ASC');
+            return rows;
+        } catch (error) {
+            console.error("Database query error:", error);
+            throw error;
+        }
+    }
+
     static async findCourse(id){
         try{
             const [result] = await db.execute(

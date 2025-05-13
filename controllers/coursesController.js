@@ -11,9 +11,18 @@ const createCourse = async (req, res) => {
     }
 }
 
+const getAllCourses = async (req, res) => {
+    try {
+        const courses = await Course.findAll();
+        res.status(200).json(courses);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 const getUserCourses = async (req, res) => {
     try {
-        const userCourses = await UserCourse.findUserCourses(req.params.user_id);
+        const userCourses = await UserCourse.findUserCourses(req.user.id);
         res.status(200).json(userCourses);
     } catch (err) {
         console.error(err);
@@ -45,5 +54,6 @@ module.exports = {
     createCourse,
     joinCourse,
     getUserCourses,
-    getAssignmentsForUserCourse
+    getAssignmentsForUserCourse,
+    getAllCourses
 }

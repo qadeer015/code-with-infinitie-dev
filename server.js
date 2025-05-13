@@ -31,6 +31,7 @@ const userRoutes = require("./routes/userRoutes.js");
 const videosRoutes = require("./routes/videosRoutes.js");
 const announcementRoutes = require("./routes/announcementRoutes.js");
 const courseRoutes = require("./routes/coursesRoutes.js");
+const assignmentsRoutes = require("./routes/assignmentsRoutes.js");
 
 
 // Set up EJS as the view engine
@@ -106,14 +107,38 @@ app.use(async (req, res, next) => {
 }); 
 
 
-app.get("/",(req,res)=>{
-    res.render("index");
+// server.js
+app.get("/", async (req, res) => {
+    try {
+        if (req.user) {
+            // User is logged in - fetch courses using promise-based query
+            const [courses] = await db.execute(
+                "SELECT c.* FROM courses c " +
+                "JOIN user_courses uc ON c.id = uc.course_id " +
+                "WHERE uc.user_id = ?", 
+                [req.user.id]
+            );
+            
+            res.render("dashboard", { 
+                user: req.user, 
+                courses,
+            });
+        } else {
+            // User is not logged in
+            res.render("index");
+        }
+    } catch (err) {
+        console.error("Error in root route:", err);
+        res.status(500).render("error");
+    }
 });
+
 app.use("/auth",authRoutes);
 app.use("/users",userRoutes);
 app.use("/api",videosRoutes);
 app.use("/announcements",announcementRoutes);
 app.use("/courses",courseRoutes);
+app.use("/assignments",assignmentsRoutes);
 
 app.get("/search",async(req,res)=>{
         const {query} = req.query;

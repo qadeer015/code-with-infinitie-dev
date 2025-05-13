@@ -7,17 +7,15 @@ dotenv.config();
 const signup = async (req, res) => {
     try {
         const { name, password, email} = req.body;
+        console.log(name, password, email);
+        console.log("create-account");
         const avatar = req.file ? `/uploads/${req.file.filename}` : null;
-        console.log("name :",name);
-        console.log("email :",email);
-        console.log("password :",password);
-        console.log("avatar :",avatar);
         const existingUser = await User.findByEmail(email);
         if (existingUser) {
             return res.status(400).json({ message: "Email already exists" });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
-        const user = await User.create(name, hashedPassword, email, avatar);
+        await User.create(name, hashedPassword, email, avatar);
         res.redirect('/auth/login');
     } catch (error) {
         console.error(error);
@@ -36,6 +34,9 @@ const login = async (req, res) => {
         }
         if(user.role === "deleted"){
             return res.status(401).json({ message: 'No user found with this email.' });
+        }
+        if(user.status === "blocked"){
+            return res.status(401).json({ message: 'Your account has been blocked. Please contact the admin.' });
         }
         // Validate password
         const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -60,6 +61,10 @@ const login = async (req, res) => {
             sameSite: "Strict",
             maxAge: 60 * 60 * 1000 // 1 hour
         });
+
+        if(user.role === "admin"){
+            return res.redirect('/users/admin/dashboard');
+        }
         // Redirect to home page
         res.redirect('/');
     } catch (error) {

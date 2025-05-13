@@ -1,7 +1,7 @@
 const db = require('../config/db');
 
 class Assignment {
-    static async createAssignment(course_id,title,details,due_date,total_marks){ 
+    static async createAssignment(course_id, title, details, due_date, total_marks) {
         try {
             const [result] = await db.execute(
                 'INSERT INTO assignments (course_id, title, details, due_date, total_marks) VALUES (?, ?, ?, ?, ?)',
@@ -14,33 +14,36 @@ class Assignment {
         }
     }
 
-    static async findAssignment(id){
-        try{
+    static async findAssignment(id) {
+        try {
             const [result] = await db.execute(
                 'SELECT * FROM assignments Where id = ?',
                 [id]
             );
             return result;
-        }catch (error) {
-            console.log("Error getting assignment:",error);
+        } catch (error) {
+            console.log("Error getting assignment:", error);
             throw error;
         }
     }
 
 
-    static async getAllAssignments(){
-        try{
-            const [result] = await db.execute(
-                'SELECT * FROM assignments'
-            );
-            return result;
-        }catch (error) {
-            console.log("Error getting assignments:",error);
-            throw error;
+    static async getAllAssignments() {
+        try {
+            const [rows] = await db.execute(`
+            SELECT assignments.*, courses.title AS course_title 
+            FROM assignments 
+            INNER JOIN courses ON assignments.course_id = courses.id;
+        `);
+            return rows;
+        } catch (error) {
+            console.error("Database error in getAllAssignments:", error.message);
+            throw new Error("Failed to fetch assignments. Please try again.");
         }
     }
 
-    static async deleteAssignment(id){
+
+    static async deleteAssignment(id) {
         try {
             const [result] = await db.execute('UPDATE assignments SET is_deleted = "1" WHERE id = ?', [id]);
             return result.affectedRows > 0;
@@ -63,15 +66,15 @@ class Assignment {
         }
     }
 
-    static async getAssignmentsByCourseId(course_id){
-        try{
+    static async getAssignmentsByCourseId(course_id) {
+        try {
             const [result] = await db.execute(
                 'SELECT * FROM assignments Where course_id = ?',
                 [course_id]
             );
             return result;
-        }catch (error) {
-            console.log("Error getting assignments:",error);
+        } catch (error) {
+            console.log("Error getting assignments:", error);
             throw error;
         }
     }
