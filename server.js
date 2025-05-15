@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 const multer = require('multer');
 require('dotenv').config();
 const auththenticateUser = require("./middleware/auththenticateUser.js");
+const isAdmin = require('./middleware/isAdmin.js');
 app.use(cookieParser());
 
 const http = require("http");
@@ -32,6 +33,7 @@ const videosRoutes = require("./routes/videosRoutes.js");
 const announcementRoutes = require("./routes/announcementRoutes.js");
 const courseRoutes = require("./routes/coursesRoutes.js");
 const assignmentsRoutes = require("./routes/assignmentsRoutes.js");
+const adminRoutes = require("./routes/adminRoutes.js");
 
 
 // Set up EJS as the view engine
@@ -139,6 +141,7 @@ app.use("/api",videosRoutes);
 app.use("/announcements",announcementRoutes);
 app.use("/courses",courseRoutes);
 app.use("/assignments",assignmentsRoutes);
+app.use("/users/admin",isAdmin,adminRoutes);
 
 app.get("/search",async(req,res)=>{
         const {query} = req.query;

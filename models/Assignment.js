@@ -66,18 +66,21 @@ class Assignment {
         }
     }
 
-    static async getAssignmentsByCourseId(course_id) {
-        try {
-            const [result] = await db.execute(
-                'SELECT * FROM assignments Where course_id = ?',
-                [course_id]
-            );
-            return result;
-        } catch (error) {
-            console.log("Error getting assignments:", error);
-            throw error;
-        }
+   static async getAssignmentsByCourseId(course_id) {
+    try {
+        const [rows] = await db.execute(
+            `SELECT assignments.*, courses.title AS course_title 
+            FROM assignments 
+            INNER JOIN courses ON assignments.course_id = courses.id 
+            WHERE assignments.course_id = ?`,
+            [course_id]
+        );
+        return rows;
+    } catch (error) {
+        console.log("Error getting assignments:", error);
+        throw error;
     }
+}
 
 }
 

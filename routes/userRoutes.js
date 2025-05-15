@@ -4,8 +4,6 @@ const path = require('path'); // path module
 const User = require('../models/User');
 const { editUser, getStudents, deleteUser, blockUser, unblockUser } = require('../controllers/userController');
 // const { get } = require('http');
-const auththenticateUser = require('../middleware/auththenticateUser.js');
-const isAdmin = require('../middleware/isAdmin.js');
 
 
 const router = express.Router();
@@ -20,14 +18,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage: storage });
 
-router.get("/students",auththenticateUser,isAdmin,(req, res) => {
-    res.render("admin/student/index");
-});
-
-router.get("/get-students",auththenticateUser,isAdmin,getStudents);
-
 // render edit form page
-router.get("/edit/:id",auththenticateUser,async (req, res) => {
+router.get("/edit/:id",async (req, res) => {
     try {
         const userId = req.params.id;
         const userProfile = await User.findById(userId);
@@ -41,7 +33,7 @@ router.get("/edit/:id",auththenticateUser,async (req, res) => {
     }
 });
 
-router.get("/:id/profile",auththenticateUser, async (req,res)=>{
+router.get("/:id/profile", async (req,res)=>{
     try {
         const userId = req.params.id;
         const userProfile = await User.findById(userId);
@@ -54,20 +46,11 @@ router.get("/:id/profile",auththenticateUser, async (req,res)=>{
         res.status(500).send("Error retrieving user");
     }
 });
+
 // Edit user 
 router.post("/edit/:id", upload.single('avatar'), editUser);
 
 router.post("/delete/:id", deleteUser);
-
-router.post("/block/:id",isAdmin, blockUser);
-
-router.post("/unblock/:id",isAdmin, unblockUser);
-
-
-// Render home page
-router.get('/admin/dashboard',auththenticateUser,isAdmin, (req, res) => {
-    res.render('admin/dashboard',{req:req.session.user || null});
-});
 
 
 module.exports = router;

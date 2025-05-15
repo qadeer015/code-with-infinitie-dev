@@ -6,6 +6,9 @@ const authenticateUser = async (req, res, next) => {
         "/",
         "/auth/login", 
         "/auth/register",
+        "/auth/signup",
+        "/auth/terms",
+        "/auth/privacy",
         "/about",
         "/faqs"
     ];
@@ -22,6 +25,8 @@ const authenticateUser = async (req, res, next) => {
     // If no token and route is public, continue
     if (!token) {
         req.user = null;
+        res.locals.user = null;
+        
         if (isPublicRoute) {
             return next();
         }
@@ -41,9 +46,34 @@ const authenticateUser = async (req, res, next) => {
 
         // Attach user to request
         req.user = decoded;
-        
-        // For views (if using templating)
         res.locals.user = decoded;
+        
+        // Check if token is about to expire (within 1 day) and needs renewal
+        const now = Math.floor(Date.now() / 1000);
+        const isPersistentSession = decoded.exp - now > 86400 * 3; // More than 3 days remaining
+        
+        if (decoded.exp - now < 86400 && decoded.exp - now > 0 && isPersistentSession) {
+            // Renew token for persistent sessions ("Remember Me")
+            const newToken = jwt.sign(
+                { 
+                    id: decoded.id, 
+                    role: decoded.role, 
+                    email: decoded.email, 
+                    name: decoded.name, 
+                    avatar: decoded.avatar 
+                },
+                process.env.JWT_SECRET,
+                { expiresIn: '30d' }
+            );
+            
+            // Set renewed cookie
+            res.cookie("token", newToken, {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                maxAge: 30 * 24 * 60 * 60 * 1000 // 30 days
+            });
+        }
         
         next();
     } catch (error) {
@@ -61,8 +91,15 @@ const authenticateUser = async (req, res, next) => {
             return res.status(401).json({ error: "Unauthorized" });
         }
 
-        req.session.returnTo = req.originalUrl;
-        return res.redirect("/auth/login");
+        // For web routes, redirect to login but allow public routes
+        if (!isPublicRoute) {
+            req.session.returnTo = req.originalUrl;
+            return res.redirect("/auth/login");
+        }
+        
+        req.user = null;
+        res.locals.user = null;
+        next();
     }
 };
 

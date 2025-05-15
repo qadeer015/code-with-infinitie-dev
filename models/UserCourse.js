@@ -3,6 +3,7 @@ const db = require('../config/db');
 class UserCourse {
     static async joinCourse(user_id, course_id, enrollment_date, status = 'enrolled') {
         try {
+            console.log(user_id, course_id, enrollment_date, status);
             const [result] = await db.execute(
                 'INSERT INTO user_courses (user_id, course_id, enrollment_date, status) VALUES (?, ?, ?, ?)',
                 [user_id, course_id, enrollment_date, status]

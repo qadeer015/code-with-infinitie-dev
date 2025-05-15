@@ -17,7 +17,7 @@
             <div class="col-12 px-3">
                 <h4>New Course</h4>
                 <div class="row pb-5">
-                    <form action="/courses/create" method="post">
+                    <form action="/users/admin/courses/create" method="post">
                         <div class="mb-3">
                             <label for="title" class="form-label">Title</label>
                             <input type="text" class="form-control" id="title" name="title">
@@ -76,7 +76,6 @@
                 return response.json();
             }).then(data => {
                 coursesData.innerHTML = '';
-                console.log(data);
                 data.forEach(course => {
                     coursesData.innerHTML += renderCourses(course);
                 });

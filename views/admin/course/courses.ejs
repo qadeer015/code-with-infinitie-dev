@@ -37,7 +37,7 @@
         })
 
         function fetchCourses() {
-            const response = fetch("/courses/get-all", {
+            const response = fetch("/users/admin/courses/get-all", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -51,7 +51,6 @@
                 return response.json();
             }).then(data => {
                 coursesData.innerHTML = '';
-                console.log(data);
                 data.forEach(course => {
                     coursesData.innerHTML += renderCourses(course);
                 });

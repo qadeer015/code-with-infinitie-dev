@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function fetchStudents() {
-    fetch("/users/get-students", {
+    fetch("/users/admin/get-students", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -108,7 +108,7 @@ function deleteStudent(id) {
         return;
     }
 
-    fetch(`/users/delete/${id}`, {
+    fetch(`/users/admin/delete/${id}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -129,7 +129,7 @@ function deleteStudent(id) {
 
 function toggleBlockStudent(id, isBlocked, button) {
     const action = isBlocked ? 'unblock' : 'block';
-    const url = `/users/${action}/${id}`;
+    const url = `/users/admin/${action}/${id}`;
 
     fetch(url, {
         method: "POST",

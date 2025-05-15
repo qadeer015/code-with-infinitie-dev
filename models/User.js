@@ -17,7 +17,6 @@ class User {
     static async findByEmail(email) {
         try {
             const [rows] = await db.execute('SELECT * FROM users WHERE email = ?', [email]);
-            console.log("Query result:", rows);
             return rows.length > 0 ? rows[0] : null;
         } catch (error) {
             console.error("Database query error:", error);

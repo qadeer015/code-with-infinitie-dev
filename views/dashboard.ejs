@@ -1,10 +1,13 @@
 <%- include('partials/_header', { title: 'Dashboard' }) %>
 
-<div class="container py-6">
-  <h1 class="mb-4">Welcome back, <%= user.name %>!</h1>
-  
+<div class="row p-0 py-5 m-0 mt-5">
+  <div class="col-lg-2 col-md-2 d-lg-inline d-md-inline d-none">
+    <%- include('partials/_sidebar') %>
+  </div>
+  <div class="col-lg-10 col-md-10 col-sm-12">
+    <h1 class="mb-4">Welcome back, <%= user.name %>!</h1>
   <!-- User's Courses Section -->
-  <div class="row g-4">
+  <div class="row">
     <% if (courses.length > 0) { %>
       <% courses.forEach(course => { %>
         <div class="col-md-4">
@@ -16,8 +19,21 @@
                 <div class="progress-bar" style="width: <%= course.progress %>%"></div>
               </div>
             </div>
-            <div class="card-footer bg-transparent">
-              <a href="/courses/<%= course.id %>" class="btn btn-sm btn-primary">Continue</a>
+            <div class="card-footer bg-transparent d-flex gap-2 align-items-center">
+              <form action="/assignments" method="get">
+                <input type="hidden" name="course_id" value="<%= course.id %>">
+                <button type="submit" class="btn btn-primary w-100">Assignments</button>
+              </form>
+              <form action="/announcements" method="get">
+                <input type="hidden" name="course_id" value="<%= course.id %>">
+                <% if (unviewedCount > 0) { %>
+                                <span class="position-absolute bg-danger rounded-circle px-1" 
+                                    style="left: 8px; top: 5px !important; font-size: 10px;">
+                                    <%= unviewedCount %>
+                                </span>
+                            <% } %>
+                <button type="submit" class="btn btn-primary w-100">Announcements</button>
+              </form>
             </div>
           </div>
         </div>
@@ -29,6 +45,23 @@
       </div>
     <% } %>
   </div>
+  </div>
 </div>
 
 <%- include('partials/_footer') %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

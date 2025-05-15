@@ -1,0 +1,155 @@
+<%- include('../partials/_header', { title: 'Login' ,user: user }) %>
+
+<main class="container-fluid p-0">
+    <div class="row g-0 min-vh-100">
+        <!-- Left Column - Decorative Image (Hidden on mobile) -->
+        <div class="col-lg-6 d-none d-lg-block login-bg" style="background-image: url('/images/login-bg.jpg'); background-size: cover; background-position: center;">
+            <div class="d-flex flex-column h-100 justify-content-center p-5 text-white overlay-dark">
+                <h1 class="display-4 fw-bold mb-4">Welcome Back</h1>
+                <p class="lead">Join our community of professionals and take your career to the next level.</p>
+            </div>
+        </div>
+        
+        <!-- Right Column - Login Form -->
+        <div class="col-lg-6 d-flex align-items-center py-5">
+            <div class="container py-lg-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-10 col-xl-8">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body p-4 p-md-5">
+                                <div class="text-center mb-5">
+                                    <h2 class="fw-bold text-primary">Log In</h2>
+                                    <p class="text-muted">Access your account to continue</p>
+                                </div>
+                                
+                                <form action="/auth/login" method="post">
+                                    <!-- Email Input -->
+                                    <div class="mb-4">
+                                        <label for="email" class="form-label fw-semibold">Email Address</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-envelope-fill"></i>
+                                            </span>
+                                            <input type="email" id="email" name="email" class="form-control form-control-lg" placeholder="Enter your email" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Password Input -->
+                                    <div class="mb-4">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <label for="password" class="form-label fw-semibold">Password</label>
+                                            <!-- <a href="/auth/forgot-password" class="text-decoration-none text-primary small">Forgot password?</a> -->
+                                        </div>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-lock-fill"></i>
+                                            </span>
+                                            <input type="password" id="password" name="password" class="form-control form-control-lg" placeholder="Enter your password" required>
+                                            <button class="btn btn-outline-secondary toggle-password" type="button">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Remember Me Checkbox -->
+                                    <div class="mb-4 form-check">
+                                        <input type="checkbox" class="form-check-input" id="remember" name="remember">
+                                        <label class="form-check-label" for="remember">Remember me</label>
+                                    </div>
+                                    
+                                    <!-- Submit Button -->
+                                    <div class="d-grid mb-4">
+                                        <button type="submit" class="btn btn-primary btn-lg fw-semibold py-2">Log In</button>
+                                    </div>
+                                    
+                                    <!-- Social Login Options -->
+                                    <!-- <div class="text-center mb-4">
+                                        <p class="text-muted small">Or sign in with</p>
+                                        <div class="d-flex justify-content-center gap-3">
+                                            <a href="#" class="btn btn-outline-primary rounded-circle p-2">
+                                                <i class="bi bi-google"></i>
+                                            </a>
+                                            <a href="#" class="btn btn-outline-primary rounded-circle p-2">
+                                                <i class="bi bi-facebook"></i>
+                                            </a>
+                                            <a href="#" class="btn btn-outline-primary rounded-circle p-2">
+                                                <i class="bi bi-twitter"></i>
+                                            </a>
+                                        </div>
+                                    </div> -->
+                                    
+                                    <!-- Registration Link -->
+                                    <div class="text-center">
+                                        <p class="mb-0">Don't have an account? 
+                                            <a href="/auth/register" class="text-decoration-none fw-semibold">Create Account</a>
+                                        </p>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<%- include('../partials/_footer') %>
+
+<style>
+    /* Custom CSS */
+    :root {
+        --bs-body-font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    
+    body {
+        padding-top: 56px; /* Adjust based on your header height */
+    }
+    
+    .login-bg {
+        position: relative;
+    }
+    
+    .overlay-dark {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    
+    .toggle-password {
+        cursor: pointer;
+    }
+    
+    .form-control-lg {
+        padding: 0.75rem 1rem;
+    }
+    
+    @media (max-width: 991.98px) {
+        body {
+            background-color: #f8f9fa;
+        }
+        
+        .card {
+            border: none;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+        }
+    }
+</style>
+
+<script>
+    // Toggle password visibility
+    document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', function() {
+            const passwordInput = this.parentElement.querySelector('input');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('bi-eye-fill');
+                icon.classList.add('bi-eye-slash-fill');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('bi-eye-slash-fill');
+                icon.classList.add('bi-eye-fill');
+            }
+        });
+    });
+</script>

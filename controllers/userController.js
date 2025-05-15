@@ -30,7 +30,6 @@ const editUser = async (req, res) => {
 const getStudents = async (req, res) => {
     try {
         const students = await User.findAll('student');
-        console.log("students");
         res.status(200).json(students);
     } catch (error) {
         console.error(error);
@@ -41,7 +40,6 @@ const getStudents = async (req, res) => {
 const deleteUser = async (req, res) => {
     try {
         const { id } = req.params;
-        console.log(id);
         const deleted = await User.deleteUser(id);
         if (deleted) {
             res.status(200).json({ message: 'User deleted successfully' });
@@ -57,7 +55,6 @@ const deleteUser = async (req, res) => {
 const blockUser = async (req, res) => {
     try {
         const { id } = req.params;
-        console.log(id);
         const blocked = await User.blockUser(id);
         if (blocked) {
             res.status(200).json({ message: 'User blocked successfully' });
@@ -73,7 +70,6 @@ const blockUser = async (req, res) => {
 const unblockUser = async (req, res) => {
     try {
         const { id } = req.params;
-        console.log(id);
         const unblocked = await User.unblockUser(id);
         if (unblocked) {
             res.status(200).json({ message: 'User unblocked successfully' });

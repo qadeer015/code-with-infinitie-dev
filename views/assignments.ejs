@@ -1,0 +1,35 @@
+<%- include('partials/_header', { title: 'Assignments' }) %>
+
+<div class="row p-0 py-5 m-0 mt-5">
+  <div class="col-lg-2 col-md-2 d-lg-inline d-md-inline d-none">
+    <%- include('partials/_sidebar') %>
+  </div>
+  <div class="col-lg-10 col-md-10 col-sm-12">
+  <!-- User's Courses Section -->
+  <div class="row">
+    <% if (assignments.length > 0) { %>
+      <% assignments.forEach(assignment => { %>
+        <div class="col-md-4">
+          <div class="card h-100 shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title"><%= assignment.title %></h5>
+              <p class="card-text text-muted"><%= assignment.content %></p>
+              <div class="card-text text-muted"><%= assignment.due_date %></div>
+              <div class="card-text text-muted"><%= assignment.total_marks %></div>
+            </div>
+            <div class="card-footer bg-transparent">
+              <button>Submit</button>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <div class="col-12 text-center py-5">
+        <h4>You haven't any assignment yet.</h4>
+      </div>
+    <% } %>
+  </div>
+  </div>
+</div>
+
+<%- include('partials/_footer') %>

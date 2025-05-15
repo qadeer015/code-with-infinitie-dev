@@ -1,12 +1,13 @@
 const express = require('express');
 const assignmentsController = require('../controllers/assignmentsController.js');
+const Assignment = require('../models/Assignment');
 const router = express.Router();
-const isAdmin = require('../middleware/isAdmin.js');
-const Course = require('../models/Course');
 
-router.get("/", isAdmin, (req, res) => { res.render("admin/assignment/index") });
-router.get("/get-all", isAdmin, assignmentsController.getAllAssignments);
-router.get("/new", isAdmin, async (req, res) => { res.render("admin/assignment/new", { courses: await Course.findAll() }) });
-router.post("/create", isAdmin, assignmentsController.createAssignment)
+router.get("/", async (req, res) => { 
+    const { course_id } = req.query;
+    console.log('course id : ',course_id);
+    const assignments = await Assignment.getAssignmentsByCourseId(course_id);
+    res.render("assignments", {assignments}); 
+});
 
 module.exports = router;

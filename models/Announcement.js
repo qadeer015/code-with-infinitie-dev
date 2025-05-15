@@ -71,6 +71,16 @@ class Announcement {
             throw error;
         }
     }
+
+    static async getAnnouncementsByCourseId(courseId) {
+        try {
+            const [rows] = await db.execute('SELECT * FROM announcements WHERE course_id = ?', [courseId]);
+            return rows;
+        } catch (error) {
+            console.error("Error getting announcements by course ID:", error);
+            throw error;
+        }
+    }
 }
 
 module.exports = Announcement;
