@@ -5,31 +5,191 @@
     <%- include('partials/_sidebar') %>
   </div>
   <div class="col-lg-10 col-md-10 col-sm-12">
-  <!-- User's Courses Section -->
-  <div class="row">
-    <% if (assignments.length > 0) { %>
-      <% assignments.forEach(assignment => { %>
-        <div class="col-md-4">
-          <div class="card h-100 shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title"><%= assignment.title %></h5>
-              <p class="card-text text-muted"><%= assignment.content %></p>
-              <div class="card-text text-muted"><%= assignment.due_date %></div>
-              <div class="card-text text-muted"><%= assignment.total_marks %></div>
-            </div>
-            <div class="card-footer bg-transparent">
-              <button>Submit</button>
-            </div>
+    <h3>Assignments</h3>
+    <!-- User's Courses Section -->
+    <div class="row">
+      <div class="col-lg-12">
+        <% if (assignments.length > 0) { %>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped align-middle">
+              <thead class="table-dark">
+                <tr>
+                  <th>#</th>
+                  <th>Title</th>
+                  <th>Details</th>
+                  <th>Due Date</th>
+                  <th>Open Date</th>
+                  <th>Total Marks</th>
+                  <th>Status</th>
+                  <th>Gained Marks</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% assignments.forEach((assignment, index) => { %>
+                  <tr data-assignment-id="<%= assignment.id %>">
+                    <td><%- index + 1 %></td>
+                    <td><%- assignment.title %></td>
+                    <td><%- assignment.details %></td>
+                    <td><%- assignment.due_date %></td>
+                    <td><%- assignment.created_at %></td>
+                    <td><%- assignment.total_marks %></td>
+                    <td>
+                      <% if(assignment.status) { %> 
+                        <% if(assignment.status=="submitted"){%>
+                          <span class="badge bg-success">Submitted</span>
+                        <% } else {%>
+                          <span class="badge bg-info">Graded</span>
+                        <% } %>
+                        <% } else { %>
+                          <span class="badge bg-secondary">Pending</span>
+                        <% } %>
+                    </td>
+                    <td class="text-center">
+                      <% if(assignment.status) { %>
+                        <% if(assignment.status=="submitted"){ %>
+                          <span class="badge bg-secondary">Not Graded Yet.</span>
+                       <% } else { %>
+                          <%- assignment.gained_marks %>
+                       <% } %>
+                      <% } else { %>
+                          -
+                      <% } %>
+                    </td>
+                    <td class="text-center">
+                      <% if(assignment.status != "submitted") { %>
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                          Submit
+                        </button>
+                      <% } else { %>
+                        -
+                      <% } %>
+                    </td>
+                  </tr>
+                <% }); %>
+              </tbody>
+            </table>
           </div>
-        </div>
-      <% }); %>
-    <% } else { %>
-      <div class="col-12 text-center py-5">
-        <h4>You haven't any assignment yet.</h4>
+        <% } else { %>
+          <div class="col-12 text-center py-5">
+            <h4>You haven't any assignment yet.</h4>
+          </div>
+        <% } %>
       </div>
-    <% } %>
-  </div>
+    </div>
   </div>
 </div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Submit Assignment</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="assignmentUploadForm" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label for="assignmentFiles" class="form-label">Select files or folder:</label>
+            <input class="form-control" type="file" id="assignmentFiles" webkitdirectory directory multiple />
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Upload</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const token = "<%= token %>";
+// Store the current assignment ID when modal is shown
+let currentAssignmentId = null;
+
+document.querySelectorAll('[data-bs-toggle="modal"]').forEach(button => {
+  button.addEventListener('click', function() {
+    const row = this.closest('tr');
+    const assignmentId = row.dataset.assignmentId; // You'll need to add data-assignment-id to your rows
+    currentAssignmentId = assignmentId;
+  });
+});
+
+document.getElementById('assignmentUploadForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    
+    const files = document.getElementById('assignmentFiles').files;
+    if (files.length === 0) {
+        alert('Please select files or a directory');
+        return;
+    }
+    
+    // Show loading state
+    const submitBtn = e.target.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Uploading...';
+    
+    try {
+        // Create a ZIP file from the selected directory/files
+        const zip = new JSZip();
+        const zipFilename = `assignment_${currentAssignmentId}_submission.zip`;
+        
+        // Add files to ZIP
+        for (let i = 0; i < files.length; i++) {
+            const file = files[i];
+            const content = await readFileAsArrayBuffer(file);
+            zip.file(file.webkitRelativePath || file.name, content);
+        }
+        
+        // Generate ZIP file
+        const zipContent = await zip.generateAsync({ type: 'blob' });
+        
+        // Create FormData and send to server
+        const formData = new FormData();
+        formData.append('assignment', zipContent, zipFilename);
+        formData.append('assignment_id', currentAssignmentId);
+        
+        const response = await fetch(`/assignments/${currentAssignmentId}/submit`, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        
+        if (response.ok) {
+            const result = await response.json();
+            alert(result.message);
+            // Close modal and refresh page
+            bootstrap.Modal.getInstance(document.getElementById('exampleModal')).hide();
+            window.location.reload();
+        } else {
+            const error = await response.json();
+            throw new Error(error.message || 'Submission failed');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert(error.message || 'Error submitting assignment');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Upload';
+    }
+});
+
+function readFileAsArrayBuffer(file) {
+    return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsArrayBuffer(file);
+    });
+}
+</script>
+
+<!-- Include JSZip library for client-side ZIP creation -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
 <%- include('partials/_footer') %>

@@ -1,13 +1,11 @@
 const express = require('express');
 const assignmentsController = require('../controllers/assignmentsController.js');
-const Assignment = require('../models/Assignment');
+const singleUpload = require('../middleware/uploadAssignment.js');
 const router = express.Router();
 
-router.get("/", async (req, res) => { 
-    const { course_id } = req.query;
-    console.log('course id : ',course_id);
-    const assignments = await Assignment.getAssignmentsByCourseId(course_id);
-    res.render("assignments", {assignments}); 
-});
+router.get("/", assignmentsController.showCourseAssignments);
+
+router.post("/:id/submit",singleUpload,assignmentsController.submitAssignment);
+
 
 module.exports = router;

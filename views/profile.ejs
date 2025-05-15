@@ -1,12 +1,18 @@
-<%- include("partials/_header",{title:"user profile"}) %>
-  
-    <div class="card bg-secondary-subtle">
-        <div class="card-header bg-transparent border-bottom border-3 border-primary">
-            <h2 class="card-title"><%= userProfile.name %></h2>
-        </div>
-        <div class="card-body">
+<%- include('partials/_header', { title: 'Dashboard' }) %>
+
+<div class="row p-0 py-5 m-0 mt-5">
+  <div class="col-lg-2 col-md-2 d-lg-inline d-md-inline d-none">
+    <%- include('partials/_sidebar') %>
+  </div>
+  <div class="col-lg-10 col-md-10 col-sm-12">  <!-- User's Courses Section -->
+  <div class="row">
+     <div class="card border-0">
+        <div class="card-body bg-secondary-subtle">
+            <div class="card-header bg-transparent border-bottom border-3 border-primary pb-0">
+                <h2 class="card-title"><%= userProfile.name %></h2>
+            </div>
             <div class="d-lg-flex justify-content-between">
-                <div class="">
+                <div class="mt-3">
                     <div class="card-text">
                         <span class="fw-bold">Email : </span>
                         <%= userProfile.email %>
@@ -55,116 +61,24 @@
             </div>
         </div>
     </div>
+  </div>
+  </div>
+</div>
 
-    <h4>Courses</h4>
-    <div id="courseContainer">
-        <div class="loading-spinner">Loading courses...</div>
-    </div>
+<%- include('partials/_footer') %>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        const courseContainer = document.getElementById("courseContainer");
-        
-        async function getCourses() {
-            try {
-                const response = await fetch("/courses", {
-                    method: "GET",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    cache: "no-cache"
-                });
 
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
 
-                const data = await response.json();
 
-                renderCourses(data);
-                
-            } catch (error) {
-                console.error("Error fetching courses:", error);
-                courseContainer.innerHTML = `
-                    <div class="error-message">
-                        <p>Failed to load courses. Please try again later.</p>
-                    </div>
-                `;
-            }
-        }
 
-        function renderCourses(courses) {
-            courseContainer.innerHTML = "";
 
-            if (!courses || courses.length === 0) {
-                courseContainer.innerHTML = `
-                    <div class="no-courses">
-                        <p>No courses found.</p>
-                    </div>
-                `;
-                return;
-            }
 
-            courses.forEach((course) => {
-                const courseDiv = document.createElement("div");
-                courseDiv.className = "course-card";
-                courseDiv.innerHTML = `
-                    <div class="course-header">
-                        <h5>${escapeHtml(course.title)}</h5>
-                        <div class="course-actions">
-                            <button class="edit-button" data-id="${course.id}">Edit</button>
-                            <button class="delete-button" data-id="${course.id}">Delete</button>
-                        </div>
-                    </div>
-                    <div class="course-body">
-                        <p class="course-description">${escapeHtml(course.description)}</p>
-                        <div class="course-details">
-                            <span class="detail"><strong>Duration:</strong> ${escapeHtml(course.course_duration)}</span>
-                            <span class="detail"><strong>Fee:</strong> ${escapeHtml(course.course_fee)}</span>
-                            <span class="detail status-${course.status.toLowerCase()}"><strong>Status:</strong> ${escapeHtml(course.status)}</span>
-                        </div>
-                    </div>
-                `;
-                courseContainer.appendChild(courseDiv);
-            });
 
-            // Add event listeners to buttons
-            document.querySelectorAll('.delete-button').forEach(button => {
-                button.addEventListener('click', handleDelete);
-            });
-            
-            document.querySelectorAll('.edit-button').forEach(button => {
-                button.addEventListener('click', handleEdit);
-            });
-        }
 
-        // Basic HTML escaping to prevent XSS
-        function escapeHtml(unsafe) {
-            if (!unsafe) return '';
-            return unsafe.toString()
-                .replace(/&/g, "&amp;")
-                .replace(/</g, "&lt;")
-                .replace(/>/g, "&gt;")
-                .replace(/"/g, "&quot;")
-                .replace(/'/g, "&#039;");
-        }
 
-        function handleDelete(e) {
-            const courseId = e.target.getAttribute('data-id');
-            console.log('Delete course', courseId);
-            // Implement delete functionality
-        }
 
-        function handleEdit(e) {
-            const courseId = e.target.getAttribute('data-id');
-            console.log('Edit course', courseId);
-            // Implement edit functionality
-        }
 
-        // Initial load
-        getCourses();
-    });
-</script>
-    
-       
-<%- include("partials/_footer") %>
+
+
+
+

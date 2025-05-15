@@ -5,10 +5,10 @@
             <%- include('partials/_sidebar') %>
         </div>
         <div class="col-lg-10 col-md-10 col-sm-12">
+              <h3>Announcements</h3>
             <!-- User's Courses Section -->
             <div class="row">
-                <div class="col-lg-4">
-                    <div id="announcementsContainer" class="card">
+                <div id="announcementsContainer" class="card">
                         <div class="card-body">
                             <% if(announcements.length> 0) {%>
                                 <% announcements.forEach(announcement=> { %>
@@ -45,7 +45,6 @@
                             <% } %>
                         </div>
                     </div>
-                </div>
             </div>
         </div>
     </div>

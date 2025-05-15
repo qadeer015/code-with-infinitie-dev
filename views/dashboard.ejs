@@ -5,24 +5,21 @@
     <%- include('partials/_sidebar') %>
   </div>
   <div class="col-lg-10 col-md-10 col-sm-12">
-    <h1 class="mb-4">Welcome back, <%= user.name %>!</h1>
+    <h1 class="mb-4"><%= user.name %>'s Courses</h1>
   <!-- User's Courses Section -->
   <div class="row">
     <% if (courses.length > 0) { %>
       <% courses.forEach(course => { %>
-        <div class="col-md-4">
+        <div class="col-lg-6 col-md-6 mb-4">
           <div class="card h-100 shadow-sm">
             <div class="card-body">
               <h5 class="card-title"><%= course.title %></h5>
               <p class="card-text text-muted"><%= course.description %></p>
-              <div class="progress mb-3">
-                <div class="progress-bar" style="width: <%= course.progress %>%"></div>
-              </div>
             </div>
             <div class="card-footer bg-transparent d-flex gap-2 align-items-center">
               <form action="/assignments" method="get">
                 <input type="hidden" name="course_id" value="<%= course.id %>">
-                <button type="submit" class="btn btn-primary w-100">Assignments</button>
+                <button type="submit" class="btn btn-sm btn-primary w-100">Assignments</button>
               </form>
               <form action="/announcements" method="get">
                 <input type="hidden" name="course_id" value="<%= course.id %>">
@@ -32,7 +29,7 @@
                                     <%= unviewedCount %>
                                 </span>
                             <% } %>
-                <button type="submit" class="btn btn-primary w-100">Announcements</button>
+                <button type="submit" class="btn btn-sm btn-primary w-100">Announcements</button>
               </form>
             </div>
           </div>

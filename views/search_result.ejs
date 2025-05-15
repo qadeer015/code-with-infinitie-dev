@@ -1,6 +1,7 @@
 <%- include('partials/_header', { title: 'Search Result' }) %>
 
-<div class="card">
+<main class="container-fluid mt-5 py-5 min-vh-100">
+    <div class="card">
     <div class="card-body">
         <h3 class="m-0">Search Results for <span class="text-primary">"<%- query %>"</span> :</h3>
         <p class="m-0 mb-2">
@@ -99,5 +100,6 @@
         <% } %>
     </div>
 </div>
+</main>
 
 <%- include('partials/_footer') %>

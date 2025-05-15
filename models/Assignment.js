@@ -66,14 +66,21 @@ class Assignment {
         }
     }
 
-   static async getAssignmentsByCourseId(course_id) {
+static async getAssignmentsByCourseId(course_id, user_id) {
     try {
         const [rows] = await db.execute(
-            `SELECT assignments.*, courses.title AS course_title 
+            `SELECT 
+                assignments.*, 
+                courses.title AS course_title,
+                assignment_submissions.status,
+                assignment_submissions.gained_marks
             FROM assignments 
-            INNER JOIN courses ON assignments.course_id = courses.id 
+            INNER JOIN courses ON assignments.course_id = courses.id
+            LEFT JOIN assignment_submissions 
+                ON assignment_submissions.assignment_id = assignments.id 
+                AND assignment_submissions.user_id = ?
             WHERE assignments.course_id = ?`,
-            [course_id]
+            [user_id, course_id]
         );
         return rows;
     } catch (error) {
@@ -81,6 +88,7 @@ class Assignment {
         throw error;
     }
 }
+
 
 }
 

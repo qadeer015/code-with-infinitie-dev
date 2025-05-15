@@ -40,6 +40,9 @@ router.get("/:id/profile", async (req,res)=>{
         if (!userProfile) {
             return res.status(404).send("User not found");
         }
+        if(userId != req.user.id && req.user.role != "admin"){
+            return res.redirect("/");
+        }
         res.render("profile", { userProfile });
     } catch (error) {
         console.error(error);

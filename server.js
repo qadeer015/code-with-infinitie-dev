@@ -149,8 +149,12 @@ app.get("/search",async(req,res)=>{
             return res.render("search_result",{query});
         }
         try {
+            let userResults = [];
             // Use async/await for MySQL2 promise-based queries
-            const [userResults] = await db.query("SELECT * FROM users WHERE name LIKE ? OR email LIKE ? OR role LIKE ? OR page_link LIKE ? OR repository_link LIKE ? OR avatar LIKE ? ORDER BY name ASC", ["%"+query+"%", "%"+query+"%", "%"+query+"%", "%"+query+"%", "%"+query+"%", "%"+query+"%"]);
+            if(req.user.role=="admin"){
+                const [results] = await db.query("SELECT * FROM users WHERE name LIKE ? OR email LIKE ? OR role LIKE ? OR page_link LIKE ? OR repository_link LIKE ? OR avatar LIKE ? ORDER BY name ASC", ["%"+query+"%", "%"+query+"%", "%"+query+"%", "%"+query+"%", "%"+query+"%", "%"+query+"%"]);
+                userResults.push(...results);
+            }
             const [videoResults] = await db.query("SELECT * FROM videos WHERE title LIKE ? OR description LIKE ? OR iframe_link LIKE ? ORDER BY title ASC", ["%"+query+"%", "%"+query+"%", "%"+query+"%"]);
             const totalResults = userResults.length + videoResults.length;
             res.render("search_result", { query, userResults, videoResults, totalResults });

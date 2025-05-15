@@ -1,17 +1,16 @@
 const Announcement = require('../models/Announcement');
-const { format } = require('date-fns');
+const formateTime = require('../middleware/formateTime');
 require('dotenv').config();
-
-// Function to format timestamp
-function formatTimestamp(timestamp) {
-    return format(new Date(timestamp), "MMMM dd, yyyy hh:mm a");
-}
 
 const showCourseAnnouncements = async (req, res) => {
     const { course_id } = req.query;
     try {
         console.log('course id : ', course_id);
-        const announcements = await Announcement.getAnnouncementsByCourseId(course_id);
+        const courseAnnouncements = await Announcement.getAnnouncementsByCourseId(course_id);
+        const announcements = courseAnnouncements.map(announcement => ({
+            ...announcement,
+            created_at: formateTime.formatRelativeTime(announcement.created_at)
+        }))
         console.log('announcements : ', announcements);
         res.render("announcements", { announcements })
     } catch (error) {
@@ -32,7 +31,7 @@ const getAllAnnouncements = async (req, res) => {
         // Format created_at for each announcement
         const formattedAnnouncements = announcements.map(announcement => ({
             ...announcement,
-            created_at: formatTimestamp(announcement.created_at)
+            created_at: formateTime.formatRelativeTime(announcement.created_at)
         }));
 
         res.status(200).json(formattedAnnouncements);
