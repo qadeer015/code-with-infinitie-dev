@@ -1,0 +1,64 @@
+<%- include('../partials/_header', { title: 'Assignment Details' }) %>
+
+<div class="container mt-5">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="mb-0">Assignment Submission Details</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <h5>Student Information</h5>
+                    <p><strong>Student ID:</strong> <%= assignment.user_id %></p>
+                    <!-- You might want to add student name here if available -->
+                </div>
+                <div class="col-md-6">
+                    <h5>Assignment Information</h5>
+                    <p><strong>Assignment ID:</strong> <%= assignment.assignment_id %></p>
+                    <p><strong>Submitted on:</strong> <%= assignment.submission_date %></p>
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-12">
+                    <h5>Submitted Files</h5>
+                    <div class="alert alert-info">
+                        <p><strong>File Name:</strong> <%= assignment.file_path.originalName %></p>
+                        <p><strong>File Size:</strong> <%= (assignment.file_path.size / 1024).toFixed(2) %> KB</p>
+                        <p><strong>File Type:</strong> <%= assignment.file_path.type %></p>
+                        <a href="/download/<%= assignment.id %>" 
+                           class="btn btn-primary mt-2"
+                           download="<%= assignment.file_path.originalName %>">
+                            Download Submission
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <h5>Grading</h5>
+                    <form id="gradeForm" action="/assignments/admin/grade/<%= assignment.id %>" method="POST">
+                        <div class="mb-3">
+                            <label for="marks" class="form-label">Marks</label>
+                            <input type="number" step="0.01" class="form-control" id="marks" 
+                                   name="marks" value="<%= assignment.gained_marks || '' %>">
+                        </div>
+                        <div class="mb-3">
+                            <label for="feedback" class="form-label">Feedback</label>
+                            <textarea class="form-control" id="feedback" name="feedback" rows="3"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-success">Submit Grade</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="/assignments/admin/submitted?course_id=<%= courseId %>" class="btn btn-secondary">
+                Back to Submissions
+            </a>
+        </div>
+    </div>
+</div>
+
+<%- include('../partials/_footer') %>

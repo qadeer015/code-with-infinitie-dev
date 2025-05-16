@@ -48,6 +48,16 @@ class AssignmentSubmission {
         }
     }
 
+    static async getAllSubmittedAssignments() {
+        try {
+            const [result] = await db.execute('SELECT * FROM assignment_submissions');
+            return result;
+        } catch (error) {
+            console.log("Error getting submitted assignments:", error);
+            throw error;
+        }
+    }
+
     static async getSubmittedAssignmentsByCourseId(course_id) {
         try {
             const [result] = await db.execute(

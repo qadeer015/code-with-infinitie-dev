@@ -75,6 +75,10 @@
                             <div class="card-subtitle mb-2 text-muted">${course.course_duration}</div>
                             <div class="card-subtitle mb-2 text-muted">${course.course_fee}</div>
                             <div class="card-subtitle mb-2 text-muted">${course.status}</div>
+                            <form action="/users/admin/assignments/submitted" class="nav-link position-relative ps-3">
+                                <input type="hidden" name="course_id" value="${course.id}">
+                                <input type="submit" class="btn btn-primary" value="Submitted Assignments">
+                            </form>
                         </div>
                     </div>
                 </div>

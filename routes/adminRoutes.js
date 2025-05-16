@@ -30,6 +30,8 @@ router.post("/courses/create",coursesController.createCourse)
 router.get("/assignments", (req, res) => {
     res.render("admin/assignment/index")
 });
+router.get("/assignments/submitted", assignmentsController.getSubmittedAssignments);
+router.get("/assignments/submitted/:id", assignmentsController.getSubmittedAssignmentDetails);
 router.get("/assignments/get-all", assignmentsController.getAllAssignments);
 router.get("/assignments/new", async (req, res) => { res.render("admin/assignment/new", { courses: await Course.findAll() }) });
 router.post("/assignments/create", assignmentsController.createAssignment)

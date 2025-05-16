@@ -111,4 +111,76 @@ const getAllAssignments = async (req, res) => {
     }
 };
 
-module.exports = { showCourseAssignments, createAssignment, submitAssignment, getAllAssignments }
+
+
+// controllers/assignmentsController.js
+
+const getSubmittedAssignments = async (req, res) => {
+    try {
+        const { course_id } = req.query;
+        console.log('course_id : ', course_id);
+        // Get all submitted assignments for a course
+        const submittedAssignments = await AssignmentSubmission.getSubmittedAssignmentsByCourseId(course_id);
+        
+        // Format the data for display
+       const formattedAssignments = submittedAssignments.map(assignment => ({
+    ...assignment,
+    submission_date: formateTime.formatDate(assignment.submission_date),
+    file_path: typeof assignment.file_path === 'string' 
+        ? JSON.parse(assignment.file_path) 
+        : assignment.file_path
+}));
+        
+        res.render("admin/assignment/submitted_assignments", { 
+            assignments: formattedAssignments,
+            courseId: course_id
+        });
+    } catch (error) {
+        console.error("Error retrieving submitted assignments:", error);
+        res.status(500).json({ message: 'Error retrieving submitted assignments' });
+    }
+};
+
+const getSubmittedAssignmentDetails = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { course_id } = req.query;
+        
+        const assignment = await AssignmentSubmission.findSubmittedAssignment(id);
+        
+        if (!assignment || assignment.length === 0) {
+            return res.status(404).json({ message: 'Assignment not found' });
+        }
+        
+        // Safely parse the file_path (handle both string and already-parsed cases)
+        let filePathData;
+        try {
+            filePathData = typeof assignment[0].file_path === 'string' 
+                ? JSON.parse(assignment[0].file_path) 
+                : assignment[0].file_path;
+        } catch (parseError) {
+            console.error('Error parsing file_path:', assignment[0].file_path);
+            filePathData = { 
+                path: assignment[0].file_path,
+                originalName: 'Unknown',
+                type: 'unknown'
+            };
+        }
+        
+        const formattedAssignment = {
+            ...assignment[0],
+            file_path: filePathData,
+            submission_date: formateTime.formatDate(assignment[0].submission_date)
+        };
+        
+        res.render("admin/assignment/submitted_assignment_details", { 
+            assignment: formattedAssignment ,
+            courseId: course_id
+        });
+    } catch (error) {
+        console.error("Error retrieving assignment details:", error);
+        res.status(500).json({ message: 'Error retrieving assignment details' });
+    }
+};
+
+module.exports = { showCourseAssignments, createAssignment, submitAssignment, getAllAssignments, getSubmittedAssignments, getSubmittedAssignmentDetails }
