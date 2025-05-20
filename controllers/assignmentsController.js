@@ -10,7 +10,6 @@ const showCourseAssignments = async (req, res) => {
     try {
         const { course_id } = req.query;
         const token = req.cookies.token;
-        console.log('token : ', token);
         const courseAssignments = await Assignment.getAssignmentsByCourseId(course_id, req.user.id);
         const assignments = courseAssignments.map(assignment => ({
             ...assignment,
@@ -118,7 +117,6 @@ const getAllAssignments = async (req, res) => {
 const getSubmittedAssignments = async (req, res) => {
     try {
         const { course_id } = req.query;
-        console.log('course_id : ', course_id);
         // Get all submitted assignments for a course
         const submittedAssignments = await AssignmentSubmission.getSubmittedAssignmentsByCourseId(course_id);
         

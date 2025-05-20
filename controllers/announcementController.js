@@ -5,13 +5,11 @@ require('dotenv').config();
 const showCourseAnnouncements = async (req, res) => {
     const { course_id } = req.query;
     try {
-        console.log('course id : ', course_id);
         const courseAnnouncements = await Announcement.getAnnouncementsByCourseId(course_id);
         const announcements = courseAnnouncements.map(announcement => ({
             ...announcement,
             created_at: formateTime.formatRelativeTime(announcement.created_at)
         }))
-        console.log('announcements : ', announcements);
         res.render("announcements", { announcements })
     } catch (error) {
         console.error("Error retrieving announcements:", error);
