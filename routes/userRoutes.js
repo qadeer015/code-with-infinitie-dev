@@ -2,7 +2,7 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path'); // path module
 const User = require('../models/User');
-const { editUser, getStudents, deleteUser, blockUser, unblockUser } = require('../controllers/userController');
+const { editUser, deleteUser } = require('../controllers/userController');
 // const { get } = require('http');
 
 

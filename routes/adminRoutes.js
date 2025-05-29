@@ -11,7 +11,6 @@ router.get('/dashboard', (req, res) => {
     res.render('admin/dashboard',{req:req.session.user || null});
 });
 
-
 // Students
 router.get("/students",(req, res) => {
     res.render("admin/student/index");
@@ -19,6 +18,8 @@ router.get("/students",(req, res) => {
 router.get("/get-students",userController.getStudents);
 router.post("/block/:id", userController.blockUser);
 router.post("/unblock/:id", userController.unblockUser);
+router.post("/delete/:id", userController.deleteUser);
+
 
 // Courses
 router.get("/courses",(req, res) => {res.render("admin/course/courses")});
@@ -33,15 +34,19 @@ router.get("/assignments", (req, res) => {
 router.get("/assignments/submitted", assignmentsController.getSubmittedAssignments);
 router.get("/assignments/submitted/:id", assignmentsController.getSubmittedAssignmentDetails);
 router.get("/assignments/get-all", assignmentsController.getAllAssignments);
-router.get("/assignments/new", async (req, res) => { res.render("admin/assignment/new", { courses: await Course.findAll() }) });
+router.get("/assignments/new", async (req, res) => { res.render("admin/assignment/new", { courses: await Course.getAll() }) });
 router.post("/assignments/create", assignmentsController.createAssignment)
+router.post("/assignments/:assignmentId/users/:userId/grade", assignmentsController.gradeAssignment)
+
+// In your routes file
+router.get('/files/:submissionId/:filename', assignmentsController.serveSubmissionFile);
 
 // Announcements
 router.get("/announcements", (req, res) => {
     res.render("admin/announcement/index")
 });
 router.get("/announcements/get-all", announcementsController.getAllAnnouncements);
-router.get("/announcements/new", async (req, res) => { res.render("admin/announcement/new", { courses: await Course.findAll() }) });
+router.get("/announcements/new", async (req, res) => { res.render("admin/announcement/new", { courses: await Course.getAll() }) });
 router.post("/announcements/create", announcementsController.createAnnouncement)
 
 module.exports = router;

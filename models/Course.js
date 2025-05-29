@@ -20,7 +20,7 @@ class Course {
             SELECT 
                 c.id, 
                 c.title, 
-                c.description, 
+                c.description,
                 uc.status 
             FROM courses c 
             LEFT JOIN user_courses uc ON c.id = uc.course_id AND uc.user_id = ?

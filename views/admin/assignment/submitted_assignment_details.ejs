@@ -1,49 +1,106 @@
 <%- include('../partials/_header', { title: 'Assignment Details' }) %>
-
+    <div class="row m-0">
+        <div class="col-2 min-vh-100 position-fixed bg-primary-subtle">
+            <%- include('../partials/_sidebar') %>
+        </div>
+        <div class="col-10 bg-warning-subtle p-0" style="margin-left: auto;">
+            <div class="position-sticky bg-danger-subtle" style="top: 0px;z-index: 1000;">
+                <div class="navbar px-3">
+                    <div class="nav-item">
+                        <h3>Dashboard</h3>
+                    </div>
+                    <div class="nav-item">
+                        <a href="/auth/logout" class="btn btn-danger">Logout</a>
+                    </div>
+                </div>
+            </div>
+            
 <div class="container mt-5">
     <div class="card">
         <div class="card-header">
             <h4 class="mb-0">Assignment Submission Details</h4>
         </div>
         <div class="card-body">
-            <div class="row mb-3">
+            <!-- ... (keep your student info section unchanged) ... -->
+            <div class="row mb-3 alert alert-info">
                 <div class="col-md-6">
                     <h5>Student Information</h5>
-                    <p><strong>Student ID:</strong> <%= assignment.user_id %></p>
+                    <p><strong>Student Name:</strong> <%= assignment.name %></p>
+                    <p><strong>Obtained Marks:</strong> <%= assignment.gained_marks %></p>
+                    <p><strong>Submitted on:</strong> <%= assignment.submission_date %></p>
+
                     <!-- You might want to add student name here if available -->
                 </div>
                 <div class="col-md-6">
                     <h5>Assignment Information</h5>
-                    <p><strong>Assignment ID:</strong> <%= assignment.assignment_id %></p>
-                    <p><strong>Submitted on:</strong> <%= assignment.submission_date %></p>
+                    <p><strong>Assignment Title:</strong> <%= assignment.title %></p>
+                    <p><strong>Total Marks:</strong> <%= assignment.total_marks %></p>
+                    <p><strong>Due Date:</strong> <%= assignment.due_date %></p>
+                    <p><strong>Assignment Details:</strong> <%= assignment.details %></p>
                 </div>
             </div>
-
             <div class="row mb-3">
                 <div class="col-12">
-                    <h5>Submitted Files</h5>
-                    <div class="alert alert-info">
-                        <p><strong>File Name:</strong> <%= assignment.file_path.originalName %></p>
-                        <p><strong>File Size:</strong> <%= (assignment.file_path.size / 1024).toFixed(2) %> KB</p>
-                        <p><strong>File Type:</strong> <%= assignment.file_path.type %></p>
-                        <a href="/download/<%= assignment.id %>" 
-                           class="btn btn-primary mt-2"
-                           download="<%= assignment.file_path.originalName %>">
-                            Download Submission
-                        </a>
+
+<% if (assignment.file_data.isZip) { %>
+    <h3>ZIP Archive Contents:</h3>
+    <ul class="list-unstyled">
+        <% assignment.file_data.files.forEach(file => { %>
+            <li class="mb-4 p-3 border rounded">
+                <h5>
+                    <strong><%= file.originalName %></strong> 
+                    <span class="badge bg-secondary">
+                        <%= file.type.includes('html') || file.originalName.endsWith('.html') ? 'text/html' : 
+                           file.type.includes('javascript') || file.originalName.endsWith('.js') ? 'application/javascript' : 
+                           file.type %>
+                    </span>
+                    <span class="badge bg-info ms-2"><%= (file.size / 1024).toFixed(2) %> KB</span>
+                </h5>
+                
+                <% if (file.isMedia) { %>
+                    <a href="/users/admin/assignments/files/<%= assignment.id %>/<%= encodeURIComponent(file.originalName) %>" 
+                       class="btn btn-sm btn-primary" download>
+                        Download Media File
+                    </a>
+                <% } else { %>
+                    <% const isHtml = file.type.includes('html') || file.originalName.endsWith('.html');
+                       const isJs = file.type.includes('javascript') || file.originalName.endsWith('.js'); %>
+                    
+                    
+                    <h6>Source Code:</h6>
+                    <div class="position-relative">
+                        <pre class="bg-light p-3 rounded"><code class="language-<%= isHtml ? 'html' : isJs ? 'javascript' : 'plaintext' %>"><%= file.decodedContent %></code></pre>
+                        <button class="btn btn-sm btn-outline-secondary position-absolute top-0 end-0 m-2 copy-btn" 
+                                data-content="<%= file.decodedContent.replace(/"/g, '&quot;') %>">
+                            Copy
+                        </button>
                     </div>
+                <% } %>
+            </li>
+        <% }) %>
+    </ul>
+<% } else { %>
+    <!-- Single file display (similar structure as above) -->
+<% } %>
+
+<!-- ... rest of the template ... -->
+
+<!-- Rest of the template remains the same -->
                 </div>
             </div>
 
+           
             <div class="row">
                 <div class="col-12">
                     <h5>Grading</h5>
-                    <form id="gradeForm" action="/assignments/admin/grade/<%= assignment.id %>" method="POST">
+                    <form id="gradeForm" action="/users/admin/assignments/<%= assignment.assignment_id %>/users/<%= assignment.user_id %>/grade" method="POST">
                         <div class="mb-3">
                             <label for="marks" class="form-label">Marks</label>
                             <input type="number" step="0.01" class="form-control" id="marks" 
                                    name="marks" value="<%= assignment.gained_marks || '' %>">
                         </div>
+                        <input type="hidden" name="assignment_id" value="<%= assignment.assignment_id %>">
+                        <input type="hidden" name="user_id" value="<%= assignment.user_id %>">
                         <div class="mb-3">
                             <label for="feedback" class="form-label">Feedback</label>
                             <textarea class="form-control" id="feedback" name="feedback" rows="3"></textarea>
@@ -53,12 +110,29 @@
                 </div>
             </div>
         </div>
-        <div class="card-footer">
-            <a href="/assignments/admin/submitted?course_id=<%= courseId %>" class="btn btn-secondary">
-                Back to Submissions
-            </a>
-        </div>
     </div>
 </div>
 
+        </div>
+    </div>
 <%- include('../partials/_footer') %>
+
+<!-- Add Prism.js for syntax highlighting -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-html.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
+
+<script>
+    // Add copy functionality
+    document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const content = btn.getAttribute('data-content');
+            navigator.clipboard.writeText(content)
+                .then(() => {
+                    btn.textContent = 'Copied!';
+                    setTimeout(() => btn.textContent = 'Copy', 2000);
+                });
+        });
+    });
+</script>
