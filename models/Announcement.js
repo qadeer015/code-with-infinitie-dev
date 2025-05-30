@@ -61,7 +61,6 @@ class Announcement {
         }
     }
     
-
     static async deleteAnnouncement(id){
         try {
             const [result] = await db.execute('DELETE FROM announcements WHERE id = ?', [id]);

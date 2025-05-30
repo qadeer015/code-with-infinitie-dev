@@ -18,4 +18,19 @@
 
 <body>
   
-            
+    <div class="row m-0">
+        <div class="col-2 min-vh-100 position-fixed bg-primary-subtle">
+            <%- include('_sidebar') %>
+        </div>
+        <div class="col-10 bg-warning-subtle p-0" style="margin-left: auto;">
+            <div class="position-sticky bg-danger-subtle" style="top: 0px;z-index: 1000;">
+                <div class="navbar px-3">
+                    <div class="nav-item">
+                        <h3>Dashboard</h3>
+                    </div>
+                    <div class="nav-item">
+                        <a href="/auth/logout" class="btn btn-danger">Logout</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-12 px-3">

@@ -29,7 +29,8 @@ const getAllAssignments = async (req, res) => {
         const allAssignments = await Assignment.getAllAssignments();
         const assignments = allAssignments.map(assignment => ({
             ...assignment,
-            created_at: formateTime.formateRelativeTime(assignment.created_at)
+            created_at: formateTime.formatRelativeTime(assignment.created_at),
+            due_date: formateTime.formatDate(assignment.due_date)
         }))
         res.status(200).json(assignments);
     } catch (error) {
