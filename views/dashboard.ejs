@@ -16,19 +16,24 @@
               <h5 class="card-title"><%= course.title %></h5>
               <p class="card-text text-muted"><%= course.description %></p>
             </div>
-            <div class="card-footer bg-transparent d-flex gap-2 align-items-center">
-              <form action="/assignments" method="get">
+            <div class="card-footer bg-transparent d-flex gap-3 align-items-center">
+              
+              <form action="/assignments" method="get" class="position-relative">
+                <% if(course.unsubmitted_count > 0) { %>
+                  <div class="notification-badge">
+                    <%= course.unsubmitted_count%>
+                  </div>
+                <% } %>
                 <input type="hidden" name="course_id" value="<%= course.id %>">
                 <button type="submit" class="btn btn-sm btn-primary w-100">Assignments</button>
               </form>
-              <form action="/announcements" method="get">
+              <form action="/announcements" method="get" class="position-relative">
+                <% if(course.announcements_count > 0) { %>
+                   <div class="notification-badge">
+                     <%= course.announcements_count%>
+                   </div>
+                <% } %>
                 <input type="hidden" name="course_id" value="<%= course.id %>">
-                <% if (unviewedCount > 0) { %>
-                                <span class="position-absolute bg-danger rounded-circle px-1" 
-                                    style="left: 8px; top: 5px !important; font-size: 10px;">
-                                    <%= unviewedCount %>
-                                </span>
-                            <% } %>
                 <button type="submit" class="btn btn-sm btn-primary w-100">Announcements</button>
               </form>
             </div>

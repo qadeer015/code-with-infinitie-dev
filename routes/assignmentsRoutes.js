@@ -5,6 +5,8 @@ const router = express.Router();
 
 router.get("/", assignmentsController.showCourseAssignments);
 
+router.get("/:course_id/unsubmitted-count", assignmentsController.getUnsubmittedAssignemntCountsByCourseId);
+
 router.post("/:id/submit",singleUpload,assignmentsController.submitAssignment);
 
 

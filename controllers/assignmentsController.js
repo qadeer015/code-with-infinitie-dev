@@ -39,6 +39,17 @@ const getAllAssignments = async (req, res) => {
     }
 };
 
+const getUnsubmittedAssignemntCountsByCourseId = async (req, res) => {
+    try {
+        const { course_id } = req.params;
+        const count = await Assignment.getUnsubmittedAssignemntCountsByCourseId(course_id);
+        res.status(200).json({ count });
+    } catch (error) {
+        console.error("Error getting unsubmitted assignments:", error);
+        res.status(500).json({ message: 'Error getting unsubmitted assignments' });
+    }
+}
+
 
 const createAssignment = async (req, res) => {
     try {
@@ -288,5 +299,6 @@ module.exports = {
     getSubmittedAssignments, 
     getSubmittedAssignmentDetails,
     serveSubmissionFile,
-    gradeAssignment
+    gradeAssignment,
+    getUnsubmittedAssignemntCountsByCourseId
 };

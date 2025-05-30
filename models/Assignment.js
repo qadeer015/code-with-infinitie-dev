@@ -66,10 +66,10 @@ class Assignment {
         }
     }
 
-static async getAssignmentsByCourseId(course_id, user_id) {
-    try {
-        const [rows] = await db.execute(
-            `SELECT 
+    static async getAssignmentsByCourseId(course_id, user_id) {
+        try {
+            const [rows] = await db.execute(
+                `SELECT 
                 assignments.*, 
                 courses.title AS course_title,
                 assignment_submissions.status,
@@ -80,16 +80,32 @@ static async getAssignmentsByCourseId(course_id, user_id) {
                 ON assignment_submissions.assignment_id = assignments.id 
                 AND assignment_submissions.user_id = ?
             WHERE assignments.course_id = ?`,
-            [user_id, course_id]
-        );
-        return rows;
-    } catch (error) {
-        console.log("Error getting assignments:", error);
-        throw error;
+                [user_id, course_id]
+            );
+            return rows;
+        } catch (error) {
+            console.log("Error getting assignments:", error);
+            throw error;
+        }
     }
-}
 
 
+    static async getUnsubmittedAssignemntCountsByCourseId(course_id) {
+        try {
+            const [rows] = await db.execute(
+                `SELECT COUNT(*) AS count 
+             FROM assignments 
+             WHERE course_id = ? AND 
+             (id NOT IN (SELECT assignment_id FROM assignment_submissions) OR
+             id IN (SELECT assignment_id FROM assignment_submissions WHERE status = 'pending')`,
+                [course_id]
+            );
+            return rows[0].count;
+        } catch (error) {
+            console.log("Error getting unsubmitted assignments:", error);
+            throw error;
+        }
+    }
 }
 
 module.exports = Assignment;

@@ -16,17 +16,16 @@ const socketIo = require("socket.io");
 
 const server = http.createServer(app);
 const io = socketIo(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"]
-  }
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
 });
 
 const connection = require('./socket/connection.js');
 connection(io);
 
 const db = require("./config/db.js");
-const AnnouncementView = require("./models/AnnouncementView.js")
 const authRoutes = require("./routes/authRoutes.js");
 const userRoutes = require("./routes/userRoutes.js");
 const videosRoutes = require("./routes/videosRoutes.js");
@@ -49,7 +48,7 @@ app.use(session({
 }));
 
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); 
+app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true })); // For form data
@@ -93,36 +92,37 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(async (req, res, next) => {
-    if (req.user) {
-        try {
-            const [unviewed] = await AnnouncementView.unViewedCount(req.user.id);
-            res.locals.unviewedCount = unviewed.unviewed_count || 0;
-        } catch (error) {
-            console.error("Error fetching unviewed announcements:", error);
-            res.locals.unviewedCount = 0;
-        }
-    } else {
-        res.locals.unviewedCount = 0;
-    }
-    next();
-}); 
-
-
 // server.js
 app.get("/", async (req, res) => {
     try {
         if (req.user) {
             // User is logged in - fetch courses using promise-based query
             const [courses] = await db.execute(
-                "SELECT c.* FROM courses c " +
-                "JOIN user_courses uc ON c.id = uc.course_id " +
-                "WHERE uc.user_id = ?", 
-                [req.user.id]
+                `SELECT 
+        c.*,
+        (
+            SELECT COUNT(*) 
+            FROM assignments a
+            LEFT JOIN assignment_submissions asub ON 
+                a.id = asub.assignment_id AND 
+                asub.user_id = ?
+            WHERE 
+                a.course_id = c.id AND
+                (asub.id IS NULL OR (asub.status = 'pending' AND a.due_date > NOW()))
+        ) AS unsubmitted_count,
+        (
+            SELECT COUNT(*)
+            FROM announcements ann
+            WHERE ann.course_id = c.id
+        ) AS announcements_count
+    FROM courses c
+    JOIN user_courses uc ON c.id = uc.course_id
+    WHERE uc.user_id = ?`,
+                [req.user.id, req.user.id]
             );
-            
-            res.render("dashboard", { 
-                user: req.user, 
+
+            res.render("dashboard", {
+                user: req.user,
                 courses,
             });
         } else {
@@ -135,33 +135,33 @@ app.get("/", async (req, res) => {
     }
 });
 
-app.use("/auth",authRoutes);
-app.use("/users",userRoutes);
-app.use("/api",videosRoutes);
-app.use("/announcements",announcementRoutes);
-app.use("/courses",courseRoutes);
-app.use("/assignments",assignmentsRoutes);
-app.use("/users/admin",isAdmin,adminRoutes);
+app.use("/auth", authRoutes);
+app.use("/users", userRoutes);
+app.use("/api", videosRoutes);
+app.use("/announcements", announcementRoutes);
+app.use("/courses", courseRoutes);
+app.use("/assignments", assignmentsRoutes);
+app.use("/users/admin", isAdmin, adminRoutes);
 
-app.get("/search",async(req,res)=>{
-        const {query} = req.query;
-        if(!query){
-            return res.render("search_result",{query});
+app.get("/search", async (req, res) => {
+    const { query } = req.query;
+    if (!query) {
+        return res.render("search_result", { query });
+    }
+    try {
+        let userResults = [];
+        // Use async/await for MySQL2 promise-based queries
+        if (req.user.role == "admin") {
+            const [results] = await db.query("SELECT * FROM users WHERE name LIKE ? OR email LIKE ? OR role LIKE ? OR page_link LIKE ? OR repository_link LIKE ? OR avatar LIKE ? ORDER BY name ASC", ["%" + query + "%", "%" + query + "%", "%" + query + "%", "%" + query + "%", "%" + query + "%", "%" + query + "%"]);
+            userResults.push(...results);
         }
-        try {
-            let userResults = [];
-            // Use async/await for MySQL2 promise-based queries
-            if(req.user.role=="admin"){
-                const [results] = await db.query("SELECT * FROM users WHERE name LIKE ? OR email LIKE ? OR role LIKE ? OR page_link LIKE ? OR repository_link LIKE ? OR avatar LIKE ? ORDER BY name ASC", ["%"+query+"%", "%"+query+"%", "%"+query+"%", "%"+query+"%", "%"+query+"%", "%"+query+"%"]);
-                userResults.push(...results);
-            }
-            const [videoResults] = await db.query("SELECT * FROM videos WHERE title LIKE ? OR description LIKE ? OR iframe_link LIKE ? ORDER BY title ASC", ["%"+query+"%", "%"+query+"%", "%"+query+"%"]);
-            const totalResults = userResults.length + videoResults.length;
-            res.render("search_result", { query, userResults, videoResults, totalResults });
-        } catch (err) {
-            console.error(err);
-            res.status(500).send("Error retrieving user");
-        }
+        const [videoResults] = await db.query("SELECT * FROM videos WHERE title LIKE ? OR description LIKE ? OR iframe_link LIKE ? ORDER BY title ASC", ["%" + query + "%", "%" + query + "%", "%" + query + "%"]);
+        const totalResults = userResults.length + videoResults.length;
+        res.render("search_result", { query, userResults, videoResults, totalResults });
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("Error retrieving user");
+    }
 });
 
 app.get("/about", (req, res) => {

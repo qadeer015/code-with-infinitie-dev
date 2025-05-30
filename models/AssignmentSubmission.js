@@ -22,7 +22,7 @@ class AssignmentSubmission {
     static async saveGainedMarks(assignment_id, user_id, marks) {
         try {
             const [result] = await db.execute(
-                'UPDATE assignment_submissions SET gained_marks = ? WHERE assignment_id = ? AND user_id = ?',
+                'UPDATE assignment_submissions SET gained_marks = ?, status = "graded" WHERE assignment_id = ? AND user_id = ?',
                 [marks, assignment_id, user_id]
             );
 

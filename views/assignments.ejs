@@ -47,7 +47,7 @@
                     </td>
                     <td class="text-center">
                       <% if(assignment.status) { %>
-                        <% if(assignment.status=="submitted"){ %>
+                        <% if(assignment.status=="submitted" && !assignment.gained_marks){ %>
                           <span class="badge bg-secondary">Not Graded Yet.</span>
                        <% } else { %>
                           <%- assignment.gained_marks %>
@@ -57,13 +57,12 @@
                       <% } %>
                     </td>
                     <td class="text-center">
-                      <% if(assignment.status != "submitted") { %>
-                        <!-- Button trigger modal -->
-                        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                      <% if(assignment.status == "submitted" || assignment.status == "graded") { %>
+                        -                       
+                      <% } else { %>
+                          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                           Submit
                         </button>
-                      <% } else { %>
-                        -
                       <% } %>
                     </td>
                   </tr>

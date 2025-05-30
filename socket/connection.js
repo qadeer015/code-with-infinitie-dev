@@ -1,7 +1,6 @@
 const db = require('../config/db');
 const User = require('../models/User');
 const Announcement = require('../models/Announcement');
-const AnnouncementView = require('../models/AnnouncementView');
 
 module.exports = (io) => {
   io.on("connection", (socket) => {
@@ -22,17 +21,6 @@ module.exports = (io) => {
         }
       } catch (error) {
         console.error("Error creating announcement:", error);
-      }
-    });
-
-    socket.on("mark viewed", async (data) =>{
-      const { user_id, announcement_id } = data;
-      try {
-        await AnnouncementView.viewedByUser(user_id, announcement_id);
-        const unviewed = await AnnouncementView.unViewedCount(user_id);
-        socket.emit("update announcement count", { user_id, count: unviewed[0].unviewed_count });
-      } catch (error) {
-        console.error("Error updating announcementView:", error);
       }
     });
 
