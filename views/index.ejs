@@ -26,59 +26,37 @@
   </div>
   
   <div class="row g-4">
-    <!-- Course Card 1 -->
-    <div class="col-md-4">
+    <% featuredCourses.forEach(course => { %>
+<div class="col-md-4">
       <div class="card h-100 shadow-sm">
         <div class="card-body">
-          <span class="badge bg-success mb-2">Beginner</span>
-          <h5 class="card-title">HTML & CSS Fundamentals</h5>
-          <p class="card-text text-muted">Learn to build your first website with HTML5 and CSS3.</p>
+          <span class="badge mb-2 <%= course.difficulty_lvl === 'beginner' ? 'bg-success' : course.difficulty_lvl === 'intermediate' ? 'bg-warning' : 'bg-danger' %> "><%= course.difficulty_lvl %></span>
+          <h5 class="card-title"><%= course.title %></h5>
+          <p class="card-text text-muted"><%= course.description %></p>
         </div>
         <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center">
           <div>
-            <span class="text-warning">★ ★ ★ ★ ★</span>
+            <span class="text-warning">
+                <% for (let i = 0; i < 5; i++) { %>
+  <% if (i < course.ratting) { %>
+    ★
+  <% } else { %>
+    ☆
+  <% } %>
+<% } %>
+
+            </span>
             <span class="text-muted ms-1">(124)</span>
           </div>
-          <a href="#" class="btn btn-sm btn-outline-primary">Enroll Now</a>
+          <form action="/courses/30014/join" method="post">
+            <input type="hidden" name="user_id" value="<%= user %>">
+            <input type="hidden" name="course_id" value="<%= course.id %>">
+            <button type="submit" class="btn btn-sm btn-outline-primary">Enroll Now</button>
+          </form>
         </div>
       </div>
     </div>
-    
-    <!-- Course Card 2 -->
-    <div class="col-md-4">
-      <div class="card h-100 shadow-sm">
-        <div class="card-body">
-          <span class="badge bg-warning text-dark mb-2">Intermediate</span>
-          <h5 class="card-title">Modern JavaScript</h5>
-          <p class="card-text text-muted">Master ES6+ features and functional programming concepts.</p>
-        </div>
-        <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center">
-          <div>
-            <span class="text-warning">★ ★ ★ ★ ☆</span>
-            <span class="text-muted ms-1">(89)</span>
-          </div>
-          <a href="#" class="btn btn-sm btn-outline-primary">Enroll Now</a>
-        </div>
-      </div>
-    </div>
-    
-    <!-- Course Card 3 -->
-    <div class="col-md-4">
-      <div class="card h-100 shadow-sm">
-        <div class="card-body">
-          <span class="badge bg-danger mb-2">Advanced</span>
-          <h5 class="card-title">React Masterclass</h5>
-          <p class="card-text text-muted">Build professional applications with React and Redux.</p>
-        </div>
-        <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center">
-          <div>
-            <span class="text-warning">★ ★ ★ ★ ★</span>
-            <span class="text-muted ms-1">(156)</span>
-          </div>
-          <a href="#" class="btn btn-sm btn-outline-primary">Enroll Now</a>
-        </div>
-      </div>
-    </div>
+    <% }) %>
   </div>
   
   <div class="text-center mt-4">

@@ -34,6 +34,8 @@ const courseRoutes = require("./routes/coursesRoutes.js");
 const assignmentsRoutes = require("./routes/assignmentsRoutes.js");
 const adminRoutes = require("./routes/adminRoutes.js");
 
+const FeaturedCourse = require('./models/FeaturedCourse.js');
+
 
 // Set up EJS as the view engine
 app.set('view engine', 'ejs');
@@ -120,14 +122,14 @@ app.get("/", async (req, res) => {
     WHERE uc.user_id = ?`,
                 [req.user.id, req.user.id]
             );
-
             res.render("dashboard", {
                 user: req.user,
-                courses,
+                courses
             });
         } else {
+            const featuredCourses = await FeaturedCourse.getAll();
             // User is not logged in
-            res.render("index");
+            res.render("index", { featuredCourses });
         }
     } catch (err) {
         console.error("Error in root route:", err);

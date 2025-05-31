@@ -4,6 +4,7 @@ const userController = require('../controllers/userController');
 const coursesController = require('../controllers/coursesController.js');
 const announcementsController = require('../controllers/announcementController');
 const assignmentsController = require('../controllers/assignmentsController.js');
+const featuredCoursesController = require('../controllers/featuredCoursesController.js');
 const Course = require('../models/Course');
 
 // Render home page
@@ -26,6 +27,16 @@ router.get("/courses",(req, res) => {res.render("admin/course/courses")});
 router.get("/courses/get-all",coursesController.getAllCourses);
 router.get("/courses/new",(req, res) => {res.render("admin/course/new_course")});
 router.post("/courses/create",coursesController.createCourse)
+
+//Featured Courses
+router.get("/featured-courses", (req, res) => {
+    res.render("admin/featuredCourse/index")
+});
+router.get("/featured-courses/get-all", featuredCoursesController.getAllFeaturedCourses);
+router.get("/featured-courses/new", async (req, res) => { res.render("admin/featuredCourse/new", { courses: await Course.getAll() }) });
+router.post("/featured-courses/create", featuredCoursesController.createFeaturedCourse);
+router.post("/featured-courses/update", featuredCoursesController.updateFeaturedCourse);
+router.post("/featured-courses/delete", featuredCoursesController.deleteFeaturedCourse);
 
 // Assignments
 router.get("/assignments", (req, res) => {

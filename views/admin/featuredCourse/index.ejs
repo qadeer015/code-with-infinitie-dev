@@ -1,0 +1,72 @@
+<%- include('../partials/_header', { title: 'Featured Courses' }) %>
+   
+
+
+
+                <h4>Featured Courses</h4>
+                <div class="row pb-5">
+                    <div id="courses-data"></div>
+                </div>
+
+
+
+
+
+
+    <script>
+
+        const coursesData = document.getElementById('courses-data');
+
+        document.addEventListener("DOMContentLoaded", function () {
+            fetchCourses();
+        })
+
+        function fetchCourses() {
+            const response = fetch("/users/admin/featured-courses/get-all", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                cache: "no-cache",
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                return response.json();
+            }).then(data => {
+                coursesData.innerHTML = '';
+                console.log(data);
+                data.forEach(course => {
+                    coursesData.innerHTML += renderCourses(course);
+                });
+            }).catch(error => {
+                console.error("Error fetching courses:", error);
+                coursesData.innerHTML = `
+                    <div class="error-message">
+                        <p>Failed to load courses. Please try again later.</p>
+                    </div>
+                `;
+            });
+        }
+
+
+        function renderCourses(course) {
+            return `
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="card-title">${course.course_id}</div>
+                            <div class="card-subtitle mb-2 text-muted">${course.difficulty_lvl}</div>
+                            <div class="card-subtitle mb-2 text-muted">${course.title}</div>
+                            <div class="card-subtitle mb-2 text-muted">${course.description}</div>
+                            <div class="card-subtitle mb-2 text-muted">${course.course_duration}</div>
+                            <div class="card-subtitle mb-2 text-muted">${course.course_fee}</div>
+                            <div class="card-subtitle mb-2 text-muted">${course.status}</div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+    </script>
+    <%- include('../partials/_footer') %>

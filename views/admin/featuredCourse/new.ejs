@@ -1,0 +1,29 @@
+<%- include('../partials/_header', { title: 'New Featured Course' }) %>
+   
+
+
+
+                <h4>New Featured Course </h4>
+                <div class="row pb-5">
+                    <form action="/users/admin/featured-courses/create" method="post" class="col-4">
+                        <div class="form-group mb-3">
+ <select name="course_id" id="course_id" class="form-select">
+                                <option value="">Select Course</option>
+                                <% courses.forEach(course => { %>
+                                    <option value="<%= course.id %>"><%= course.title %></option>
+                                <% }) %>
+                            </select>
+                            </div>
+                           
+<div class="form-group mb-3">
+<select name="difficulty_lvl" id="difficulty_lvl" class="form-select">
+                                <option value="">Select Difficulty Level</option>
+                                <option value="beginner">Beginner</option>
+                                <option value="intermediate">Intermediate</option>
+                                <option value="advanced">Advanced</option>
+                            </select>
+                            </div>
+                        <button type="submit" class="btn btn-primary">Create</button>
+                    </form>
+                </div>
+<%- include('../partials/_footer') %>

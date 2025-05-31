@@ -1,13 +1,29 @@
 <%- include('../partials/_header', { title: 'Courses' }) %>
-   
-
-
-
-                <h4>Courses</h4>
-                <div class="row pb-5">
-                    <div id="courses-data"></div>
+                <div class="col-12 table-responsive">
+                    <h3>Courses</h3>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <div class="form-check form-check-muted m-0">
+                                        <label class="form-check-label">
+                                            <input type="checkbox" class="form-check-input" id="check-all">
+                                        </label>
+                                    </div>
+                                </th>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Duration</th>
+                                <th>Fee</th>
+                                <th>Status</th>
+                                <th>Assignments</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="courses-data" class="table-group-divider">
+                        </tbody>
+                    </table>
                 </div>
-
 
 
 
@@ -52,21 +68,48 @@
 
         function renderCourses(course) {
             return `
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-title">${course.title}</div>
-                            <div class="card-subtitle mb-2 text-muted">${course.description}</div>
-                            <div class="card-subtitle mb-2 text-muted">${course.course_duration}</div>
-                            <div class="card-subtitle mb-2 text-muted">${course.course_fee}</div>
-                            <div class="card-subtitle mb-2 text-muted">${course.status}</div>
-                            <form action="/users/admin/assignments/submitted" class="nav-link position-relative ps-3">
-                                <input type="hidden" name="course_id" value="${course.id}">
-                                <input type="submit" class="btn btn-primary" value="Submitted Assignments">
-                            </form>
+                <tr>
+                    <td>
+                        <div class="form-check form-check-muted m-0">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="check-all">
+                            </label>
                         </div>
-                    </div>
-                </div>
+                    </td>
+                    <td>${course.title}</td>
+                    <td>${course.description}</td>
+                    <td>${course.course_duration}</td>
+                    <td>${course.course_fee}</td>
+                    <td> <span class="badge ${course.status === 'active' ? 'bg-success' : 'bg-danger'}"> ${course.status} </span></td>
+                    <td>
+                        <form action="/users/admin/assignments/submitted" class="nav-link position-relative ps-3">
+                            <input type="hidden" name="course_id" value="${course.id}">
+                            <input type="submit" class="btn btn-primary" value="View">
+                        </form>
+                    </td>
+                                                 
+                    <td>
+                        <div class="dropdown">
+                            <button class="bg-transparent rounded-circle border-1 border-muted px-1 outline-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item mb-1">
+                                    <a class="text-decoration-none text-dark" href="/users/admin/courses/edit/${course.id}">
+                                        <i class="bi bi-pencil"></i>
+                                        Edit
+                                    </a>
+                                </li>
+                                <li class="dropdown-item mb-1">
+                                    <button class="bg-transparent border-0 outline-0 delete-student" data-id="${course.id}">
+                                        <i class="bi bi-trash"></i>
+                                        Delete
+                                    </button>
+                                </li>
+                            </ul>
+                        </div>
+                    </td>
+                </tr>
             `;
         }
     </script>
