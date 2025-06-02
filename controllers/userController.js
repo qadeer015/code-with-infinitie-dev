@@ -1,31 +1,68 @@
+const cloudinary = require('cloudinary').v2;
 const User = require('../models/User');
 require('dotenv').config();
+
+// Configure Cloudinary (if not already done in another file)
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 const editUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, email, role, page_link, repository_link} = req.body;
-        let avatar = req.file ? `/uploads/${req.file.filename}` : null;
+        const { name, email, role, page_link, repository_link } = req.body;
+        
+        // Get the existing user
         const userProfile = await User.findById(id);
         if (!userProfile) {
             return res.status(404).json({ message: 'User not found' });
         }
-        // Keep old avatar if no new file uploaded
-        if (!req.file) {
-            avatar = userProfile.avatar; // Retain avatar
+
+        let avatarUrl = userProfile.avatar; // Keep old avatar by default
+
+        // If new file was uploaded
+        if (req.file) {
+            // Delete old avatar from Cloudinary if it exists
+            if (userProfile.avatar) {
+                try {
+                    // Extract public_id from the URL (last part before file extension)
+                    const publicId = userProfile.avatar.split('/').pop().split('.')[0];
+                    await cloudinary.uploader.destroy(`user-avatars/${publicId}`);
+                    console.log('Deleted old avatar from Cloudinary');
+                } catch (err) {
+                    console.error('Error deleting old avatar:', err);
+                    // Continue even if deletion fails
+                }
+            }
+
+            // Use the new avatar URL from Cloudinary
+            avatarUrl = req.file.path; // or req.file.secure_url depending on Cloudinary version
         }
+
+        // Update user data
         const updatedRole = role ? role : userProfile.role;
-        const updatedUser = await User.updateUser(id, name, email, updatedRole, avatar, page_link, repository_link);
+        const updatedUser = await User.updateUser(
+            id, 
+            name, 
+            email, 
+            updatedRole, 
+            avatarUrl, 
+            page_link, 
+            repository_link
+        );
+
         if (updatedUser) {
             res.redirect("/");
         } else {
             res.status(400).json({ message: 'Failed to update user' });
         }
     } catch (error) {
-        console.error(error);
+        console.error('Error updating user:', error);
         res.status(500).json({ message: 'Error updating user' });
     }
-}
+};
 
 const getStudents = async (req, res) => {
     try {
