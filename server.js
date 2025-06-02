@@ -11,20 +11,6 @@ const auththenticateUser = require("./middleware/auththenticateUser.js");
 const isAdmin = require('./middleware/isAdmin.js');
 app.use(cookieParser());
 
-const http = require("http");
-const socketIo = require("socket.io");
-
-const server = http.createServer(app);
-const io = socketIo(server, {
-    cors: {
-        origin: "*",
-        methods: ["GET", "POST"]
-    }
-});
-
-const connection = require('./socket/connection.js');
-connection(io);
-
 const db = require("./config/db.js");
 const authRoutes = require("./routes/authRoutes.js");
 const userRoutes = require("./routes/userRoutes.js");
@@ -180,6 +166,6 @@ app.get('*', (req, res) => {
     res.status(404).render('notfound', { viewName: 'notfound' });
 });
 
-server.listen(port, () => {
+app.listen(port, () => {
     console.log(`Example app listening on port ${port}`);
 });
