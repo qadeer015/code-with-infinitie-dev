@@ -1,11 +1,5 @@
 <%- include('partials/_header', { title: 'Dashboard' }) %>
-
-<div class="row p-0 py-5 m-0 mt-5">
-  <div class="col-lg-2 col-md-2 d-lg-inline d-md-inline d-none">
-    <%- include('partials/_sidebar') %>
-  </div>
-  <div class="col-lg-10 col-md-10 col-sm-12">
-    <h1 class="mb-4"><%= user.name %>'s Courses</h1>
+  <h1 class="mb-4"><%= user.name %>'s Courses</h1>
   <!-- User's Courses Section -->
   <div class="row">
     <% if (courses.length > 0) { %>
@@ -47,9 +41,7 @@
       </div>
     <% } %>
   </div>
-  </div>
-</div>
-
+  
 <%- include('partials/_footer') %>
 
 

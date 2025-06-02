@@ -105,11 +105,11 @@ const logout = (req, res) => {
 
 // Terms and Privacy Policy pages
 const showTerms = (req, res) => {
-    res.render('auth/terms', { title: 'Terms of Service', user: req.user });
+    res.render('auth/terms', { title: 'Terms of Service', user: req.user, viewName: 'terms' });
 };
 
 const showPrivacy = (req, res) => {
-    res.render('auth/privacy', { title: 'Privacy Policy', user: req.user });
+    res.render('auth/privacy', { title: 'Privacy Policy', user: req.user, viewName: 'privacy' });
 };
 
 module.exports = { 

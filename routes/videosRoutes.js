@@ -14,7 +14,7 @@ router.get("/videos",getAllVideos);
 
 // render add video page
 router.get("/add-video",isAdmin, (req, res) => {
-    res.render("add_video");
+    res.render("add_video", { viewName: 'add_video' });
 });
 
 router.get("/videos/:id", async (req, res) => {
@@ -24,7 +24,7 @@ router.get("/videos/:id", async (req, res) => {
         if (!video) {
             return res.status(404).send("Video not found");
         }
-        res.render("videos_viewer", { video });
+        res.render("videos_viewer", { video, viewName: 'videos_viewer' });
     } catch (error) {
         console.error(error);
         res.status(500).send("Error retrieving video");

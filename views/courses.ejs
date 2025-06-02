@@ -1,14 +1,14 @@
 
 <%- include('partials/_header', { title: 'Courses' }) %>
 
-<div class="container py-5">
+<div class="container">
   <div class="text-center mb-5">
-    <h2 class="fw-bold">Featured Courses</h2>
+    <h2 class="fw-bold">Available Courses</h2>
     <p class="text-muted">Start your learning journey today</p>
   </div>
   
   <div class="row g-4">
-   <% courses.forEach((course) => { %>
+    <% courses.forEach((course) => { %>
     <div class="col-md-4">
         <div class="card h-100 shadow-sm">
             <div class="card-body">
@@ -35,12 +35,8 @@
             </div>
         </div>
     </div>
-<% }); %>
+    <% }); %>
 
-  </div>
-  
-  <div class="text-center mt-4">
-    <a href="/courses" class="btn btn-primary px-4">View All Courses</a>
   </div>
 </div>
 

@@ -17,7 +17,7 @@ const showCourseAssignments = async (req, res) => {
             created_at: formateTime.formatRelativeTime(assignment.created_at),
             due_date: formateTime.formatDate(assignment.due_date)
         }))
-        res.render("assignments", { assignments, token });
+        res.render("assignments", { assignments, token, viewName: 'assignments' });
     } catch (error) {
         console.error("Error retrieving assignments:", error);
         res.status(500).json({ message: 'Error retrieving assignments' });

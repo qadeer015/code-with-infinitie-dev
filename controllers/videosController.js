@@ -4,7 +4,7 @@ require('dotenv').config();
 const getAllVideos = async (req, res) => {
     try {
         const videos = await Video.getAll();
-        res.render('videos', { videos });
+        res.render('videos', { videos, viewName: 'videos' });
     } catch (error) {
         console.error("Error retrieving videos:", error);
         res.status(500).json({ message: 'Error retrieving videos' });

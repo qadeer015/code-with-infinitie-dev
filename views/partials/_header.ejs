@@ -95,3 +95,10 @@
             </div>
         </div>
     </nav>
+<% if (!['/auth/login', '/auth/register', '/forgot-password', '/reset-password'].includes(url) && viewName !== 'index') { %>
+    <div class="row p-0 m-0 mt-5 vh-100">
+        <div class="col-lg-2 bg-secondary col-md-2 d-lg-inline d-md-inline d-none h-100">
+            <%- include('_sidebar') %>
+        </div>
+        <div class="col-lg-10 col-md-10 col-sm-12 py-5 h-100 overflow-y-auto">
+<% } %>

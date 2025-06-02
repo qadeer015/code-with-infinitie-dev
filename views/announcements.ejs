@@ -1,16 +1,10 @@
 <%- include('partials/_header', { title: 'Announcements' }) %>
 
-    <div class="row p-0 py-5 m-0 mt-5">
-        <div class="col-lg-2 col-md-2 d-lg-inline d-md-inline d-none">
-            <%- include('partials/_sidebar') %>
-        </div>
-        <div class="col-lg-10 col-md-10 col-sm-12">
-              <h3>Announcements</h3>
+     <h3>Announcements</h3>
             <!-- User's Courses Section -->
             <div class="row">
-                <div id="announcementsContainer" class="card">
-                        <div class="card-body">
-                            <% if(announcements.length> 0) {%>
+                <div class="col-12">
+                    <% if(announcements.length> 0) {%>
                                 <% announcements.forEach(announcement=> { %>
                                     <div class="accordion my-1" id="announcementAccordion_<%= announcement.id %>">
                                         <div class="accordion-item">
@@ -20,12 +14,12 @@
                                                     data-bs-target="#collapse<%= announcement.id %>"
                                                     aria-expanded="false"
                                                     aria-controls="collapse<%= announcement.id %>">
-                                                    <div class="d-flex flex-column">
+                                                    <div class="d-flex w-100 justify-content-between">
                                                         <strong>
                                                             <%= announcement.title %>
                                                         </strong>
-                                                        <small class="text-muted">
-                                                            <%= new Date(announcement.created_at).toLocaleString() %>
+                                                        <small class="text-muted mx-3">
+                                                            <%= announcement.created_at %>
                                                         </small>
                                                     </div>
                                                 </button>
@@ -43,55 +37,7 @@
                             <% } else { %>
                                 <p class="text-muted">No announcements found.</p>
                             <% } %>
-                        </div>
-                    </div>
+                </div>
             </div>
-        </div>
-    </div>
-
-    <%- include("partials/_js") %>
-        <script>
-            // Initial load when DOM is ready
-            document.addEventListener('DOMContentLoaded', () => {
-                // loadAnnouncements();
-
-                // Initialize tooltips
-                if (typeof bootstrap !== 'undefined' && bootstrap.Tooltip) {
-                    const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
-                    tooltipTriggerList.map(function (tooltipTriggerEl) {
-                        return new bootstrap.Tooltip(tooltipTriggerEl);
-                    });
-                }
-            });
-
-            // Socket.io for real-time updates
-            socket.on("new announcement", () => {
-                loadAnnouncements();
-            });
-
-            socket.on("update announcement count", function (data) {
-                if (data.user_id === "<%= user.id %>") {
-                    updateNotificationBadge(data.count);
-                }
-            });
-
-            function updateNotificationBadge(count) {
-                const navItem = document.querySelector(".nav-item a");
-                let badge = navItem.querySelector(".notification-badge");
-
-                if (count > 0) {
-                    if (!badge) {
-                        badge = document.createElement("span");
-                        badge.className = "notification-badge position-absolute bg-danger rounded-circle px-1";
-                        badge.style = "left: 8px; top: 5px !important; font-size: 10px;";
-                        navItem.appendChild(badge);
-                    }
-                    badge.innerText = count;
-                } else if (badge) {
-                    badge.remove();
-                }
-            }
-
-        </script>
 
         <%- include('partials/_footer') %>

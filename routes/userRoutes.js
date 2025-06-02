@@ -26,7 +26,7 @@ router.get("/edit/:id",async (req, res) => {
         if (!userProfile) {
             return res.status(404).send("User not found");
         }
-        res.render("edit_user", { userProfile });
+        res.render("edit_user", { userProfile, viewName: 'edit_user' });
     } catch (error) {
         console.error(error);
         res.status(500).send("Error retrieving user");
@@ -43,7 +43,7 @@ router.get("/:id/profile", async (req,res)=>{
         if(userId != req.user.id && req.user.role != "admin"){
             return res.redirect("/");
         }
-        res.render("profile", { userProfile });
+        res.render("profile", { userProfile, viewName: 'profile' });
     } catch (error) {
         console.error(error);
         res.status(500).send("Error retrieving user");

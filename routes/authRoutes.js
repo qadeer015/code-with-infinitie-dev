@@ -1,6 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const { signup, login, logout, showTerms, showPrivacy } = require('../controllers/authController');
+const { vi } = require('date-fns/locale');
 
 const router = express.Router();
 
@@ -16,7 +17,7 @@ const upload = multer({ storage: storage });
 
 // Render signup page
 router.get('/register', (req, res) => {
-    res.render('auth/signup',{user:req.session.user || null});
+    res.render('auth/signup',{user: req.session.user || null , viewName: 'signup'});
 });
 
 // Handle signup form submission
@@ -24,7 +25,7 @@ router.post('/signup',upload.single('avatar'), signup);
 
 // Render login page
 router.get('/login', (req, res) => {
-    res.render('auth/login',{user:req.session.user || null});
+    res.render('auth/login',{user:req.session.user || null , viewName: 'login'});
 });
 
 // Handle login form submission

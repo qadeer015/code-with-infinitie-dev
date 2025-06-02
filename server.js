@@ -87,6 +87,7 @@ app.use((req, res, next) => {
     next();
 });
 
+
 app.use(auththenticateUser); // Attaching user to req
 
 app.use((req, res, next) => {
@@ -124,12 +125,13 @@ app.get("/", async (req, res) => {
             );
             res.render("dashboard", {
                 user: req.user,
-                courses
+                courses,
+                viewName: 'dashboard'
             });
         } else {
             const featuredCourses = await FeaturedCourse.getAll();
             // User is not logged in
-            res.render("index", { featuredCourses });
+            res.render("index", { featuredCourses, viewName: 'index' });
         }
     } catch (err) {
         console.error("Error in root route:", err);
@@ -148,7 +150,7 @@ app.use("/users/admin", isAdmin, adminRoutes);
 app.get("/search", async (req, res) => {
     const { query } = req.query;
     if (!query) {
-        return res.render("search_result", { query });
+        return res.render("search_result", { query , viewName: 'search_result'});
     }
     try {
         let userResults = [];
@@ -159,7 +161,7 @@ app.get("/search", async (req, res) => {
         }
         const [videoResults] = await db.query("SELECT * FROM videos WHERE title LIKE ? OR description LIKE ? OR iframe_link LIKE ? ORDER BY title ASC", ["%" + query + "%", "%" + query + "%", "%" + query + "%"]);
         const totalResults = userResults.length + videoResults.length;
-        res.render("search_result", { query, userResults, videoResults, totalResults });
+        res.render("search_result", { query, userResults, videoResults, totalResults, viewName: 'search_result' });
     } catch (err) {
         console.error(err);
         res.status(500).send("Error retrieving user");
@@ -167,15 +169,15 @@ app.get("/search", async (req, res) => {
 });
 
 app.get("/about", (req, res) => {
-    res.render("about");
+    res.render("about", { viewName: 'about' });
 });
 
 app.get("/faqs", (req, res) => {
-    res.render("faqs");
+    res.render("faqs", { viewName: 'faqs' });
 });
 
 app.get('*', (req, res) => {
-    res.status(404).render('notfound');
+    res.status(404).render('notfound', { viewName: 'notfound' });
 });
 
 server.listen(port, () => {

@@ -10,7 +10,7 @@ const showCourseAnnouncements = async (req, res) => {
             ...announcement,
             created_at: formateTime.formatRelativeTime(announcement.created_at)
         }))
-        res.render("announcements", { announcements })
+        res.render("announcements", { announcements, viewName: 'announcements' });
     } catch (error) {
         console.error("Error retrieving announcements:", error);
         res.status(500).json({ message: 'Error retrieving announcements', error: error.message });
