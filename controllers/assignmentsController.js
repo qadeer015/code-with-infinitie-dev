@@ -64,7 +64,6 @@ const createAssignment = async (req, res) => {
 };
 
 
-
 const submitAssignment = async (req, res) => {
     try {
         const userId = req.user.id;
@@ -273,7 +272,6 @@ function rewriteResourceUrls(htmlContent, files, baseUrl) {
         }
     );
 }
-
 
 const gradeAssignment = async (req, res)=>{
       const { user_id , assignment_id , marks } = req.body;
