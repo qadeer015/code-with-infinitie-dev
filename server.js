@@ -5,7 +5,6 @@ const path = require('path');
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-const multer = require('multer');
 require('dotenv').config();
 const auththenticateUser = require("./middleware/auththenticateUser.js");
 const isAdmin = require('./middleware/isAdmin.js');
@@ -46,33 +45,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/img', express.static(path.join(__dirname, 'public/img')));
 app.use('/uploads', express.static(path.join(__dirname, 'public/uploads')));
 
-const storage = multer.diskStorage({
-    destination: './uploads/',
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname)); // Unique filename for each file
-    }
-});
-
-const upload = multer({
-    storage: storage,
-    limits: { fileSize: 2 * 1024 * 1024 }, // allowoing up to 2MB
-    fileFilter: (req, file, cb) => {
-        const allowedFileTypes = /jpeg|jpg|png/;
-        const extname = allowedFileTypes.test(path.extname(file.originalname).toLowerCase());
-        const mimetype = allowedFileTypes.test(file.mimetype);
-        if (extname && mimetype) {
-            return cb(null, true);
-        } else {
-            cb(new Error("Only .jpg, .jpeg, and .png files are allowed"));
-        }
-    }
-});
-
 app.use((req, res, next) => {
     res.locals.url = req.path; // Making `url` available in all views
     next();
 });
-
 
 app.use(auththenticateUser); // Attaching user to req
 
