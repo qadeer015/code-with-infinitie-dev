@@ -9,58 +9,52 @@ cloudinary.config({
   api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
+// userController.js
 const editUser = async (req, res) => {
     try {
         const { id } = req.params;
         const { name, email, role, page_link, repository_link } = req.body;
         
-        // Get the existing user
         const userProfile = await User.findById(id);
         if (!userProfile) {
             return res.status(404).json({ message: 'User not found' });
         }
 
-        let avatarUrl = userProfile.avatar; // Keep old avatar by default
-
+        let avatarUrl = userProfile.avatar;
+        
         // If new file was uploaded
         if (req.file) {
-            // Delete old avatar from Cloudinary if it exists
-            if (userProfile.avatar) {
+            // Delete old avatar if it exists and is from Cloudinary
+            if (userProfile.avatar && userProfile.avatar.includes('res.cloudinary.com')) {
                 try {
-                    // Extract public_id from the URL (last part before file extension)
-                    const publicId = userProfile.avatar.split('/').pop().split('.')[0];
-                    await cloudinary.uploader.destroy(`user-avatars/${publicId}`);
-                    console.log('Deleted old avatar from Cloudinary');
+                    const publicId = userProfile.avatar.split('/').slice(-2).join('/').split('.')[0];
+                    await cloudinary.uploader.destroy(publicId);
                 } catch (err) {
                     console.error('Error deleting old avatar:', err);
-                    // Continue even if deletion fails
                 }
             }
-
-            // Use the new avatar URL from Cloudinary
-            avatarUrl = req.file.path; // or req.file.secure_url depending on Cloudinary version
+            avatarUrl = req.file.path;
         }
 
-        // Update user data
-        const updatedRole = role ? role : userProfile.role;
         const updatedUser = await User.updateUser(
             id, 
-            name, 
-            email, 
-            updatedRole, 
-            avatarUrl, 
-            page_link, 
-            repository_link
+            name || userProfile.name,
+            email || userProfile.email,
+            role || userProfile.role,
+            avatarUrl,
+            page_link || userProfile.page_link,
+            repository_link || userProfile.repository_link
         );
 
         if (updatedUser) {
             res.redirect("/");
         } else {
-            res.status(400).json({ message: 'Failed to update user' });
+            res.redirect(`/users/edit/${id}`);
         }
     } catch (error) {
         console.error('Error updating user:', error);
-        res.status(500).json({ message: 'Error updating user' });
+        req.flash('error', 'Error updating profile: ' + error.message);
+        res.redirect(`/users/edit/${id}`);
     }
 };
 

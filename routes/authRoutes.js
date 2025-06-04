@@ -11,7 +11,7 @@ router.get('/register', (req, res) => {
 });
 
 // Handle signup form submission with Cloudinary upload
-router.post('/signup', upload.single('avatar'), signup);
+router.post('/signup', upload('avatar'), signup);
 
 // Render login page
 router.get('/login', (req, res) => {

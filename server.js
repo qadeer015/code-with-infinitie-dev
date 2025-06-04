@@ -2,13 +2,11 @@ const express = require("express");
 const app = express();
 const port = 3000;
 const path = require('path');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
 require('dotenv').config();
-const auththenticateUser = require("./middleware/auththenticateUser.js");
-const isAdmin = require('./middleware/isAdmin.js');
+const cookieParser = require('cookie-parser');
 app.use(cookieParser());
+const cors = require('cors');
+app.use(cors());
 //https://code-with-infinitie-dev-git-main-abdulqadeeeers-projects.vercel.app/assignments?course_id=30001
 const db = require("./config/db.js");
 const authRoutes = require("./routes/authRoutes.js");
@@ -19,12 +17,14 @@ const courseRoutes = require("./routes/coursesRoutes.js");
 const assignmentsRoutes = require("./routes/assignmentsRoutes.js");
 const adminRoutes = require("./routes/adminRoutes.js");
 
+const auththenticateUser = require("./middleware/auththenticateUser.js");
+const isAdmin = require('./middleware/isAdmin.js');
+
 const FeaturedCourse = require('./models/FeaturedCourse.js');
 
-
 // Set up EJS as the view engine
-app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'ejs');
 const session = require('express-session');
 
 app.use(session({
@@ -34,12 +34,13 @@ app.use(session({
     cookie: { secure: false }
 }));
 
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true })); // For form data
-
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ limit: '50mb', extended: true }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/img', express.static(path.join(__dirname, 'public/img')));

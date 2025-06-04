@@ -1,20 +1,27 @@
 <div class="side-nav pt-5">
   <ul class="nav flex-column">
+      <% if(user.role==="admin" ){ %>
+        <li class="nav-item mb-4">
+          <a class="nav-link py-0" style="padding-left: 1.3rem!important;padding-right: 1.3rem!important;"
+            href="/users/admin/dashboard">
+            <i class="bi bi-speedometer2 circle"></i>
+            <span class="d-lg-inline d-none">Dashboard</span>
+          </a>
+        </li>
+      <% } %>
+        <li class="nav-item mb-4">
+          <a class="nav-link py-0" style="padding-left: 1.3rem!important;padding-right: 1.3rem!important;" href="/">
+            <i class="bi bi-house circle"></i>
+            <span class="d-lg-inline d-none">Home</span>
+          </a>
+        </li>
 
-    <li class="nav-item mb-4">
-      <a class="nav-link py-0" style="padding-left: 1.3rem!important;padding-right: 1.3rem!important;"
-        href="/">
-        <i class="bi bi-house circle"></i>
-        <span class="d-lg-inline d-none">Home</span>
-      </a>
-    </li>
-
-    <li class="nav-item mb-4">
-      <a class="nav-link py-0" style="padding-left: 1.3rem!important;padding-right: 1.3rem!important;"
-        href="/courses">
-        <i class="bi bi-book circle"></i>
-        <span class="d-lg-inline d-none">Courses</span>
-      </a>
-    </li>
+        <li class="nav-item mb-4">
+          <a class="nav-link py-0" style="padding-left: 1.3rem!important;padding-right: 1.3rem!important;"
+            href="/courses">
+            <i class="bi bi-book circle"></i>
+            <span class="d-lg-inline d-none">Courses</span>
+          </a>
+        </li>
   </ul>
 </div>

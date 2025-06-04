@@ -1,5 +1,5 @@
-<%- include('partials/_header', { title: 'Sign Up' }) %>
- <div class="row">
+<%- include('partials/_header', { title: "Edit Profile" }) %>
+<div class="row">
     <div class="col-lg-6">
         <div class="card">
             <div class="card-header">
@@ -7,15 +7,28 @@
             </div>
             <div class="card-body">
                 <form action="/users/edit/<%= userProfile.id %>" method="post" enctype="multipart/form-data">
+                    <div class="form-group text-center mb-3">
+                        <div class="avatar-preview-container">
+                            <img id="avatarPreview" 
+                                 src="<%= userProfile.avatar || '/img/default-avatar.png' %>" 
+                                 alt="Avatar Preview" 
+                                 class="img-thumbnail rounded-circle mb-2" 
+                                 style="width: 150px; height: 150px; object-fit: cover;">
+                        </div>
+                        <input type="file" id="avatar" name="avatar" class="form-control d-none" accept="image/*">
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="document.getElementById('avatar').click()">
+                            Change Avatar
+                        </button>
+                    </div>
                     <div class="form-group">
                         <label for="name" class="form-label fw-bold">Name</label>
                         <input type="text" id="name" name="name" value="<%= userProfile.name %>" class="form-control" required>
                     </div>
+                    <% if(user.role==="admin"){ %>
                     <div class="form-group">
                         <label for="email" class="form-label fw-bold">Email</label>
                         <input type="email" id="email" name="email" value="<%= userProfile.email %>" class="form-control" required>
                     </div>
-                    <% if(user.role==="admin"){ %>
                     <div class="form-group">
                         <label for="role" class="form-label fw-bold">Role</label>
                         <select id="role" name="role" class="form-control">
@@ -23,22 +36,21 @@
                             <option value="student">Student</option>
                             <option value="teacher">Teacher</option>
                             <option value="admin">Admin</option>
-                            <option value="deleted">Delete</option>
                         </select>
                     </div>
-                    <%}%>
-                    <div class="form-group">
-                        <label for="avatar" class="form-label fw-bold">Avatar</label>
-                        <input type="file" id="avatar" name="avatar" class="form-control">
-                    </div>
+                    <% } %>
+                    <%if(user.role==="admin" || user.repository_link ==''){%>
                     <div class="form-group">
                         <label for="repository_link" class="form-label fw-bold">Repository Link</label>
                         <input type="text" id="repository_link" name="repository_link" value="<%= userProfile.repository_link %>" class="form-control">
                     </div>
+                    <%}%>
+                    <%if(user.role==="admin" || user.page_link ==''){%>
                     <div class="form-group">
                         <label for="page_link" class="form-label fw-bold">Page Link</label>
                         <input type="text" id="page_link" name="page_link" value="<%= userProfile.page_link %>" class="form-control">
                     </div>
+                    <%}%>
                     <div class="form-group">
                         <button type="submit" class="btn btn-sm btn-primary mt-3">update</button>
                     </div>
@@ -46,5 +58,17 @@
             </div>
         </div>
     </div>
-  </div>
+</div>
+<script>
+document.getElementById('avatar').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('avatarPreview').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+</script>
 <%- include('partials/_footer') %>

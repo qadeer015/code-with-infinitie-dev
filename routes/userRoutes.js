@@ -37,8 +37,8 @@ router.get("/:id/profile", async (req,res)=>{
     }
 });
 
-// Edit user 
-router.post("/edit/:id", upload.single('avatar'), editUser);
+// Edit user profile
+router.post("/edit/:id", upload('avatar'), editUser);
 
 router.post("/delete/:id", deleteUser);
 
