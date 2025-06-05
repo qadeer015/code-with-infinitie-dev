@@ -1,11 +1,11 @@
 const db = require('../config/db');
 
 class Lecture {
-    static async createLecture(title, course_id, video_id, description, status) {
+    static async createLecture(title, course_id, video_id, description, tasks, notes, status) {
         try {
             const [result] = await db.execute(
-                'INSERT INTO lectures (title, course_id, video_id, description, status) VALUES (?, ?, ?, ?, ?)',
-                [title, course_id, video_id, description, status]
+                'INSERT INTO lectures (title, course_id, video_id, description, tasks, notes, status) VALUES (?, ?, ?, ?, ?, ?, ?)',
+                [title, course_id, video_id, description, tasks, notes, status]
             );
             return result;
         } catch (error) {
@@ -81,7 +81,7 @@ class Lecture {
                 'SELECT * FROM lectures Where id = ?',
                 [id]
             );
-            return result;
+            return result[0];
         } catch (error) {
             console.log("Error getting lecture:", error);
             throw error;
@@ -99,11 +99,11 @@ class Lecture {
         }
     }
 
-    static async updateLecture(id, title, course_id, video_id, description, status) {
+    static async updateLecture(id, title, course_id, video_id, description, tasks, notes, status) {
         try {
             const [result] = await db.execute(
-                'UPDATE lectures SET title = ?, course_id = ?, video_id = ?, description = ?, status = ? WHERE id = ?',
-                [title, course_id, video_id, description, status, id]
+                'UPDATE lectures SET title = ?, course_id = ?, video_id = ?, description = ?, tasks = ?, notes = ?, status = ? WHERE id = ?',
+                [title, course_id, video_id, description, tasks, notes, status, id]
             );
             return result.affectedRows > 0;
         } catch (error) {

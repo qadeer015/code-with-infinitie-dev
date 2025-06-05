@@ -1,13 +1,18 @@
 <%- include('partials/_header', { title: 'Lecture Viewer' }) %>
 
     <div class="container">
-        <div class="text-start mb-5">
+        <div class="text-start mb-3">
             <h2 class="fw-bold">
                 <%= lecture.title %>
             </h2>
+            <div class="d-flex align-items-center justify-content-start gap-2">
+                <button id="videoBtn" class="btn btn-sm btn-primary active">Video</button>
+                <button id="readingBtn" class="btn btn-sm btn-outline-secondary">Reading</button>
+            </div>
         </div>
 
-        <div class="row g-4">
+        <!-- Video Content (shown by default) -->
+        <div id="videoContent" class="row g-4">
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body p-0" style="height: 500px;">
@@ -20,23 +25,124 @@
                         </div>
                     </div>
                 </div>
-                 <h3 class="card-title">Description</h3>
-                        <p class="card-text">
-                            <%= lecture.description %>
-                        </p>
+                <p class="card-text mt-2">
+                    <%= lecture.video_title %>
+                </p>
             </div>
 
             <div class="col-md-4">
                 <div class="card">
+                    <!-- In the Video Content section (col-md-4) -->
                     <div class="card-body">
                         <h3 class="card-title">Notes</h3>
-                        <p class="card-text">
-                            <%= lecture.notes %>
-                        </p>
+                        <% if(lecture.notes===null){ %>
+                            <p class="card-text">No notes available</p>
+                            <% } else { %>
+                                <div class="notes-container">
+                                    <% lecture.notes.split(',').forEach(note=> {
+                                        const trimmedNote = note.trim();
+                                        if (trimmedNote) {
+                                        if (trimmedNote.startsWith('http://') || trimmedNote.startsWith('https://')) {
+                                        %>
+                                        <a href="<%= trimmedNote %>" target="_blank" rel="noopener noreferrer"
+                                            class="d-block mb-2">
+                                            <%= trimmedNote %>
+                                        </a>
+                                        <% } else { %>
+                                            <p class="card-text mb-2">
+                                                <%= trimmedNote %>
+                                            </p>
+                                            <% } } }); %>
+                                </div>
+                                <% } %>
+                                    <hr>
+
+                                    <h3 class="card-title">Tasks</h3>
+                                    <% if(lecture.tasks===null){%>
+                                        <p class="card-text">No tasks available</p>
+                                        <%} else{%>
+                                            <p class="card-text">
+                                                <%= lecture.tasks %>
+                                            </p>
+                                            <%}%>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Reading Content (hidden by default) -->
+        <div id="readingContent" class="row g-4" style="display: none;">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Lecture Details</h3>
+                        <div class="lecture-description">
+                            <% if(lecture.description){ %>
+                                <%= lecture.description %>
+                                    <% } else { %>
+                                        <p>No detailed description available for this lecture.</p>
+                                        <% } %>
+                        </div>
+
+                        <!-- In the Reading Content section -->
+                        <% if(lecture.notes){ %>
+                            <hr>
+                            <h4>Additional Notes</h4>
+                            <div class="lecture-notes">
+                                <% lecture.notes.split(',').forEach(note=> {
+                                    const trimmedNote = note.trim();
+                                    if (trimmedNote) {
+                                    if (trimmedNote.startsWith('http://') || trimmedNote.startsWith('https://')) { %>
+                                    <a href="<%= trimmedNote %>" target="_blank" rel="noopener noreferrer"
+                                        class="d-block mb-2">
+                                        <%= trimmedNote %>
+                                    </a>
+                                    <% } else { %>
+                                        <p class="mb-2">
+                                            <%= trimmedNote %>
+                                        </p>
+                                        <% } } }); %>
+                            </div>
+                            <% } %>
+
+                                <% if(lecture.tasks){ %>
+                                    <hr>
+                                    <h4>Practice Tasks</h4>
+                                    <div class="lecture-tasks">
+                                        <%= lecture.tasks %>
+                                    </div>
+                                    <% } %>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const videoBtn = document.getElementById('videoBtn');
+            const readingBtn = document.getElementById('readingBtn');
+            const videoContent = document.getElementById('videoContent');
+            const readingContent = document.getElementById('readingContent');
+
+            videoBtn.addEventListener('click', function () {
+                videoContent.style.display = 'flex';
+                readingContent.style.display = 'none';
+                videoBtn.classList.add('btn-primary');
+                videoBtn.classList.remove('btn-outline-secondary');
+                readingBtn.classList.add('btn-outline-secondary');
+                readingBtn.classList.remove('btn-primary');
+            });
+
+            readingBtn.addEventListener('click', function () {
+                videoContent.style.display = 'none';
+                readingContent.style.display = 'flex';
+                readingBtn.classList.add('btn-primary');
+                readingBtn.classList.remove('btn-outline-secondary');
+                videoBtn.classList.add('btn-outline-secondary');
+                videoBtn.classList.remove('btn-primary');
+            });
+        });
+    </script>
 
     <%- include('partials/_footer') %>

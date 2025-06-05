@@ -10,6 +10,7 @@
                         <th scope="col">Status</th>
                         <th scope="col">Course ID</th>
                         <th scope="col">Video ID</th>
+                        <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody id="lectures-data" class="table-group-divider">
@@ -63,6 +64,10 @@
                     <td>${lecture.status}</td>
                     <td>${lecture.course_id}</td>
                     <td>${lecture.video_id}</td>
+                    <td>
+                        <a href="/users/admin/lectures/${lecture.id}/edit" class="btn btn-primary">Edit</a>
+                        <a href="/users/admin/lectures/${lecture.id}/delete" class="btn btn-danger">Delete</a>
+                    </td>
                 </tr>
             `;
         }

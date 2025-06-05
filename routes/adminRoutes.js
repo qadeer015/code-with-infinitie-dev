@@ -8,6 +8,7 @@ const featuredCoursesController = require('../controllers/featuredCoursesControl
 const lecturesController = require('../controllers/lecturesController.js');
 const Course = require('../models/Course');
 const Video = require('../models/Video');
+const Lecture = require('../models/Lecture.js')
 
 // Render home page
 router.get('/dashboard', (req, res) => {
@@ -71,9 +72,12 @@ router.get("/lectures/get-all", lecturesController.getAllLectures);
 router.get("/lectures/new", async (req, res) => {
     res.render("admin/lecture/new", { courses: await Course.getAll(), videos: await Video.getAll() })
 })
+router.get("/lectures/:id/edit", async (req, res) => {
+    res.render("admin/lecture/edit", { lectureId: req.params.id, courses: await Course.getAll(), videos: await Video.getAll(), lecture: await Lecture.getLectureDetails(req.params.id) })
+});
 router.post("/lectures/create", lecturesController.createLecture);
-router.post("/lectures/update", lecturesController.updateLecture);
-router.post("/lectures/delete", lecturesController.deleteLecture);
+router.post("/lectures/:id/update", lecturesController.updateLecture);
+router.post("/lectures/:id/delete", lecturesController.deleteLecture);
 
 //videos
 router.get('/videos/search', async (req, res) => {

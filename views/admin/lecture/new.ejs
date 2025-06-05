@@ -4,11 +4,11 @@
         <form action="/users/admin/lectures/create" method="post">
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" name="title">
+                <input type="text" class="form-control" id="title" name="title" required>
             </div>
 
             <div class="mb-3">
-                <select name="course_id" id="course_id" class="form-select">
+                <select name="course_id" id="course_id" class="form-select" required>
                     <option value="">Select Course</option>
                     <% courses.forEach(course=> { %>
                         <option value="<%= course.id %>">
@@ -19,9 +19,9 @@
             </div>
             <div class="mb-3">
                 <label for="video_search" class="form-label">Search Video</label>
-                <input type="text" id="video_search" class="form-control" placeholder="Start typing video title...">
+                <input type="text" id="video_search" class="form-control" placeholder="Start typing video title..." required>
                 <div id="video_results" class="list-group position-absolute w-50" style="z-index:1000;"></div>
-                <input type="hidden" name="video_id" id="video_id">
+                <input type="hidden" name="video_id" id="video_id" required>
             </div>
 
             <div class="mb-3">
@@ -29,6 +29,23 @@
                 <textarea type="input" name="description" id="description" rows="4" placeholder="Write description"
                     class="form-control"></textarea>
             </div>
+
+            <!-- Notes Field with Tag Input -->
+            <div class="mb-3">
+                <label for="notes" class="form-label">Notes (Comma separated important links/instructions)</label>
+                <input type="text" class="form-control" id="notes" name="notes" placeholder="Enter notes separated by commas">
+                <small class="text-muted">Example: https://example.com/link1, https://example.com/link2, Important: Read chapter 3</small>
+                <div id="notes-tags" class="d-flex flex-wrap gap-2 mt-2"></div>
+            </div>
+
+            <!-- Tasks Field with Tag Input -->
+            <div class="mb-3">
+                <label for="tasks" class="form-label">Tasks (Comma separated practice tasks)</label>
+                <input type="text" class="form-control" id="tasks" name="tasks" placeholder="Enter tasks separated by commas">
+                <small class="text-muted">Example: Solve problem 1.2, Read chapter 4, Complete quiz</small>
+                <div id="tasks-tags" class="d-flex flex-wrap gap-2 mt-2"></div>
+            </div>
+
             <button type="submit" class="btn btn-primary">Create</button>
         </form>
     </div>
@@ -83,7 +100,61 @@
                 resultsBox.innerHTML = "";
             }
         });
-    </script>
 
+        // Notes and Tasks Tag Input Functionality
+        function setupTagInput(inputId, tagsContainerId) {
+            const input = document.getElementById(inputId);
+            const tagsContainer = document.getElementById(tagsContainerId);
+
+            input.addEventListener('keydown', function(e) {
+                if (e.key === ',' || e.key === 'Enter') {
+                    e.preventDefault();
+                    addTag(this.value.trim().replace(/,+$/, ''));
+                    this.value = '';
+                }
+            });
+
+            input.addEventListener('blur', function() {
+                if (this.value.trim()) {
+                    addTag(this.value.trim());
+                    this.value = '';
+                }
+            });
+
+            function addTag(text) {
+                if (!text) return;
+                
+                const tag = document.createElement('div');
+                tag.className = 'badge bg-primary rounded-pill d-flex align-items-center';
+                
+                const tagText = document.createElement('span');
+                tagText.textContent = text;
+                
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'btn-close btn-close-white ms-2';
+                closeBtn.style.fontSize = '0.5rem';
+                closeBtn.addEventListener('click', () => tag.remove());
+                
+                tag.appendChild(tagText);
+                tag.appendChild(closeBtn);
+                tagsContainer.appendChild(tag);
+                
+                // Update the hidden input value
+                updateHiddenInput();
+            }
+
+            function updateHiddenInput() {
+                const tags = Array.from(tagsContainer.querySelectorAll('.badge span'))
+                    .map(span => span.textContent.trim())
+                    .filter(text => text.length > 0);
+                
+                document.getElementById(inputId).value = tags.join(', ');
+            }
+        }
+
+        // Initialize both tag inputs
+        setupTagInput('notes', 'notes-tags');
+        setupTagInput('tasks', 'tasks-tags');
+    </script>
 
     <%- include('../partials/_footer') %>
