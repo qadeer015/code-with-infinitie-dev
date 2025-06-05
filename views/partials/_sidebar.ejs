@@ -1,6 +1,6 @@
 <div class="side-nav pt-5">
   <ul class="nav flex-column">
-      <% if(user.role==="admin" ){ %>
+      <% if(user && user.role==="admin" ){ %>
         <li class="nav-item mb-4">
           <a class="nav-link py-0" style="padding-left: 1.3rem!important;padding-right: 1.3rem!important;"
             href="/users/admin/dashboard">

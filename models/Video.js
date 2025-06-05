@@ -14,6 +14,22 @@ class Video {
         }
     }
 
+   static async searchByTitle(query) {
+    try {
+        const likeQuery = `%${query.toLowerCase()}%`;
+        const [rows] = await db.execute(
+            'SELECT id, title FROM videos WHERE is_deleted = 0 AND LOWER(title) LIKE ? ORDER BY id DESC LIMIT 10',
+            [likeQuery]
+        );
+        return rows;
+    } catch (error) {
+        console.error("Error searching videos:", error);
+        throw error;
+    }
+}
+
+
+
     static async findById(id) {
         try {
             const [rows] = await db.execute('SELECT * FROM videos WHERE id = ?', [id]);

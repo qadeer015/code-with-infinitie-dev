@@ -1,0 +1,89 @@
+<%- include('../partials/_header', { title: 'New Lecture' }) %>
+    <h4>New Lecture</h4>
+    <div class="row pb-5">
+        <form action="/users/admin/lectures/create" method="post">
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title">
+            </div>
+
+            <div class="mb-3">
+                <select name="course_id" id="course_id" class="form-select">
+                    <option value="">Select Course</option>
+                    <% courses.forEach(course=> { %>
+                        <option value="<%= course.id %>">
+                            <%= course.title %>
+                        </option>
+                        <% }) %>
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="video_search" class="form-label">Search Video</label>
+                <input type="text" id="video_search" class="form-control" placeholder="Start typing video title...">
+                <div id="video_results" class="list-group position-absolute w-50" style="z-index:1000;"></div>
+                <input type="hidden" name="video_id" id="video_id">
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea type="input" name="description" id="description" rows="4" placeholder="Write description"
+                    class="form-control"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+        </form>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById("video_search");
+        const resultsBox = document.getElementById("video_results");
+        const hiddenInput = document.getElementById("video_id");
+
+        let debounceTimer;
+
+        searchInput.addEventListener("input", function () {
+            const query = this.value.trim();
+
+            clearTimeout(debounceTimer);
+            if (query.length === 0) {
+                resultsBox.innerHTML = "";
+                return;
+            }
+
+            debounceTimer = setTimeout(() => {
+                fetch(`/users/admin/videos/search?q=${encodeURIComponent(query)}`)
+                    .then(res => res.json())
+                    .then(data => {
+                        resultsBox.innerHTML = "";
+
+                        if (data.length === 0) {
+                            resultsBox.innerHTML = "<div class='list-group-item'>No results found</div>";
+                            return;
+                        }
+
+                        data.forEach(video => {
+                            const item = document.createElement("div");
+                            item.classList.add("list-group-item", "list-group-item-action");
+                            item.textContent = video.title;
+                            item.dataset.id = video.id;
+
+                            item.addEventListener("click", () => {
+                                searchInput.value = video.title;
+                                hiddenInput.value = video.id;
+                                resultsBox.innerHTML = "";
+                            });
+
+                            resultsBox.appendChild(item);
+                        });
+                    });
+            }, 300); // debounce delay
+        });
+
+        document.addEventListener("click", function (e) {
+            if (!resultsBox.contains(e.target) && e.target !== searchInput) {
+                resultsBox.innerHTML = "";
+            }
+        });
+    </script>
+
+
+    <%- include('../partials/_footer') %>

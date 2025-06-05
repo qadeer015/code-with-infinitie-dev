@@ -1,0 +1,26 @@
+
+<%- include('partials/_header', { title: 'Courses' }) %>
+
+<div class="container">
+  <div class="text-start mb-5">
+    <h2 class="fw-bold"><%= course.title %></h2>
+  </div>
+  
+  <div class="row g-4">
+    <ul class="list-group">
+    <% if(lectures.length === 0){ %>
+        <p class="text-center">No lectures found</p>
+    <% } else { %>
+      <% lectures.forEach((lecture, index) => { %>
+      <li class="list-group-item position-relative">
+        <span class=""><%= index + 1 %> - </span>
+        <a href="/lectures/<%= lecture.id %>"><%= lecture.title %></a>
+        <p class="<%= lecture.status === 'open' ? 'text-success' : 'text-danger' %> mb-0"><%= lecture.status %></p>
+      </li>
+      <% }); %>
+    <% } %>
+    </ul>
+  </div>
+</div>
+
+<%- include('partials/_footer') %>

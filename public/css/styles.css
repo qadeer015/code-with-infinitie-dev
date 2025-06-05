@@ -36,7 +36,7 @@
     border: 1px solid;
 }
 .side-nav {
-    height: calc(100vh - 50px);
+    height: calc(100vh - 139px);
 }
 
 .sidebar-item.accordion-body {

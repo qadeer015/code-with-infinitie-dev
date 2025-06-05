@@ -5,7 +5,7 @@ const createCourse = async (req, res) => {
     try {
         const { title, description, course_duration, course_fee, status } = req.body;
         const course = await Course.createCourse(title, description, course_duration, course_fee, status);
-        res.status(201).json(course);
+        res.status(201).redirect('/users/admin/lectures/');
     } catch (err) {
         console.error(err);
     }

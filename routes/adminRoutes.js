@@ -5,7 +5,9 @@ const coursesController = require('../controllers/coursesController.js');
 const announcementsController = require('../controllers/announcementController');
 const assignmentsController = require('../controllers/assignmentsController.js');
 const featuredCoursesController = require('../controllers/featuredCoursesController.js');
+const lecturesController = require('../controllers/lecturesController.js');
 const Course = require('../models/Course');
+const Video = require('../models/Video');
 
 // Render home page
 router.get('/dashboard', (req, res) => {
@@ -59,5 +61,35 @@ router.get("/announcements", (req, res) => {
 router.get("/announcements/get-all", announcementsController.getAllAnnouncements);
 router.get("/announcements/new", async (req, res) => { res.render("admin/announcement/new", { courses: await Course.getAll() }) });
 router.post("/announcements/create", announcementsController.createAnnouncement)
+
+
+//Lectures
+router.get("/lectures", (req, res) => {
+    res.render("admin/lecture/index")
+});
+router.get("/lectures/get-all", lecturesController.getAllLectures);
+router.get("/lectures/new", async (req, res) => {
+    res.render("admin/lecture/new", { courses: await Course.getAll(), videos: await Video.getAll() })
+})
+router.post("/lectures/create", lecturesController.createLecture);
+router.post("/lectures/update", lecturesController.updateLecture);
+router.post("/lectures/delete", lecturesController.deleteLecture);
+
+//videos
+router.get('/videos/search', async (req, res) => {
+  const q = req.query.q;
+  if (!q) return res.json([]);
+
+  try {
+    const videos = await Video.searchByTitle(q);
+    res.json(videos.map(video => ({
+      id: video.id,
+      title: video.title
+    })));
+  } catch (err) {
+    console.error(err);
+    res.status(500).json([]);
+  }
+});
 
 module.exports = router;

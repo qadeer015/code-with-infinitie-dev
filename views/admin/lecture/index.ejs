@@ -1,33 +1,33 @@
-<%- include('../partials/_header', { title: 'Assignments' }) %>
-    <h4>Assignments</h4>
+<%- include('../partials/_header', { title: 'Lectures' }) %>
+    <h4>Lectures</h4>
     <div class="row pb-5">
         <div class="col-12 table-responsive">
             <table class="table">
                 <thead>
                     <tr>
                         <th scope="col">Title</th>
-                        <th scope="col">Course</th>
-                        <th scope="col">Due date</th>
-                        <th scope="col">Marks</th>
-                        <th scope="col">Details</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Course ID</th>
+                        <th scope="col">Video ID</th>
                     </tr>
                 </thead>
-                <tbody id="assignments-data" class="table-group-divider">
-                    <!-- assignment details will go here -->
+                <tbody id="lectures-data" class="table-group-divider">
+                    <!-- lecture details will go here -->
                 </tbody>
             </table>
         </div>
     </div>
     <script>
 
-        const assignmentsData = document.getElementById('assignments-data');
+        const lecturesData = document.getElementById('lectures-data');
 
         document.addEventListener("DOMContentLoaded", function () {
             fetchCourses();
         })
 
         function fetchCourses() {
-            const response = fetch("/users/admin/assignments/get-all", {
+            const response = fetch("/users/admin/lectures/get-all", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -40,13 +40,14 @@
 
                 return response.json();
             }).then(data => {
-                assignmentsData.innerHTML = '';
-                data.forEach(assignment => {
-                    assignmentsData.innerHTML += renderAssignments(assignment);
+                lecturesData.innerHTML = '';
+                console.log(data);
+                data.forEach(lecture => {
+                    lecturesData.innerHTML += renderLectures(lecture);
                 });
             }).catch(error => {
                 console.error("Error fetching assignments:", error);
-                assignmentsData.innerHTML = `
+                lecturesData.innerHTML = `
                     <div class="error-message">
                         <p>Failed to load assignments. Please try again later.</p>
                     </div>
@@ -54,15 +55,14 @@
             });
         }
 
-
-        function renderAssignments(assignment) {
+        function renderLectures(lecture) {
             return `
                 <tr>
-                    <td>${assignment.title}</td>
-                    <td>${assignment.course_id}</td>
-                    <td>${assignment.due_date}</td>
-                    <td>${assignment.total_marks}</td>
-                    <td>${assignment.details}</td>
+                    <td>${lecture.title}</td>
+                    <td>${lecture.description}</td>
+                    <td>${lecture.status}</td>
+                    <td>${lecture.course_id}</td>
+                    <td>${lecture.video_id}</td>
                 </tr>
             `;
         }

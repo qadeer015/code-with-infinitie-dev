@@ -16,6 +16,7 @@ const announcementRoutes = require("./routes/announcementRoutes.js");
 const courseRoutes = require("./routes/coursesRoutes.js");
 const assignmentsRoutes = require("./routes/assignmentsRoutes.js");
 const adminRoutes = require("./routes/adminRoutes.js");
+const lecturesRoutes = require("./routes/lecturesRoutes.js");
 
 const auththenticateUser = require("./middleware/auththenticateUser.js");
 const isAdmin = require('./middleware/isAdmin.js');
@@ -109,27 +110,7 @@ app.use("/announcements", announcementRoutes);
 app.use("/courses", courseRoutes);
 app.use("/assignments", assignmentsRoutes);
 app.use("/users/admin", isAdmin, adminRoutes);
-
-app.get("/search", async (req, res) => {
-    const { query } = req.query;
-    if (!query) {
-        return res.render("search_result", { query , viewName: 'search_result'});
-    }
-    try {
-        let userResults = [];
-        // Use async/await for MySQL2 promise-based queries
-        if (req.user.role == "admin") {
-            const [results] = await db.query("SELECT * FROM users WHERE name LIKE ? OR email LIKE ? OR role LIKE ? OR page_link LIKE ? OR repository_link LIKE ? OR avatar LIKE ? ORDER BY name ASC", ["%" + query + "%", "%" + query + "%", "%" + query + "%", "%" + query + "%", "%" + query + "%", "%" + query + "%"]);
-            userResults.push(...results);
-        }
-        const [videoResults] = await db.query("SELECT * FROM videos WHERE title LIKE ? OR description LIKE ? OR iframe_link LIKE ? ORDER BY title ASC", ["%" + query + "%", "%" + query + "%", "%" + query + "%"]);
-        const totalResults = userResults.length + videoResults.length;
-        res.render("search_result", { query, userResults, videoResults, totalResults, viewName: 'search_result' });
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("Error retrieving user");
-    }
-});
+app.use("/lectures", lecturesRoutes);
 
 app.get("/about", (req, res) => {
     res.render("about", { viewName: 'about' });

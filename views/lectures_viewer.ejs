@@ -1,0 +1,42 @@
+<%- include('partials/_header', { title: 'Lecture Viewer' }) %>
+
+    <div class="container">
+        <div class="text-start mb-5">
+            <h2 class="fw-bold">
+                <%= lecture.title %>
+            </h2>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-body p-0" style="height: 500px;">
+                        <div class="embed-responsive embed-responsive-16by9 h-100">
+                            <iframe class="embed-responsive-item w-100 h-100 rounded"
+                                src="<%= lecture.video_iframe_link %>" title="YouTube video player" frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+                 <h3 class="card-title">Description</h3>
+                        <p class="card-text">
+                            <%= lecture.description %>
+                        </p>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Notes</h3>
+                        <p class="card-text">
+                            <%= lecture.notes %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('partials/_footer') %>
