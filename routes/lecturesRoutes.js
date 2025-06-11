@@ -9,9 +9,10 @@ router.get("/", async (req, res) => {
     const courseId = req.query.course_id;
     const lectures = await Lecture.findAll(courseId);
     const course = await Course.findCourse(courseId);
+    console.log(course);
     res.render("lectures", {
       lectures,
-      course: course[0],
+      course,
       viewName: 'lectures'
     });
   } catch (err) {

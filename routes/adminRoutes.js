@@ -6,11 +6,13 @@ const announcementsController = require('../controllers/announcementController')
 const assignmentsController = require('../controllers/assignmentsController.js');
 const featuredCoursesController = require('../controllers/featuredCoursesController.js');
 const lecturesController = require('../controllers/lecturesController.js');
+const videosController = require('../controllers/videosController');
+
 const Course = require('../models/Course');
 const Video = require('../models/Video');
 const Lecture = require('../models/Lecture.js')
 
-// Render home page
+// home page
 router.get('/dashboard', (req, res) => {
     res.render('admin/dashboard',{req:req.session.user || null});
 });
@@ -24,14 +26,16 @@ router.post("/block/:id", userController.blockUser);
 router.post("/unblock/:id", userController.unblockUser);
 router.post("/delete/:id", userController.deleteUser);
 
-
 // Courses
-router.get("/courses",(req, res) => {res.render("admin/course/courses")});
-router.get("/courses/get-all",coursesController.getAllCourses);
-router.get("/courses/new",(req, res) => {res.render("admin/course/new_course")});
-router.post("/courses/create",coursesController.createCourse)
+router.get("/courses", (req, res) => {res.render("admin/course/index")});
+router.get("/courses/new", (req, res) => {res.render("admin/course/new")});
+router.get("/courses/get-all", coursesController.getAllCourses);
+router.get("/courses/:id/edit", coursesController.editCourse);
+router.post("/courses/:id/update", coursesController.updateCourse);
+router.post("/courses/create", coursesController.createCourse);
+router.post("/courses/delete", coursesController.deleteCourse);
 
-//Featured Courses
+// Featured Courses
 router.get("/featured-courses", (req, res) => {
     res.render("admin/featuredCourse/index")
 });
@@ -64,7 +68,7 @@ router.get("/announcements/new", async (req, res) => { res.render("admin/announc
 router.post("/announcements/create", announcementsController.createAnnouncement)
 
 
-//Lectures
+// Lectures
 router.get("/lectures", (req, res) => {
     res.render("admin/lecture/index")
 });
@@ -79,11 +83,10 @@ router.post("/lectures/create", lecturesController.createLecture);
 router.post("/lectures/:id/update", lecturesController.updateLecture);
 router.post("/lectures/:id/delete", lecturesController.deleteLecture);
 
-//videos
+// videos
 router.get('/videos/search', async (req, res) => {
   const q = req.query.q;
   if (!q) return res.json([]);
-
   try {
     const videos = await Video.searchByTitle(q);
     res.json(videos.map(video => ({
@@ -95,5 +98,26 @@ router.get('/videos/search', async (req, res) => {
     res.status(500).json([]);
   }
 });
+
+// render videos page
+router.get("/videos",videosController.getAllVideos);
+
+router.get("/videos/:id", async (req, res) => {
+    try {
+        const id = req.params.id;
+        const video = await Video.findById(id);
+        if (!video) {
+            return res.status(404).send("Video not found");
+        }
+        res.render("viewer", { video });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error retrieving video");
+    }
+});
+router.post("/videos/create", videosController.createVideo);
+router.post("/videos/:id/update", videosController.updateVideo);
+router.post("/videos/:id/delete", videosController.deleteVideo);
+
 
 module.exports = router;

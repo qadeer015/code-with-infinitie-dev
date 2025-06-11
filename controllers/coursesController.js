@@ -51,10 +51,42 @@ const getAssignmentsForUserCourse = async (req, res) => {
     }
 }
 
+const editCourse = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const course = await Course.findCourse(id);
+        res.status(200).render('admin/course/edit', {course});
+    } catch (err) {
+        console.error(err);
+    }
+}
+const updateCourse = async (req, res) => {
+        try {
+        const { title, description, course_duration, course_fee, status } = req.body;
+        await Course.updateCourse(req.params.id, title, description, course_duration, course_fee, status);
+        res.status(200).redirect('/users/admin/courses/');
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+const deleteCourse = async (req, res) => {
+    try {
+        const { id } = req.params;
+        await Course.deleteCourse(id);
+        res.status(200).redirect('/users/admin/courses/');
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 module.exports = {
     createCourse,
     joinCourse,
     getUserCourses,
     getAssignmentsForUserCourse,
-    getAllCourses
+    getAllCourses,
+    editCourse,
+    updateCourse,
+    deleteCourse
 }

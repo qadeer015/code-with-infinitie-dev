@@ -66,22 +66,9 @@
                     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                 </div>
                 <div class="offcanvas-body">
-                    <div class="my-3">
-                        <% if (user) { %>
-                            <div class="dropdown">
-                                <a class="" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                  <img src="<%= user.avatar %>" alt="user avatar" width="35px" height="45px" class="rounded-circle">
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><p class="dropdown-item lead"><%= user.name %></p></li>
-                                    <li><p class="dropdown-item m-0">(<%= user.role %>)</p></li>
-                                    <li><a class="dropdown-item" href="/users/profile/<%= user.id %>">Profile</a></li>
-                                    <li><a class="dropdown-item" href="/auth/logout" onclick="return confirm('Are you sure you want to logout?')" >Logout</a></li>
-                                </ul>
-                            </div>
+                        <% if (!['/auth/login', '/auth/register', '/forgot-password', '/reset-password'].includes(url) && viewName !== 'index' && viewName !== 'terms' && viewName !== 'privacy') { %>
+                            <%- include('_sidebar') %>
                         <% } %>
-                    </div>
                 </div>
             </div>
         </div>

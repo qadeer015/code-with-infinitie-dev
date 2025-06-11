@@ -21,6 +21,7 @@ class Course {
                 c.id, 
                 c.title, 
                 c.description,
+                c.ratting,
                 uc.status 
             FROM courses c 
             LEFT JOIN user_courses uc ON c.id = uc.course_id AND uc.user_id = ?
@@ -51,7 +52,7 @@ class Course {
                 'SELECT * FROM courses Where id = ?',
                 [id]
             );
-            return result;
+            return result[0];
         } catch (error) {
             console.log("Error getting course:", error);
             throw error;

@@ -15,7 +15,9 @@
       <li class="list-group-item position-relative">
         <span class=""><%= index + 1 %> - </span>
         <a href="/lectures/<%= lecture.id %>"><%= lecture.title %></a>
-        <p class="<%= lecture.status === 'open' ? 'text-success' : 'text-danger' %> mb-0"><%= lecture.status %></p>
+        <div class="d-flex justify-content-end">
+          <p class="<%= lecture.status === 'open' ? 'text-success' : 'text-danger' %> mb-0"><%= lecture.status %></p>
+        </div>
       </li>
       <% }); %>
     <% } %>

@@ -65,8 +65,25 @@
                     <td>${lecture.course_id}</td>
                     <td>${lecture.video_id}</td>
                     <td>
-                        <a href="/users/admin/lectures/${lecture.id}/edit" class="btn btn-primary">Edit</a>
-                        <a href="/users/admin/lectures/${lecture.id}/delete" class="btn btn-danger">Delete</a>
+                        <div class="dropdown">
+                            <button class="bg-transparent rounded-circle border-1 border-muted px-1 outline-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item mb-1">
+                                    <a class="text-decoration-none text-dark" href="/users/admin/lectures/${lecture.id}/edit">
+                                        <i class="bi bi-pencil"></i>
+                                        Edit
+                                    </a>
+                                </li>
+                                <li class="dropdown-item mb-1">
+                                    <form action="/users/admin/lectures/${lecture.id}/delete" method="post">
+                                        <i class="bi bi-trash"></i>
+                                        <input type="submit" class="bg-transparent border-0 outline-0" value="Delete">
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
                     </td>
                 </tr>
             `;

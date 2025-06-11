@@ -116,33 +116,27 @@
                 </div>
             </div>
         </div>
+
+
+        <div id="comments-section" class="mt-3">
+            <h3>Discussion Board</h3>
+
+            <!-- Form to add a new top-level comment -->
+            <form id="new-comment-form" class="position-relative">
+                <textarea name="comment" id="comment-text" min-rows="3" rows="3" class="w-100 p-3 rounded"
+                    placeholder="Ask a question or share your thoughts..."></textarea>
+                <input type="hidden" id="lecture_id" value="<%= lecture.id %>"> <!-- Replace with actual lecture_id -->
+                <input type="hidden" id="user_id" value="<%= user.id %>"> <!-- Replace with actual logged-in user_id -->
+                <button type="submit" class="btn btn-primary position-absolute"
+                    style="right: 10px; bottom: 15px">Send</button>
+            </form>
+
+            <div id="comments-list">
+                <!-- Comments will be loaded here -->
+            </div>
+        </div>
+
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const videoBtn = document.getElementById('videoBtn');
-            const readingBtn = document.getElementById('readingBtn');
-            const videoContent = document.getElementById('videoContent');
-            const readingContent = document.getElementById('readingContent');
-
-            videoBtn.addEventListener('click', function () {
-                videoContent.style.display = 'flex';
-                readingContent.style.display = 'none';
-                videoBtn.classList.add('btn-primary');
-                videoBtn.classList.remove('btn-outline-secondary');
-                readingBtn.classList.add('btn-outline-secondary');
-                readingBtn.classList.remove('btn-primary');
-            });
-
-            readingBtn.addEventListener('click', function () {
-                videoContent.style.display = 'none';
-                readingContent.style.display = 'flex';
-                readingBtn.classList.add('btn-primary');
-                readingBtn.classList.remove('btn-outline-secondary');
-                videoBtn.classList.add('btn-outline-secondary');
-                videoBtn.classList.remove('btn-primary');
-            });
-        });
-    </script>
-
-    <%- include('partials/_footer') %>
+    <script src="/js/lecture_viewer.js"></script>
+    <script src="/js/comment.js"></script>
+<%- include('partials/_footer') %>

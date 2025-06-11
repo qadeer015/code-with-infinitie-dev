@@ -207,14 +207,14 @@ function setupTagInput(inputId, hiddenId, tagsContainerId) {
             e.preventDefault(); // Prevent form submission
             e.stopPropagation(); // Stop event bubbling
             tag.remove();
-            updateHiddenInput();
+            updateHiddenInputs();
         });
         
         tag.appendChild(tagText);
         tag.appendChild(closeBtn);
         tagsContainer.appendChild(tag);
         
-        updateHiddenInput();
+        updateHiddenInputs();
     }
 
 }

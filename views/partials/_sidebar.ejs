@@ -1,18 +1,34 @@
 <div class="side-nav pt-5">
   <ul class="nav flex-column">
+      <% if (user) { %>
+        <li class="nav-item mb-4 d-lg-none d-md-none">
+            <div class="dropdown">
+              <a href="#" role="button" style="padding-left: 1.3rem!important;padding-right: 1.3rem!important;"
+                data-bs-toggle="dropdown" aria-expanded="false">
+                <img src="<%= user.avatar %>" alt="user avatar" width="35px" height="45px" class="rounded-circle">
+              </a>
+              <ul class="dropdown-menu">
+                <li><p class="dropdown-item lead"><%= user.name %></p></li>
+                <li><p class="dropdown-item m-0">(<%= user.role %>)</p></li>
+                <li><a class="dropdown-item" href="/users/<%= user.id %>/profile">Profile</a></li>
+                <li><a class="dropdown-item" href="/auth/logout" onclick="return confirm('Are you sure you want to logout?')" >Logout</a></li>
+              </ul>
+            </div>
+          </li>
+      <% } %>
       <% if(user && user.role==="admin" ){ %>
         <li class="nav-item mb-4">
           <a class="nav-link py-0" style="padding-left: 1.3rem!important;padding-right: 1.3rem!important;"
             href="/users/admin/dashboard">
             <i class="bi bi-speedometer2 circle"></i>
-            <span class="d-lg-inline d-none">Dashboard</span>
+            <span class="d-lg-inline d-md-none">Dashboard</span>
           </a>
         </li>
       <% } %>
         <li class="nav-item mb-4">
           <a class="nav-link py-0" style="padding-left: 1.3rem!important;padding-right: 1.3rem!important;" href="/">
             <i class="bi bi-house circle"></i>
-            <span class="d-lg-inline d-none">Home</span>
+            <span class="d-lg-inline d-md-none">Home</span>
           </a>
         </li>
 
@@ -20,7 +36,7 @@
           <a class="nav-link py-0" style="padding-left: 1.3rem!important;padding-right: 1.3rem!important;"
             href="/courses">
             <i class="bi bi-book circle"></i>
-            <span class="d-lg-inline d-none">Courses</span>
+            <span class="d-lg-inline d-md-none">Courses</span>
           </a>
         </li>
   </ul>

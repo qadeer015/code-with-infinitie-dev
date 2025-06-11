@@ -9,23 +9,29 @@
   
   <div class="row g-4">
     <% courses.forEach((course) => { %>
-    <div class="col-md-4">
+    <div class="col-lg-4 col-md-6">
         <div class="card h-100 shadow-sm">
-            <div class="card-body">
+            <div class="card-body position-relative">
                 <% if (course.status === 'enrolled') { %>
-                    <span class="badge bg-success mb-2">Enrolled</span>
+                    <span class="badge bg-success mb-2 position-absolute" style="top: 17px; right: 15px;">Enrolled</span>
                 <% } %>
                 <h5 class="card-title"><%= course.title %></h5>
                 <p class="card-text text-muted"><%= course.description %></p>
             </div>
             <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center">
                 <div>
-                    <span class="text-warning">★ ★ ★ ★ ★</span>
+                    <span class="text-warning">
+                        <% for (let i = 0; i < 5; i++) { %>
+                            <% if (i < course.ratting) { %>
+                                ★
+                            <% } else { %>
+                                ☆
+                            <% } %>
+                        <% } %>
+                    </span>
                     <span class="text-muted ms-1">(124)</span>
                 </div>
-                <% if (course.status === 'enrolled') { %>
-                    <button class="btn btn-sm btn-outline-secondary" disabled>Enrolled</button>
-                <% } else { %>
+                <% if (course.status != 'enrolled') { %>
                     <form action="/courses/<%= course.id %>/join" method="post">
                         <input type="hidden" name="user_id" value="<%= user.id %>">
                         <input type="hidden" name="course_id" value="<%= course.id %>">

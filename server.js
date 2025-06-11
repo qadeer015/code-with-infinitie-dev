@@ -11,12 +11,12 @@ app.use(cors());
 const db = require("./config/db.js");
 const authRoutes = require("./routes/authRoutes.js");
 const userRoutes = require("./routes/userRoutes.js");
-const videosRoutes = require("./routes/videosRoutes.js");
 const announcementRoutes = require("./routes/announcementRoutes.js");
 const courseRoutes = require("./routes/coursesRoutes.js");
 const assignmentsRoutes = require("./routes/assignmentsRoutes.js");
 const adminRoutes = require("./routes/adminRoutes.js");
 const lecturesRoutes = require("./routes/lecturesRoutes.js");
+const lectureCommentsRoutes = require('./routes/lectureCommentsRoutes.js');
 
 const auththenticateUser = require("./middleware/auththenticateUser.js");
 const isAdmin = require('./middleware/isAdmin.js');
@@ -105,25 +105,25 @@ app.get("/", async (req, res) => {
 
 app.use("/auth", authRoutes);
 app.use("/users", userRoutes);
-app.use("/api", videosRoutes);
 app.use("/announcements", announcementRoutes);
 app.use("/courses", courseRoutes);
 app.use("/assignments", assignmentsRoutes);
 app.use("/users/admin", isAdmin, adminRoutes);
 app.use("/lectures", lecturesRoutes);
+app.use('/lecture-comments', lectureCommentsRoutes);
 
 app.get("/about", (req, res) => {
-    res.render("about", { viewName: 'about' });
+    res.render("pages/about", { viewName: 'about' });
 });
 
 app.get("/faqs", (req, res) => {
-    res.render("faqs", { viewName: 'faqs' });
+    res.render("pages/faqs", { viewName: 'faqs' });
 });
 
 app.get('*', (req, res) => {
-    res.status(404).render('notfound', { viewName: 'notfound' });
+    res.status(404).render('pages/notfound', { viewName: 'notfound' });
 });
 
 app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`);
+    console.log(`Example app listening on http://localhost:${port}`);
 });

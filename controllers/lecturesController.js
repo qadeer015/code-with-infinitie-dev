@@ -67,9 +67,9 @@ const showLecture = async (req, res) => {
 
 const deleteLecture = async (req, res) => {
     try {
-        const { id } = req.body;
+        const { id } = req.params;
         const lecture = await Lecture.deleteLecture(id);
-        res.status(200).json(lecture);
+        res.status(200).redirect('/users/admin/lectures/');
     } catch (err) {
         console.error(err);
     }
