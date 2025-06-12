@@ -69,11 +69,11 @@ const submitAssignment = async (req, res) => {
         const userId = req.user.id;
         const assignmentId = req.params.id;
         const submissionDate = new Date();
-        
+
         if (!req.file) {
-            return res.status(400).json({ 
+            return res.status(400).json({
                 success: false,
-                message: 'No file uploaded' 
+                message: 'No file uploaded'
             });
         }
 
@@ -86,9 +86,9 @@ const submitAssignment = async (req, res) => {
         }
 
         const submittedAssignment = await AssignmentSubmission.submitAssignment(
-            assignmentId, 
-            userId, 
-            submissionDate, 
+            assignmentId,
+            userId,
+            submissionDate,
             req.file
         );
 
@@ -100,7 +100,7 @@ const submitAssignment = async (req, res) => {
 
     } catch (error) {
         console.error("Error submitting assignment:", error);
-        
+
         if (req.file?.path) {
             try {
                 if (fs.existsSync(req.file.path)) {
@@ -111,9 +111,10 @@ const submitAssignment = async (req, res) => {
             }
         }
 
-        res.status(500).json({ 
+        res.status(500).json({
             success: false,
-            message: error.message || 'Error submitting assignment'
+            message: 'Error submitting assignment',
+            error: error.message
         });
     }
 };
@@ -122,16 +123,16 @@ const getSubmittedAssignments = async (req, res) => {
     try {
         const { course_id } = req.query;
         const submittedAssignments = await AssignmentSubmission.getSubmittedAssignmentsByCourseId(course_id);
-        
+
         const formattedAssignments = submittedAssignments.map(assignment => ({
             ...assignment,
             submission_date: formateTime.formatDate(assignment.submission_date),
-            file_path: typeof assignment.file_path === 'string' 
-                ? JSON.parse(assignment.file_path) 
+            file_path: typeof assignment.file_path === 'string'
+                ? JSON.parse(assignment.file_path)
                 : assignment.file_path
         }));
-        
-        res.render("admin/assignment/submitted_assignments", { 
+
+        res.render("admin/assignment/submitted_assignments", {
             assignments: formattedAssignments,
             courseId: course_id
         });
@@ -145,33 +146,33 @@ const getSubmittedAssignmentDetails = async (req, res) => {
     try {
         const { id } = req.params;
         const { course_id } = req.query;
-        
+
         const assignment = await AssignmentSubmission.findSubmittedAssignment(id);
-        
+
         if (!assignment || assignment.length === 0) {
             return res.status(404).json({ message: 'Assignment not found' });
         }
-        
+
         const submission = assignment[0];
         let fileData;
-        
+
         try {
-            fileData = typeof submission.file_path === 'string' 
-                ? JSON.parse(submission.file_path) 
+            fileData = typeof submission.file_path === 'string'
+                ? JSON.parse(submission.file_path)
                 : submission.file_path;
-            
+
             // Process files to handle linked resources
             if (fileData.isZip) {
                 const baseUrl = `/assignments/files/${submission.id}`;
                 for (const file of fileData.files) {
                     if (file.content) {
                         file.decodedContent = Buffer.from(file.content, 'base64').toString('utf-8');
-                        
+
                         // Rewrite resource URLs in HTML files
                         if (file.type.includes('html') || file.originalName.endsWith('.html')) {
                             file.decodedContent = rewriteResourceUrls(
-                                file.decodedContent, 
-                                fileData.files, 
+                                file.decodedContent,
+                                fileData.files,
                                 baseUrl
                             );
                         }
@@ -180,13 +181,13 @@ const getSubmittedAssignmentDetails = async (req, res) => {
             }
         } catch (parseError) {
             console.error('Error parsing file_path:', submission.file_path);
-            fileData = { 
+            fileData = {
                 originalName: 'Unknown',
                 type: 'unknown',
                 decodedContent: 'Could not parse file content'
             };
         }
-        
+
         const formattedAssignment = {
             ...submission,
             file_data: fileData,
@@ -196,8 +197,8 @@ const getSubmittedAssignmentDetails = async (req, res) => {
             updated_at: formateTime.formatDate(submission.updated_at)
 
         };
-        
-        res.render("admin/assignment/submitted_assignment_details", { 
+
+        res.render("admin/assignment/submitted_assignment_details", {
             assignment: formattedAssignment,
             courseId: course_id
         });
@@ -214,8 +215,8 @@ const serveSubmissionFile = async (req, res) => {
             return res.status(404).send('File not found');
         }
 
-        const fileData = typeof submission[0].file_path === 'string' 
-            ? JSON.parse(submission[0].file_path) 
+        const fileData = typeof submission[0].file_path === 'string'
+            ? JSON.parse(submission[0].file_path)
             : submission[0].file_path;
 
         if (!fileData.isZip) {
@@ -223,7 +224,7 @@ const serveSubmissionFile = async (req, res) => {
         }
 
         const filename = decodeURIComponent(req.params.filename);
-        const file = fileData.files.find(f => 
+        const file = fileData.files.find(f =>
             f.originalName === filename ||
             f.originalName.endsWith(filename)
         );
@@ -250,21 +251,21 @@ const serveSubmissionFile = async (req, res) => {
 
 function rewriteResourceUrls(htmlContent, files, baseUrl) {
     return htmlContent.replace(
-        /(src|href)="([^"]*)"/g, 
+        /(src|href)="([^"]*)"/g,
         (match, attr, url) => {
             // Skip absolute URLs and data URIs
             if (url.startsWith('http') || url.startsWith('//') || url.startsWith('data:')) {
                 return match;
             }
-            
+
             // Find matching file in the archive
             const filename = url.split('/').pop();
-            const foundFile = files.find(f => 
+            const foundFile = files.find(f =>
                 f.originalName.endsWith(filename) ||
                 f.originalName === url ||
                 f.originalName.endsWith(url)
             );
-            
+
             if (foundFile) {
                 return `${attr}="${baseUrl}/${encodeURIComponent(foundFile.originalName)}"`;
             }
@@ -273,28 +274,28 @@ function rewriteResourceUrls(htmlContent, files, baseUrl) {
     );
 }
 
-const gradeAssignment = async (req, res)=>{
-      const { user_id , assignment_id , marks } = req.body;
-      try {
+const gradeAssignment = async (req, res) => {
+    const { user_id, assignment_id, marks } = req.body;
+    try {
         const result = await AssignmentSubmission.saveGainedMarks(assignment_id, user_id, marks);
-       
+
         if (result) {
             return res.status(200).json({ message: 'Marks saved successfully' });
         } else {
             return res.status(400).json({ message: 'Error saving marks' });
         }
-      } catch (error) {
+    } catch (error) {
         console.error('Error saving marks:', error);
         return res.status(500).json({ message: 'Error saving marks' });
-      }
+    }
 }
 
-module.exports = { 
-    showCourseAssignments, 
-    createAssignment, 
-    submitAssignment, 
-    getAllAssignments, 
-    getSubmittedAssignments, 
+module.exports = {
+    showCourseAssignments,
+    createAssignment,
+    submitAssignment,
+    getAllAssignments,
+    getSubmittedAssignments,
     getSubmittedAssignmentDetails,
     serveSubmissionFile,
     gradeAssignment,

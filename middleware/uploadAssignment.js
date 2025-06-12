@@ -7,7 +7,7 @@ const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     const userId = req.user.id;
     const assignmentId = req.params.id; // Changed from req.body.assignment_id
-    const uploadDir = `uploads/assignments/${userId}/${assignmentId}`;
+    const uploadDir = `/tmp/uploads/assignments/${userId}/${assignmentId}`;
     
     fs.mkdirSync(uploadDir, { recursive: true });
     cb(null, uploadDir);
