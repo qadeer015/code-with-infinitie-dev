@@ -18,7 +18,7 @@ class Video {
     try {
         const likeQuery = `%${query.toLowerCase()}%`;
         const [rows] = await db.execute(
-            'SELECT id, title FROM videos WHERE is_deleted = 0 AND LOWER(title) LIKE ? ORDER BY id DESC LIMIT 10',
+            'SELECT id, title FROM videos WHERE LOWER(title) LIKE ? ORDER BY id DESC LIMIT 10',
             [likeQuery]
         );
         return rows;
@@ -58,17 +58,17 @@ class Video {
             );
             return result.affectedRows > 0; // Returns true if at least one row is updated
         } catch (error) {
-            console.error("Error updating user:", error);
+            console.error("Error updating video:", error);
             throw error;
         }
     }
 
     static async deleteVideo(id) {
         try {
-            const [result] = await db.execute('UPDATE videos SET is_deleted = "1" WHERE id = ?', [id]);
+            const [result] = await db.execute('DELETE FROM videos WHERE id = ?', [id]);
             return result.affectedRows > 0; // Returns true if a row was deleted
         } catch (error) {
-            console.error("Error deleting user:", error);
+            console.error("Error deleting video:", error);
             throw error;
         }
     }
