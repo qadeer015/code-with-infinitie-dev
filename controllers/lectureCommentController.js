@@ -1,4 +1,5 @@
 const LectureComment = require('../models/LectureComment');
+const { formatRelativeTime, formatTime } = require('../middleware/formateTime');
 const db = require('../config/db');
 
 const lectureCommentController = {
@@ -22,8 +23,11 @@ const lectureCommentController = {
         const { lecture_id } = req.params;
         try {
             const comments = await LectureComment.getCommentsByLecture(lecture_id, req.user.id);
-           
-            res.status(200).json({ success: true, comments });
+            const formattedComments = comments.map(comment => ({
+                ...comment,
+                formattedTime: formatTime(comment.created_at),
+            }))
+            res.status(200).json({ success: true, comments: formattedComments });
         } catch (error) {
             res.status(500).json({ success: false, message: "Error fetching comments" });
         }

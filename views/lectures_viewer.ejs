@@ -120,8 +120,8 @@
 
         <div id="comments-section" class="mt-3">
             <h3>Discussion Board</h3>
-
-            <!-- Form to add a new top-level comment -->
+            
+            <% if(lecture.status === 'open'){%>            <!-- Form to add a new top-level comment -->
             <form id="new-comment-form" class="position-relative">
                 <textarea name="comment" id="comment-text" min-rows="3" rows="3" class="w-100 p-3 rounded"
                     placeholder="Ask a question or share your thoughts..."></textarea>
@@ -130,6 +130,7 @@
                 <button type="submit" class="btn btn-primary position-absolute"
                     style="right: 10px; bottom: 15px">Send</button>
             </form>
+            <% } %>
 
             <div id="comments-list">
                 <!-- Comments will be loaded here -->
@@ -137,6 +138,17 @@
         </div>
 
     </div>
+    <script type="application/json" id="lecture-data">
+        <%- JSON.stringify(lecture) %>
+    </script>
+    <script type="application/json" id="user-data">
+        <%- JSON.stringify(user) %>
+    </script>
+
     <script src="/js/lecture_viewer.js"></script>
     <script src="/js/comment.js"></script>
+    <script>
+            let lecture = JSON.parse(document.getElementById("lecture-data").textContent);
+            let user = JSON.parse(document.getElementById("user-data").textContent);
+    </script>
 <%- include('partials/_footer') %>

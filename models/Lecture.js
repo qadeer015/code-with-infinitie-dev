@@ -26,11 +26,14 @@ class Lecture {
                 l.description,
                 l.status,
                 l.created_at,
-                l.updated_at
+                l.updated_at,
+                COUNT(lc.id) as comment_count
             FROM lectures l 
             LEFT JOIN videos v ON l.video_id = v.id
             LEFT JOIN courses c ON l.course_id = c.id
+            LEFT JOIN lecture_comments lc ON l.id = lc.lecture_id
             WHERE l.course_id = ?
+            GROUP BY l.id, l.title, l.video_id, v.title, c.title, l.description, l.status, l.created_at, l.updated_at
         `, [course_id]);
             return rows;
         } catch (error) {
@@ -39,10 +42,11 @@ class Lecture {
         }
     }
 
+
     static async getLectureDetails(id) {
-    try {
-        const [result] = await db.execute(
-            `
+        try {
+            const [result] = await db.execute(
+                `
             SELECT 
                 l.*, 
                 c.title AS course_title, 
@@ -54,14 +58,14 @@ class Lecture {
             LEFT JOIN videos v ON l.video_id = v.id
             WHERE l.id = ?
             `,
-            [id]
-        );
-        return result[0];
-    } catch (error) {
-        console.error("Database query error:", error);
-        throw error;
+                [id]
+            );
+            return result[0];
+        } catch (error) {
+            console.error("Database query error:", error);
+            throw error;
+        }
     }
-}
 
 
     static async getAll() {

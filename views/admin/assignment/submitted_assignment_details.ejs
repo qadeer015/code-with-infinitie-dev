@@ -73,24 +73,25 @@
                 </div>
             </div>
 
-           
             <div class="row">
                 <div class="col-12">
-                    <h5>Grading</h5>
-                    <form id="gradeForm" action="/users/admin/assignments/<%= assignment.assignment_id %>/users/<%= assignment.user_id %>/grade" method="POST">
-                        <div class="mb-3">
-                            <label for="marks" class="form-label">Marks</label>
-                            <input type="number" step="0.01" class="form-control" id="marks" 
-                                   name="marks" value="<%= assignment.gained_marks || '' %>">
-                        </div>
-                        <input type="hidden" name="assignment_id" value="<%= assignment.assignment_id %>">
-                        <input type="hidden" name="user_id" value="<%= assignment.user_id %>">
-                        <div class="mb-3">
-                            <label for="feedback" class="form-label">Feedback</label>
-                            <textarea class="form-control" id="feedback" name="feedback" rows="3"></textarea>
-                        </div>
-                        <button type="submit" class="btn btn-success">Submit Grade</button>
-                    </form>
+                        <h5>Grading</h5>
+                        <form id="gradeForm" action="/users/admin/assignments/<%= assignment.assignment_id %>/users/<%= assignment.user_id %>/grade" method="POST">
+                            <div class="mb-3">
+                                <label for="marks" class="form-label">Marks</label>
+                                <input type="number" step="0.01" class="form-control" id="marks" 
+                                       name="marks" value="<%= assignment.gained_marks || '' %>">
+                            </div>
+                            <input type="hidden" name="assignment_id" value="<%= assignment.assignment_id %>">
+                            <input type="hidden" name="user_id" value="<%= assignment.user_id %>">
+                            <div class="mb-3">
+                                <label for="feedback" class="form-label">Feedback</label>
+                                <textarea class="form-control" id="feedback" value="<%= assignment.feedback || '' %>" name="feedback" rows="3">
+                                    <%= assignment.feedback || '' %>
+                                </textarea>
+                            </div>
+                            <button type="submit" class="btn btn-success">Submit Grade</button>
+                        </form>
                 </div>
             </div>
         </div>
@@ -103,17 +104,32 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-html.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-javascript.min.js"></script>
-
+<script src="/js/gradeAssignment.js"></script>
 <script>
-    // Add copy functionality
-    document.querySelectorAll('.copy-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const content = btn.getAttribute('data-content');
-            navigator.clipboard.writeText(content)
-                .then(() => {
-                    btn.textContent = 'Copied!';
-                    setTimeout(() => btn.textContent = 'Copy', 2000);
-                });
+    document.addEventListener("DOMContentLoaded", function () {
+        // Add scroll-to-bottom button
+        const button = document.createElement("button");
+        button.className = "btn btn-primary position-fixed bottom-0 end-0 m-3";
+        button.innerHTML = "<i class='bi bi-arrow-down'></i>";
+        document.body.appendChild(button);
+        button.addEventListener("click", function () {
+            window.scrollTo({
+                top: document.body.scrollHeight,
+                behavior: "smooth"
+            });
         });
+
+
+        // Add copy button functionality
+        document.querySelectorAll('.copy-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const content = btn.getAttribute('data-content');
+                navigator.clipboard.writeText(content)
+                    .then(() => {
+                        btn.textContent = 'Copied!';
+                        setTimeout(() => btn.textContent = 'Copy', 2000);
+                    });
+                });
+            });
     });
 </script>

@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const lectureId = document.getElementById('lecture_id').value;
+    const lectureId = lecture.id;
+    
     loadComments(lectureId);
-
+    
+    if(lecture.status === 'open') {
     // Handle new comment submission
     document.getElementById('new-comment-form').addEventListener('submit', async (e) => {
         e.preventDefault();
@@ -21,6 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
             showAlert(data.message, 'success');
         }
     });
+    }
 });
 
 // Load comments and replies
@@ -80,12 +83,13 @@ function renderComment(comment) {
                     <div class="flex-grow-1">
                         <div class="d-flex justify-content-between align-items-start">
                             <strong>${comment.user_name}</strong>
-                            <small class="text-muted">${formatDate(comment.created_at)}</small>
+                            <small class="text-muted">${comment.formattedTime}</small>
                         </div>
                         <p class="mb-2">${comment.comment}</p>
                     </div>
                 </div>
                 
+                ${ lecture.status === 'open' ?  `
                 <div class="d-flex align-items-center gap-2 mt-2">
                     <button class="btn btn-sm btn-link p-0" onclick="showReplyForm(${comment.id})">
                         Reply
@@ -97,6 +101,32 @@ function renderComment(comment) {
                         <span class="like-count ms-1">${comment.likes_count || 0}</span>
                     </button>
                 </div>
+
+                <div class="reply-form mt-3" id="reply-form-${comment.id}" style="display:none;">
+                    <textarea rows="2" class="form-control mb-2" 
+                              placeholder="Type your reply..." 
+                              id="reply-text-${comment.id}"></textarea>
+                    <div class="d-flex justify-content-end gap-2">
+                        <button class="btn btn-sm btn-outline-secondary" 
+                                onclick="document.getElementById('reply-form-${comment.id}').style.display='none'">
+                            Cancel
+                        </button>
+                        <button class="btn btn-sm btn-primary" 
+                                onclick="submitReply(${comment.id})">
+                            Post Reply
+                        </button>
+                    </div>
+                </div>
+                ` : `
+                <div class="d-flex align-items-center gap-2 mt-2">
+                    <button class="btn btn-sm like-btn ${comment.is_liked ? 'text-primary' : 'text-muted'}" 
+                            onclick="toggleLike(${comment.id})" 
+                            data-comment-id="${comment.id}">
+                        <i class="bi ${comment.is_liked ? 'bi-hand-thumbs-up-fill' : 'bi-hand-thumbs-up'}"></i>
+                        <span class="like-count ms-1">${comment.likes_count || 0}</span>
+                    </button>
+                </div>
+                `}
 
                 ${comment.replies.length > 0 ? `
                     <div class="accordion mt-2" id="${accordionId}">
@@ -118,22 +148,6 @@ function renderComment(comment) {
                         </div>
                     </div>
                 ` : ''}
-
-                <div class="reply-form mt-3" id="reply-form-${comment.id}" style="display:none;">
-                    <textarea rows="2" class="form-control mb-2" 
-                              placeholder="Type your reply..." 
-                              id="reply-text-${comment.id}"></textarea>
-                    <div class="d-flex justify-content-end gap-2">
-                        <button class="btn btn-sm btn-outline-secondary" 
-                                onclick="document.getElementById('reply-form-${comment.id}').style.display='none'">
-                            Cancel
-                        </button>
-                        <button class="btn btn-sm btn-primary" 
-                                onclick="submitReply(${comment.id})">
-                            Post Reply
-                        </button>
-                    </div>
-                </div>
             </div>
         </div>
     `;
@@ -158,7 +172,7 @@ async function toggleLike(commentId) {
     const likeBtn = document.querySelector(`.like-btn[data-comment-id="${commentId}"]`);
     const likeIcon = likeBtn.querySelector('i');
     const likeCount = likeBtn.querySelector('.like-count');
-    const userId = document.getElementById('user_id').value;
+    const userId = user.id;
 
     if (!userId) {
         showAlert('Please login to like comments', 'warning');

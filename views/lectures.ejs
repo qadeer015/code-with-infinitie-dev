@@ -16,7 +16,7 @@
         <span class=""><%= index + 1 %> - </span>
         <a href="/lectures/<%= lecture.id %>"><%= lecture.title %></a>
         <div class="d-flex justify-content-end">
-          <p class="<%= lecture.status === 'open' ? 'text-success' : 'text-danger' %> mb-0"><%= lecture.status %></p>
+          <p class="<%= lecture.status === 'open' ? 'text-success' : 'text-danger' %> mb-0"><i class="bi bi-chat-fill"></i> <%= lecture.status %> ( <%= lecture.comment_count %> )</p>
         </div>
       </li>
       <% }); %>

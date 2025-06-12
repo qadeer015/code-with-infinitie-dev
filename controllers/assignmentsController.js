@@ -197,7 +197,6 @@ const getSubmittedAssignmentDetails = async (req, res) => {
             updated_at: formateTime.formatDate(submission.updated_at)
 
         };
-
         res.render("admin/assignment/submitted_assignment_details", {
             assignment: formattedAssignment,
             courseId: course_id
@@ -275,9 +274,9 @@ function rewriteResourceUrls(htmlContent, files, baseUrl) {
 }
 
 const gradeAssignment = async (req, res) => {
-    const { user_id, assignment_id, marks } = req.body;
+    const { user_id, assignment_id, marks, feedback } = req.body;
     try {
-        const result = await AssignmentSubmission.saveGainedMarks(assignment_id, user_id, marks);
+        const result = await AssignmentSubmission.saveGainedMarks(assignment_id, user_id, marks, feedback);
 
         if (result) {
             return res.status(200).json({ message: 'Marks saved successfully' });
