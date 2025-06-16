@@ -11,6 +11,8 @@ const videosController = require('../controllers/videosController');
 const Course = require('../models/Course');
 const Video = require('../models/Video');
 const Lecture = require('../models/Lecture.js')
+const Assignment = require('../models/Assignment');
+const Announcement = require('../models/Announcement.js');
 
 // home page
 router.get('/dashboard', (req, res) => {
@@ -42,8 +44,9 @@ router.get("/featured-courses", (req, res) => {
 router.get("/featured-courses/get-all", featuredCoursesController.getAllFeaturedCourses);
 router.get("/featured-courses/new", async (req, res) => { res.render("admin/featuredCourse/new", { courses: await Course.getAll() }) });
 router.post("/featured-courses/create", featuredCoursesController.createFeaturedCourse);
-router.post("/featured-courses/update", featuredCoursesController.updateFeaturedCourse);
-router.post("/featured-courses/delete", featuredCoursesController.deleteFeaturedCourse);
+router.get("/featured-courses/:id/edit", featuredCoursesController.editFeaturedCourse);
+router.post("/featured-courses/:id/update", featuredCoursesController.updateFeaturedCourse);
+router.post("/featured-courses/:id/delete", featuredCoursesController.deleteFeaturedCourse);
 
 // Assignments
 router.get("/assignments", (req, res) => {
@@ -54,7 +57,12 @@ router.get("/assignments/submitted/:id", assignmentsController.getSubmittedAssig
 router.get("/assignments/get-all", assignmentsController.getAllAssignments);
 router.get("/assignments/new", async (req, res) => { res.render("admin/assignment/new", { courses: await Course.getAll() }) });
 router.post("/assignments/create", assignmentsController.createAssignment)
-router.post("/assignments/:assignmentId/users/:userId/grade", assignmentsController.gradeAssignment)
+router.post("/assignments/:assignmentId/users/:userId/grade", assignmentsController.gradeAssignment);
+router.get("/assignments/:assignment_id/edit", async (req, res) => {
+    res.render("admin/assignment/edit", { assignmentId: req.params.assignment_id, assignment: await Assignment.findAssignment(req.params.assignment_id), courses: await Course.getAll() })
+})
+router.post("/assignments/:assignment_id/update", assignmentsController.updateAssignment);
+router.post("/assignments/:assignment_id/delete", assignmentsController.deleteAssignment);
 
 // In your routes file
 router.get('/files/:submissionId/:filename', assignmentsController.serveSubmissionFile);
@@ -66,7 +74,12 @@ router.get("/announcements", (req, res) => {
 router.get("/announcements/get-all", announcementsController.getAllAnnouncements);
 router.get("/announcements/new", async (req, res) => { res.render("admin/announcement/new", { courses: await Course.getAll() }) });
 router.post("/announcements/create", announcementsController.createAnnouncement)
-
+router.get("/announcements/:announcement_id/edit", async (req, res) => {
+    const announcement = await Announcement.findAnnouncement(req.params.announcement_id);
+    res.render("admin/announcement/edit", { announcementId: req.params.announcement_id, announcement, courses: await Course.getAll() })
+})
+router.post("/announcements/:announcement_id/update", announcementsController.updateAnnouncement);
+router.post("/announcements/:announcement_id/delete", announcementsController.deleteAnnouncement);
 
 // Lectures
 router.get("/lectures", (req, res) => {

@@ -1,12 +1,12 @@
 <%- include('../partials/_header', { title: 'Assignment Details' }) %>
-    <div class="container mt-5">
+    <div class="container pt-4">
     <div class="card">
         <div class="card-header">
             <h4 class="mb-0">Assignment Submission Details</h4>
         </div>
         <div class="card-body">
             <!-- ... (keep your student info section unchanged) ... -->
-            <div class="row mb-3 alert alert-info">
+            <div class="row mb-3 alert alert-info mx-1">
                 <div class="col-md-6">
                     <h5>Student Information</h5>
                     <p><strong>Student Name:</strong> <%= assignment.name %></p>
@@ -118,7 +118,6 @@
                 behavior: "smooth"
             });
         });
-
 
         // Add copy button functionality
         document.querySelectorAll('.copy-btn').forEach(btn => {

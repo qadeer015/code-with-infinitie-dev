@@ -20,7 +20,7 @@ class Assignment {
                 'SELECT * FROM assignments Where id = ?',
                 [id]
             );
-            return result;
+            return result.length > 0 ? result[0] : null;
         } catch (error) {
             console.log("Error getting assignment:", error);
             throw error;
@@ -45,7 +45,7 @@ class Assignment {
 
     static async deleteAssignment(id) {
         try {
-            const [result] = await db.execute('UPDATE assignments SET is_deleted = "1" WHERE id = ?', [id]);
+            const [result] = await db.execute('DELETE FROM assignments WHERE id = ?', [id]);
             return result.affectedRows > 0;
         } catch (error) {
             console.error("Error deleting assignment:", error);

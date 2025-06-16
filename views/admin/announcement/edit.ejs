@@ -1,11 +1,13 @@
-<%- include('../partials/_header', { title: 'New Announcement' }) %>
-    <h4 class="fw-bold pt-4 pb-1">New Announcement</h4>
+<%- include('../partials/_header', { title: 'Edit Announcement' }) %>
+    <h4 class="fw-bold pt-4 pb-1">Edit Announcement</h4>
     <div class="row pb-5">
-        <form action="/users/admin/announcements/create" method="post">
+        <form action="/users/admin/announcements/<%= announcement.id %>/update" method="post">
             <div class="mb-3">
                 <label for="course_id" class="form-label">Select Course</label>
                 <select name="course_id" id="course_id" class="form-select">
-                    <option value=""></option>
+                    <option selected value="<%= announcement.course_id %>">
+                        <%= announcement.course_title %>
+                    </option>
                     <% courses.forEach(course=> { %>
                         <option value="<%= course.id %>">
                             <%= course.title %>
@@ -15,13 +17,12 @@
             </div>
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" name="title">
+                <input type="text" class="form-control" id="title" value="<%= announcement.title %>" name="title">
             </div>
             <div class="mb-3">
                 <label for="content" class="form-label">Message</label>
-                <%- include('../partials/_richTextEditor', { name: 'content' }) %>
+                <%- include('../partials/_richTextEditor', { name: 'content' , content: announcement.content }) %>
             </div>
-
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>

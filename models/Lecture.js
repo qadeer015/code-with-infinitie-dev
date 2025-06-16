@@ -70,14 +70,18 @@ class Lecture {
 
     static async getAll() {
         try {
-            const [rows] = await db.execute('SELECT * FROM lectures ORDER BY id ASC');
+            const [rows] = await db.execute(`
+            SELECT lectures.*, courses.title AS course_title
+            FROM lectures
+            JOIN courses ON lectures.course_id = courses.id
+            ORDER BY lectures.id ASC
+        `);
             return rows;
         } catch (error) {
             console.error("Database query error:", error);
             throw error;
         }
     }
-
 
     static async findLecture(id) {
         try {

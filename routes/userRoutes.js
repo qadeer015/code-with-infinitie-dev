@@ -1,5 +1,6 @@
 const express = require('express');
 const User = require('../models/User');
+const UserCourse = require('../models/UserCourse');
 const upload = require('../middleware/cloudinaryUpload');
 const { editUser, deleteUser } = require('../controllers/userController');
 
@@ -34,6 +35,16 @@ router.get("/:id/profile", async (req,res)=>{
     } catch (error) {
         console.error(error);
         res.status(500).send("Error retrieving user");
+    }
+});
+
+router.get("/progress", async (req, res) => {
+    try {
+        const userCourses = await UserCourse.findUserCourses(req.user.id);
+        res.render("progress", {userCourses,currentCourseId: userCourses[0].course_id, viewName: 'progress' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error retrieving progress data");
     }
 });
 

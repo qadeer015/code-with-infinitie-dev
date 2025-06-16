@@ -1,8 +1,7 @@
-const alertContainer = document.createElement('div');
-alertContainer.className = 'alert-container';
-document.body.appendChild(alertContainer);
-
 function showAlert(message, type = 'success') {
+    const alertContainer = document.createElement('div');
+    alertContainer.className = 'alert-container';
+    document.body.appendChild(alertContainer);
     const alert = document.createElement('div');
     alert.className = `alert alert-${type} alert-dismissible fade show`;
     alert.role = 'alert';

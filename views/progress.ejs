@@ -1,0 +1,142 @@
+<%- include('partials/_header', { title: 'Dashboard' }) %>
+
+    <div class="row">
+        <div class="card border-0">
+            <div class="card-body bg-secondary-subtle">
+                <h1>Progress</h1>
+                <div class="d-flex flex-wrap gap-2">
+                    <% userCourses.forEach(userCourse=> { %>
+                        <div class="card">
+                            <div class="card-body">
+                                <button type="button" class="bg-transparent border-0 outline-0 course-select"
+                                    data-course-id="<%= userCourse.course_id %>">
+                                    <h5 class="card-title">
+                                        <%= userCourse.title %>
+                                    </h5>
+                                </button>
+                            </div>
+                        </div>
+                        <% }) %>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <h3 class="py-2">Activities</h3>
+        <div class="d-flex align-items-center justify-content-between gap-2">
+            <div class="card w-100 rounded-0" style="height: 300px;">
+                <h4 class="mx-2">Assignments</h4>
+                <div class="chart-container" style="position: relative; height: 250px;">
+                    <canvas id="assignmentChart"></canvas>
+                    <div id="noAssignmentData" class="d-none text-center mt-5">
+                        <h5>No Record</h5>
+                        <p class="text-muted">No assignment data available for this course</p>
+                    </div>
+                </div>
+            </div>
+            <div class="card w-100 rounded-0">
+                <!-- <h4 class="mx-2">Discussions</h4>
+                <canvas id="discussionChart"></canvas> -->
+            </div>
+            <div class="card w-100 rounded-0">
+                <!-- <h4 class="mx-2">Quizzes</h4>
+                <canvas id="quizChart"></canvas> -->
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const assignmentCtx = document.getElementById('assignmentChart');
+            const noDataMessage = document.getElementById('noAssignmentData');
+            let assignmentChart = null;
+
+            function showNoDataMessage(show) {
+                if (show) {
+                    assignmentCtx.style.display = 'none';
+                    noDataMessage.classList.remove('d-none');
+                } else {
+                    assignmentCtx.style.display = 'block';
+                    noDataMessage.classList.add('d-none');
+                }
+            }
+
+            async function fetchAssignmentData(courseId) {
+                try {
+                    const response = await fetch(`/assignments/stats?course_id=${courseId}`);
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return await response.json();
+                } catch (error) {
+                    console.error('Error fetching assignment data:', error);
+                    return { total: 0, submitted: 0 };
+                }
+            }
+
+            function destroyChart(chart) {
+                if (chart) {
+                    chart.destroy();
+                }
+            }
+
+            async function updateAssignmentChart(courseId) {
+                const data = await fetchAssignmentData(courseId);
+
+                // Check if there's no data
+                if (data.total === 0 && data.submitted === 0) {
+                    destroyChart(assignmentChart);
+                    showNoDataMessage(true);
+                    return;
+                }
+
+                showNoDataMessage(false);
+                destroyChart(assignmentChart);
+
+                assignmentChart = new Chart(assignmentCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Not-Submitted', 'Submitted'],
+                        datasets: [{
+                            data: [data.total-data.submitted , data.submitted],
+                            backgroundColor: [
+                                'rgba(54, 162, 235, 0.7)',
+                                'rgba(75, 192, 192, 0.7)'
+                            ],
+                            borderColor: [
+                                'rgba(54, 162, 235, 1)',
+                                'rgba(75, 192, 192, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+
+            // Set up click handlers
+            document.querySelectorAll('.course-select').forEach(button => {
+                button.addEventListener('click', function () {
+                    const courseId = this.dataset.courseId;
+                    updateAssignmentChart(courseId);
+                });
+            });
+
+            // Initialize
+            const firstCourse = document.querySelector('.course-select');
+            if (firstCourse) {
+                updateAssignmentChart(firstCourse.dataset.courseId);
+            } else {
+                showNoDataMessage(true);
+            }
+        }); 
+    </script>
+
+    <%- include('partials/_footer') %>

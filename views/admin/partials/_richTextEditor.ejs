@@ -1,0 +1,99 @@
+<div class="editor-container">
+    <div class="toolbar">
+        <button type="button" id="bold-btn" title="Bold (Ctrl+B)"><b>B</b></button>
+        <button type="button" id="italic-btn" title="Italic (Ctrl+I)"><i>I</i></button>
+        <select id="font-style" title="Font Family">
+            <option value="Arial">Arial</option>
+            <option value="Times New Roman">Times New Roman</option>
+            <option value="Courier New">Courier New</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Verdana">Verdana</option>
+            <option value="Comic Sans MS">Comic Sans</option>
+        </select>
+        <select id="font-size" title="Font Size">
+            <option value="1">8px</option>
+            <option value="2">10px</option>
+            <option value="3">12px</option>
+            <option value="4">14px</option>
+            <option value="5">18px</option>
+            <option value="6">24px</option>
+            <option value="7">36px</option>
+        </select>
+        <button type="button" id="align-left" title="Align Left (Ctrl+L)">
+            <i class="bi bi-text-left"></i>
+        </button>
+        <button type="button" id="align-center" title="Align Center (Ctrl+E)">
+            <i class="bi bi-text-center"></i>
+        </button>
+        <button type="button" id="align-right" title="Align Right (Ctrl+R)">
+            <i class="bi bi-text-right"></i>
+        </button>
+        <button type="button" id="align-justify" title="justify (Ctrl+J)">
+            <i class="bi bi-justify"></i>
+        </button>
+        <button type="button" id="ul-btn" title="Bullet List">
+            <i class="bi bi-list-ul"></i>
+        </button>
+        <button type="button" id="ol-btn" title="Numbered List">
+            <i class="bi bi-list-ol"></i>
+        </button>
+        <button type="button" id="insert-table" title="Insert Table">
+            <i class="bi bi-table"></i>
+        </button>
+        <div class="table-options" id="table-options" style="display: none;">
+            <button type="button" id="add-row" title="Add Row">
+                <i class="bi bi-plus-square"></i> Row
+            </button>
+            <button type="button" id="add-col" title="Add Column">
+                <i class="bi bi-plus-square"></i> Column
+            </button>
+            <button type="button" id="delete-row" title="Delete Row">
+                <i class="bi bi-dash-square"></i> Row
+            </button>
+            <button type="button" id="delete-col" title="Delete Column">
+                <i class="bi bi-dash-square"></i> Column
+            </button>
+            <button type="button" id="table-border" title="Toggle Border">
+                <i class="bi bi-border"></i> Border
+            </button>
+            <button type="button" id="table-color" title="Cell Color">
+                <i class="bi bi-palette"></i> Color
+            </button>
+        </div>
+    </div>
+    <div id="editor" contenteditable="true" class="editor-content" spellcheck="true">
+        <%- typeof content !== 'undefined' ? content : '' %>
+    </div>
+    <textarea id="editor-content" name="<%= name || 'content' %>" style="display: none;"></textarea>
+</div>
+
+<!-- Table Creation Modal -->
+<div id="table-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Create Table</h2>
+        <div class="form-group mb-3 d-flex align-items-center justify-content-between">
+            <label for="rows">Rows:</label>
+            <input type="number" id="rows" min="1" max="20" value="3">
+        </div>
+        <div class="form-group mb-3 d-flex align-items-center justify-content-between">
+            <label for="cols">Columns:</label>
+            <input type="number" id="cols" min="1" max="10" value="3">
+        </div>
+        <div class="form-group mb-3 d-flex align-items-center justify-content-between">
+            <label for="border-size">Border Size:</label>
+            <input type="number" id="border-size" min="0" max="5" value="1">
+        </div>
+        <div class="form-group mb-3 d-flex align-items-center justify-content-between">
+            <label for="border-color">Border Color:</label>
+            <input type="color" id="border-color" value="#000000">
+        </div>
+        <div class="form-group mb-3 d-flex align-items-center justify-content-between">
+            <label for="cell-padding">Cell Padding:</label>
+            <input type="number" id="cell-padding" min="0" max="20" value="5">
+        </div>
+        <button id="create-table">Create Table</button>
+    </div>
+</div>
+
+    <script src="/js/richTextEditor.js"></script>

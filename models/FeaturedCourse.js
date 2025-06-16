@@ -30,17 +30,21 @@ class FeaturedCourse {
 
 
     static async find(id) {
-        try {
-            const [result] = await db.execute(
-                'SELECT * FROM featured_courses Where id = ?',
-                [id]
-            );
-            return result;
-        } catch (error) {
-            console.log("Error getting featured course:", error);
-            throw error;
-        }
+    try {
+        const [result] = await db.execute(
+            `SELECT featured_courses.*, courses.title AS course_title
+             FROM featured_courses
+             JOIN courses ON featured_courses.course_id = courses.id
+             WHERE featured_courses.id = ?`,
+            [id]
+        );
+        return result[0];
+    } catch (error) {
+        console.log("Error getting featured course:", error);
+        throw error;
     }
+}
+
 
 
     static async delete(id) {

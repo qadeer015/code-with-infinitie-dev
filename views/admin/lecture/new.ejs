@@ -1,15 +1,11 @@
 <%- include('../partials/_header', { title: 'New Lecture' }) %>
-    <h4>New Lecture</h4>
+    <h4 class="fw-bold pt-4 pb-1">New Lecture</h4>
     <div class="row pb-5">
         <form action="/users/admin/lectures/create" method="post">
             <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" name="title" required>
-            </div>
-
-            <div class="mb-3">
+                <label for="course_id" class="form-label">Select Course</label>
                 <select name="course_id" id="course_id" class="form-select" required>
-                    <option value="">Select Course</option>
+                    <option value=""></option>
                     <% courses.forEach(course=> { %>
                         <option value="<%= course.id %>">
                             <%= course.title %>
@@ -17,17 +13,17 @@
                         <% }) %>
                 </select>
             </div>
+
+            <div class="mb-3">
+                <label for="title" class="form-label">Title</label>
+                <input type="text" class="form-control" id="title" name="title" required>
+            </div>
+
             <div class="mb-3">
                 <label for="video_search" class="form-label">Search Video</label>
                 <input type="text" id="video_search" class="form-control" placeholder="Start typing video title..." required>
                 <div id="video_results" class="list-group position-absolute w-50" style="z-index:1000;"></div>
                 <input type="hidden" name="video_id" id="video_id" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea type="input" name="description" id="description" rows="4" placeholder="Write description"
-                    class="form-control"></textarea>
             </div>
 
             <!-- Notes Field with Tag Input -->
@@ -44,6 +40,11 @@
                 <input type="text" class="form-control" id="tasks" name="tasks" placeholder="Enter tasks separated by commas">
                 <small class="text-muted">Example: Solve problem 1.2, Read chapter 4, Complete quiz</small>
                 <div id="tasks-tags" class="d-flex flex-wrap gap-2 mt-2"></div>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <%- include('../partials/_richTextEditor', { name: 'description' }) %>
             </div>
 
             <button type="submit" class="btn btn-primary">Create</button>

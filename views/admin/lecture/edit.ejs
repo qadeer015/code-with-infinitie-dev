@@ -1,87 +1,91 @@
 <%- include('../partials/_header', { title: 'Edit Lecture' }) %>
-    <h4>Edit Lecture</h4>
+    <h4 class="fw-bold pt-4 pb-1">Edit Lecture</h4>
     <div class="row pb-5">
         <form action="/users/admin/lectures/<%= lectureId %>/update" method="post">
+            <div class="mb-3">
+                <label for="course_id" class="form-label">Select Course</label>
+                <select name="course_id" id="course_id" class="form-select" required>
+                    <% courses.forEach(course=> { %>
+                        <option value="<%= course.id %>" <%=course.id===lecture.course_id ? 'selected' : '' %>>
+                            <%= course.title %>
+                        </option>
+                        <% }) %>
+                </select>
+            </div>
             <div class="mb-3">
                 <label for="title" class="form-label">Title</label>
                 <input type="text" class="form-control" id="title" name="title" value="<%= lecture.title %>" required>
             </div>
 
             <div class="mb-3">
-                <select name="course_id" id="course_id" class="form-select" required>
-                    <option value="">Select Course</option>
-                    <% courses.forEach(course=> { %>
-                        <option value="<%= course.id %>" <%= course.id === lecture.course_id ? 'selected' : '' %>>
-                            <%= course.title %>
-                        </option>
-                        <% }) %>
-                </select>
-            </div>
-            
-            <div class="mb-3">
                 <label for="video_search" class="form-label">Video</label>
-                <input type="text" id="video_search" class="form-control" 
-                    value="<%= lecture.video_title %>" placeholder="Start typing video title..." required>
+                <input type="text" id="video_search" class="form-control" value="<%= lecture.video_title %>"
+                    placeholder="Start typing video title..." required>
                 <div id="video_results" class="list-group position-absolute w-50" style="z-index:1000;"></div>
                 <input type="hidden" name="video_id" id="video_id" value="<%= lecture.video_id %>" required>
             </div>
 
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea name="description" id="description" rows="4" 
-                    class="form-control"><%= lecture.description %></textarea>
-            </div>
-
             <!-- Notes Field with Tag Input -->
-          <div class="mb-3">
-    <label for="notes_input" class="form-label">Notes</label>
-    <input type="text" class="form-control" id="notes_input" placeholder="Enter notes separated by commas">
-    <input type="hidden" name="notes" id="notes_hidden" value="<%= lecture.notes || '' %>">
-    <div id="notes-tags" class="d-flex flex-wrap gap-2 mt-2">
-        <% if(lecture.notes) { %>
-            <% lecture.notes.split(',').forEach(note => { %>
-                <% if(note.trim()) { %>
-                    <div class="badge bg-primary rounded-pill d-flex align-items-center">
-                        <span><%= note.trim() %></span>
-                        <button type="button" class="btn-close btn-close-white ms-2" style="font-size:0.5rem" onclick="removeTag(this)"></button>
-                    </div>
-                <% } %>
-            <% }) %>
-        <% } %>
-    </div>
-</div>
+            <div class="mb-3">
+                <label for="notes_input" class="form-label">Notes</label>
+                <input type="text" class="form-control" id="notes_input" placeholder="Enter notes separated by commas">
+                <input type="hidden" name="notes" id="notes_hidden" value="<%= lecture.notes || '' %>">
+                <div id="notes-tags" class="d-flex flex-wrap gap-2 mt-2">
+                    <% if(lecture.notes) { %>
+                        <% lecture.notes.split(',').forEach(note=> { %>
+                            <% if(note.trim()) { %>
+                                <div class="badge bg-primary rounded-pill d-flex align-items-center">
+                                    <span>
+                                        <%= note.trim() %>
+                                    </span>
+                                    <button type="button" class="btn-close btn-close-white ms-2"
+                                        style="font-size:0.5rem" onclick="removeTag(this)"></button>
+                                </div>
+                                <% } %>
+                                    <% }) %>
+                                        <% } %>
+                </div>
+            </div>
 
             <!-- Tasks Field with Tag Input -->
             <div class="mb-3">
-    <label for="tasks_input" class="form-label">Tasks</label>
-    <input type="text" class="form-control" id="tasks_input" placeholder="Enter tasks separated by commas">
-    <input type="hidden" name="tasks" id="tasks_hidden" value="<%= lecture.tasks || '' %>">
-    <div id="tasks-tags" class="d-flex flex-wrap gap-2 mt-2">
-        <% if(lecture.tasks) { %>
-            <% lecture.tasks.split(',').forEach(task => { %>
-                <% if(task.trim()) { %>
-                    <div class="badge bg-primary rounded-pill d-flex align-items-center">
-                        <span><%= task.trim() %></span>
-                        <button type="button" class="btn-close btn-close-white ms-2" style="font-size:0.5rem" onclick="removeTag(this)"></button>
-                    </div>
-                <% } %>
-            <% }) %>
-        <% } %>
-    </div>
-</div>
+                <label for="tasks_input" class="form-label">Tasks</label>
+                <input type="text" class="form-control" id="tasks_input" placeholder="Enter tasks separated by commas">
+                <input type="hidden" name="tasks" id="tasks_hidden" value="<%= lecture.tasks || '' %>">
+                <div id="tasks-tags" class="d-flex flex-wrap gap-2 mt-2">
+                    <% if(lecture.tasks) { %>
+                        <% lecture.tasks.split(',').forEach(task=> { %>
+                            <% if(task.trim()) { %>
+                                <div class="badge bg-primary rounded-pill d-flex align-items-center">
+                                    <span>
+                                        <%= task.trim() %>
+                                    </span>
+                                    <button type="button" class="btn-close btn-close-white ms-2"
+                                        style="font-size:0.5rem" onclick="removeTag(this)"></button>
+                                </div>
+                                <% } %>
+                                    <% }) %>
+                                        <% } %>
+                </div>
+            </div>
 
             <div class="mb-3">
                 <label class="form-label">Status</label>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="status" id="statusOpen" 
-                        value="open" <%= lecture.status === 'open' ? 'checked' : '' %>>
+                    <input class="form-check-input" type="radio" name="status" id="statusOpen" value="open"
+                        <%=lecture.status==='open' ? 'checked' : '' %>>
                     <label class="form-check-label" for="statusOpen">Open</label>
                 </div>
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" name="status" id="statusClosed" 
-                        value="closed" <%= lecture.status === 'closed' ? 'checked' : '' %>>
+                    <input class="form-check-input" type="radio" name="status" id="statusClosed" value="closed"
+                        <%=lecture.status==='closed' ? 'checked' : '' %>>
                     <label class="form-check-label" for="statusClosed">Closed</label>
                 </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <%- include('../partials/_richTextEditor', { name: 'description' , content: lecture.description }) %>
             </div>
 
             <button type="submit" class="btn btn-primary me-2">Update</button>
@@ -141,101 +145,101 @@
         });
 
         // Global function to handle tag removal
-function removeTag(closeButton) {
-    const event = window.event || {};
-    event.preventDefault();
-    event.stopPropagation();
-    
-    const tag = closeButton.closest('.badge');
-    if (tag) {
-        tag.remove();
-        updateHiddenInputs();
-    }
-}
+        function removeTag(closeButton) {
+            const event = window.event || {};
+            event.preventDefault();
+            event.stopPropagation();
 
-        // Notes and Tasks Tag Input Functionality
-// Notes and Tasks Tag Input Functionality
-function setupTagInput(inputId, hiddenId, tagsContainerId) {
-    const input = document.getElementById(inputId);
-    const hidden = document.getElementById(hiddenId);
-    const tagsContainer = document.getElementById(tagsContainerId);
-
-    // Function to check if tag already exists
-    function tagExists(text) {
-        const existingTags = Array.from(tagsContainer.querySelectorAll('.badge span'));
-        return existingTags.some(tag => tag.textContent.trim().toLowerCase() === text.trim().toLowerCase());
-    }
-
-    // Initialize existing tags from hidden input (with duplicate check)
-    const initialValues = hidden.value ? hidden.value.split(',') : [];
-    const uniqueInitialValues = [...new Set(initialValues.map(val => val.trim()).filter(val => val))];
-    
-    uniqueInitialValues.forEach(val => {
-        if (val.trim() && !tagExists(val)) {
-            createTag(val.trim());
-        }
-    });
-
-    input.addEventListener('keydown', function(e) {
-        if (e.key === ',' || e.key === 'Enter') {
-            e.preventDefault();
-            const value = this.value.trim().replace(/,+$/, '');
-            if (value && !tagExists(value)) {
-                createTag(value);
-                this.value = '';
-            } else if (tagExists(value)) {
-                // Optional: Show feedback that tag already exists
-                this.value = '';
+            const tag = closeButton.closest('.badge');
+            if (tag) {
+                tag.remove();
+                updateHiddenInputs();
             }
         }
-    });
 
-    function createTag(text) {
-        if (!text || tagExists(text)) return;
-        
-        const tag = document.createElement('div');
-        tag.className = 'badge bg-primary rounded-pill d-flex align-items-center';
-        
-        const tagText = document.createElement('span');
-        tagText.textContent = text;
-        
-        const closeBtn = document.createElement('button');
-        closeBtn.className = 'btn-close btn-close-white ms-2';
-        closeBtn.style.fontSize = '0.5rem';
-        closeBtn.type = 'button'; // Important: Prevent form submission
-        closeBtn.addEventListener('click', (e) => {
-            e.preventDefault(); // Prevent form submission
-            e.stopPropagation(); // Stop event bubbling
-            tag.remove();
-            updateHiddenInputs();
-        });
-        
-        tag.appendChild(tagText);
-        tag.appendChild(closeBtn);
-        tagsContainer.appendChild(tag);
-        
-        updateHiddenInputs();
-    }
+        // Notes and Tasks Tag Input Functionality
+        // Notes and Tasks Tag Input Functionality
+        function setupTagInput(inputId, hiddenId, tagsContainerId) {
+            const input = document.getElementById(inputId);
+            const hidden = document.getElementById(hiddenId);
+            const tagsContainer = document.getElementById(tagsContainerId);
 
-}
+            // Function to check if tag already exists
+            function tagExists(text) {
+                const existingTags = Array.from(tagsContainer.querySelectorAll('.badge span'));
+                return existingTags.some(tag => tag.textContent.trim().toLowerCase() === text.trim().toLowerCase());
+            }
 
-function updateHiddenInputs() {
-    // Update notes
-    const notesTags = Array.from(document.querySelectorAll('#notes-tags .badge span'))
-        .map(span => span.textContent.trim())
-        .filter(text => text.length > 0);
-    document.getElementById('notes_hidden').value = notesTags.join(', ');
-    
-    // Update tasks
-    const tasksTags = Array.from(document.querySelectorAll('#tasks-tags .badge span'))
-        .map(span => span.textContent.trim())
-        .filter(text => text.length > 0);
-    document.getElementById('tasks_hidden').value = tasksTags.join(', ');
-}
+            // Initialize existing tags from hidden input (with duplicate check)
+            const initialValues = hidden.value ? hidden.value.split(',') : [];
+            const uniqueInitialValues = [...new Set(initialValues.map(val => val.trim()).filter(val => val))];
 
-// Initialize both tag inputs with correct IDs
-setupTagInput('notes_input', 'notes_hidden', 'notes-tags');
-setupTagInput('tasks_input', 'tasks_hidden', 'tasks-tags');
+            uniqueInitialValues.forEach(val => {
+                if (val.trim() && !tagExists(val)) {
+                    createTag(val.trim());
+                }
+            });
+
+            input.addEventListener('keydown', function (e) {
+                if (e.key === ',' || e.key === 'Enter') {
+                    e.preventDefault();
+                    const value = this.value.trim().replace(/,+$/, '');
+                    if (value && !tagExists(value)) {
+                        createTag(value);
+                        this.value = '';
+                    } else if (tagExists(value)) {
+                        // Optional: Show feedback that tag already exists
+                        this.value = '';
+                    }
+                }
+            });
+
+            function createTag(text) {
+                if (!text || tagExists(text)) return;
+
+                const tag = document.createElement('div');
+                tag.className = 'badge bg-primary rounded-pill d-flex align-items-center';
+
+                const tagText = document.createElement('span');
+                tagText.textContent = text;
+
+                const closeBtn = document.createElement('button');
+                closeBtn.className = 'btn-close btn-close-white ms-2';
+                closeBtn.style.fontSize = '0.5rem';
+                closeBtn.type = 'button'; // Important: Prevent form submission
+                closeBtn.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent form submission
+                    e.stopPropagation(); // Stop event bubbling
+                    tag.remove();
+                    updateHiddenInputs();
+                });
+
+                tag.appendChild(tagText);
+                tag.appendChild(closeBtn);
+                tagsContainer.appendChild(tag);
+
+                updateHiddenInputs();
+            }
+
+        }
+
+        function updateHiddenInputs() {
+            // Update notes
+            const notesTags = Array.from(document.querySelectorAll('#notes-tags .badge span'))
+                .map(span => span.textContent.trim())
+                .filter(text => text.length > 0);
+            document.getElementById('notes_hidden').value = notesTags.join(', ');
+
+            // Update tasks
+            const tasksTags = Array.from(document.querySelectorAll('#tasks-tags .badge span'))
+                .map(span => span.textContent.trim())
+                .filter(text => text.length > 0);
+            document.getElementById('tasks_hidden').value = tasksTags.join(', ');
+        }
+
+        // Initialize both tag inputs with correct IDs
+        setupTagInput('notes_input', 'notes_hidden', 'notes-tags');
+        setupTagInput('tasks_input', 'tasks_hidden', 'tasks-tags');
     </script>
 
     <%- include('../partials/_footer') %>

@@ -28,18 +28,22 @@ class Announcement {
         }
     }
 
-    static async findAnnouncement(id){
-        try{
-            const [result] = await db.execute(
-                'SELECT * FROM announcements Where id = ?',
-                [id]
-            );
-            return result;
-        }catch (error) {
-            console.log("Error getting announcement:",error);
-            throw error;
-        }
+    static async findAnnouncement(id) {
+    try {
+        const [result] = await db.execute(
+            `SELECT announcements.*, courses.title AS course_title
+             FROM announcements
+             JOIN courses ON announcements.course_id = courses.id
+             WHERE announcements.id = ?`,
+            [id]
+        );
+        return result[0];
+    } catch (error) {
+        console.log("Error getting announcement:", error);
+        throw error;
     }
+}
+
 
     static async updateAnnouncement(id, title, content, course_id) {
         try {
@@ -71,15 +75,22 @@ class Announcement {
         }
     }
 
-    static async getAnnouncementsByCourseId(courseId) {
-        try {
-            const [rows] = await db.execute('SELECT * FROM announcements WHERE course_id = ?', [courseId]);
-            return rows;
-        } catch (error) {
-            console.error("Error getting announcements by course ID:", error);
-            throw error;
-        }
+   static async getAnnouncementsByCourseId(courseId) {
+    try {
+        const [rows] = await db.execute(
+            `SELECT announcements.*, courses.title AS course_title
+             FROM announcements
+             JOIN courses ON announcements.course_id = courses.id
+             WHERE announcements.course_id = ?`,
+            [courseId]
+        );
+        return rows;
+    } catch (error) {
+        console.error("Error getting announcements by course ID:", error);
+        throw error;
     }
+}
+
 }
 
 module.exports = Announcement;

@@ -56,7 +56,7 @@ const createAssignment = async (req, res) => {
         const { course_id, title, details, due_date, total_marks } = req.body;
 
         await Assignment.createAssignment(course_id, title, details, due_date, total_marks);
-        res.redirect('/users/admin/dashboard');
+        res.redirect('/users/admin/assignments/');
     } catch (error) {
         console.error("Error creating assignment:", error);
         res.status(500).json({ message: 'Error creating assignment' });
@@ -289,6 +289,37 @@ const gradeAssignment = async (req, res) => {
     }
 }
 
+const updateAssignment = async (req, res) => {
+    const { assignment_id } = req.params;
+    const { title, course_id, details, due_date, total_marks } = req.body;
+    try {
+        const result = await Assignment.updateAssignment(assignment_id, course_id, title, details, due_date, total_marks);
+        if (result) {
+            return res.status(200).redirect('/users/admin/assignments/');
+        } else {
+            return res.status(400).json({ message: 'Error updating assignment' });
+        }
+    } catch (error) {
+        console.error('Error updating assignment:', error);
+        return res.status(500).json({ message: 'Error updating assignment' });
+    }
+}
+
+const deleteAssignment = async (req, res) => {
+    const { assignment_id } = req.params;
+    try {
+        const result = await Assignment.deleteAssignment(assignment_id);
+        if (result) {
+            return res.status(200).redirect('/users/admin/assignments/');
+        } else {
+            return res.status(400).json({ message: 'Error deleting assignment' });
+        }
+    } catch (error) {
+        console.error('Error deleting assignment:', error);
+        return res.status(500).json({ message: 'Error deleting assignment' });
+    }
+}
+
 module.exports = {
     showCourseAssignments,
     createAssignment,
@@ -298,5 +329,7 @@ module.exports = {
     getSubmittedAssignmentDetails,
     serveSubmissionFile,
     gradeAssignment,
-    getUnsubmittedAssignemntCountsByCourseId
+    getUnsubmittedAssignemntCountsByCourseId,
+    updateAssignment,
+    deleteAssignment
 };

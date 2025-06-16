@@ -1,17 +1,22 @@
 <%- include('../partials/_header', { title: 'Featured Courses' }) %>
-   
-
-
-
-                <h4>Featured Courses</h4>
-                <div class="row pb-5">
-                    <div id="courses-data"></div>
+    <h4 class="fw-bold pt-4 pb-1">Featured Courses</h4>
+                <div class="col-12 table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Title</th>
+                                <th>Description</th>
+                                <th>Difficulty</th>
+                                <th>Duration</th>
+                                <th>Fee</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="courses-data" class="table-group-divider">
+                        </tbody>
+                    </table>
                 </div>
-
-
-
-
-
 
     <script>
 
@@ -53,19 +58,37 @@
 
         function renderCourses(course) {
             return `
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-title">${course.course_id}</div>
-                            <div class="card-subtitle mb-2 text-muted">${course.difficulty_lvl}</div>
-                            <div class="card-subtitle mb-2 text-muted">${course.title}</div>
-                            <div class="card-subtitle mb-2 text-muted">${course.description}</div>
-                            <div class="card-subtitle mb-2 text-muted">${course.course_duration}</div>
-                            <div class="card-subtitle mb-2 text-muted">${course.course_fee}</div>
-                            <div class="card-subtitle mb-2 text-muted">${course.status}</div>
+                <tr>
+                    <td>${course.title}</td>
+                    <td>${course.description}</td>
+                    <td>${course.difficulty_lvl}</td>
+                    <td>${course.course_duration}</td>
+                    <td>${course.course_fee}</td>
+                    <td>${course.status}</td>
+                    <td>
+                         <div class="dropdown">
+                            <button class="bg-transparent rounded-circle border-1 border-muted px-1 outline-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-three-dots-vertical"></i>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li class="dropdown-item mb-1">
+                                    <a class="text-decoration-none text-dark" href="/users/admin/featured-courses/${course.id}/edit">
+                                        <i class="bi bi-pencil"></i>
+                                        Edit
+                                    </a>
+                                </li>
+                                <li class="dropdown-item mb-1">
+                                    <form action="/users/admin/featured-courses/${course.id}/delete" method="post">
+                                        <button class="bg-transparent border-0 outline-0" type="submit">
+                                            <i class="bi bi-trash"></i>
+                                            Delete
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
                         </div>
-                    </div>
-                </div>
+                    </td>
+                </tr>
             `;
         }
     </script>

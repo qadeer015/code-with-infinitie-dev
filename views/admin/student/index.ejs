@@ -1,28 +1,28 @@
 <%- include('../partials/_header', { title: 'Courses' }) %>
+    <h4 class="fw-bold pt-4 pb-1">Students</h4>
    <div class="col-12 table-responsive">
-                    <h3>Students</h3>
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <div class="form-check form-check-muted m-0">
-                                        <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" id="check-all">
-                                        </label>
-                                    </div>
-                                </th>
-                                <th>Name</th>
-                                <th>Email</th>
-                                <th>Repository</th>
-                                <th>Page</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="students-data" class="table-group-divider">
-                        </tbody>
-                    </table>
-                </div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        <div class="form-check form-check-muted m-0">
+                            <label class="form-check-label">
+                                <input type="checkbox" class="form-check-input" id="check-all">
+                            </label>
+                        </div>
+                    </th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Repository</th>
+                    <th>Page</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="students-data" class="table-group-divider">
+            </tbody>
+        </table>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="/js/students.js"></script>

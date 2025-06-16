@@ -1,10 +1,24 @@
 const FeaturedCourse = require('../models/FeaturedCourse');
+const Course = require('../models/Course');
 
 const createFeaturedCourse = async (req, res) => {
     try {
         const { course_id, difficulty_lvl } = req.body;
-        const featuredCourse = await FeaturedCourse.create(course_id, difficulty_lvl);
-        res.status(201).json({ message: 'Featured course created successfully', featuredCourse });
+        await FeaturedCourse.create(course_id, difficulty_lvl);
+        res.status(201).redirect('/users/admin/featured-courses/');
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+const editFeaturedCourse = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const featuredCourse = await FeaturedCourse.find(id);
+        const courses = await Course.getAll();
+        console.log(featuredCourse);
+        console.log(courses);
+        res.status(200).render('admin/featuredCourse/edit', { featuredCourse, courses });
     } catch (err) {
         console.error(err);
     }
@@ -20,10 +34,10 @@ const getAllFeaturedCourses = async (req, res) => {
 }
 
 const deleteFeaturedCourse = async (req, res) => {
-        const { id } = req.body;
+        const { id } = req.params;
     try {
-        const FeaturedCourse = await FeaturedCourse.delete(id);
-        res.status(200).json({ message: 'Featured course deleted successfully' });
+        await FeaturedCourse.delete(id);
+        res.status(200).redirect('/users/admin/featured-courses/');
     } catch (err) {
         console.error(err);
     }
@@ -31,9 +45,9 @@ const deleteFeaturedCourse = async (req, res) => {
 
 const updateFeaturedCourse = async (req, res) => {
     try {
-        const { id, course_id, difficulty_lvl } = req.body;
-        const updatedFeaturedCourse = await FeaturedCourse.update(id, course_id, difficulty_lvl);
-        res.status(200).json({ message: 'Featured course updated successfully', updatedFeaturedCourse });
+        const { course_id, difficulty_lvl } = req.body;
+        await FeaturedCourse.update(req.params.id, course_id, difficulty_lvl);
+        res.status(200).redirect('/users/admin/featured-courses/');
     } catch (err) {
         console.error(err);
     }
@@ -43,5 +57,6 @@ module.exports = {
     createFeaturedCourse,
     getAllFeaturedCourses,
     deleteFeaturedCourse,
-    updateFeaturedCourse
+    updateFeaturedCourse,
+    editFeaturedCourse
 }
