@@ -8,6 +8,10 @@
             <div class="d-flex align-items-center justify-content-start gap-2">
                 <button id="videoBtn" class="btn btn-sm btn-primary active">Video</button>
                 <button id="readingBtn" class="btn btn-sm btn-outline-secondary">Reading</button>
+                <form id="quizzBtn" action="/lectures/<%= lecture.id %>/quizz" method="get">
+                    <input type="hidden" name="course_id" value="<%= course.id %>">
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">Quizz</button>
+                </form>
             </div>
         </div>
 

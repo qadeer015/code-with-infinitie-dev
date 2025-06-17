@@ -160,8 +160,7 @@ tr td{
 .editor-content:focus {
     border: 1px solid #4CAF50;
 }
-
-.active {
+.editor-container .toolbar button.active {
     background-color: #4CAF50 !important;
     color: white;
 }

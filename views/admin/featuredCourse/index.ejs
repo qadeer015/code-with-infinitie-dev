@@ -1,22 +1,25 @@
 <%- include('../partials/_header', { title: 'Featured Courses' }) %>
-    <h4 class="fw-bold pt-4 pb-1">Featured Courses</h4>
-                <div class="col-12 table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Difficulty</th>
-                                <th>Duration</th>
-                                <th>Fee</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="courses-data" class="table-group-divider">
-                        </tbody>
-                    </table>
-                </div>
+    <div class="d-flex align-items-center justify-content-between">
+        <h4 class="fw-bold pt-4 pb-1">Featured Courses</h4>
+        <a href="/users/admin/featured-courses/new" class="btn btn-primary">New Featured Course</a>
+    </div>
+    <div class="col-12 table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Difficulty</th>
+                    <th>Duration</th>
+                    <th>Fee</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody id="courses-data" class="table-group-divider">
+            </tbody>
+        </table>
+    </div>
 
     <script>
 

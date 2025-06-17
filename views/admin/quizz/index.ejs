@@ -1,0 +1,161 @@
+<%- include('../partials/_header') %>
+
+    <button type="button" class="btn btn-sm btn-primary my-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Import data
+    </button>
+    <div class="row m-0">
+        <h2><%= lecture.title %></h2>
+        <h3>Questions</h3>
+        <% if(quizData.length> 0) { %>
+            <ul id="questions-container" class="list-group overflow-auto">
+                <% quizData.forEach((question, index)=> { %>
+                    <li class="card list-group-item mb-4">
+                        <div class="card-body">
+                            <div id="question_<%= question.id %>"
+                                class="card-title py-3 d-flex align-items-center justify-content-between">
+                                <strong class="w-100 d-flex align-items-center gap-1">
+                                    <span id="question-index-container-<%= question.id %>">
+                                        <%=index+1%> :
+                                    </span>
+                                    <span data-text="question-text" id="question-text-<%= question.id %>">
+                                        <%= question.question_text %>
+                                    </span>
+                                </strong>
+                                <div class="btn-group dropup">
+                                    <button type="button" class="bg-transparent border-0" data-bs-toggle="dropdown"
+                                        aria-expanded="false">
+                                        <i class="bi bi-three-dots-vertical"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-item edit-question-btn"
+                                            data-question-id="<%= question.id %>">
+                                            Edit</li>
+                                        <li class="dropdown-item text-danger">
+                                            <form class="delete-question" data-question-id="<%= question.id %>"
+                                                action="/users/admin/lectures/<%= lecture.id %>/questions/<%= question.id %>/delete"
+                                                method="post">
+                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <hr class="m-0">
+                            <ul class="list-group" id="options-container-<%= question.id %>">
+                                <% question.options.forEach(option=> { %>
+                                    <li id="option_<%= option.id %>"
+                                        class="list-group-item border-0 d-flex align-items-center gap-1 px-0">
+                                        <input type="radio" name="question_<%= question.id %>"
+                                            id="option_<%= option.id %>" value="<%= option.option_text %>"
+                                            class="form-check-input">
+                                        <label for="option_<%= option.id %>">
+                                            <%= option.option_text %>
+                                                <%= option.is_correct ? '(Correct)' : '' %>
+                                        </label>
+                                        <div class="btn-group dropup">
+                                            <button type="button" class="bg-transparent border-0"
+                                                data-bs-toggle="dropdown" aria-expanded="false">
+                                                <i class="bi bi-three-dots-vertical"></i>
+                                            </button>
+                                            <ul class="dropdown-menu">
+                                                <li>
+                                                    <button type="button" class="dropdown-item edit-option-btn"
+                                                        data-option-id="<%= option.id %>">
+                                                        Edit
+                                                    </button>
+                                                </li>
+
+                                                <li class="dropdown-item text-danger">
+                                                    <form class="delete-option" data-option-id="<%= option.id %>"
+                                                        action="/users/admin/lectures/<%= lecture.id %>/options/<%= option.id %>/delete"
+                                                        method="post">
+                                                        <button type="submit"
+                                                            class="btn btn-danger btn-sm">Delete</button>
+                                                    </form>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                    <% }) %>
+                            </ul>
+                            <% if (question.options.length <=3) { %>
+                                <form class="option-form"
+                                    action="/users/admin/lectures/<%= lecture.id %>/questions/<%= question.id %>/options/create"
+                                    method="post">
+                                    <input type="text" name="option_text" class="form-control mt-3"
+                                        placeholder="Enter Option text" required>
+                                    <select name="is_correct" class="form-select mt-3">
+                                        <option value="0">Incorrect</option>
+                                        <option value="1">Correct</option>
+                                    </select>
+                                    <div class="text-end mb-2">
+                                        <button type="submit" class="btn btn-sm btn-primary mt-3">Add Option</button>
+                                    </div>
+                                </form>
+                                <% } %>
+
+                        </div>
+
+
+                    </li>
+                    <% }) %>
+            </ul>
+            <% } else { %>
+                <p>No questions have been created for this quiz.</p>
+                <ul id="questions-container" class="list-group overflow-auto rounded-0"
+                    style="height: 100%; padding-bottom: 130px;"></ul>
+                <% } %>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Import Questions</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="predefined-questions-container">
+                        <textarea class="form-control" style="height: 70vh;" id="predefined-questions" placeholder='Enter questions data in JSON format, e.g.:
+[
+    {
+        "id": 250001,
+        "question_text": "Sample question",
+        "options": [
+            {"option_text": "Option 1", "is_correct": false},
+            {"option_text": "Option 2", "is_correct": true}
+        ]
+    }
+]'></textarea>
+                        <div class="modal-footer">
+                            <input type="hidden" id="predefined-questions-formate" value='
+                    [
+                        {
+                            "id": 250001,
+                            "question_text": "Sample question",
+                            "options": [
+                                {"option_text": "Option 1", "is_correct": false},
+                                {"option_text": "Option 2", "is_correct": true}
+                            ]
+                        }
+                    ]'>
+                            <button id="copyFormate" type="button" class="btn btn-success">
+                                Copy Text Format
+                            </button>
+                            <button id="predefined-questions-button" class="btn btn-primary">Submit</button>
+                        </div>
+                    </div>
+                    <div id="json-questions-container" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        const lectureId = '<%= lecture.id %>';
+    </script>
+    <script src="/js/quizzDataCreation.js"></script>
+    <script src="/js/createQuestionAndOptions.js"></script>
+    <script src="/js/editAndDeleteQuestion.js"></script>
+
+
+    <%- include('../partials/_footer') %>

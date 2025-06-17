@@ -1,4 +1,5 @@
 const Lecture = require("../models/Lecture")
+const Course = require("../models/Course")
 
 const createLecture = async (req, res) => {
     try {
@@ -58,8 +59,9 @@ const updateLecture = async (req, res) => {
 const showLecture = async (req, res) => {
     try {
         const { id } = req.params;
+        const course = await Course.findCourse(id);
         const lecture = await Lecture.getLectureDetails(id);
-        res.status(200).render('lectures_viewer', { lecture, viewName: 'lectures_viewer' });
+        res.status(200).render('lectures_viewer', { lecture, course, viewName: 'lectures_viewer' });
     } catch (err) {
         console.error(err);
     }

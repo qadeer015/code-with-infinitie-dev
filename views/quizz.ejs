@@ -1,0 +1,134 @@
+<%- include('partials/_header') %>
+    <% if(quizResults.length > 0) { %>
+    <div id="quiz-results-container" class="mt-4">
+        <h3>Your Quiz Results</h3>
+        <div class="card mb-4">
+            <div class="card-body">
+                <p class="mb-1"><strong>Score:</strong> <%= quizResults[0].score %> out of <%= quizResults[0].total_marks %></p>
+                <p class="mb-1"><strong>Percentage:</strong> <%= ((quizResults[0].score / quizResults[0].total_marks) * 100).toFixed(2) %>%</p>
+            </div>
+        </div>
+
+        <button id="toggle-answers-btn" class="btn btn-sm btn-outline-secondary mb-3">
+            Show Correct Answers
+        </button>
+
+        <table class="table table-bordered">
+            <thead class="table-light">
+                <tr>
+                    <th scope="col" width="50%">Question</th>
+                    <th scope="col" width="35%">Your Answer</th>
+                    <th scope="col" width="15%">Correct?</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <% questions.forEach((question, index) => { 
+                    const answer = answers[index];
+                    const isCorrect = answer.is_correct === 1;
+                %>
+                <tr class="<%= isCorrect ? 'table-success' : 'table-danger' %>">
+                    <td><%= question.question_text %></td>
+                    <td>
+                        <%= answer.option_text %>
+                        <% if(!isCorrect) { %>
+                            <div class="correct-answer mt-1 text-muted small" style="visibility: hidden;">
+                                Correct answer: 
+                                <% 
+                                    const correctOption = quizData.find(q => q.id == question.id)?.options?.find(o => o.is_correct === 1);
+                                    if (correctOption) { 
+                                %>
+                                    <%= correctOption.option_text %>
+                                <% } else { %>
+                                    (Answer not found)
+                                <% } %>
+                            </div>
+                        <% } %>
+                    </td>
+                    <td class="text-center">
+                        <% if(isCorrect) { %>
+                            <span class="badge bg-success">✓ Correct</span>
+                        <% } else { %>
+                            <span class="badge bg-danger">✗ Incorrect</span>
+                        <% } %>
+                    </td>
+                </tr>
+                <% }); %>
+            </tbody>
+            <tfoot>
+                <tr class="table-light">
+                    <th colspan="2" class="text-end">Total Score:</th>
+                    <th class="text-center"><%= quizResults[0].score %>/<%= quizResults[0].total_marks %></th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+<% } %>
+
+    <div class="col-12">
+        <% if(quizData.length > 0){ %>
+            <div id="start-quiz-container" class="text-center mt-5">
+                <h3>Ready to take the quiz?</h3>
+                <p>You'll have <%= quizData.length %> minute(s) to complete <%= quizData.length %> questions.</p>
+                <button id="start-quiz-btn" class="btn btn-primary btn-lg">Start Quiz</button>
+            </div>
+            
+            <div id="quiz-content" style="display: none;">
+                <div class="bg-primary text-white p-2 border border-1 border-dark">
+                    <div class="d-flex align-items-center justify-content-between position-relative">
+                        <h1 class="m-0 p-0"><%= course.title %></h1>
+                        <div id="timer"></div>
+                        <p class="m-0">Total Marks : <strong><%= quizData.length %></strong></p>  
+                    </div>
+                </div>
+                
+                <div class="content-container">
+                    <div class="mt-3 fw-bold" id="question-index"></div>
+                    <!-- Question container -->
+                    <div id="question-container" class="border border-1 border-dark my-3 p-3">
+                        <strong id="question-text"></strong>
+                    </div>
+
+                    <!-- Options container -->
+                    <ul id="options-container" class="p-0 list-group"></ul>
+                    <div class="d-flex justify-content-end align-items-center">
+                        <!-- Next Button -->
+                        <button id="next-btn" class="btn btn-primary mt-3">Save & Next</button>
+                    </div>
+                </div>
+            </div>
+        <% } else { %>
+            <div class="alert alert-info">No questions available for this quiz.</div>
+        <% } %>
+    </div>
+
+<script type="application/json" id="quiz-data">
+    <%- JSON.stringify(quizData) %>
+</script>
+
+<script>
+    let courseId = "<%= course.id %>";
+    let userId = "<%= user.id %>";
+    let lectureId = "<%= lecture.id %>";
+    let quizData = JSON.parse(document.getElementById("quiz-data").textContent);
+    
+    // Toggle correct answers visibility
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleBtn = document.getElementById('toggle-answers-btn');
+        if (toggleBtn) {
+            let showAnswers = false;
+            toggleBtn.addEventListener('click', function() {
+                showAnswers = !showAnswers;
+                const correctAnswers = document.querySelectorAll('.correct-answer');
+                correctAnswers.forEach(el => {
+                    el.style.visibility = showAnswers ? 'visible' : 'hidden';
+                });
+                this.textContent = showAnswers ? 'Hide Correct Answers' : 'Show Correct Answers';
+            });
+        }
+    });
+</script>
+
+<% if(quizData.length > 0){%>
+<script src="/js/takeQuizz.js"></script>
+<%}%>
+<%- include('partials/_footer') -%>

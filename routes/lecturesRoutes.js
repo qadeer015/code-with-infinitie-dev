@@ -1,5 +1,6 @@
 const express = require('express');
 const lecturesController = require('../controllers/lecturesController.js');
+const quizzController = require('../controllers/quizzController.js');
 const Lecture = require('../models/Lecture.js');
 const Course = require('../models/Course.js');
 const router = express.Router();
@@ -21,6 +22,10 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/:id", lecturesController.showLecture);
+
+router.get("/:id/quizz", quizzController.showQuizz);
+
+router.post("/:id/quizz-result", quizzController.saveResults);
 
 
 module.exports = router;

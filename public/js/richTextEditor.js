@@ -113,7 +113,9 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
     
-    createTableBtn.addEventListener('click', function() {
+    createTableBtn.addEventListener('click', function(e) {
+        e.preventDefault(); // Add this line to prevent default behavior
+        
         const rows = document.getElementById('rows').value;
         const cols = document.getElementById('cols').value;
         const borderSize = document.getElementById('border-size').value;

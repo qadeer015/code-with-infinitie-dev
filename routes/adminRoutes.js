@@ -7,6 +7,8 @@ const assignmentsController = require('../controllers/assignmentsController.js')
 const featuredCoursesController = require('../controllers/featuredCoursesController.js');
 const lecturesController = require('../controllers/lecturesController.js');
 const videosController = require('../controllers/videosController');
+const quizzController = require('../controllers/quizzController.js');
+
 
 const Course = require('../models/Course');
 const Video = require('../models/Video');
@@ -132,5 +134,14 @@ router.post("/videos/create", videosController.createVideo);
 router.post("/videos/:id/update", videosController.updateVideo);
 router.post("/videos/:id/delete", videosController.deleteVideo);
 
+// Quizz
+router.get("/lectures/:id/questions", quizzController.showQuizz);
+router.post("/lectures/:id/questions/create", quizzController.createQuestion);
+router.post("/lectures/:id/questions/:question_id/update", quizzController.updateQuestion);
+router.post("/lectures/:id/questions/:question_id/delete", quizzController.deleteQuestion);
+
+router.post("/lectures/:id/questions/:question_id/options/create", quizzController.createOption);
+router.post("/lectures/:id/options/:option_id/delete", quizzController.deleteOption);
+router.post("/lectures/:lecture_id/options/:id/update", quizzController.updateOption);
 
 module.exports = router;

@@ -1,5 +1,8 @@
 <%- include('../partials/_header', { title: 'Lectures' }) %>
-    <h4 class="fw-bold pt-4 pb-1">Lectures</h4>
+    <div class="d-flex align-items-center justify-content-between">
+        <h4 class="fw-bold pt-4 pb-1">Lectures</h4>
+        <a href="/users/admin/lectures/new" class="btn btn-primary">New Lecture</a>
+    </div>
     <div class="row pb-5">
         <div class="col-12 table-responsive">
             <table class="table">
@@ -9,6 +12,7 @@
                         <th scope="col">Description</th>
                         <th scope="col">Status</th>
                         <th scope="col">Course</th>
+                        <th scope="col">Quizz</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -62,6 +66,12 @@
                     <td>${lecture.description}</td>
                     <td>${lecture.status}</td>
                     <td>${lecture.course_title}</td>
+                    <td>
+                        <form action="/users/admin/lectures/${lecture.id}/questions" method="get">
+                            <input type="hidden" name="course_id" value="${lecture.course_id}">
+                            <input type="submit" class="btn btn-primary" value="View Quizz">
+                        </form>
+                    </td>
                     <td>
                         <div class="dropdown">
                             <button class="bg-transparent rounded-circle border-1 border-muted px-1 outline-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">

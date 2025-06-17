@@ -5,7 +5,6 @@ const router = express.Router();
 
 router.get("/", async (req, res) => { 
     const courses = await Course.findAll(req.user.id);
-    console.log(courses);
     res.render("courses", {courses, viewName: 'courses'}); 
 });
 router.post("/:id/join",coursesController.joinCourse)
