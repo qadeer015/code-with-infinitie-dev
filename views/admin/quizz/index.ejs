@@ -4,7 +4,9 @@
         Import data
     </button>
     <div class="row m-0">
-        <h2><%= lecture.title %></h2>
+        <h2>
+            <%= lecture.title %>
+        </h2>
         <h3>Questions</h3>
         <% if(quizData.length> 0) { %>
             <ul id="questions-container" class="list-group overflow-auto">
@@ -29,12 +31,17 @@
                                     <ul class="dropdown-menu">
                                         <li class="dropdown-item edit-question-btn"
                                             data-question-id="<%= question.id %>">
-                                            Edit</li>
+                                            <i class="bi bi-pencil"></i>
+                                            Edit
+                                        </li>
                                         <li class="dropdown-item text-danger">
                                             <form class="delete-question" data-question-id="<%= question.id %>"
                                                 action="/users/admin/lectures/<%= lecture.id %>/questions/<%= question.id %>/delete"
                                                 method="post">
-                                                <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                                <button type="submit" class="bg-transparent border-0 outline-0">
+                                                    <i class="bi bi-trash"></i>
+                                                    Delete
+                                                </button>
                                             </form>
                                         </li>
                                     </ul>
@@ -61,6 +68,7 @@
                                                 <li>
                                                     <button type="button" class="dropdown-item edit-option-btn"
                                                         data-option-id="<%= option.id %>">
+                                                        <i class="bi bi-pencil"></i>
                                                         Edit
                                                     </button>
                                                 </li>
@@ -69,8 +77,10 @@
                                                     <form class="delete-option" data-option-id="<%= option.id %>"
                                                         action="/users/admin/lectures/<%= lecture.id %>/options/<%= option.id %>/delete"
                                                         method="post">
-                                                        <button type="submit"
-                                                            class="btn btn-danger btn-sm">Delete</button>
+                                                        <button type="submit" class="bg-transparent border-0 outline-0">
+                                                            <i class="bi bi-trash"></i>
+                                                            Delete
+                                                        </button>
                                                     </form>
                                                 </li>
                                             </ul>

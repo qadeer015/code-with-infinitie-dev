@@ -135,7 +135,7 @@ router.post("/videos/:id/update", videosController.updateVideo);
 router.post("/videos/:id/delete", videosController.deleteVideo);
 
 // Quizz
-router.get("/lectures/:id/questions", quizzController.showQuizz);
+router.get("/lectures/:id/questions", quizzController.getQuizz);
 router.post("/lectures/:id/questions/create", quizzController.createQuestion);
 router.post("/lectures/:id/questions/:question_id/update", quizzController.updateQuestion);
 router.post("/lectures/:id/questions/:question_id/delete", quizzController.deleteQuestion);

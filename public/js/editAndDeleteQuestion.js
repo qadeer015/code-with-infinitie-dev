@@ -220,7 +220,8 @@ document.addEventListener('click', function(e) {
                             </button>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <button type="button" class="dropdown-item edit-option-btn" data-option-id="${optionId}">
+                                    <button type="button" class="bg-transparent border-0 outline-0 dropdown-item edit-option-btn" data-option-id="${optionId}">
+                                        <i class="bi bi-pencil"></i>
                                         Edit
                                     </button>
                                 </li>
@@ -228,7 +229,10 @@ document.addEventListener('click', function(e) {
                                     <form class="delete-option" data-option-id="${optionId}"
                                         action="/users/admin/lectures/<%= lecture.id %>/questions/<%= question.id %>/options/${optionId}/delete"
                                         method="post">
-                                        <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                        <button type="submit" class="bg-transparent border-0 outline-0">
+                                            <i class="bi bi-trash"></i>
+                                            Delete
+                                        </button>
                                     </form>
                                 </li>
                             </ul>

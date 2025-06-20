@@ -34,9 +34,16 @@
                     </div>
                 </div>
             </div>
-            <div class="card w-100 rounded-0">
-                <!-- <h4 class="mx-2">Discussions</h4>
-                <canvas id="discussionChart"></canvas> -->
+            <!-- Replace the empty quiz card in progress.ejs with this: -->
+            <div class="card w-100 rounded-0" style="height: 300px;">
+                <h4 class="mx-2">Quizzes</h4>
+                <div class="chart-container" style="position: relative; height: 250px;">
+                    <canvas id="quizChart"></canvas>
+                    <div id="noQuizData" class="d-none text-center mt-5">
+                        <h5>No Record</h5>
+                        <p class="text-muted">No quiz data available for this course</p>
+                    </div>
+                </div>
             </div>
             <div class="card w-100 rounded-0">
                 <!-- <h4 class="mx-2">Quizzes</h4>
@@ -97,7 +104,7 @@
                     data: {
                         labels: ['Not-Submitted', 'Submitted'],
                         datasets: [{
-                            data: [data.total-data.submitted , data.submitted],
+                            data: [data.total - data.submitted, data.submitted],
                             backgroundColor: [
                                 'rgba(54, 162, 235, 0.7)',
                                 'rgba(75, 192, 192, 0.7)'
@@ -131,12 +138,96 @@
 
             // Initialize
             const firstCourse = document.querySelector('.course-select');
+           
+
+            const quizCtx = document.getElementById('quizChart');
+            const noQuizDataMessage = document.getElementById('noQuizData');
+            let quizChart = null;
+
+            function showNoQuizDataMessage(show) {
+                if (show) {
+                    quizCtx.style.display = 'none';
+                    noQuizDataMessage.classList.remove('d-none');
+                } else {
+                    quizCtx.style.display = 'block';
+                    noQuizDataMessage.classList.add('d-none');
+                }
+            }
+
+
+            async function fetchQuizData(courseId) {
+                try {
+                    const response = await fetch(`/lectures/stats?course_id=${courseId}`);
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return await response.json();
+                } catch (error) {
+                    console.error('Error fetching quiz data:', error);
+                    return { total: 0, attempted: 0 };
+                }
+            }
+
+            async function updateQuizChart(courseId) {
+                const data = await fetchQuizData(courseId);
+
+                // Check if there's no data
+                if (data.total === 0 && data.attempted === 0) {
+                    destroyChart(quizChart);
+                    showNoQuizDataMessage(true);
+                    return;
+                }
+
+                showNoQuizDataMessage(false);
+                destroyChart(quizChart);
+
+                quizChart = new Chart(quizCtx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Not Attempted', 'Attempted'],
+                        datasets: [{
+                            data: [data.total - data.attempted, data.attempted],
+                            backgroundColor: [
+                                'rgba(255, 99, 132, 0.7)',
+                                'rgba(153, 102, 255, 0.7)'
+                            ],
+                            borderColor: [
+                                'rgba(255, 99, 132, 1)',
+                                'rgba(153, 102, 255, 1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                position: 'bottom'
+                            }
+                        }
+                    }
+                });
+            }
+            // Update the click handler to update both charts
+            document.querySelectorAll('.course-select').forEach(button => {
+                button.addEventListener('click', function () {
+                    const courseId = this.dataset.courseId;
+                    updateAssignmentChart(courseId);
+                    updateQuizChart(courseId);
+                });
+            });
+
+            // Initialize both charts
             if (firstCourse) {
-                updateAssignmentChart(firstCourse.dataset.courseId);
+                const courseId = firstCourse.dataset.courseId;
+                updateAssignmentChart(courseId);
+                updateQuizChart(courseId);
             } else {
                 showNoDataMessage(true);
+                showNoQuizDataMessage(true);
             }
-        }); 
+
+
+        });
     </script>
 
     <%- include('partials/_footer') %>

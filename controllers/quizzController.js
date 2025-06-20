@@ -10,10 +10,6 @@ const showQuizz = async (req, res) => {
         const lecture = await Lecture.findLecture(req.params.id);
         
         const quizData = await Question.getQuestionsAndOptions(req.params.id);
-             
-        if(req.user.role === 'admin'){
-          return res.status(200).render('admin/quizz/index', { title: course.title, quizData, course, lecture, courseId: req.params.course_id});
-        } 
 
         const quizResults = await QuizResult.findBylectureId(req.params.id);
 
@@ -66,6 +62,17 @@ const showQuizz = async (req, res) => {
             viewName: 'quizz'
         });
 
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+};
+
+const getQuizz = async (req, res) => {
+    try {
+        const course = await Course.findCourse(req.query.course_id);
+        const lecture = await Lecture.findLecture(req.params.id);
+        const quizData = await Question.getQuestionsAndOptions(req.params.id);
+        res.status(200).render('admin/quizz/index', { title: course.title, quizData, course, lecture, courseId: req.params.course_id});
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -224,4 +231,4 @@ const saveResults = async (req, res) => {
     }
 };
 
-module.exports = { showQuizz, createQuestion, updateQuestion, deleteQuestion, createOption, deleteOption,updateOption, takeQuizz, saveResults, getQuizzResults };
+module.exports = { showQuizz, getQuizz, createQuestion, updateQuestion, deleteQuestion, createOption, deleteOption,updateOption, takeQuizz, saveResults, getQuizzResults };
