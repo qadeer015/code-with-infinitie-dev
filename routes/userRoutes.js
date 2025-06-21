@@ -89,6 +89,18 @@ router.get("/achievements", async (req, res) => {
 // Edit user profile
 router.post("/edit/:id", upload('avatar'), editUser);
 
+// Edit user signature
+router.post("/edit-signature", async (req, res) => {
+    try {
+        const { signature } = req.body;
+        await User.updateSignature(req.user.id, signature);
+        res.status(200).json({ message: "Signature updated successfully" });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error updating signature");
+    }
+});
+
 router.post("/delete/:id", deleteUser);
 
 

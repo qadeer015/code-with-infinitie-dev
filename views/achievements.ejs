@@ -3,15 +3,21 @@
 <div class="container my-5">
   <h1 class="mb-4">Achievements</h1>
   <h3>Your Certificates of Completed Courses</h3>
+  <% if(userCompletedCourses.length > 0) { %>
   <div id="loading" class="alert alert-info" style="display: none;">Loading certificates...</div>
   <div id="error" class="alert alert-danger" style="display: none;"></div>
+  
 
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="certGrid"></div>
+  <% } else { %>
+  <p>You have not completed any courses yet.</p>
+  <% } %>
 </div>
 
 <script type="application/json" id="user-completed-courses">
   <%- JSON.stringify(userCompletedCourses) %>
 </script>
+  <% if(userCompletedCourses.length > 0) { %>
 
 <style>
   img[alt="Certificate"] {
@@ -82,5 +88,7 @@
 
   document.addEventListener("DOMContentLoaded", renderCertificates);
 </script>
+
+<% } %>
 
 <%- include('partials/_footer') %>

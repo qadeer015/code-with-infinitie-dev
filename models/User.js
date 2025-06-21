@@ -1,11 +1,11 @@
 const db = require('../config/db');
 
 class User {
-    static async create(name, password, email, avatar, signature) {
+    static async create(name, password, email, avatar) {
         try {
             const [result] = await db.execute(
-                'INSERT INTO users (name, password, email, avatar, signature) VALUES (?, ?, ?, ?, ?)',
-                [name, password, email, avatar, signature]
+                'INSERT INTO users (name, password, email, avatar) VALUES (?, ?, ?, ?)',
+                [name, password, email, avatar]
             );
             return result;
         } catch (error) {
@@ -87,9 +87,9 @@ class User {
         }
     }
 
-    static async getUserSignature(id){
+    static async editUserSignature(id, signature) {
         try {
-            const [rows] = await db.execute('SELECT signature FROM users WHERE id = ?', [id]);
+            const [rows] = await db.execute('UPDATE users SET signature = ? WHERE id = ?', [signature, id]);
             return rows.length > 0 ? rows[0] : null;
         } catch (error) {
             console.error("Database query error:", error);

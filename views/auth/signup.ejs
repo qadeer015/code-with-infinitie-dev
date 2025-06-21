@@ -23,7 +23,7 @@
                                         <p class="text-muted">Get started by creating your account</p>
                                     </div>
 
-                                    <form id="signupForm" action="/auth/signup" method="post" >
+                                    <form action="/auth/signup" method="post" >
                                         <!-- Name Input -->
                                         <div class="mb-4">
                                             <label for="name" class="form-label fw-semibold">Full Name</label>
@@ -93,11 +93,6 @@
                                             <div class="form-text">JPG, GIF or PNG. Max size 2MB</div>
                                         </div>
 
-                                        <div id="content">
-                                            <span id="instructions"></span>
-                                            <div id="sketchPadContainer"></div>
-                                            <button type="button" id="undoBtn" class="undoBtn">UNDO</button>
-                                        </div>
                                         <!-- Terms Agreement -->
                                         <div class="mb-4 form-check">
                                             <input type="checkbox" class="form-check-input" id="terms" name="terms"
@@ -238,41 +233,4 @@
 
             password.onchange = validatePassword;
             confirmPassword.onkeyup = validatePassword;
-        </script>
-
-        <script src="/js/utils/sketchPad.js"></script>
-        <script src="/js/utils/draw.js"></script>
-
-        <script>
-            const label = "Signature";
-            const sketchPadContainer = document.getElementById("sketchPadContainer");
-            const undoBtn = document.getElementById("undoBtn");
-            const sketchPad = new SketchPad(sketchPadContainer, undoBtn);
-            instructions.innerHTML = `<span><strong>${label} here!</strong></span>`;
-            
-
-            const signupForm = document.getElementById("signupForm");
-            let signature = document.getElementById("signature");
-            
-            signupForm.addEventListener("submit",async (event)=>{
-                event.preventDefault();
-                const signature = sketchPad.paths;
-                console.log("sig : ", signature)
-                const formData = new FormData(signupForm);
-                formData.append("signature", JSON.stringify(signature));
-                console.log("form data : ", formData);
-                fetch(signupForm.action, {
-                    method: 'POST',
-                    body: formData
-                })
-                    .then(response => response.text())
-                    .then(data => {
-                        showAlert(`${data.message}`, 'success');
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Error saving data');
-                    });
-            })
-
         </script>

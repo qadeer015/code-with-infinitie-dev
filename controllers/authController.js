@@ -16,7 +16,7 @@ const getCookieOptions = (rememberMe) => {
 
 const signup = async (req, res) => {
     try {
-        const { name, password, email, confirmPassword, terms, signature } = req.body;
+        const { name, password, email, confirmPassword, terms } = req.body;
         const avatarUrl = req.file ? req.file.path : null;        // Validate required fields
 
         if (!terms || terms !== 'on') {
@@ -33,7 +33,7 @@ const signup = async (req, res) => {
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         
-        await User.create(name, hashedPassword, email, avatarUrl, signature);
+        await User.create(name, hashedPassword, email, avatarUrl);
         // Auto-login after signup
         const user = await User.findByEmail(email);
         const token = jwt.sign(
@@ -42,7 +42,7 @@ const signup = async (req, res) => {
             { expiresIn: '1h' }
         );
         res.cookie("token", token, getCookieOptions(false));
-        res.json({ message: 'Your account has been created successfully!' });
+        res.status(201).redirect('/auth/login');
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error creating user' });
