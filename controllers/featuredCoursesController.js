@@ -16,8 +16,6 @@ const editFeaturedCourse = async (req, res) => {
         const { id } = req.params;
         const featuredCourse = await FeaturedCourse.find(id);
         const courses = await Course.getAll();
-        console.log(featuredCourse);
-        console.log(courses);
         res.status(200).render('admin/featuredCourse/edit', { featuredCourse, courses });
     } catch (err) {
         console.error(err);

@@ -16,7 +16,7 @@ const getCookieOptions = (rememberMe) => {
 
 const signup = async (req, res) => {
     try {
-        const { name, password, email, confirmPassword, terms } = req.body;
+        const { name, password, email, confirmPassword, terms, signature } = req.body;
         const avatarUrl = req.file ? req.file.path : null;        // Validate required fields
 
         if (!terms || terms !== 'on') {
@@ -31,10 +31,9 @@ const signup = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: "Email already exists" });
         }
-        console.log("proceed for hashing password");
         const hashedPassword = await bcrypt.hash(password, 10);
-        await User.create(name, hashedPassword, email, avatarUrl);
-        console.log("proceed for saving user");
+        
+        await User.create(name, hashedPassword, email, avatarUrl, signature);
         // Auto-login after signup
         const user = await User.findByEmail(email);
         const token = jwt.sign(
@@ -42,9 +41,8 @@ const signup = async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
-       console.log("proceed for redirect");
         res.cookie("token", token, getCookieOptions(false));
-        res.redirect('/');
+        res.json({ message: 'Your account has been created successfully!' });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Error creating user' });

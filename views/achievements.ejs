@@ -1,0 +1,86 @@
+<%- include('partials/_header', { title: 'Achievements' }) %>
+
+<div class="container my-5">
+  <h1 class="mb-4">Achievements</h1>
+  <h3>Your Certificates of Completed Courses</h3>
+  <div id="loading" class="alert alert-info" style="display: none;">Loading certificates...</div>
+  <div id="error" class="alert alert-danger" style="display: none;"></div>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4" id="certGrid"></div>
+</div>
+
+<script type="application/json" id="user-completed-courses">
+  <%- JSON.stringify(userCompletedCourses) %>
+</script>
+
+<style>
+  img[alt="Certificate"] {
+    max-width: 100%;
+    height: auto;
+    aspect-ratio: 4 / 3; /* Match certificate aspect ratio */
+    object-fit: contain;
+    background-color: #fff;
+  }
+</style>
+
+
+<script>
+  const userCompletedCourses = JSON.parse(document.getElementById("user-completed-courses").textContent);
+  const userId = <%= user.id %>;
+  const certGrid = document.getElementById("certGrid");
+  const loading = document.getElementById("loading");
+  const error = document.getElementById("error");
+
+  async function renderCertificates() {
+    try {
+      loading.style.display = 'block';
+
+      userCompletedCourses.forEach(course => {
+        const certUrl = `/certificates?user_id=${userId}&course_id=${course.course_id}`;
+        const col = document.createElement('div');
+        col.className = 'col';
+
+        col.innerHTML = `
+  <div class="card h-100 shadow-sm border-0">
+    <div class="card-body text-center">
+      <img src="${certUrl}" alt="Certificate" class="img-fluid" style="width:100%; height:auto; aspect-ratio: 4 / 3; object-fit: contain;" />
+      <button class="btn btn-sm btn-primary mt-3" onclick="downloadCertificate('${course.course_id}', '${course.title}')">
+        Download Certificate
+      </button>
+    </div>
+  </div>
+`;
+
+
+        certGrid.appendChild(col);
+      });
+
+      loading.style.display = 'none';
+    } catch (err) {
+      loading.style.display = 'none';
+      error.style.display = 'block';
+      error.textContent = "Failed to load certificates: " + err.message;
+    }
+  }
+
+  async function downloadCertificate(courseId, title) {
+    try {
+      const url = `/certificates?user_id=${userId}&course_id=${courseId}`;
+      const response = await fetch(url);
+
+      if (!response.ok) throw new Error("Network response was not ok");
+
+      const blob = await response.blob();
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = `certificate_${userId}_course_${title}.png`;
+      link.click();
+    } catch (err) {
+      alert("Failed to download certificate: " + err.message);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", renderCertificates);
+</script>
+
+<%- include('partials/_footer') %>

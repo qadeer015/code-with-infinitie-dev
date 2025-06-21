@@ -11,7 +11,7 @@ const showQuizz = async (req, res) => {
         
         const quizData = await Question.getQuestionsAndOptions(req.params.id);
 
-        const quizResults = await QuizResult.findBylectureId(req.params.id);
+        const quizResults = await QuizResult.findBylectureIdAndUserId(req.params.id, req.user.id);
 
         let questionIds = new Set();
         let optionIds = new Set();

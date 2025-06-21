@@ -17,6 +17,7 @@ const assignmentsRoutes = require("./routes/assignmentsRoutes.js");
 const adminRoutes = require("./routes/adminRoutes.js");
 const lecturesRoutes = require("./routes/lecturesRoutes.js");
 const lectureCommentsRoutes = require('./routes/lectureCommentsRoutes.js');
+const certificatesRoutes = require('./routes/certificatesRoutes.js');
 
 const auththenticateUser = require("./middleware/auththenticateUser.js");
 const isAdmin = require('./middleware/isAdmin.js');
@@ -108,6 +109,7 @@ app.use("/assignments", assignmentsRoutes);
 app.use("/users/admin", isAdmin, adminRoutes);
 app.use("/lectures", lecturesRoutes);
 app.use('/lecture-comments', lectureCommentsRoutes);
+app.use('/certificates', certificatesRoutes);
 
 app.get("/about", (req, res) => {
     res.render("pages/about", { viewName: 'about' });
@@ -122,5 +124,5 @@ app.get('*', (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Example app listening on http://localhost:${port}`);
+    console.log(`Server is listening on http://localhost:${port}`);
 });

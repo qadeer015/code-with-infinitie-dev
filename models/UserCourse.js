@@ -121,5 +121,33 @@ class UserCourse {
         }
     }
 
+    static async getCompletedCourses(user_id) {
+        try {
+            const [result] = await db.execute(
+                `
+            SELECT 
+                c.id AS course_id,
+                c.title,
+                c.description,
+                c.course_duration,
+                c.course_fee,
+                c.status AS course_status,
+                c.created_at,
+                c.updated_at,
+                uc.enrollment_date,
+                uc.status AS enrollment_status
+            FROM user_courses uc
+            INNER JOIN courses c ON uc.course_id = c.id
+            WHERE uc.user_id = ? AND uc.status = 'completed'
+            `,
+                [user_id]
+            );
+            return result;
+        } catch (error) {
+            console.log("Error getting completed courses:", error);
+            throw error;
+        }
+    }
+
 }
 module.exports = UserCourse;

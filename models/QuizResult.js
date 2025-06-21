@@ -2,30 +2,32 @@ const db = require('../config/db');
 
 class QuizResult {
     static async create(userId, courseId, lectureId, totalMarks, score, answers) {
-        const [result] = await db.query(
-            `INSERT INTO quiz_results 
-         (user_id, course_id, lecture_id, total_marks, score, answers) 
-         VALUES (?, ?, ?, ?, ?, ?)
+    const [result] = await db.query(
+        `INSERT INTO quiz_results 
+         (user_id, course_id, lecture_id, total_marks, score, answers, attempts) 
+         VALUES (?, ?, ?, ?, ?, ?, 1)
          ON DUPLICATE KEY UPDATE
          total_marks = VALUES(total_marks),
          score = VALUES(score),
          answers = VALUES(answers),
-         updated_at = NOW()`,
-            [userId, courseId, lectureId, totalMarks, score, JSON.stringify(answers)]
-        );
+         updated_at = NOW(),
+         attempts = attempts + 1`,
+        [userId, courseId, lectureId, totalMarks, score, JSON.stringify(answers)]
+    );
 
-        // Return the updated/inserted record
-        const id = result.insertId || (await db.query(
-            'SELECT id FROM quiz_results WHERE user_id = ? AND course_id = ? AND lecture_id = ?',
-            [userId, courseId, lectureId]
-        ))[0][0].id;
+    const id = result.insertId || (await db.query(
+        'SELECT id FROM quiz_results WHERE user_id = ? AND course_id = ? AND lecture_id = ?',
+        [userId, courseId, lectureId]
+    ))[0][0].id;
 
-        const [record] = await db.query("SELECT * FROM quiz_results WHERE id = ?", [id]);
-        return record[0];
-    }
+    const [record] = await db.query("SELECT * FROM quiz_results WHERE id = ?", [id]);
+    return record[0];
+}
 
-    static async findBylectureId(lectureId) {
-        const [quiz_result] = await db.query("SELECT * FROM quiz_results WHERE lecture_id = ?", [lectureId]);
+
+
+    static async findBylectureIdAndUserId(lectureId, userId) {
+        const [quiz_result] = await db.query("SELECT * FROM quiz_results WHERE lecture_id = ? AND user_id = ?", [lectureId, userId]);
         return quiz_result;
     }
 

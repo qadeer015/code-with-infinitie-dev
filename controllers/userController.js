@@ -4,24 +4,23 @@ require('dotenv').config();
 
 // Configure Cloudinary (if not already done in another file)
 cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
+    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
 // userController.js
 const editUser = async (req, res) => {
     try {
         const { id } = req.params;
-        const { name, email, role, page_link, repository_link } = req.body;
-        
+        const { name, email, role, page_link, repository_link, signature } = req.body;
+
         const userProfile = await User.findById(id);
         if (!userProfile) {
             return res.status(404).json({ message: 'User not found' });
         }
 
         let avatarUrl = userProfile.avatar;
-        
         // If new file was uploaded
         if (req.file) {
             // Delete old avatar if it exists and is from Cloudinary
@@ -37,19 +36,20 @@ const editUser = async (req, res) => {
         }
 
         const updatedUser = await User.updateUser(
-            id, 
+            id,
             name || userProfile.name,
             email || userProfile.email,
             role || userProfile.role,
             avatarUrl,
             page_link || userProfile.page_link,
-            repository_link || userProfile.repository_link
+            repository_link || userProfile.repository_link,
+            signature
         );
 
         if (updatedUser) {
-            res.redirect("/");
+            res.json('Profile updated successfully');
         } else {
-            res.redirect(`/users/edit/${id}`);
+            res.status(400).json('Failed to update profile');
         }
     } catch (error) {
         console.error('Error updating user:', error);
@@ -113,4 +113,4 @@ const unblockUser = async (req, res) => {
     }
 }
 
-module.exports = {editUser, getStudents, deleteUser, blockUser, unblockUser};
+module.exports = { editUser, getStudents, deleteUser, blockUser, unblockUser };

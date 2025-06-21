@@ -73,7 +73,7 @@
             </div>
         </div>
     </nav>
-<% if (!['/auth/login', '/auth/register', '/forgot-password', '/reset-password'].includes(url) && viewName !== 'index' && viewName !== 'terms' && viewName !== 'privacy') { %>
+<% if (!['/auth/login', '/auth/register', '/forgot-password', '/reset-password'].includes(url) && viewName !== 'index' && viewName !== 'terms' && viewName !== 'privacy' && viewName !== 'notfound') { %>
     <div class="row p-0 m-0 main-content-wrapper">
         <div class="col-lg-2 bg-secondary col-md-2 d-lg-inline d-md-inline d-none h-100">
             <%- include('_sidebar') %>

@@ -12,6 +12,7 @@
                         <span class="fw-bold">Email : </span>
                         <%= userProfile.email %>
                     </div>
+                    
                     <% if(userProfile.page_link){ %>
                         <div class="card-text">
                             <span class="fw-bold">Page Link : </span>
@@ -54,8 +55,24 @@
                     </div>
                 </div>
             </div>
+
+            <%if(user.role == "admin"){%>
+            <h3>Courses</h3>
+            <div class="row">
+                <% courses.forEach(course =>{ %>
+                    <div class="col-lg-4 col-md-6 my-2">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-title"><%= course.title %></div>
+                            </div>
+                        </div>
+                    </div>
+                <% }) %>
+            </div>
+            <%}%>
         </div>
     </div>
   </div>
+
 
 <%- include('partials/_footer') %>

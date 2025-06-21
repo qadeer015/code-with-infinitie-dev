@@ -6,7 +6,7 @@
                 <h1>Edit Profile</h1>
             </div>
             <div class="card-body">
-                <form action="/users/edit/<%= userProfile.id %>" method="post" enctype="multipart/form-data">
+                <form id="editUserForm" action="/users/edit/<%= userProfile.id %>" method="post" enctype="multipart/form-data">
                     <div class="form-group text-center mb-3">
                         <div class="avatar-preview-container">
                             <img id="avatarPreview" 
@@ -20,10 +20,23 @@
                             Change Avatar
                         </button>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group mb-2">
                         <label for="name" class="form-label fw-bold">Name</label>
                         <input type="text" id="name" name="name" value="<%= userProfile.name %>" class="form-control" required>
                     </div>
+
+                    <% if(!userProfile.signature){%>
+                    <div class="card-text">
+                        <div id="content">
+                            <span id="instructions"></span>
+                            <div id="sketchPadContainer"></div>
+                            <button type="button" id="undoBtn" class="undoBtn">UNDO</button>
+                        </div>
+                    </div>
+                    <%} else {%>
+                    <div class="form-label fw-bold">Signature</div>
+                    <canvas id="signatureCanvas" width="250" height="125" style="background-color: white;"></canvas>
+                    <%}%>
                     <% if(user.role==="admin"){ %>
                     <div class="form-group">
                         <label for="email" class="form-label fw-bold">Email</label>
@@ -71,4 +84,91 @@ document.getElementById('avatar').addEventListener('change', function(event) {
     }
 });
 </script>
+
+<script src="/js/utils/sketchPad.js"></script>
+        <script src="/js/utils/draw.js"></script>
+<% if(!userProfile.signature){%>
+
+        <script>
+            const label = "Signature";
+            const sketchPadContainer = document.getElementById("sketchPadContainer");
+            const undoBtn = document.getElementById("undoBtn");
+            const sketchPad = new SketchPad(sketchPadContainer, undoBtn);
+            instructions.innerHTML = `<span><strong>${label} here!</strong></span>`;
+            
+
+            const editUserForm = document.getElementById("editUserForm");
+            let signature = document.getElementById("signature");
+            
+            editUserForm.addEventListener("submit",async (event)=>{
+                event.preventDefault();
+                const signature = sketchPad.paths;
+                const formData = new FormData(editUserForm);
+                formData.append("signature", JSON.stringify(signature));
+                fetch(editUserForm.action, {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(response => response.text())
+                    .then(data  => {
+                        showAlert('Profile updated successfully!', 'success');
+                    })
+                    .catch(error => {
+                        console.error('Error:', error);
+                        alert('Error saving data');
+                    });
+            })
+
+        </script>
+
+<%}%>
+
+ <script>
+            const signatureData = <%- JSON.stringify(userProfile.signature) %>;
+            
+const canvas = document.getElementById('signatureCanvas');
+const ctx = canvas.getContext('2d');
+
+// Draw the signature
+draw.paths(ctx, signatureData);
+
+// If you need to scale it to fit the canvas, you might want to add:
+// function scaleSignatureToFit(signatureData, canvasWidth, canvasHeight) {
+//     // Find min and max coordinates
+//     let minX = Infinity, minY = Infinity;
+//     let maxX = -Infinity, maxY = -Infinity;
+    
+//     signatureData.forEach(path => {
+//         path.forEach(point => {
+//             minX = Math.min(minX, point[0]);
+//             minY = Math.min(minY, point[1]);
+//             maxX = Math.max(maxX, point[0]);
+//             maxY = Math.max(maxY, point[1]);
+//         });
+//     });
+    
+//     // Calculate scale factors
+//     const width = maxX - minX;
+//     const height = maxY - minY;
+//     const scaleX = canvasWidth / width;
+//     const scaleY = canvasHeight / height;
+//     const scale = Math.min(scaleX, scaleY) * 0.9; // 90% of canvas to add some padding
+    
+//     // Scale and center the signature
+//     const offsetX = (canvasWidth - width * scale) / 2 - minX * scale;
+//     const offsetY = (canvasHeight - height * scale) / 2 - minY * scale;
+    
+//     return signatureData.map(path => 
+//         path.map(point => [
+//             point[0] * scale + offsetX,
+//             point[1] * scale + offsetY
+//         ])
+//     );
+// }
+
+// // Usage:
+// const scaledSignature = scaleSignatureToFit(signatureData, canvas.width, canvas.height);
+// ctx.clearRect(0, 0, canvas.width, canvas.height);
+// draw.paths(ctx, scaledSignature);
+        </script>
 <%- include('partials/_footer') %>

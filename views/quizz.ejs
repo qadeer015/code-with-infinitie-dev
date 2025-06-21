@@ -69,7 +69,11 @@
             <div id="start-quiz-container" class="text-center mt-5">
                 <h3>Ready to take the quiz?</h3>
                 <p>You'll have <%= quizData.length %> minute(s) to complete <%= quizData.length %> questions.</p>
-                <button id="start-quiz-btn" class="btn btn-primary btn-lg">Start Quiz</button>
+                <% if(quizResults[0].attempts >= 1) { %>
+                    <button id="start-quiz-btn" class="btn btn-primary btn-lg">Retake Quiz</button>
+                <% } else { %>
+                    <button id="start-quiz-btn" class="btn btn-primary btn-lg">Take Quiz</button>
+                <% } %>
             </div>
             
             <div id="quiz-content" style="display: none;">
