@@ -12,9 +12,6 @@ function attachOptionFormListener(form) {
         const isCorrect = form.querySelector(`select[name="is_correct"]`).value;
         const questionId = form.action.split('/').slice(-2, -1)[0]; // Extract question ID
         const option = { option_text: optionText, is_correct: isCorrect };
-        // console.log(option);
-        // console.log("form.action", form.action);
-        // console.log("questionId", questionId);
         try {
             const response = await fetch(form.action, {
                 method: "POST",

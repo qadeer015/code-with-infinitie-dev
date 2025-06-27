@@ -13,8 +13,9 @@ const getAllVideos = async (req, res) => {
 
 const createVideo = async (req, res) => {
     try {
-        const { title, description, iframe_link } = req.body;
-        await Video.create(title, description, iframe_link);
+        const { title, description, iframe_link, minutes, seconds } = req.body;
+        const totalSeconds = parseInt(minutes || 0) * 60 + parseInt(seconds || 0);
+        await Video.create(title, description, iframe_link, totalSeconds);
         res.redirect('/users/admin/videos/');
     } catch (error) {
         console.error("Error creating video:", error);
@@ -25,8 +26,9 @@ const createVideo = async (req, res) => {
 const updateVideo = async (req, res) => {
     try {
         const { id } = req.params;
-        const { title, description, iframe_link } = req.body;
-        const updated = await Video.updateVideo(id, title, description, iframe_link);
+        const { title, description, iframe_link, minutes, seconds } = req.body;
+        const totalSeconds = parseInt(minutes || 0) * 60 + parseInt(seconds || 0);
+        const updated = await Video.updateVideo(id, title, description, iframe_link, totalSeconds);
         if (updated) {
             res.redirect('/users/admin/videos/');
         } else {

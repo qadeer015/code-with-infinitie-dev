@@ -3,14 +3,27 @@ const db = require('../config/db');
 class UserCourse {
     static async joinCourse(user_id, course_id, enrollment_date, status = 'enrolled') {
         try {
-            console.log(user_id, course_id, enrollment_date, status);
             const [result] = await db.execute(
                 'INSERT INTO user_courses (user_id, course_id, enrollment_date, status) VALUES (?, ?, ?, ?)',
                 [user_id, course_id, enrollment_date, status]
             );
-            return result;
+            const [row] = await db.execute('SELECT * FROM courses WHERE id = ?', [course_id]);
+            return row[0];
         } catch (error) {
             console.error("Error inserting user courses:", error);
+            throw error;
+        }
+    }
+
+    static async findOne(user_id, course_id) {
+        try {
+            const [result] = await db.execute(
+                'SELECT * FROM user_courses WHERE user_id = ? AND course_id = ?',
+                [user_id, course_id]
+            );
+            return result[0];
+        } catch (error) {
+            console.error("Error finding user course:", error);
             throw error;
         }
     }

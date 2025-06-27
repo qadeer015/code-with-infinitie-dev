@@ -1,26 +1,50 @@
 
 <%- include('partials/_header', { title: 'Courses' }) %>
 
-<div class="container">
-  <div class="text-center mb-5">
-    <h2 class="fw-bold">Available Courses</h2>
-    <p class="text-muted">Start your learning journey today</p>
+  <div class="row">
+    <div class="col-8 py-3">
+      <h2 class="fw-bold">Courses</h2>
+      <p class="text-muted">Improve your web development skills in a variety of languages and frameworks, including HTML, CSS, JavaScript.</p>
+    </div>
+    <hr class="m-0 text-muted mb-3">
   </div>
   
   <div class="row g-4">
     <% courses.forEach((course) => { %>
     <div class="col-lg-4 col-md-6">
-        <div class="card h-100 shadow-sm">
+        <div class="card h-100 shadow-sm bg-primary">
             <div class="card-body position-relative">
                 <% if (course.status === 'enrolled') { %>
                     <span class="badge bg-success mb-2 position-absolute" style="top: 17px; right: 15px;">Enrolled</span>
                 <% } %>
-                <h5 class="card-title"><%= course.title %></h5>
-                <p class="card-text text-muted"><%= course.description %></p>
+                <h5 class="card-title fw-bold text-white"><%= course.title %></h5>
+                <p class="card-text text-muted" style="font-size: 15px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                    <%= course.description %>
+                </p>
             </div>
-            <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center">
+            <div class="card-footer bg-transparent border-top-0">
+                <div class="d-flex justify-content-between align-items-center">
                 <div>
-                    <span class="text-warning">
+                    <div class="badge p-0">
+                        <i class="bi bi-hourglass"></i>
+                        <%= course.course_duration %>
+                    </div>
+                    <div class="badge p-0">
+                      <i class="bi bi-currency-dollar"></i>
+                      <%= course.course_fee %>
+                    </div>
+                </div>
+                <div>
+                    <% if (course.status != 'enrolled') { %>
+                    <form id="enroll-form-<%= course.id %>" action="/courses/<%= course.id %>/join" method="post" class="text-center">
+                        <input type="hidden" name="user_id" value="<%= user.id %>">
+                        <input type="hidden" name="course_id" value="<%= course.id %>">
+                        <button type="submit" class="btn btn-sm btn-success">Enroll Now</button>
+                    </form>
+                <% } %>
+                </div>
+                </div>
+                  <span class="text-warning">
                         <% for (let i = 0; i < 5; i++) { %>
                             <% if (i < course.ratting) { %>
                                 ★
@@ -30,20 +54,40 @@
                         <% } %>
                     </span>
                     <span class="text-muted ms-1">(124)</span>
-                </div>
-                <% if (course.status != 'enrolled') { %>
-                    <form action="/courses/<%= course.id %>/join" method="post">
-                        <input type="hidden" name="user_id" value="<%= user.id %>">
-                        <input type="hidden" name="course_id" value="<%= course.id %>">
-                        <button type="submit" class="btn btn-sm btn-outline-primary">Enroll Now</button>
-                    </form>
-                <% } %>
+
             </div>
         </div>
     </div>
     <% }); %>
 
   </div>
-</div>
+
+  <script>
+    const enrollForms = document.querySelectorAll('form[id^="enroll-form-"]');
+    enrollForms.forEach(form => {
+      form.addEventListener('submit', async function (event) {
+        event.preventDefault(); // Prevent full-page reload
+
+        const response = await fetch(this.action, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            user_id: this.querySelector('input[name="user_id"]').value,
+            course_id: this.querySelector('input[name="course_id"]').value
+          })
+        });
+
+        const text = await response.text();
+        const data = JSON.parse(text);
+
+        if (data.success) {
+          showAlert(data.message, 'success');
+        } else {
+          showAlert(data.message, 'danger');
+        }
+      });
+        })
+  </script>
+
 
 <%- include('partials/_footer') %>

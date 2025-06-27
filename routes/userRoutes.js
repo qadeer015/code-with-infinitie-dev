@@ -32,7 +32,6 @@ router.get("/:id/profile", async (req, res) => {
         if (userId != req.user.id && req.user.role != "admin") {
             return res.redirect("/");
         }
-        if (req.user.role == "admin") {
             const [courses] = await db.execute(
                 `SELECT 
         c.*,
@@ -56,10 +55,8 @@ router.get("/:id/profile", async (req, res) => {
     WHERE uc.user_id = ?`,
                 [userId, userId]
             );
-            return res.render("profile", { userProfile, courses, viewName: 'profile' });
-        }
 
-        res.render("profile", { userProfile, courses: [], viewName: 'profile' });
+        res.render("profile", { userProfile, courses, viewName: 'profile' });
     } catch (error) {
         console.error(error);
         res.status(500).send("Error retrieving user");
@@ -87,7 +84,7 @@ router.get("/achievements", async (req, res) => {
 });
 
 // Edit user profile
-router.post("/edit/:id", upload('avatar'), editUser);
+router.post("/:id/edit", upload('avatar'), editUser);
 
 // Edit user signature
 router.post("/edit-signature", async (req, res) => {

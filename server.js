@@ -85,6 +85,7 @@ app.get("/", async (req, res) => {
     WHERE uc.user_id = ?`,
                 [req.user.id, req.user.id]
             );
+            
             res.render("dashboard", {
                 user: req.user,
                 courses,

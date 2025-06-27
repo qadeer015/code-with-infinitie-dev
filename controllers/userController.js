@@ -12,10 +12,11 @@ cloudinary.config({
 // userController.js
 const editUser = async (req, res) => {
     try {
-        const { id } = req.params;
+        const { id } = req.params; // Fixed destructuring
         const { name, email, role, page_link, repository_link, signature } = req.body;
-
+        
         const userProfile = await User.findById(id);
+        
         if (!userProfile) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -35,26 +36,26 @@ const editUser = async (req, res) => {
             avatarUrl = req.file.path;
         }
 
+        // Ensure no undefined values are passed to the update
         const updatedUser = await User.updateUser(
             id,
-            name || userProfile.name,
-            email || userProfile.email,
-            role || userProfile.role,
+            name !== undefined ? name : userProfile.name,
+            email !== undefined ? email : userProfile.email,
+            role !== undefined ? role : userProfile.role,
             avatarUrl,
-            page_link || userProfile.page_link,
-            repository_link || userProfile.repository_link,
-            signature
+            page_link !== undefined ? page_link : userProfile.page_link,
+            repository_link !== undefined ? repository_link : userProfile.repository_link,
+            signature !== undefined ? signature : userProfile.signature
         );
 
         if (updatedUser) {
-            res.json('Profile updated successfully');
+            res.json({ success: true, message: 'Profile updated successfully' });
         } else {
-            res.status(400).json('Failed to update profile');
+            res.status(400).json({ success: false, message: 'Failed to update profile' });
         }
     } catch (error) {
         console.error('Error updating user:', error);
-        req.flash('error', 'Error updating profile: ' + error.message);
-        res.redirect(`/users/edit/${id}`);
+        res.status(500).json({ success: false, message: 'Error updating user' });
     }
 };
 

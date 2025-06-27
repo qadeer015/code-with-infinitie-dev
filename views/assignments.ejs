@@ -7,17 +7,17 @@
         <% if (assignments.length > 0) { %>
           <div class="table-responsive">
             <table class="table table-bordered table-striped align-middle">
-              <thead class="table-dark">
+              <thead class="table-primary bg-primary">
                 <tr>
-                  <th>#</th>
-                  <th>Title</th>
-                  <th>Details</th>
-                  <th>Due Date</th>
-                  <th>Open Date</th>
-                  <th>Total Marks</th>
-                  <th>Status</th>
-                  <th>Gained Marks</th>
-                  <th>Actions</th>
+                  <th class="text-white">#</th>
+                  <th class="text-white">Title</th>
+                  <th class="text-white">Details</th>
+                  <th class="text-white">Due Date</th>
+                  <th class="text-white">Open Date</th>
+                  <th class="text-white">Total Marks</th>
+                  <th class="text-white">Status</th>
+                  <th class="text-white">Gained Marks</th>
+                  <th class="text-white">Actions</th>
                 </tr>
               </thead>
               <tbody>
@@ -25,7 +25,7 @@
                   <tr data-assignment-id="<%= assignment.id %>">
                     <td><%- index + 1 %></td>
                     <td><%- assignment.title %></td>
-                    <td><%- assignment.details %></td>
+                    <td><%- assignment.details %> </td>
                     <td><%- assignment.due_date %></td>
                     <td><%- assignment.created_at %></td>
                     <td><%- assignment.total_marks %></td>
@@ -89,7 +89,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="submit" class="btn btn-primary">Upload</button>
+            <button type="submit" class="btn btn-primary" disabled>Upload</button>
           </div>
         </form>
       </div>
@@ -110,6 +110,12 @@ document.querySelectorAll('[data-bs-toggle="modal"]').forEach(button => {
   });
 });
 
+const assignmentFilesInput = document.getElementById('assignmentFiles');
+  const uploadSubmitBtn = document.querySelector('#assignmentUploadForm button[type="submit"]');
+assignmentFilesInput.addEventListener('change', function() {
+    // Enable the submit button if files are selected, otherwise keep it disabled
+    uploadSubmitBtn.disabled = this.files.length === 0;
+  });
 document.getElementById('assignmentUploadForm').addEventListener('submit', async (e) => {
     e.preventDefault();
     

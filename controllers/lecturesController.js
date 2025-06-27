@@ -60,7 +60,7 @@ const showLecture = async (req, res) => {
     try {
         const { id } = req.params;
         const course = await Course.findCourse(req.query.course_id);
-        const lecture = await Lecture.getLectureDetails(id);
+        const lecture = await Lecture.getLectureDetails(id, req.user.id);
         res.status(200).render('lectures_viewer', { lecture, course, viewName: 'lectures_viewer' });
     } catch (err) {
         console.error(err);

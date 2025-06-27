@@ -1,22 +1,28 @@
 <%- include('partials/_header', { title: 'Dashboard' }) %>
-  <h1 class="mb-4"><%= user.name %>'s Courses</h1>
-  <!-- User's Courses Section -->
+  <div class="row py-3">
+    <div class="col-12">
+      <h4 class="fw-bold">Courses</h4>
+    </div>
+  </div>
   <div class="row">
     <% if (courses.length > 0) { %>
       <% courses.forEach(course => { %>
         <div class="col-lg-6 col-md-6 mb-4">
           <div class="card h-100 shadow-sm">
-            <div class="card-body">
+            <div class="card-header bg-primary">
               <form action="/lectures" method="get">
                 <input type="hidden" name="course_id" value="<%= course.id %>">
                 <button type="submit" class="bg-transparent border-0 outline-0">
-                  <h5 class="card-title">
+                  <h5 class="card-title fw-bold text-white">
                     <%= course.title %>
                   </h5>
                 </button>
               </form>
-              
-              <p class="card-text text-muted"><%= course.description %></p>
+            </div>
+            <div class="card-body">
+              <p class="card-text text-muted" style="font-size: 15px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                <%= course.description %>
+              </p>
             </div>
             <div class="card-footer bg-transparent d-flex gap-3 align-items-center">
               
@@ -27,7 +33,10 @@
                   </div>
                 <% } %>
                 <input type="hidden" name="course_id" value="<%= course.id %>">
-                <button type="submit" class="btn btn-sm btn-primary w-100">Assignments</button>
+                <button type="submit" class="btn btn-sm btn-primary w-100">
+                  <i class="bi bi-person-workspace me-1"></i>
+                  Assignments
+                </button>
               </form>
               <form action="/announcements" method="get" class="position-relative">
                 <% if(course.announcements_count > 0) { %>
@@ -36,7 +45,10 @@
                    </div>
                 <% } %>
                 <input type="hidden" name="course_id" value="<%= course.id %>">
-                <button type="submit" class="btn btn-sm btn-primary w-100">Announcements</button>
+                <button type="submit" class="btn btn-sm btn-primary w-100">
+                  <i class="bi bi-megaphone me-1"></i>
+                  Announcements
+                </button>
               </form>
             </div>
           </div>
@@ -51,19 +63,3 @@
   </div>
   
 <%- include('partials/_footer') %>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

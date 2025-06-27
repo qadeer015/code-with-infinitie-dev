@@ -32,9 +32,11 @@ const getUserCourses = async (req, res) => {
 const joinCourse = async (req, res) => {
     try {
         const { user_id, course_id } = req.body;
+        const userCourse = await UserCourse.findOne(user_id, course_id);
+        if(userCourse) return res.status(400).json({success:false, message:"Course already joined."});
         const joinedCourse = await UserCourse.joinCourse(user_id, course_id, new Date());
-        if(!joinedCourse) return res.status(400).json({message:"Course already joined."});
-        res.status(201).json({message:"Course enrolled Successfully.",joinedCourse});
+        if(!joinedCourse) return res.status(400).json({success:false, message:"Course already joined."});
+        res.status(201).json({success:true , message:`You have successfully joined the ${joinedCourse.title} course.`});
     } catch (err) {
         console.error(err);
     }

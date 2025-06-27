@@ -1,11 +1,11 @@
 const db = require('../config/db');
 
 class Video {
-    static async create(title, description, iframe_link) {
+    static async create(title, description, iframe_link, totalSeconds) {
         try {
             const [result] = await db.execute(
-                'INSERT INTO videos (title, description, iframe_link) VALUES (?, ?, ?)',
-                [title, description, iframe_link]
+                'INSERT INTO videos (title, description, iframe_link) VALUES (?, ?, ?, ?)',
+                [title, description, iframe_link, totalSeconds]
             );
             return result;
         } catch (error) {
@@ -50,11 +50,11 @@ class Video {
         }
     }
 
-    static async updateVideo(id, title, description, iframe_link) {
+    static async updateVideo(id, title, description, iframe_link, totalSeconds) {
         try {
             const [result] = await db.execute(
-                'UPDATE videos SET title = ?, description = ?, iframe_link = ? WHERE id = ?',
-                [title, description, iframe_link, id]
+                'UPDATE videos SET title = ?, description = ?, iframe_link = ?, duration = ? WHERE id = ?',
+                [title, description, iframe_link, totalSeconds, id]
             );
             return result.affectedRows > 0; // Returns true if at least one row is updated
         } catch (error) {

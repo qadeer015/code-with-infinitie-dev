@@ -45,17 +45,26 @@ class User {
     }
 
     static async updateUser(id, name, email, role, avatar, page_link, repository_link, signature) {
-        try {
-            const [result] = await db.execute(
-                'UPDATE users SET name = ?, email = ?, role = ?, avatar = ?, page_link = ?, repository_link = ?, signature = ? WHERE id = ?',
-                [name, email, role, avatar, page_link, repository_link, signature, id]
-            );
-            return result.affectedRows > 0; // Returns true if at least one row is updated
-        } catch (error) {
-            console.error("Error updating user:", error);
-            throw error;
-        }
+    try {
+        const [result] = await db.execute(
+            'UPDATE users SET name = ?, email = ?, role = ?, avatar = ?, page_link = ?, repository_link = ?, signature = ? WHERE id = ?',
+            [
+                name, 
+                email, 
+                role, 
+                avatar, 
+                page_link, 
+                repository_link, 
+                typeof signature === 'object' ? JSON.stringify(signature) : signature,
+                id
+            ]
+        );
+        return result.affectedRows > 0;
+    } catch (error) {
+        console.error("Error updating user:", error);
+        throw error;
     }
+}
 
     static async deleteUser(id) {
         try {

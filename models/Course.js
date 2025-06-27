@@ -22,6 +22,11 @@ class Course {
                 c.title, 
                 c.description,
                 c.ratting,
+                c.course_duration,
+                c.course_fee,
+                c.status AS course_status,
+                c.created_at,
+                c.updated_at,
                 uc.status 
             FROM courses c 
             LEFT JOIN user_courses uc ON c.id = uc.course_id AND uc.user_id = ?
@@ -58,7 +63,23 @@ class Course {
             throw error;
         }
     }
+    
 
+    static async getCourse(userId, courseId) {
+    try {
+        const [result] = await db.execute(
+            `SELECT c.*, uc.progress 
+             FROM courses c
+             LEFT JOIN user_courses uc ON c.id = uc.course_id AND uc.user_id = ?
+             WHERE c.id = ?`,
+            [userId, courseId]
+        );
+        return result[0];
+    } catch (error) {
+        console.log("Error getting course:", error);
+        throw error;
+    }
+}
 
     static async deleteCourse(id) {
         try {

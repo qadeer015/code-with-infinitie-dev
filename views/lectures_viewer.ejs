@@ -5,13 +5,25 @@
             <h2 class="fw-bold">
                 <%= lecture.title %>
             </h2>
-            <div class="d-flex align-items-center justify-content-start gap-2">
-                <button id="videoBtn" class="btn btn-sm btn-primary active">Video</button>
-                <button id="readingBtn" class="btn btn-sm btn-outline-secondary">Reading</button>
-                <form id="quizzBtn" action="/lectures/<%= lecture.id %>/quizz" method="get">
-                    <input type="hidden" name="course_id" value="<%= course.id %>">
-                    <button type="submit" class="btn btn-sm btn-outline-secondary">Quizz</button>
-                </form>
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex gap-1">
+                  <button id="videoBtn" class="btn btn-sm btn-primary active">Video</button>
+                  <button id="readingBtn" class="btn btn-sm btn-secondary" <%= !lecture.is_viewed ? 'disabled' : '' %>>Reading</button>
+                  <form id="quizzBtn" action="/lectures/<%= lecture.id %>/quizz" method="get">
+                      <input type="hidden" name="course_id" value="<%= course.id %>">
+                      <button type="submit" class="btn btn-sm btn-secondary" <%= !lecture.is_viewed ? 'disabled' : '' %>>Quizz</button>
+                  </form>
+                </div>
+                
+                  <div style="width: 100px;">
+                    <div class="d-flex justify-content-between">
+                      <span id="viewStatus" style="font-size: 10px;"><%= lecture.is_viewed ? '✔️ Viewed' : '❌ Not Viewed'%></span>
+                      <span id="videoTime" style="font-size: 10px;">0:00</span>
+                    </div>
+                    <div class="progress mb-0" style="height: 5px;">
+                      <div id="videoProgressBar" class="progress-bar" role="progressbar" style="width: 0%;"></div>
+                    </div>
+                  </div>
             </div>
         </div>
 
@@ -20,13 +32,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-body p-0" style="height: 500px;">
-                        <div class="embed-responsive embed-responsive-16by9 h-100">
-                            <iframe class="embed-responsive-item w-100 h-100 rounded"
-                                src="<%= lecture.video_iframe_link %>" title="YouTube video player" frameborder="0"
-                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                                referrerpolicy="strict-origin-when-cross-origin" allowfullscreen>
-                            </iframe>
-                        </div>
+                        <div id="player"></div>
                     </div>
                 </div>
                 <p class="card-text mt-2">
@@ -68,7 +74,7 @@
                                             <p class="card-text">
                                                 <%= lecture.tasks %>
                                             </p>
-                                            <%}%>
+                                        <%}%>
                     </div>
                 </div>
             </div>
@@ -121,27 +127,8 @@
             </div>
         </div>
 
-
-        <div id="comments-section" class="mt-3">
-            <h3>Discussion Board</h3>
-            
-            <% if(lecture.status === 'open'){%>            <!-- Form to add a new top-level comment -->
-            <form id="new-comment-form" class="position-relative">
-                <textarea name="comment" id="comment-text" min-rows="3" rows="3" class="w-100 p-3 rounded"
-                    placeholder="Ask a question or share your thoughts..."></textarea>
-                <input type="hidden" id="lecture_id" value="<%= lecture.id %>"> <!-- Replace with actual lecture_id -->
-                <input type="hidden" id="user_id" value="<%= user.id %>"> <!-- Replace with actual logged-in user_id -->
-                <button type="submit" class="btn btn-primary position-absolute"
-                    style="right: 10px; bottom: 15px">Send</button>
-            </form>
-            <% } %>
-
-            <div id="comments-list">
-                <!-- Comments will be loaded here -->
-            </div>
-        </div>
-
     </div>
+
     <script type="application/json" id="lecture-data">
         <%- JSON.stringify(lecture) %>
     </script>
@@ -149,10 +136,156 @@
         <%- JSON.stringify(user) %>
     </script>
 
+   
     <script src="/js/lecture_viewer.js"></script>
-    <script src="/js/comment.js"></script>
+    
     <script>
             let lecture = JSON.parse(document.getElementById("lecture-data").textContent);
             let user = JSON.parse(document.getElementById("user-data").textContent);
     </script>
+
+    <script>
+       
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  var player;
+  var progressInterval;
+  var lectureViewed = false;
+  var customTimer = 0; // Our custom timer in seconds
+  var timerInterval;
+  var videoDuration = 0;
+  const videoTimer = document.getElementById("videoTime");
+  const viewStatus = document.getElementById("viewStatus");
+
+  // Function to extract video ID from URL
+  function extractVideoId(url) {
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    return (match && match[2].length === 11) ? match[2] : null;
+  }
+
+  function onYouTubeIframeAPIReady() {
+    const lecture = JSON.parse(document.getElementById("lecture-data").textContent);
+    const videoId = extractVideoId(lecture.video_iframe_link);
+    
+    if (!videoId) {
+      console.error("Could not extract video ID from URL");
+      return;
+    }
+
+    player = new YT.Player('player', {
+      height: '100%',
+      width: '100%',
+      videoId: videoId,
+      playerVars: {
+        autoplay: 1,
+        mute: 1,
+        playsinline: 1,
+        enablejsapi: 1
+      },
+      events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange
+      }
+    });
+  }
+
+  function onPlayerReady(event) {
+    event.target.playVideo();
+    videoDuration = player.getDuration();
+  }
+
+  function startCustomTimer() {
+    // Clear any existing timer
+    if (timerInterval) clearInterval(timerInterval);
+    
+    // Start new timer that increments every second
+    timerInterval = setInterval(() => {
+      customTimer++;
+      updateProgress();
+    }, 1000);
+  }
+
+  function stopCustomTimer() {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+    }
+  }
+
+  function enableReadingButton() {
+  const readingBtn = document.getElementById('readingBtn');
+  readingBtn.disabled = false;
+  readingBtn.classList.remove('btn-secondary');
+  readingBtn.classList.add('btn-primary');
+}
+
+  function resetCustomTimer() {
+    customTimer = 0;
+  }
+
+  function onPlayerStateChange(event) {
+    switch(event.data) {
+      case YT.PlayerState.PLAYING:
+        if (!timerInterval) {
+          startCustomTimer();
+        }
+        break;
+      case YT.PlayerState.PAUSED:
+      case YT.PlayerState.ENDED:
+        stopCustomTimer();
+        break;
+      case YT.PlayerState.CUED:
+        resetCustomTimer();
+        break;
+    }
+  }
+
+  function updateProgress() {
+    if (videoDuration <= 0) return;
+
+    const minutes = Math.floor(customTimer / 60);
+    const seconds = customTimer % 60;
+    videoTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+    const percentWatched = (customTimer / videoDuration) * 100;
+    // Update progress bar
+    document.getElementById('videoProgressBar').style.width = `${Math.min(percentWatched, 100).toFixed(2)}%`;
+
+    // Mark as viewed at 10%
+    if (percentWatched >= 2 && !lectureViewed) {
+      lectureViewed = true;
+      viewStatus.textContent = "✔️ Viewed";
+      markLectureAsViewed();
+      enableReadingButton();
+    }
+  }
+
+   function markLectureAsViewed() {
+    const lecture = JSON.parse(document.getElementById("lecture-data").textContent);
+    const user = JSON.parse(document.getElementById("user-data").textContent);
+
+    fetch(`/lectures/${lecture.id}/mark-viewed`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user_id: user.id })
+    })
+      .then(res => {
+        if (res.ok) {
+          console.log("[✅] Lecture successfully marked as viewed.");
+        } else {
+          console.error("[❌] Failed to mark lecture.");
+        }
+      })
+      .catch(err => {
+        console.error("[❌] Error marking lecture:", err);
+      });
+  }
+
+    </script>
+
+
 <%- include('partials/_footer') %>

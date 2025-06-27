@@ -6,8 +6,8 @@
       </a>
     </li>
 
-    <li class="nav-item mb-4">
-      <a class="nav-link py-0" style="padding-left: 1.3rem!important;padding-right: 1.3rem!important;"
+    <li class="nav-item mb-3">
+      <a class="nav-link py-0 text-dark" style="padding-left: 1.3rem!important;padding-right: 1.3rem!important;"
         href="/users/admin/dashboard">
         <i class="bi bi-speedometer2 circle"></i>
         <span class="nav-title">Dashboard</span>
@@ -15,25 +15,10 @@
     </li>
 
     <li class="nav-item mb-3">
-      <div class="accordion" id="studentsAccordion">
-        <div class="accordion-item bg-transparent border-0 outline-0">
-          <h5 class="accordion-header">
-            <button class="bg-transparent border-0 outline-0" style="padding: 0px 20px;" type="button"
-              data-bs-toggle="collapse" data-bs-target="#studentsCollapse" aria-expanded="true"
-              aria-controls="studentsCollapse">
-              <i class="bi bi-people circle"></i>
-              <span class="nav-title">Students</span>
-            </button>
-          </h5>
-          <div id="studentsCollapse" class="accordion-collapse collapse" data-bs-parent="#studentsAccordion">
-            <div class="sidebar-item accordion-body position-relative ps-4">
-              <a href="/users/admin/students" class="nav-link position-relative ps-3">
-                All
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
+      <a href="/users/admin/students" class="nav-link text-dark" style="padding-left: 1.3rem!important;padding-right: 1.3rem!important;">
+        <i class="bi bi-people circle"></i>
+        <span class="nav-title" >Students</span>
+      </a>
     </li>
 
     <li class="nav-item mb-3">
@@ -44,7 +29,7 @@
               data-bs-toggle="collapse" data-bs-target="#coursesCollapse" aria-expanded="true"
               aria-controls="coursesCollapse">
               <i class="bi bi-book circle"></i>
-              <span class="nav-title">Courses</span>
+              <span class="nav-title" >Courses</span>
             </button>
           </h5>
           <div id="coursesCollapse" class="accordion-collapse collapse" data-bs-parent="#CoursesAccordion">
