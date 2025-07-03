@@ -76,37 +76,111 @@ const getCertificate = async (req, res) => {
     const height = 850;
     const canvas = createCanvas(width, height);
     const ctx = canvas.getContext('2d');
+    // Colors
+    const accent = 'rgb(255, 0, 0)';
+    const primary = 'rgb(94, 96, 206)';
+    const grayText = '#6c757d';
+    const secondary = 'rgb(44, 62, 80)';
 
-    // Draw background (light color)
-    ctx.fillStyle = '#f8f9fa';
+     // Background
+    ctx.fillStyle = '#ffffff';
     ctx.fillRect(0, 0, width, height);
 
-    // Border
-    ctx.strokeStyle = '#343a40';
-    ctx.lineWidth = 10;
-    ctx.strokeRect(20, 20, width - 40, height - 40);
+    // Draw border
+    ctx.strokeStyle = '#000';
+    ctx.lineWidth = 5;
+    ctx.strokeRect(0, 0, width, height);
 
-    // Text styles
-    ctx.fillStyle = '#212529';
-    ctx.font = '40px Arial';
+    // Draw inner border with light gray
+    ctx.strokeStyle = grayText;
+    ctx.lineWidth = 1;
+    ctx.strokeRect(60, 60, width - 120, height - 120);
+
+    
+     // Draw coloaccent corners
+    drawCorners(ctx, width, height, accent, primary);
+
+    // Logo or Title Brand
+    ctx.fillStyle = '#000';
+    ctx.font = 'bold 24px Arial';
     ctx.textAlign = 'center';
 
-    ctx.fillText('Certificate of Completion', width / 2, 150);
+    // CERTIFICATE
+    ctx.fillStyle = '#111';
+    ctx.font = 'bold 40px Arial';
+    ctx.fillText('CERTIFICATE', width / 2, 120);
 
-    ctx.font = '28px Arial';
-    ctx.fillText('This is to certify that', width / 2, 250);
+    // "OF PARTICIPATION" Ribbon
+    const ribbonWidth = 300;
+    const ribbonHeight = 50;
+    const ribbonX = (width - ribbonWidth) / 2;
+    const ribbonY = 160;
+    ctx.fillStyle = accent;
+    ctx.beginPath();
+    ctx.moveTo(ribbonX, ribbonY);
+    ctx.lineTo(ribbonX + ribbonWidth, ribbonY);
+    ctx.lineTo(ribbonX + ribbonWidth - 25, ribbonY + ribbonHeight);
+    ctx.lineTo(ribbonX + 20, ribbonY + ribbonHeight);
+    ctx.closePath();
+    ctx.fill();
 
-    ctx.font = '36px Arial bold';
-    ctx.fillText(user.name, width / 2, 330);
+    ctx.fillStyle = '#fff';
+    ctx.font = 'bold 25px Arial';
+    ctx.fillText('OF COMPLETION', width / 2, ribbonY + 35);
 
-    ctx.font = '28px Arial';
-    ctx.fillText('has successfully completed the course', width / 2, 400);
+    // Subheading
+    ctx.fillStyle = primary;
+    ctx.font = '18px Arial';
+    ctx.fillText('THIS CERTIFICATE IS PROUDLY PRESENTED TO', width / 2, 260);
 
-    ctx.font = '32px Arial italic';
-    ctx.fillText(course.title, width / 2, 460);
+    // Recipient name
+    ctx.fillStyle = '#000';
+    ctx.font = 'bold 30px Arial';
+    ctx.fillText(user.name, width / 2, 310);
 
-    ctx.font = '20px Arial';
-    ctx.fillText(`Date: ${new Date().toLocaleDateString()}`, width / 2, 520);
+    // Recipient name
+    ctx.fillStyle = grayText;
+    ctx.font = '18px Arial';
+    ctx.fillText('For successfully completing the course of', width / 2, 360);
+
+    // Course name
+    ctx.fillStyle = primary;
+    ctx.font = 'bold 25px Arial';
+    ctx.fillText(course.title, width / 2, 410);
+
+    ctx.stroke();
+    
+    // Description (Latin)
+    ctx.fillStyle = grayText;
+    ctx.font = '16px Monospace';
+    const message = "This certifies that the recipient has demonstrated exceptional dedication, skill, and commitment throughout the course. His/her active participation, timely submissions, and eagerness to learn have been exemplary. We extend our heartfelt congratulations on this accomplishment and wish him/her continued success in all his/her future endeavors.";
+    wrapText(ctx, message, width / 2, 470, width - width / 3, 32);
+    
+    // Date
+    ctx.fillStyle = '#000';
+    ctx.font = '16px Arial';
+    ctx.textAlign = 'left';
+    ctx.fillText(`${new Date().toLocaleDateString()}`, 170,  height - 125);
+    ctx.fillText('DATE', 180, height - 100);
+
+    // Date line
+    ctx.beginPath();
+    ctx.moveTo(300, height - 120);
+    ctx.lineTo(100, height - 120);
+    ctx.stroke();
+
+    // Signature line
+    ctx.beginPath();
+    ctx.moveTo(width - 300, height - 120);
+    ctx.lineTo(width - 100, height - 120);
+    ctx.stroke();
+
+    // Signature label
+    ctx.textAlign = 'center';
+    ctx.fillText('SIGNATURE', width - 200, height - 100);
+
+    drawMedal(ctx, width, height, accent, primary, secondary);
+
 
     // Signature section
     const signatureX = width - 300;
@@ -114,23 +188,11 @@ const getCertificate = async (req, res) => {
     const signatureWidth = 250;
     const signatureHeight = 100;
 
-    // Draw signature line
-    ctx.strokeStyle = '#212529';
-    ctx.lineWidth = 1;
-    ctx.beginPath();
-    ctx.moveTo(signatureX, signatureY + signatureHeight - 20);
-    ctx.lineTo(signatureX + signatureWidth, signatureY + signatureHeight - 20);
-    ctx.stroke();
-
-    // Draw signature label
-    ctx.font = '18px Arial';
-    ctx.fillText("Student Signature", signatureX + signatureWidth / 2, signatureY + signatureHeight + 10);
-
     // Draw the actual signature if available
     if (signature && signature.signature) {
       try {
         // Directly use the signature data (no JSON.parse needed)
-        drawSignature(ctx, signature.signature, signatureX, signatureY-15, signatureWidth, signatureHeight);
+        drawSignature(ctx, signature.signature, signatureX, signatureY-50, signatureWidth, signatureHeight);
       } catch (e) {
         console.error('Error drawing signature:', e);
       }
@@ -140,6 +202,134 @@ const getCertificate = async (req, res) => {
     res.setHeader('Content-Type', 'image/png');
     canvas.pngStream().pipe(res);
 
+
+
+    
+
+function wrapText(context, text, x, y, maxWidth, lineHeight) {
+    const words = text.split(' ');
+    let line = '';
+
+    for (let n = 0; n < words.length; n++) {
+        const testLine = line + words[n] + ' ';
+        const metrics = context.measureText(testLine);
+        const testWidth = metrics.width;
+        if (testWidth > maxWidth && n > 0) {
+            context.fillText(line, x, y);
+            line = words[n] + ' ';
+            y += lineHeight;
+        }
+        else {
+            line = testLine;
+        }
+    }
+    context.fillText(line, x, y);
+}
+
+function drawMedal(ctx, width, height, accent, primary, secondary) {
+    // Ribbon below badge
+    ctx.fillStyle = primary;
+    ctx.beginPath();
+    ctx.moveTo(width / 2 - 30, height - 140);
+    ctx.lineTo(width / 2 - 30, height - 80);
+    ctx.lineTo(width / 2, height - 107);
+    ctx.lineTo(width / 2 + 30, height - 80);
+    ctx.lineTo(width / 2 + 30, height - 140);
+    ctx.closePath();
+    ctx.fill();
+
+    const centerX = canvas.width / 2;
+    const baseRadius = 40;       // Average radius
+    const waveAmplitude = 7;     // Height of wave peaks and troughs
+    const waveFrequency = 7;     // Number of waves
+
+    ctx.beginPath();
+    for (let angle = 0; angle <= Math.PI * 2; angle += 0.01) {
+        const r = baseRadius + waveAmplitude * Math.sin(angle * waveFrequency);
+        const x = centerX + r * Math.cos(angle);
+        const y = height - 170 + r * Math.sin(angle);
+        if (angle === 0) {
+            ctx.moveTo(x, y);
+        } else {
+            ctx.lineTo(x, y);
+        }
+    }
+    ctx.closePath();
+    ctx.strokeStyle = accent;
+    ctx.lineWidth = 10;
+    ctx.stroke();
+    ctx.fillStyle = accent;
+    ctx.fill();
+
+
+    // Badge in center
+    ctx.beginPath();
+    ctx.arc(width / 2, height - 170, 30, 0, Math.PI * 2);
+    ctx.fillStyle = secondary;
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.arc(width / 2, height - 170, 30, 0, Math.PI * 2);
+    ctx.strokeStyle = '#fff';
+    ctx.lineWidth = 3;
+    ctx.stroke();
+
+    drawStar(ctx, width / 2, height - 170, 5, 20, 10, '#fff');
+}
+
+function drawStar(ctx, cx, cy, spikes, outerRadius, innerRadius, color) {
+  let rot = Math.PI / 2 * 3;
+  let x = cx;
+  let y = cy;
+  let step = Math.PI / spikes;
+
+  ctx.beginPath();
+  ctx.moveTo(cx, cy - outerRadius);
+  for (let i = 0; i < spikes; i++) {
+    x = cx + Math.cos(rot) * outerRadius;
+    y = cy + Math.sin(rot) * outerRadius;
+    ctx.lineTo(x, y);
+    rot += step;
+
+    x = cx + Math.cos(rot) * innerRadius;
+    y = cy + Math.sin(rot) * innerRadius;
+    ctx.lineTo(x, y);
+    rot += step;
+  }
+  ctx.lineTo(cx, cy - outerRadius);
+  ctx.closePath();
+  ctx.fillStyle = color;
+  ctx.fill();
+}
+
+function drawCorners(ctx, width, height, accent, primary) {
+   ctx.fillStyle = accent;
+    ctx.beginPath();
+    ctx.moveTo(1, 1); ctx.lineTo(1, 120); ctx.lineTo(120, 1); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = primary; //blue
+    ctx.beginPath();
+    ctx.moveTo(1, 120); ctx.lineTo(60, 60); ctx.lineTo(60, 120); ctx.closePath(); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(120, 59); ctx.lineTo(60, 59); ctx.lineTo(60, 120); ctx.closePath(); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(60, 60); ctx.lineTo(280,1); ctx.lineTo(120, 1);ctx.closePath(); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(60, 59); ctx.lineTo(280, 0); ctx.lineTo(200, 59); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = accent;
+    ctx.beginPath();
+    ctx.moveTo(width-1, height-1); ctx.lineTo(width - 120, height-1); ctx.lineTo(width-1, height - 120); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = primary;//blue
+    ctx.beginPath();
+    ctx.moveTo(width-1, height - 120); ctx.lineTo(width - 60, height - 60); ctx.lineTo(width - 60, height - 120); ctx.closePath(); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(width - 60, height - 59); ctx.lineTo(width - 60, height - 120); ctx.lineTo(width - 120, height - 59); ctx.closePath(); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(width - 60, height - 60); ctx.lineTo(width - 280, height-1); ctx.lineTo(width - 120, height-1);ctx.closePath(); ctx.fill();
+    ctx.beginPath();
+    ctx.moveTo(width - 60, height - 59); ctx.lineTo(width - 280, height); ctx.lineTo(width - 200, height - 59); ctx.closePath(); ctx.fill();
+
+}
+
   } catch (err) {
     console.error(err);
     res.status(500).send("Error generating certificate image.");
@@ -147,3 +337,4 @@ const getCertificate = async (req, res) => {
 };
 
 module.exports = { getCertificate };
+

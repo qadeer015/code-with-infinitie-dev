@@ -92,6 +92,7 @@ router.get("/lectures/new", async (req, res) => {
     res.render("admin/lecture/new", { courses: await Course.getAll(), videos: await Video.getAll() })
 })
 router.get("/lectures/:id/edit", async (req, res) => {
+    console.log("lecture id : ",req.params.id);
     res.render("admin/lecture/edit", { lectureId: req.params.id, courses: await Course.getAll(), videos: await Video.getAll(), lecture: await Lecture.getLectureDetails(req.params.id) })
 });
 router.post("/lectures/create", lecturesController.createLecture);

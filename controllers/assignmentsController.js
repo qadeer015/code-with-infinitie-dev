@@ -130,8 +130,8 @@ const getSubmittedAssignments = async (req, res) => {
             file_path: typeof assignment.file_path === 'string'
                 ? JSON.parse(assignment.file_path)
                 : assignment.file_path
-        }));
-
+        })).sort((a, b) => a.assignment_id - b.assignment_id);  // Add this sort
+        
         res.render("admin/assignment/submitted_assignments", {
             assignments: formattedAssignments,
             courseId: course_id

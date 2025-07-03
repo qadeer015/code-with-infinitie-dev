@@ -1,0 +1,165 @@
+<%- include('partials/_header', { title: 'Lecture Viewer' }) %>
+
+    <div class="container">
+        <div class="text-start mb-3">
+            <%- include('partials/_breadcrumb', { course: course }) %>
+            <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex gap-1">
+                  <form action="/lectures/<%= lecture.id %>" method="get">
+                      <input type="hidden" name="course_id" value="<%= course.id %>">
+                      <button id="videoBtn" type="submit" class="btn btn-sm btn-secondary">Video</button>
+                  </form>
+                  <button id="readingBtn" class="btn btn-sm btn-primary active" <%= !lecture.is_viewed ? 'disabled' : '' %>>Reading</button>
+                  <form action="/lectures/<%= lecture.id %>/quizz" method="get">
+                      <input type="hidden" name="course_id" value="<%= course.id %>">
+                      <button id="quizzBtn" type="submit" class="btn btn-sm btn-secondary" <%= !lecture.is_viewed || !lecture.is_readed ? 'disabled' : '' %>>Quizz</button>
+                  </form>
+                </div>
+                
+                  <div style="width: 100px;">
+                    <div class="d-flex justify-content-between">
+                      <span id="readingStatus" style="font-size: 10px;"><%= lecture.is_readed ? '✔️ Completed' : '❌ Not Completed'%></span>
+                      <span id="readingTime" style="font-size: 10px;">0:00</span>
+                    </div>
+                    <div class="progress mb-0" style="height: 5px;">
+                      <div id="lectureProgressBar" class="progress-bar" role="progressbar" style="width: 0%;"></div>
+                    </div>
+                  </div>
+            </div>
+        </div>
+
+        <!-- Reading Content (hidden by default) -->
+        <div id="readingContent" class="row g-4" >
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h3 class="card-title">Lecture Details</h3>
+                        <div class="lecture-description">
+                            <% if(lecture.description){ %>
+                                <%= lecture.description %>
+                                    <% } else { %>
+                                        <p>No detailed description available for this lecture.</p>
+                                        <% } %>
+                        </div>
+
+                        <!-- In the Reading Content section -->
+                        <% if(lecture.notes){ %>
+                            <hr>
+                            <h4>Additional Notes</h4>
+                            <div class="lecture-notes">
+                                <% lecture.notes.split(',').forEach(note=> {
+                                    const trimmedNote = note.trim();
+                                    if (trimmedNote) {
+                                    if (trimmedNote.startsWith('http://') || trimmedNote.startsWith('https://')) { %>
+                                    <a href="<%= trimmedNote %>" target="_blank" rel="noopener noreferrer"
+                                        class="d-block mb-2">
+                                        <%= trimmedNote %>
+                                    </a>
+                                    <% } else { %>
+                                        <p class="mb-2">
+                                            <%= trimmedNote %>
+                                        </p>
+                                        <% } } }); %>
+                            </div>
+                            <% } %>
+
+                                <% if(lecture.tasks){ %>
+                                    <hr>
+                                    <h4>Practice Tasks</h4>
+                                    <div class="lecture-tasks">
+                                        <%= lecture.tasks %>
+                                    </div>
+                                    <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script type="application/json" id="lecture-data">
+        <%- JSON.stringify(lecture) %>
+    </script>
+    <script type="application/json" id="user-data">
+        <%- JSON.stringify(user) %>
+    </script>
+     <script type="application/json" id="course-data">
+        <%- JSON.stringify(course) %>
+    </script>
+
+   
+    <script src="/js/lecture_viewer.js"></script>
+    
+    <script>
+            let lecture = JSON.parse(document.getElementById("lecture-data").textContent);
+            let user = JSON.parse(document.getElementById("user-data").textContent);
+    </script>
+
+  <script>
+  const readingStatus = document.getElementById('readingStatus');
+  const readingTime = document.getElementById('readingTime');
+  const progressBar = document.getElementById('lectureProgressBar');
+  const quizzBtn = document.getElementById('quizzBtn');
+
+  let startTime = null;
+  let duration = 5 * 1000; // 5 seconds (example duration)
+  let lectureContentReaded = false;
+
+  function formatTime(ms) {
+    const totalSeconds = Math.floor(ms / 1000);
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    return `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  function animateProgress(timestamp) {
+    if (!startTime) startTime = timestamp;
+    const elapsed = timestamp - startTime;
+
+    // Clamp to duration
+    const progress = Math.min(elapsed / duration, 1);
+
+    // Update time text
+    readingTime.textContent = formatTime(elapsed);
+
+    // Update progress bar width
+    progressBar.style.width = `${(progress * 100).toFixed(2)}%`;
+
+    if (progress < 1) {
+      requestAnimationFrame(animateProgress);
+    } else if (!lectureContentReaded) {
+      lectureContentReaded = true;
+      markLectureContentAsRead();
+    }
+  }
+
+  function markLectureContentAsRead() {
+    const lecture = JSON.parse(document.getElementById("lecture-data").textContent);
+    const user = JSON.parse(document.getElementById("user-data").textContent);
+
+    fetch(`/lectures/${lecture.id}/mark-readed`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user_id: user.id })
+    })
+      .then(res => {
+        if (res.ok) {
+          readingStatus.textContent = "✔️ Completed";
+          quizzBtn.disabled = false;
+        } else {
+          console.error("[❌] Failed to mark lecture.");
+        }
+      })
+      .catch(err => {
+        console.error("[❌] Error marking lecture:", err);
+      });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    requestAnimationFrame(animateProgress);
+  });
+</script>
+
+
+
+<%- include('partials/_footer') %>

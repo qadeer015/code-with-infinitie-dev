@@ -10,7 +10,6 @@
                     <tr>
                         <th scope="col">Title</th>
                         <th scope="col">Description</th>
-                        <th scope="col">Status</th>
                         <th scope="col">Course</th>
                         <th scope="col">Quizz</th>
                         <th scope="col">Actions</th>
@@ -64,7 +63,6 @@
                 <tr>
                     <td>${lecture.title}</td>
                     <td>${lecture.description}</td>
-                    <td>${lecture.status}</td>
                     <td>${lecture.course_title}</td>
                     <td>
                         <form action="/users/admin/lectures/${lecture.id}/questions" method="get">
@@ -79,7 +77,7 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li class="dropdown-item mb-1">
-                                    <a class="text-decoration-none text-dark" href="/users/admin/lectures/${lecture.id}/edit">
+                                    <a class="text-decoration-none text-dark w-100" href="/users/admin/lectures/${lecture.id}/edit">
                                         <i class="bi bi-pencil"></i>
                                         Edit
                                     </a>

@@ -1,5 +1,6 @@
 <%- include('partials/_header') %>
     <% if(quizResults.length > 0) { %>
+    <%- include('partials/_breadcrumb', { course: course }) %>
     <div id="quiz-results-container" class="mt-4">
         <h3>Your Quiz Results</h3>
         <div class="card mb-4">
@@ -54,12 +55,6 @@
                 </tr>
                 <% }); %>
             </tbody>
-            <tfoot>
-                <tr class="table-light">
-                    <th colspan="2" class="text-end">Total Score:</th>
-                    <th class="text-center"><%= quizResults[0].score %>/<%= quizResults[0].total_marks %></th>
-                </tr>
-            </tfoot>
         </table>
     </div>
 <% } %>
@@ -108,6 +103,12 @@
 <script type="application/json" id="quiz-data">
     <%- JSON.stringify(quizData) %>
 </script>
+
+<script type="application/json" id="course-data">
+        <%- JSON.stringify(course) %>
+    </script>
+
+<script src="/js/lecture_viewer.js"></script>
 
 <script>
     let courseId = "<%= course.id %>";

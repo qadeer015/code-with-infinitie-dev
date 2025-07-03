@@ -1,4 +1,4 @@
-<%- include('partials/_header', { title: 'Dashboard' }) %>
+<%- include('partials/_header', { title: 'Profile' }) %>
 <div class="container py-4">
     <div class="row">
         <!-- Profile Header -->
@@ -114,17 +114,18 @@
                                 <p class="text-muted">No signature found. Please edit your profile to add your signature.</p>
                                 <% } %>
                             </div>
-
+                          <%if(userProfile.page_link){%>
                             <div class="mb-4">
                                 <h6 class="fw-bold">Page link</h6>
                                 <a href="<%= userProfile.page_link %>" target="_blank" class="text-muted"><%= userProfile.page_link %></a>
                             </div>
-                            
+                          <%}%>
+                          <%if(userProfile.repository_link){%>
                             <div class="mb-4">
                                 <h6 class="fw-bold">Repository link</h6>
                                 <a href="<%= userProfile.repository_link %>" target="_blank" class="text-muted"><%= userProfile.repository_link %></a>
                             </div>
-                            
+                          <%}%>
                             <div class="border-top pt-4 mt-4">
                                 <h5 class="fw-bold mb-3">Delete Account</h5>
                                 <form action="/users/delete/<%=userProfile.id%>" method="POST" 

@@ -105,6 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
             })
             .then(data => {
                 if (data.success) {
+                    markLectureQuizzAsCompleted();
                     window.location.href = `/lectures/${lectureId}/quizz?course_id=${courseId}`;
                 } else {
                     alert("Error saving results. Please try again.");
@@ -208,3 +209,22 @@ document.addEventListener("DOMContentLoaded", function () {
 
     loadQuestion();
 });
+
+
+function markLectureQuizzAsCompleted() {
+    fetch(`/lectures/${lectureId}/quizz-completed`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ user_id: userId })
+    })
+      .then(res => {
+        if (res.ok) {
+            console.log("Lecture quizz marked as completed");
+        } else {
+          console.error("[❌] Failed to mark lecture.");
+        }
+      })
+      .catch(err => {
+        console.error("[❌] Error marking lecture:", err);
+      });
+  }

@@ -4,6 +4,7 @@ const quizzController = require('../controllers/quizzController.js');
 const Lecture = require('../models/Lecture.js');
 const Course = require('../models/Course.js');
 const QuizResult = require('../models/QuizResult.js');
+const UserCourse = require('../models/UserCourse.js');
 const router = express.Router();
 const db = require('../config/db');
 
@@ -24,8 +25,20 @@ router.get('/stats', async (req, res) => {
 router.get("/", async (req, res) => {
   try {
     const courseId = req.query.course_id;
-    const lectures = await Lecture.findAll(courseId, req.user.id);
-    const course = await Course.getCourse(req.user.id, courseId);
+    const userId = req.user.id;
+    
+    const lectures = await Lecture.findAll(courseId, userId);
+    let course = await Course.getCourse(userId, courseId);
+    
+    // Check if all lectures are viewed and course is not already completed
+    if (lectures.length > 0 && 
+        lectures.every(lecture => lecture.is_viewed === 1) && 
+        course.status !== "completed") {
+      await UserCourse.completeUserCourse(courseId, "completed");
+      // Refresh course data after update
+      course = await Course.getCourse(userId, courseId);
+    }
+    
     res.render("lectures", {
       lectures,
       course,
@@ -37,31 +50,63 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/get-all", lecturesController.getCourseLectures);
+
 router.get("/:id", lecturesController.showLecture);
+
+router.get("/:id/reading", lecturesController.showLectureContent);
 
 router.get("/:id/quizz", quizzController.showQuizz);
 
 router.post("/:id/quizz-result", quizzController.saveResults);
 
-// In your routes file (e.g., lectures.js)
 router.post('/:id/mark-viewed', async (req, res) => {
     try {
-        const { user_id, course_id } = req.body;
+        const { user_id } = req.body;
         const lecture_id = req.params.id;
         // 2. Update view status in database
-        await db.execute(`
-            INSERT INTO lecture_views
-                (user_id, lecture_id, is_viewed, created_at, updated_at)
-            VALUES (?, ?, TRUE, NOW(), NOW())
-            ON DUPLICATE KEY UPDATE 
-                is_viewed = TRUE, 
-                created_at = NOW(), 
-                updated_at = NOW()
-        `, [user_id, lecture_id]);
-
+        await Lecture.markLectureAsViewed(lecture_id, user_id);
         res.status(200).json({ 
             success: true,
             message: 'Lecture marked as completed' 
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ 
+            success: false,
+            message: 'Internal server error' 
+        });
+    }
+});
+
+router.post('/:id/mark-readed', async (req, res) => {
+    try {
+        const { user_id } = req.body;
+        const lecture_id = req.params.id;
+        // 2. Update view status in database
+        await Lecture.markLectureAsRead(lecture_id, user_id);
+        res.status(200).json({ 
+            success: true,
+            message: 'Lecture content marked as readed' 
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        res.status(500).json({ 
+            success: false,
+            message: 'Internal server error' 
+        });
+    }
+});
+
+router.post('/:id/quizz-completed', async (req, res) => {
+    try {
+        const { user_id } = req.body;
+        const lecture_id = req.params.id;
+        // 2. Update view status in database
+        await Lecture.markLectureQuizzAsCompleted(lecture_id, user_id);
+        res.status(200).json({ 
+            success: true,
+            message: 'Lecture quizz marked as completed' 
         });
     } catch (error) {
         console.error('Error:', error);

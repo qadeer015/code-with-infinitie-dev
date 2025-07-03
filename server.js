@@ -16,7 +16,6 @@ const courseRoutes = require("./routes/coursesRoutes.js");
 const assignmentsRoutes = require("./routes/assignmentsRoutes.js");
 const adminRoutes = require("./routes/adminRoutes.js");
 const lecturesRoutes = require("./routes/lecturesRoutes.js");
-const lectureCommentsRoutes = require('./routes/lectureCommentsRoutes.js');
 const certificatesRoutes = require('./routes/certificatesRoutes.js');
 
 const auththenticateUser = require("./middleware/auththenticateUser.js");
@@ -49,6 +48,13 @@ app.use((req, res, next) => {
     res.locals.url = req.path; // Making `url` available in all views
     next();
 });
+
+app.use((err, req, res, next) => {
+    console.error('Error:', err);
+
+    res.status(500).render('error', { error: err.message || 'Internal Server Error' });
+});
+
 
 app.use(auththenticateUser); // Attaching user to req
 
@@ -109,7 +115,6 @@ app.use("/courses", courseRoutes);
 app.use("/assignments", assignmentsRoutes);
 app.use("/users/admin", isAdmin, adminRoutes);
 app.use("/lectures", lecturesRoutes);
-app.use('/lecture-comments', lectureCommentsRoutes);
 app.use('/certificates', certificatesRoutes);
 
 app.get("/about", (req, res) => {

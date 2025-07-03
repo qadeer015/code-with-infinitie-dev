@@ -10,7 +10,7 @@
                 <thead class="table-dark">
                     <tr>
                         <th>#</th>
-                        <th>Student ID</th>
+                        <th>Student Name</th>
                         <th>Assignment ID</th>
                         <th>Submission Date</th>
                         <th>File</th>
@@ -23,7 +23,7 @@
                     <% assignments.forEach((assignment, index) => { %>
                         <tr>
                             <td><%= index + 1 %></td>
-                            <td><%= assignment.user_id %></td>
+                            <td><%= assignment.name %></td>
                             <td><%= assignment.assignment_id %></td>
                             <td><%= assignment.submission_date %></td>
                             <td>

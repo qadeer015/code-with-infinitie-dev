@@ -23,7 +23,7 @@ const getAllLectures = async (req, res) => {
 const getCourseLectures = async (req, res) => {
     try {
         const { course_id } = req.query;
-        const lectures = await Lecture.findAll(course_id);
+        const lectures = await Lecture.findAll(course_id, req.user.id);
         res.status(200).json(lectures);
     } catch (err) {
         console.error(err);
@@ -60,8 +60,19 @@ const showLecture = async (req, res) => {
     try {
         const { id } = req.params;
         const course = await Course.findCourse(req.query.course_id);
-        const lecture = await Lecture.getLectureDetails(id, req.user.id);
+        const lecture = await Lecture.getUserLectureDetails(id, req.user.id);
         res.status(200).render('lectures_viewer', { lecture, course, viewName: 'lectures_viewer' });
+    } catch (err) {
+        console.error(err);
+    }
+}
+
+const showLectureContent = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const course = await Course.findCourse(req.query.course_id);
+        const lecture = await Lecture.getUserLectureDetails(id, req.user.id);
+        res.status(200).render('lecture_content', { lecture, course, viewName: 'lecture_content' });
     } catch (err) {
         console.error(err);
     }
@@ -83,5 +94,6 @@ module.exports = {
     getCourseLectures,
     updateLecture,
     deleteLecture,
-    showLecture
+    showLecture,
+    showLectureContent
 }

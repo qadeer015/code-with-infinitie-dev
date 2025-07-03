@@ -68,7 +68,7 @@ class Course {
     static async getCourse(userId, courseId) {
     try {
         const [result] = await db.execute(
-            `SELECT c.*, uc.progress 
+            `SELECT c.*, uc.progress , uc.status
              FROM courses c
              LEFT JOIN user_courses uc ON c.id = uc.course_id AND uc.user_id = ?
              WHERE c.id = ?`,

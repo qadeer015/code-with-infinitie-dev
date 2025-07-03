@@ -1,0 +1,24 @@
+<div class="d-flex align-items-center justify-content-between mb-2">
+        <div class="bread-crumb d-flex align-items-center">
+          <a href="/" class="text-primary text-decoration-none">Home</a>
+          <i class="bi bi-chevron-right"></i>
+          <form action="/lectures" method="get">
+            <input type="hidden" name="course_id" value="<%= course.id %>">
+            <button type="submit" class="text-primary border-0 bg-transparent outline-0">
+              <%= course.title %>
+            </button>
+          </form>
+          <i class="bi bi-chevron-right"></i>
+          <a href="#" class="text-secondary text-decoration-none">
+            <%= lecture.title %>
+          </a>
+        </div>
+        <div class="dropdown">
+          <button class="btn btn-sm btn-outline-secondary bg-secondary-subtle outline-0 border-0 rounded-circle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <i class="bi bi-three-dots-vertical"></i>
+          </button>
+          <ul class="dropdown-menu p-2" id="lectures-menu" style="min-width: 330px; white-space: normal;">
+            <!-- JS will populate items here -->
+          </ul>
+        </div>
+      </div>

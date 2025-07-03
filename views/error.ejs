@@ -6,6 +6,7 @@
     <title>Error</title>
 </head>
 <body>
-    <%= error %>
+    <h1>Error</h1>
+    <p><%= typeof error !== 'undefined' ? error : 'An unexpected error occurred.' %></p>
 </body>
 </html>

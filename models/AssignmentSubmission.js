@@ -238,22 +238,27 @@ class AssignmentSubmission {
     }
 
     static async getSubmittedAssignmentsByCourseId(course_id) {
-        try {
-            const [result] = await db.execute(
-                `
-            SELECT asub.* 
-            FROM assignment_submissions asub 
-            INNER JOIN assignments a ON asub.assignment_id = a.id 
+    try {
+        const [result] = await db.execute(
+            `
+            SELECT 
+                asub.*, 
+                u.name, 
+                u.email
+            FROM assignment_submissions asub
+            INNER JOIN assignments a ON asub.assignment_id = a.id
+            INNER JOIN users u ON asub.user_id = u.id
             WHERE a.course_id = ?
             `,
-                [course_id]
-            );
-            return result;
-        } catch (error) {
-            console.log("Error getting assignments by course ID:", error);
-            throw error;
-        }
+            [course_id]
+        );
+        return result;
+    } catch (error) {
+        console.log("Error getting assignments by course ID:", error);
+        throw error;
     }
+}
+
 }
 
 module.exports = AssignmentSubmission;

@@ -1,4 +1,4 @@
-<%- include('partials/_header', { title: 'Dashboard' }) %>
+<%- include('partials/_header', { title: 'Progress' }) %>
 
     <div class="row">
         <h2 class="fw-bold py-3">Progress</h2>
@@ -80,7 +80,6 @@
 
             async function updateAssignmentChart(courseId) {
                 const data = await fetchAssignmentData(courseId);
-
                 // Check if there's no data
                 if (data.total === 0 && data.submitted === 0) {
                     destroyChart(assignmentChart);
@@ -129,9 +128,6 @@
         });
         // Add active class to clicked button
         this.classList.add('btn-primary', 'active');
-                    const courseId = this.dataset.courseId;
-                    updateAssignmentChart(courseId);
-                    updateQuizChart(courseId);
                 });
             });
 

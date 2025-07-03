@@ -1,291 +1,253 @@
 <%- include('partials/_header', { title: 'Lecture Viewer' }) %>
 
-    <div class="container">
-        <div class="text-start mb-3">
-            <h2 class="fw-bold">
-                <%= lecture.title %>
-            </h2>
-            <div class="d-flex align-items-center justify-content-between">
-                <div class="d-flex gap-1">
-                  <button id="videoBtn" class="btn btn-sm btn-primary active">Video</button>
-                  <button id="readingBtn" class="btn btn-sm btn-secondary" <%= !lecture.is_viewed ? 'disabled' : '' %>>Reading</button>
-                  <form id="quizzBtn" action="/lectures/<%= lecture.id %>/quizz" method="get">
-                      <input type="hidden" name="course_id" value="<%= course.id %>">
-                      <button type="submit" class="btn btn-sm btn-secondary" <%= !lecture.is_viewed ? 'disabled' : '' %>>Quizz</button>
-                  </form>
-                </div>
-                
-                  <div style="width: 100px;">
-                    <div class="d-flex justify-content-between">
-                      <span id="viewStatus" style="font-size: 10px;"><%= lecture.is_viewed ? '✔️ Viewed' : '❌ Not Viewed'%></span>
-                      <span id="videoTime" style="font-size: 10px;">0:00</span>
-                    </div>
-                    <div class="progress mb-0" style="height: 5px;">
-                      <div id="videoProgressBar" class="progress-bar" role="progressbar" style="width: 0%;"></div>
-                    </div>
-                  </div>
-            </div>
+  <div class="container">
+    <div class="text-start mb-3">
+      <%- include('partials/_breadcrumb', { course: course }) %>
+      <div class="d-flex align-items-center justify-content-between">
+        <div class="d-flex gap-1">
+          <button id="videoBtn" class="btn btn-sm btn-primary active">Video</button>
+          <form action="/lectures/<%= lecture.id %>/reading" method="get">
+            <input type="hidden" name="course_id" value="<%= course.id %>">
+            <button id="readingBtn" type="submit" class="btn btn-sm btn-secondary" <%=!lecture.is_viewed ? 'disabled'
+              : '' %>>Reading</button>
+          </form>
+          <form action="/lectures/<%= lecture.id %>/quizz" method="get">
+            <input type="hidden" name="course_id" value="<%= course.id %>">
+            <button id="quizzBtn" type="submit" class="btn btn-sm btn-secondary" <%=!lecture.is_viewed ||
+              !lecture.is_readed ? 'disabled' : '' %>>Quizz</button>
+          </form>
         </div>
 
-        <!-- Video Content (shown by default) -->
-        <div id="videoContent" class="row g-4">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-body p-0" style="height: 500px;">
-                        <div id="player"></div>
-                    </div>
-                </div>
-                <p class="card-text mt-2">
-                    <%= lecture.video_title %>
-                </p>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card">
-                    <!-- In the Video Content section (col-md-4) -->
-                    <div class="card-body">
-                        <h3 class="card-title">Notes</h3>
-                        <% if(lecture.notes===null){ %>
-                            <p class="card-text">No notes available</p>
-                            <% } else { %>
-                                <div class="notes-container">
-                                    <% lecture.notes.split(',').forEach(note=> {
-                                        const trimmedNote = note.trim();
-                                        if (trimmedNote) {
-                                        if (trimmedNote.startsWith('http://') || trimmedNote.startsWith('https://')) {
-                                        %>
-                                        <a href="<%= trimmedNote %>" target="_blank" rel="noopener noreferrer"
-                                            class="d-block mb-2">
-                                            <%= trimmedNote %>
-                                        </a>
-                                        <% } else { %>
-                                            <p class="card-text mb-2">
-                                                <%= trimmedNote %>
-                                            </p>
-                                            <% } } }); %>
-                                </div>
-                                <% } %>
-                                    <hr>
-
-                                    <h3 class="card-title">Tasks</h3>
-                                    <% if(lecture.tasks===null){%>
-                                        <p class="card-text">No tasks available</p>
-                                        <%} else{%>
-                                            <p class="card-text">
-                                                <%= lecture.tasks %>
-                                            </p>
-                                        <%}%>
-                    </div>
-                </div>
-            </div>
+        <div style="width: 100px;">
+          <div class="d-flex justify-content-between">
+            <span id="viewStatus" style="font-size: 10px;">
+              <%= lecture.is_viewed ? '✔️ Viewed' : '❌ Not Viewed' %>
+            </span>
+            <span id="videoTime" style="font-size: 10px;">0:00</span>
+          </div>
+          <div class="progress mb-0" style="height: 5px;">
+            <div id="videoProgressBar" class="progress-bar" role="progressbar" style="width: 0%;"></div>
+          </div>
         </div>
-
-        <!-- Reading Content (hidden by default) -->
-        <div id="readingContent" class="row g-4" style="display: none;">
-            <div class="col-12">
-                <div class="card">
-                    <div class="card-body">
-                        <h3 class="card-title">Lecture Details</h3>
-                        <div class="lecture-description">
-                            <% if(lecture.description){ %>
-                                <%= lecture.description %>
-                                    <% } else { %>
-                                        <p>No detailed description available for this lecture.</p>
-                                        <% } %>
-                        </div>
-
-                        <!-- In the Reading Content section -->
-                        <% if(lecture.notes){ %>
-                            <hr>
-                            <h4>Additional Notes</h4>
-                            <div class="lecture-notes">
-                                <% lecture.notes.split(',').forEach(note=> {
-                                    const trimmedNote = note.trim();
-                                    if (trimmedNote) {
-                                    if (trimmedNote.startsWith('http://') || trimmedNote.startsWith('https://')) { %>
-                                    <a href="<%= trimmedNote %>" target="_blank" rel="noopener noreferrer"
-                                        class="d-block mb-2">
-                                        <%= trimmedNote %>
-                                    </a>
-                                    <% } else { %>
-                                        <p class="mb-2">
-                                            <%= trimmedNote %>
-                                        </p>
-                                        <% } } }); %>
-                            </div>
-                            <% } %>
-
-                                <% if(lecture.tasks){ %>
-                                    <hr>
-                                    <h4>Practice Tasks</h4>
-                                    <div class="lecture-tasks">
-                                        <%= lecture.tasks %>
-                                    </div>
-                                    <% } %>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+      </div>
     </div>
 
-    <script type="application/json" id="lecture-data">
+    <!-- Video Content (shown by default) -->
+    <div id="videoContent" class="row g-4">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-body p-0" style="height: 500px;">
+            <div id="player"></div>
+          </div>
+        </div>
+        <p class="card-text mt-2">
+          <%= lecture.video_title %>
+        </p>
+        <p class="card-text mt-2 text-accent">
+          * Minimum 75% of video watch will be considered as viewed.
+        </p>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card">
+          <!-- In the Video Content section (col-md-4) -->
+          <div class="card-body">
+            <h3 class="card-title">Notes</h3>
+            <% if(lecture.notes===null){ %>
+              <p class="card-text">No notes available</p>
+              <% } else { %>
+                <div class="notes-container">
+                  <% lecture.notes.split(',').forEach(note=> {
+                    const trimmedNote = note.trim();
+                    if (trimmedNote) {
+                    if (trimmedNote.startsWith('http://') || trimmedNote.startsWith('https://')) {
+                    %>
+                    <a href="<%= trimmedNote %>" target="_blank" rel="noopener noreferrer" class="d-block mb-2">
+                      <%= trimmedNote %>
+                    </a>
+                    <% } else { %>
+                      <p class="card-text mb-2">
+                        <%= trimmedNote %>
+                      </p>
+                      <% } } }); %>
+                </div>
+                <% } %>
+                  <hr>
+
+                  <h3 class="card-title">Tasks</h3>
+                  <% if(lecture.tasks===null){%>
+                    <p class="card-text">No tasks available</p>
+                    <%} else{%>
+                      <p class="card-text">
+                        <%= lecture.tasks %>
+                      </p>
+                      <%}%>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script type="application/json" id="lecture-data">
         <%- JSON.stringify(lecture) %>
     </script>
-    <script type="application/json" id="user-data">
+  <script type="application/json" id="user-data">
         <%- JSON.stringify(user) %>
     </script>
-
-   
-    <script src="/js/lecture_viewer.js"></script>
-    
-    <script>
-            let lecture = JSON.parse(document.getElementById("lecture-data").textContent);
-            let user = JSON.parse(document.getElementById("user-data").textContent);
+  <script type="application/json" id="course-data">
+        <%- JSON.stringify(course) %>
     </script>
 
-    <script>
-       
-  var tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  var firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+  <script src="/js/lecture_viewer.js"></script>
 
-  var player;
-  var progressInterval;
-  var lectureViewed = false;
-  var customTimer = 0; // Our custom timer in seconds
-  var timerInterval;
-  var videoDuration = 0;
-  const videoTimer = document.getElementById("videoTime");
-  const viewStatus = document.getElementById("viewStatus");
+  <script>
+    let lecture = JSON.parse(document.getElementById("lecture-data").textContent);
+    let user = JSON.parse(document.getElementById("user-data").textContent);
+  </script>
 
-  // Function to extract video ID from URL
-  function extractVideoId(url) {
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
-  }
+  <script>
 
-  function onYouTubeIframeAPIReady() {
-    const lecture = JSON.parse(document.getElementById("lecture-data").textContent);
-    const videoId = extractVideoId(lecture.video_iframe_link);
-    
-    if (!videoId) {
-      console.error("Could not extract video ID from URL");
-      return;
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+    var player;
+    var progressInterval;
+    var lectureViewed = false;
+    var customTimer = 0; // Our custom timer in seconds
+    var timerInterval;
+    var videoDuration = 0;
+    const videoTimer = document.getElementById("videoTime");
+    const viewStatus = document.getElementById("viewStatus");
+    const readingBtn = document.getElementById("readingBtn");
+
+    // Function to extract video ID from URL
+    function extractVideoId(url) {
+      const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+      const match = url.match(regExp);
+      return (match && match[2].length === 11) ? match[2] : null;
     }
 
-    player = new YT.Player('player', {
-      height: '100%',
-      width: '100%',
-      videoId: videoId,
-      playerVars: {
-        autoplay: 1,
-        mute: 1,
-        playsinline: 1,
-        enablejsapi: 1
-      },
-      events: {
-        'onReady': onPlayerReady,
-        'onStateChange': onPlayerStateChange
+    function onYouTubeIframeAPIReady() {
+      const lecture = JSON.parse(document.getElementById("lecture-data").textContent);
+      const videoId = extractVideoId(lecture.video_iframe_link);
+
+      if (!videoId) {
+        console.error("Could not extract video ID from URL");
+        return;
       }
-    });
-  }
 
-  function onPlayerReady(event) {
-    event.target.playVideo();
-    videoDuration = player.getDuration();
-  }
-
-  function startCustomTimer() {
-    // Clear any existing timer
-    if (timerInterval) clearInterval(timerInterval);
-    
-    // Start new timer that increments every second
-    timerInterval = setInterval(() => {
-      customTimer++;
-      updateProgress();
-    }, 1000);
-  }
-
-  function stopCustomTimer() {
-    if (timerInterval) {
-      clearInterval(timerInterval);
-      timerInterval = null;
-    }
-  }
-
-  function enableReadingButton() {
-  const readingBtn = document.getElementById('readingBtn');
-  readingBtn.disabled = false;
-  readingBtn.classList.remove('btn-secondary');
-  readingBtn.classList.add('btn-primary');
-}
-
-  function resetCustomTimer() {
-    customTimer = 0;
-  }
-
-  function onPlayerStateChange(event) {
-    switch(event.data) {
-      case YT.PlayerState.PLAYING:
-        if (!timerInterval) {
-          startCustomTimer();
+      player = new YT.Player('player', {
+        height: '100%',
+        width: '100%',
+        videoId: videoId,
+        playerVars: {
+          autoplay: 1,
+          mute: 0,
+          playsinline: 1,
+          enablejsapi: 1
+        },
+        events: {
+          'onReady': onPlayerReady,
+          'onStateChange': onPlayerStateChange
         }
-        break;
-      case YT.PlayerState.PAUSED:
-      case YT.PlayerState.ENDED:
-        stopCustomTimer();
-        break;
-      case YT.PlayerState.CUED:
-        resetCustomTimer();
-        break;
-    }
-  }
-
-  function updateProgress() {
-    if (videoDuration <= 0) return;
-
-    const minutes = Math.floor(customTimer / 60);
-    const seconds = customTimer % 60;
-    videoTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
-
-    const percentWatched = (customTimer / videoDuration) * 100;
-    // Update progress bar
-    document.getElementById('videoProgressBar').style.width = `${Math.min(percentWatched, 100).toFixed(2)}%`;
-
-    // Mark as viewed at 10%
-    if (percentWatched >= 2 && !lectureViewed) {
-      lectureViewed = true;
-      viewStatus.textContent = "✔️ Viewed";
-      markLectureAsViewed();
-      enableReadingButton();
-    }
-  }
-
-   function markLectureAsViewed() {
-    const lecture = JSON.parse(document.getElementById("lecture-data").textContent);
-    const user = JSON.parse(document.getElementById("user-data").textContent);
-
-    fetch(`/lectures/${lecture.id}/mark-viewed`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ user_id: user.id })
-    })
-      .then(res => {
-        if (res.ok) {
-          console.log("[✅] Lecture successfully marked as viewed.");
-        } else {
-          console.error("[❌] Failed to mark lecture.");
-        }
-      })
-      .catch(err => {
-        console.error("[❌] Error marking lecture:", err);
       });
-  }
+    }
 
-    </script>
+    function onPlayerReady(event) {
+      event.target.playVideo();
+      videoDuration = player.getDuration();
+    }
+
+    function startCustomTimer() {
+      // Clear any existing timer
+      if (timerInterval) clearInterval(timerInterval);
+
+      // Start new timer that increments every second
+      timerInterval = setInterval(() => {
+        customTimer++;
+        updateProgress();
+      }, 1000);
+    }
+
+    function stopCustomTimer() {
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+      }
+    }
+
+    function enableReadingButton() {
+      const readingBtn = document.getElementById('readingBtn');
+      readingBtn.disabled = false;
+      readingBtn.classList.remove('btn-secondary');
+      readingBtn.classList.add('btn-primary');
+    }
+
+    function resetCustomTimer() {
+      customTimer = 0;
+    }
+
+    function onPlayerStateChange(event) {
+      switch (event.data) {
+        case YT.PlayerState.PLAYING:
+          if (!timerInterval) {
+            startCustomTimer();
+          }
+          break;
+        case YT.PlayerState.PAUSED:
+        case YT.PlayerState.ENDED:
+          stopCustomTimer();
+          break;
+        case YT.PlayerState.CUED:
+          resetCustomTimer();
+          break;
+      }
+    }
+
+    function updateProgress() {
+      if (videoDuration <= 0) return;
+
+      const minutes = Math.floor(customTimer / 60);
+      const seconds = customTimer % 60;
+      videoTimer.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+      const percentWatched = (customTimer / videoDuration) * 100;
+      // Update progress bar
+      document.getElementById('videoProgressBar').style.width = `${Math.min(percentWatched, 100).toFixed(2)}%`;
+
+      // Mark as viewed at 75%
+      if (percentWatched >= 75 && !lectureViewed) {
+        lectureViewed = true;
+        markLectureAsViewed();
+        enableReadingButton();
+      }
+    }
+
+    function markLectureAsViewed() {
+      const lecture = JSON.parse(document.getElementById("lecture-data").textContent);
+      const user = JSON.parse(document.getElementById("user-data").textContent);
+
+      fetch(`/lectures/${lecture.id}/mark-viewed`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ user_id: user.id })
+      })
+        .then(res => {
+          if (res.ok) {
+            viewStatus.textContent = "✔️ Viewed";
+            readingBtn.disabled = false;
+          } else {
+            console.error("[❌] Failed to mark lecture.");
+          }
+        })
+        .catch(err => {
+          console.error("[❌] Error marking lecture:", err);
+        });
+    }
+
+  </script>
 
 
-<%- include('partials/_footer') %>
+  <%- include('partials/_footer') %>
