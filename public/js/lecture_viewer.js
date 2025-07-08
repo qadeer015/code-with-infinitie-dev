@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 li.className = "list-group-item bg-transparent border-0 outline-0 position-relative p-0";
 
                 li.innerHTML = `
-          <div class="d-flex align-items-center">
+          <div class="d-flex align-items-center mb-1">
             <form action="/lectures/${lecture.id}" method="get">
               <input type="hidden" name="course_id" value="${courseId}">
               <button type="submit" class="btn bg-transparent border-0 outline-0 text-muted d-flex align-items-center gap-2 p-0">

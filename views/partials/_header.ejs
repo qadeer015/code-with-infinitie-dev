@@ -16,6 +16,7 @@
 </head>
 
 <body>
+    <% if (viewName !== 'notfound') { %>
     <!-- Offcanvas Navbar (Visible on Small Screens) -->
     <nav class="navbar bg-primary position-sticky top-0 z-1 d-flex d-md-none">
         <div class="container-fluid">
@@ -44,6 +45,7 @@
             </div>
         </div>
     </nav>
+    <% } %>
 <% if (!['/auth/login', '/auth/register', '/forgot-password', '/reset-password'].includes(url) && viewName !== 'index' && viewName !== 'terms' && viewName !== 'privacy' && viewName !== 'notfound') { %>
     <div class="row p-0 m-0 main-content-wrapper bg-light">
         <div class="col-lg-2 bg-secondary col-md-3 d-lg-inline d-md-inline d-none h-100 border-end border-primary">

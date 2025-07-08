@@ -39,7 +39,7 @@
                 <p class="text-center">No lectures found</p>
                 <% } else { %>
                   <% lectures.forEach((lecture, index)=> { %>
-                    <li class="list-group-item bg-transparent border-0 outline-0 position-relative p-0">
+                    <li class="list-group-item bg-transparent border-0 outline-0 position-relative p-0 mb-1">
                       <div class="d-flex align-items-center">
                         <form action="/lectures/<%= lecture.id %>" method="get">
                           <input type="hidden" name="course_id" value="<%= course.id %>">

@@ -38,6 +38,7 @@ class Lecture {
             GROUP BY l.id, l.title, l.video_id, v.title, c.title, l.description, 
                      l.created_at, l.updated_at, ulv.is_viewed, ulv.created_at, 
                      ulv.is_readed, ulv.is_quizz_completed
+                     ORDER BY l.id ASC
         `, [user_id, course_id]);
         
         return rows;

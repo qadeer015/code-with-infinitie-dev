@@ -29,7 +29,7 @@ router.get("/", async (req, res) => {
     
     const lectures = await Lecture.findAll(courseId, userId);
     let course = await Course.getCourse(userId, courseId);
-    
+
     // Check if all lectures are viewed and course is not already completed
     if (lectures.length > 0 && 
         lectures.every(lecture => lecture.is_viewed === 1) && 
