@@ -105,6 +105,16 @@ class User {
             throw error;
         }
     }
+
+    static async changePassword(id, password) {
+        try {
+            const [result] = await db.execute('UPDATE users SET password = ? WHERE id = ?', [password, id]);
+            return result.affectedRows > 0;
+        } catch (error) {
+            console.error("Database query error:", error);
+            throw error;
+        }
+    }
 }
 
 module.exports = User;

@@ -1,6 +1,8 @@
 const cloudinary = require('cloudinary').v2;
 const User = require('../models/User');
 require('dotenv').config();
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 
 // Configure Cloudinary (if not already done in another file)
 cloudinary.config({
@@ -14,9 +16,9 @@ const editUser = async (req, res) => {
     try {
         const { id } = req.params; // Fixed destructuring
         const { name, email, role, page_link, repository_link, signature } = req.body;
-        
+
         const userProfile = await User.findById(id);
-        
+
         if (!userProfile) {
             return res.status(404).json({ message: 'User not found' });
         }
@@ -130,4 +132,40 @@ const editUserSignature = async (req, res) => {
     }
 }
 
-module.exports = { editUser, getStudents, deleteUser, blockUser, unblockUser, editUserSignature };
+const changePassword = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { oldPassword, newPassword, confirmPassword } = req.body;
+        const user = await User.findById(id);
+        
+        if (req.user.id != id && req.user.role != 'admin') {
+            return res.status(401).json({ success: false, message: 'Unauthorized access' });
+        }
+
+        if (req.user.role !== 'admin') {
+            const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
+            if (!isPasswordValid) {
+                return res.status(401).json({success: false, message: 'Invalid old password. Please enter your correct old password to update your password.' });
+            }
+
+            if (newPassword !== confirmPassword) {
+                return res.status(400).json({ success: false, message: 'New password and confirm password do not match. Please enter the same password in both fields.' });
+            }
+
+        }
+
+        const hashedPassword = await bcrypt.hash(newPassword, 10);
+        const updatedPassword = await User.changePassword(id, hashedPassword);
+        
+        if (updatedPassword) {
+            res.status(200).json({ success: true, message: 'Password updated successfully' });
+        } else {
+            res.status(400).json({ success: false, message: 'Failed to update password' });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Error updating password' });
+    }
+}
+
+module.exports = { editUser, getStudents, deleteUser, blockUser, unblockUser, editUserSignature, changePassword };

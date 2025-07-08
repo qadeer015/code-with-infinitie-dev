@@ -24,11 +24,16 @@
     top: 20px;
     right: 20px;
     z-index: 9999;
-    width: fit-content;
     max-width: 300px;
     overflow: hidden;
-    white-space: nowrap;
+    word-wrap: break-word;
+    word-break: break-word;
 }
+
+.alert-container .alert {
+    white-space: normal; /* allow text to wrap */
+}
+
 
 .circle {
     border-radius: 50%;
