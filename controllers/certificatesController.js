@@ -3,7 +3,7 @@ const { createCanvas, registerFont } = require('canvas');
 const path = require('path');
 // Register fonts before you create canvas
 registerFont(path.join(__dirname, '../fonts/GreatVibes.ttf'), { family: 'Great Vibes' });
-registerFont(path.join(__dirname, '../fonts/ManufacturingConsent.ttf'), { family: 'Manufacturing Consent' });
+registerFont(path.join(__dirname, '../fonts/Barlow.ttf'), { family: 'Barlow' });
 
 // Helper function to draw signature paths
 function drawSignature(ctx, signatureData, x, y, width, height) {
@@ -106,12 +106,12 @@ const getCertificate = async (req, res) => {
 
     // Logo or Title Brand
     ctx.fillStyle = '#000';
-    ctx.font = 'bold 24px "Times New Roman", Times, serif';
+    ctx.font = 'bold 24px "Barlow", sans-serif';
     ctx.textAlign = 'center';
 
     // CERTIFICATE
     ctx.fillStyle = '#111';
-    ctx.font = 'bold 40px "Times New Roman", Times, serif';
+    ctx.font = 'bold 40px "Barlow", sans-serif';
     ctx.fillText('CERTIFICATE', width / 2, 120);
 
     // "OF PARTICIPATION" Ribbon
@@ -129,7 +129,7 @@ const getCertificate = async (req, res) => {
     ctx.fill();
 
     ctx.fillStyle = '#fff';
-    ctx.font = 'bold 25px "Times New Roman", Times, serif';
+    ctx.font = 'bold 25px "Barlow", sans-serif';
     ctx.fillText('OF COMPLETION', width / 2, ribbonY + 35);
 
     // Subheading
@@ -144,7 +144,7 @@ const getCertificate = async (req, res) => {
 
     // Recipient name
     ctx.fillStyle = grayText;
-    ctx.font = '18px "Manufacturing Consent"';
+    ctx.font = '18px "Barlow", sans-serif';
     ctx.fillText('For successfully completing the course of', width / 2, 360);
 
     // Course name
@@ -156,13 +156,13 @@ const getCertificate = async (req, res) => {
     
     // Description (Latin)
     ctx.fillStyle = grayText;
-    ctx.font = '16px "Times New Roman", Times, serif';
+    ctx.font = '16px "Barlow", sans-serif';
     const message = "This certifies that the recipient has demonstrated exceptional dedication, skill, and commitment throughout the course. His/her active participation, timely submissions, and eagerness to learn have been exemplary. We extend our heartfelt congratulations on this accomplishment and wish him/her continued success in all his/her future endeavors.";
     wrapText(ctx, message, width / 2, 470, width - width / 3, 32);
     
     // Date
     ctx.fillStyle = '#000';
-    ctx.font = '16px "Times New Roman", Times, serif';
+    ctx.font = '16px "Barlow", sans-serif';
     ctx.textAlign = 'left';
     ctx.fillText(`${new Date().toLocaleDateString()}`, 170,  height - 125);
     ctx.fillText('DATE', 180, height - 100);
