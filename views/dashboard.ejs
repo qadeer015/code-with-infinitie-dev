@@ -7,25 +7,25 @@
   <div class="row">
     <% if (courses.length > 0) { %>
       <% courses.forEach(course => { %>
+        <% if (course.enrollment_status === 'enrolled') { %>
         <div class="col-lg-6 col-md-6 mb-4">
           <div class="card h-100 shadow-sm">
-            <div class="card-header bg-primary">
-              <form action="/lectures" method="get">
-                <input type="hidden" name="course_id" value="<%= course.id %>">
-                <button type="submit" class="bg-transparent border-0 outline-0">
+            <form action="/lectures" method="get">
+              <input type="hidden" name="course_id" value="<%= course.id %>">
+              <button type="submit" class="bg-transparent border-0 outline-0 w-100 text-start p-0">
+                <div class="card-header bg-primary">
                   <h5 class="card-title fw-bold text-white">
                     <%= course.title %>
                   </h5>
-                </button>
-              </form>
-            </div>
-            <div class="card-body">
-              <p class="card-text text-muted" style="font-size: 15px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
-                <%= course.description %>
-              </p>
-            </div>
-            <div class="card-footer bg-transparent d-flex gap-3 align-items-center">
-              
+                </div>
+                <div class="card-body">
+                  <p class="card-text text-muted" style="font-size: 15px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                    <%= course.description %>
+                  </p>
+                </div>
+              </button>
+            </form>
+            <div class="card-footer bg-transparent d-flex gap-3 align-items-center mt-auto">
               <form action="/assignments" method="get" class="position-relative">
                 <% if(course.unsubmitted_count > 0) { %>
                   <div class="notification-badge">
@@ -53,6 +53,7 @@
             </div>
           </div>
         </div>
+        <% } %>
       <% }); %>
     <% } else { %>
       <div class="col-12 text-center py-5">

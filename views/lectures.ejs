@@ -1,61 +1,152 @@
 <%- include('partials/_header', { title: 'Lectures' }) %>
-    <div class="row">
-    <div class="col-8 py-3">
-      <h2 class="fw-bold"><%= course.title %></h2>
-       <div class="badge bg-primary">
-        <i class="bi bi-hourglass"></i>
-        <%= course.course_duration %>
-      </div>
-      <div class="badge bg-primary">
-        <i class="bi bi-currency-dollar"></i>
-        <%= course.course_fee %>
-      </div>
-      <div class="badge <%= course.status === 'enrolled' ? 'bg-success-subtle' : 'bg-success' %>">
-        <%= course.status === 'enrolled' ? 'In Progress' :  'Completed' %>
-      </div>
+<div class="row">
+  <div class="col-8 py-3">
+    <h2 class="fw-bold"><%= course.title %></h2>
+     <div class="badge bg-primary">
+      <i class="bi bi-hourglass"></i>
+      <%= course.course_duration %>
+    </div>
+    <div class="badge bg-primary">
+      <i class="bi bi-currency-dollar"></i>
+      <%= course.course_fee %>
+    </div>
+    <div class="badge <%= course.status === 'enrolled' ? 'bg-success-subtle' : 'bg-success' %>">
+      <%= course.status === 'enrolled' ? 'In Progress' :  'Completed' %>
+    </div>
+    <div class="badge bg-primary-subtle text-success">
+      <%= lectures.length %>
+      <span>Lectures</span>
+    </div>
+    
+    <% if(course.progress>0){%>
       <div class="badge bg-primary-subtle text-success">
-        <%= lectures.length %>
-        <span>Lectures</span>
+        <%= course.progress %> %
       </div>
-      
-      <% if(course.progress>0){%>
-        <div class="badge bg-primary-subtle text-success">
-          <%= course.progress %> %
-        </div>
-      <%}%>
-  
-      <p class="text-muted mt-3" style="font-size: 15px;">
-        <%= course.description %>
-      </p>
-    </div>
-    <hr class="m-0 text-muted">
-    <div class="row">
-      <h5 class="fw-bold py-3">Lectures</h5>
-    </div>
-    <div class="row">
-      <div class="col-lg-8 mb-3">
-          <ul class="list-group">
-              <% if(lectures.length===0){ %>
-                <p class="text-center">No lectures found</p>
-                <% } else { %>
-                  <% lectures.forEach((lecture, index)=> { %>
-                    <li class="list-group-item bg-transparent border-0 outline-0 position-relative p-0 mb-1">
-                      <div class="d-flex align-items-center">
-                        <form action="/lectures/<%= lecture.id %>" method="get">
-                          <input type="hidden" name="course_id" value="<%= course.id %>">
-                          <button type="submit" class="btn bg-transparent border-0 outline-0 text-muted d-flex align-items-center gap-2 p-0">
-                            <span class="badge rounded-circle border border-3 d-flex align-items-center justify-content-center <%= lecture.is_viewed && lecture.is_readed && lecture.is_quizz_completed ? 'border-success bg-secondary' : 'border-secondary-subtle bg-primary' %>" style="width: 30px; height: 30px; font-size: 20px;">
-                              <i class="bi bi-play"></i>
-                            </span>
-                            <%= lecture.title %>
-                          </button>
-                        </form>
-                      </div>
-                    </li>
-                    <% }); %>
-            <% } %>
-            </ul>
-      </div>
-    </div>
+    <%}%>
 
-  <%- include('partials/_footer') %>
+    <p class="text-muted mt-3" style="font-size: 15px;">
+      <%= course.description %>
+    </p>
+  </div>
+  <hr class="m-0 text-muted">
+  <div class="row">
+    <h5 class="fw-bold py-3">Lectures</h5>
+  </div>
+  <div class="row position-relative">
+    <div class="col-lg-8 mb-3">
+      <ul class="list-group" id="lectures-list">
+        <% if(lectures.length===0){ %>
+          <p class="text-center">No lectures found</p>
+        <% } else { %>
+          <% 
+            // Find the first unwatched lecture or default to first
+            let currentLectureIndex = 0;
+            for(let i = 0; i < lectures.length; i++) {
+              if(!(lectures[i].is_viewed && lectures[i].is_readed && lectures[i].is_quizz_completed)) {
+                currentLectureIndex = i;
+                break;
+              }
+            }
+          %>
+          <% lectures.forEach((lecture, index)=> { %>
+            <li class="list-group-item bg-transparent border-0 outline-0 position-relative p-0 mb-1 lecture-item" 
+                data-lecture-id="<%= lecture.id %>"
+                id="lecture-<%= index %>"
+                <%= index === currentLectureIndex ? 'data-current-lecture="true"' : '' %>>
+              <div class="d-flex align-items-center">
+                <form action="/lectures/<%= lecture.id %>" method="get">
+                  <input type="hidden" name="course_id" value="<%= course.id %>">
+                  <button type="submit" class="btn bg-transparent border-0 outline-0 text-muted d-flex align-items-center gap-2 p-0">
+                    <span class="badge rounded-circle border border-3 d-flex align-items-center justify-content-center <%= lecture.is_viewed && lecture.is_readed && lecture.is_quizz_completed ? 'border-success bg-secondary' : 'border-secondary-subtle bg-primary' %>" style="width: 30px; height: 30px; font-size: 20px;">
+                      <i class="bi bi-play"></i>
+                    </span>
+                    <%= lecture.title %>
+                  </button>
+                </form>
+              </div>
+              <% if(index === currentLectureIndex){ %>
+                <!-- The sticky indicator that will follow the current lecture -->
+    <div class="current-lecture-indicator bg-secondary rounded-circle position-absolute d-flex align-items-center justify-content-center" 
+         style="width: 20px; height: 20px; top: 5px; left: -25px; transition: all 0.3s ease; z-index: 1000;">
+         <img src="/img/favicon/infinitidev.png" alt="logo" width="15px">
+        </div>
+              <% } %>
+            </li>
+          <% }); %>
+        <% } %>
+      </ul>
+    </div>
+    
+</div>
+
+<style>
+  .current-lecture-indicator {
+    animation: pulse 2s infinite;
+    left: 15px; /* Adjust based on your layout */
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.7; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const lecturesList = document.getElementById('lectures-list');
+    const indicator = document.querySelector('.current-lecture-indicator');
+    const lectureItems = document.querySelectorAll('.lecture-item');
+    
+    if (indicator && lectureItems.length > 0) {
+      // Find the current lecture item
+      const currentLectureItem = document.querySelector('.lecture-item[data-current-lecture="true"]');
+      
+      if (currentLectureItem) {
+        // Position the indicator initially
+        updateIndicatorPosition(currentLectureItem);
+        
+        // Make it sticky on scroll
+        window.addEventListener('scroll', function() {
+          const currentLectureItem = document.querySelector('.lecture-item[data-current-lecture="true"]');
+          if (currentLectureItem) {
+            updateIndicatorPosition(currentLectureItem);
+          }
+        });
+      }
+    }
+    
+    function updateIndicatorPosition(item) {
+      const rect = item.getBoundingClientRect();
+      const viewportHeight = window.innerHeight;
+      const scrollY = window.scrollY || window.pageYOffset;
+      
+      // Calculate positions
+      const itemTop = rect.top + scrollY;
+      const itemBottom = rect.bottom + scrollY;
+      const viewportTop = scrollY;
+      const viewportBottom = scrollY + viewportHeight;
+      
+      // If item is above viewport
+      if (itemTop < viewportTop) {
+        indicator.style.top = '20px'; // Stick to top of viewport
+        indicator.style.position = 'fixed';
+      } 
+      // If item is below viewport
+      else if (itemBottom > viewportBottom) {
+        indicator.style.top = (viewportHeight - 20) + 'px'; // Stick to bottom of viewport
+        indicator.style.position = 'fixed';
+      } 
+      // If item is in viewport
+      else {
+        indicator.style.top = (rect.top + 10) + 'px'; // Follow the item
+        indicator.style.position = 'absolute';
+      }
+      
+      // Keep horizontal position consistent
+      indicator.style.left = (rect.left - 15) + 'px';
+    }
+  });
+</script>
+
+<%- include('partials/_footer') %>

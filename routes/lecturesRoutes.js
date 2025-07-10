@@ -23,31 +23,30 @@ router.get('/stats', async (req, res) => {
 });
 
 router.get("/", async (req, res) => {
-  try {
-    const courseId = req.query.course_id;
-    const userId = req.user.id;
-    
-    const lectures = await Lecture.findAll(courseId, userId);
-    let course = await Course.getCourse(userId, courseId);
+    try {
+        const courseId = req.query.course_id;
+        const userId = req.user.id;
 
-    // Check if all lectures are viewed and course is not already completed
-    if (lectures.length > 0 && 
-        lectures.every(lecture => lecture.is_viewed === 1) && 
-        course.status !== "completed") {
-      await UserCourse.completeUserCourse(courseId, "completed");
-      // Refresh course data after update
-      course = await Course.getCourse(userId, courseId);
+        const lectures = await Lecture.findAll(courseId, userId);
+        let course = await Course.getCourse(userId, courseId);
+        // Check if all lectures are viewed and course is not already completed
+        if (lectures.length > 0 &&
+            lectures.every(lecture => lecture.is_viewed === 1 && lecture.is_readed === 1 && lecture.is_quizz_completed === 1) &&
+            course.status !== "completed") {
+            await UserCourse.completeUserCourse(courseId, "completed");
+            // Refresh course data after update
+            course = await Course.getCourse(userId, courseId);
+        }
+
+        res.render("lectures", {
+            lectures,
+            course,
+            viewName: 'lectures'
+        });
+    } catch (err) {
+        console.error("Error fetching lectures or course:", err);
+        res.status(500).send("Internal Server Error");
     }
-    
-    res.render("lectures", {
-      lectures,
-      course,
-      viewName: 'lectures'
-    });
-  } catch (err) {
-    console.error("Error fetching lectures or course:", err);
-    res.status(500).send("Internal Server Error");
-  }
 });
 
 router.get("/get-all", lecturesController.getCourseLectures);
@@ -66,15 +65,15 @@ router.post('/:id/mark-viewed', async (req, res) => {
         const lecture_id = req.params.id;
         // 2. Update view status in database
         await Lecture.markLectureAsViewed(lecture_id, user_id);
-        res.status(200).json({ 
+        res.status(200).json({
             success: true,
-            message: 'Lecture marked as completed' 
+            message: 'Lecture marked as completed'
         });
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ 
+        res.status(500).json({
             success: false,
-            message: 'Internal server error' 
+            message: 'Internal server error'
         });
     }
 });
@@ -85,15 +84,15 @@ router.post('/:id/mark-readed', async (req, res) => {
         const lecture_id = req.params.id;
         // 2. Update view status in database
         await Lecture.markLectureAsRead(lecture_id, user_id);
-        res.status(200).json({ 
+        res.status(200).json({
             success: true,
-            message: 'Lecture content marked as readed' 
+            message: 'Lecture content marked as readed'
         });
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ 
+        res.status(500).json({
             success: false,
-            message: 'Internal server error' 
+            message: 'Internal server error'
         });
     }
 });
@@ -104,15 +103,15 @@ router.post('/:id/quizz-completed', async (req, res) => {
         const lecture_id = req.params.id;
         // 2. Update view status in database
         await Lecture.markLectureQuizzAsCompleted(lecture_id, user_id);
-        res.status(200).json({ 
+        res.status(200).json({
             success: true,
-            message: 'Lecture quizz marked as completed' 
+            message: 'Lecture quizz marked as completed'
         });
     } catch (error) {
         console.error('Error:', error);
-        res.status(500).json({ 
+        res.status(500).json({
             success: false,
-            message: 'Internal server error' 
+            message: 'Internal server error'
         });
     }
 });

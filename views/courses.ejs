@@ -14,7 +14,7 @@
     <div class="col-lg-4 col-md-6">
         <div class="card h-100 shadow-sm bg-primary">
             <div class="card-body position-relative">
-                <% if (course.status === 'enrolled') { %>
+                <% if (course.status === 'enrolled' || course.status === 'completed') { %>
                     <span class="badge bg-success mb-2 position-absolute" style="top: 17px; right: 15px;">Enrolled</span>
                 <% } %>
                 <h5 class="card-title fw-bold text-white"><%= course.title %></h5>
@@ -35,7 +35,7 @@
                     </div>
                 </div>
                 <div>
-                    <% if (course.status != 'enrolled') { %>
+                    <% if (course.status != 'enrolled' && course.status != 'completed') { %>
                     <form id="enroll-form-<%= course.id %>" action="/courses/<%= course.id %>/join" method="post" class="text-center">
                         <input type="hidden" name="user_id" value="<%= user.id %>">
                         <input type="hidden" name="course_id" value="<%= course.id %>">
