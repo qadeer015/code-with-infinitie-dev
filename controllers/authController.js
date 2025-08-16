@@ -59,7 +59,7 @@ const login = async (req, res) => {
             return res.status(401).json({ message: 'Invalid email.' });
         }
         
-        if (user.role === "deleted") {
+        if (user.status === "deleted") {
             return res.status(401).json({ message: 'No user found with this email.' });
         }
         
@@ -85,6 +85,9 @@ const login = async (req, res) => {
 
         if (user.role === "admin") {
             return res.redirect('/users/admin/dashboard');
+        }
+        if (user.role === "instructor") {
+            return res.redirect('/users/instructor/dashboard');
         }
         
         // Redirect to home page

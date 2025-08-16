@@ -54,13 +54,6 @@ function renderStudents(student) {
     return `
                 <tr id="student-${student.id}">
                     <td>
-                        <div class="form-check form-check-muted m-0">
-                            <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" id="check-student${student.id}">
-                            </label>
-                        </div>
-                    </td>
-                    <td>
                         <img src="${student.avatar}" alt="avatar" width="40px" class="rounded-circle">
                         ${student.name}
                     </td>
@@ -159,17 +152,3 @@ function toggleBlockStudent(id, isBlocked, button) {
         showAlert(`Failed to ${action} student.`, 'danger');
     });
 }
-
-$(function () {
-    $('#check-all').click(function () {
-        if (this.checked) {
-            $('.form-check-input').each(function () {
-                this.checked = true;
-            })
-        } else {
-            $('.form-check-input').each(function () {
-                this.checked = false;
-            })
-        }
-    })
-});

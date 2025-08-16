@@ -8,9 +8,6 @@ const featuredCoursesController = require('../controllers/featuredCoursesControl
 const lecturesController = require('../controllers/lecturesController.js');
 const videosController = require('../controllers/videosController');
 const quizzController = require('../controllers/quizzController.js');
-const instructorController = require('../controllers/instructorController.js');
-const upload = require('../middleware/cloudinaryUpload.js');
-console.log(upload)
 
 const Course = require('../models/Course');
 const Video = require('../models/Video');
@@ -20,12 +17,12 @@ const Announcement = require('../models/Announcement.js');
 
 // home page
 router.get('/dashboard', (req, res) => {
-    res.render('admin/dashboard',{req:req.session.user || null});
+    res.render('instructor/dashboard',{req:req.session.user || null});
 });
 
 // Students
 router.get("/students",(req, res) => {
-    res.render("admin/student/index");
+    res.render("instructor/student/index");
 });
 router.get("/get-students",userController.getStudents);
 router.post("/block/:id", userController.blockUser);
@@ -33,8 +30,8 @@ router.post("/unblock/:id", userController.unblockUser);
 router.post("/delete/:id", userController.deleteUser);
 
 // Courses
-router.get("/courses", (req, res) => {res.render("admin/course/index")});
-router.get("/courses/new", (req, res) => {res.render("admin/course/new")});
+router.get("/courses", (req, res) => {res.render("instructor/course/index")});
+router.get("/courses/new", (req, res) => {res.render("instructor/course/new")});
 router.get("/courses/get-all", coursesController.getAllCourses);
 router.get("/courses/:id/edit", coursesController.editCourse);
 router.post("/courses/:id/update", coursesController.updateCourse);
@@ -43,10 +40,10 @@ router.post("/courses/delete", coursesController.deleteCourse);
 
 // Featured Courses
 router.get("/featured-courses", (req, res) => {
-    res.render("admin/featuredCourse/index")
+    res.render("instructor/featuredCourse/index")
 });
 router.get("/featured-courses/get-all", featuredCoursesController.getAllFeaturedCourses);
-router.get("/featured-courses/new", async (req, res) => { res.render("admin/featuredCourse/new", { courses: await Course.getAll() }) });
+router.get("/featured-courses/new", async (req, res) => { res.render("instructor/featuredCourse/new", { courses: await Course.getAll() }) });
 router.post("/featured-courses/create", featuredCoursesController.createFeaturedCourse);
 router.get("/featured-courses/:id/edit", featuredCoursesController.editFeaturedCourse);
 router.post("/featured-courses/:id/update", featuredCoursesController.updateFeaturedCourse);
@@ -54,16 +51,16 @@ router.post("/featured-courses/:id/delete", featuredCoursesController.deleteFeat
 
 // Assignments
 router.get("/assignments", (req, res) => {
-    res.render("admin/assignment/index")
+    res.render("instructor/assignment/index")
 });
 router.get("/assignments/submitted", assignmentsController.getSubmittedAssignments);
 router.get("/assignments/submitted/:id", assignmentsController.getSubmittedAssignmentDetails);
 router.get("/assignments/get-all", assignmentsController.getAllAssignments);
-router.get("/assignments/new", async (req, res) => { res.render("admin/assignment/new", { courses: await Course.getAll() }) });
+router.get("/assignments/new", async (req, res) => { res.render("instructor/assignment/new", { courses: await Course.getAll() }) });
 router.post("/assignments/create", assignmentsController.createAssignment)
 router.post("/assignments/:assignmentId/users/:userId/grade", assignmentsController.gradeAssignment);
 router.get("/assignments/:assignment_id/edit", async (req, res) => {
-    res.render("admin/assignment/edit", { assignmentId: req.params.assignment_id, assignment: await Assignment.findAssignment(req.params.assignment_id), courses: await Course.getAll() })
+    res.render("instructor/assignment/edit", { assignmentId: req.params.assignment_id, assignment: await Assignment.findAssignment(req.params.assignment_id), courses: await Course.getAll() })
 })
 router.post("/assignments/:assignment_id/update", assignmentsController.updateAssignment);
 router.post("/assignments/:assignment_id/delete", assignmentsController.deleteAssignment);
@@ -73,29 +70,29 @@ router.get('/files/:submissionId/:filename', assignmentsController.serveSubmissi
 
 // Announcements
 router.get("/announcements", (req, res) => {
-    res.render("admin/announcement/index")
+    res.render("instructor/announcement/index")
 });
 router.get("/announcements/get-all", announcementsController.getAllAnnouncements);
-router.get("/announcements/new", async (req, res) => { res.render("admin/announcement/new", { courses: await Course.getAll() }) });
+router.get("/announcements/new", async (req, res) => { res.render("instructor/announcement/new", { courses: await Course.getAll() }) });
 router.post("/announcements/create", announcementsController.createAnnouncement)
 router.get("/announcements/:announcement_id/edit", async (req, res) => {
     const announcement = await Announcement.findAnnouncement(req.params.announcement_id);
-    res.render("admin/announcement/edit", { announcementId: req.params.announcement_id, announcement, courses: await Course.getAll() })
+    res.render("instructor/announcement/edit", { announcementId: req.params.announcement_id, announcement, courses: await Course.getAll() })
 })
 router.post("/announcements/:announcement_id/update", announcementsController.updateAnnouncement);
 router.post("/announcements/:announcement_id/delete", announcementsController.deleteAnnouncement);
 
 // Lectures
 router.get("/lectures", (req, res) => {
-    res.render("admin/lecture/index")
+    res.render("instructor/lecture/index")
 });
 router.get("/lectures/get-all", lecturesController.getAllLectures);
 router.get("/lectures/new", async (req, res) => {
-    res.render("admin/lecture/new", { courses: await Course.getAll(), videos: await Video.getAll() })
+    res.render("instructor/lecture/new", { courses: await Course.getAll(), videos: await Video.getAll() })
 })
 router.get("/lectures/:id/edit", async (req, res) => {
     console.log("lecture id : ",req.params.id);
-    res.render("admin/lecture/edit", { lectureId: req.params.id, courses: await Course.getAll(), videos: await Video.getAll(), lecture: await Lecture.getLectureDetails(req.params.id) })
+    res.render("instructor/lecture/edit", { lectureId: req.params.id, courses: await Course.getAll(), videos: await Video.getAll(), lecture: await Lecture.getLectureDetails(req.params.id) })
 });
 router.post("/lectures/create", lecturesController.createLecture);
 router.post("/lectures/:id/update", lecturesController.updateLecture);
@@ -146,44 +143,5 @@ router.post("/lectures/:id/questions/:question_id/delete", quizzController.delet
 router.post("/lectures/:id/questions/:question_id/options/create", quizzController.createOption);
 router.post("/lectures/:id/options/:option_id/delete", quizzController.deleteOption);
 router.post("/lectures/:lecture_id/options/:id/update", quizzController.updateOption);
-
-
-// Instructors
-router.get("/instructors",(req, res) => {
-    res.render("admin/instructor/index");
-});
-
-// Get all instructors
-router.get(
-    '/get-instructors',
-    instructorController.getAllInstructors
-);
-
-// Create instructor profile
-router.post(
-    '/:userId/instructor/create',
-    upload('document'),
-    instructorController.createInstructorProfile
-);
-
-// Update instructor profile
-router.put(
-    '/:userId/profile',
-    upload('document'),
-    instructorController.updateInstructorProfile
-);
-
-// Get instructor profile
-router.get(
-    '/:userId/profile',
-    instructorController.getInstructorProfile
-);
-
-// Delete instructor profile
-router.delete(
-    '/:userId/profile',
-    instructorController.deleteInstructorProfile
-);
-
 
 module.exports = router;

@@ -2,6 +2,7 @@
 
     <div class="row">
         <h2 class="fw-bold py-3">Progress</h2>
+            <% if(userCourses.length > 0) { %>
                 <div class="d-flex flex-wrap gap-2">
                     <% userCourses.forEach(userCourse=> { %>
                         <button type="button" class="btn btn-outline-primary course-select"
@@ -10,8 +11,11 @@
                                 <%= userCourse.title %>
                             </h5>
                         </button>
-                        <% }) %>
+                    <% }) %>
                 </div>
+            <% } else { %>
+                <p class="text-muted">No course data available yet. Please enroll in a course to get started or visit <a href="/courses" class="text-primary">Courses</a></p>
+            <% } %>
     </div>
     <div class="row">
         <h3 class="fw-medium-bold py-3">Activities</h3>

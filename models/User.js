@@ -36,7 +36,7 @@ class User {
 
     static async findAll(role) {
         try {
-            const [rows] = await db.execute('SELECT * FROM users WHERE role = ?', [role]);
+            const [rows] = await db.execute('SELECT * FROM users WHERE role = ? AND status != "deleted"', [role]);
             return rows;
         } catch (error) {
             console.error("Database query error:", error);
@@ -68,7 +68,7 @@ class User {
 
     static async deleteUser(id) {
         try {
-            const [result] = await db.execute('UPDATE users SET role = "deleted" WHERE id = ?', [id]);
+            const [result] = await db.execute('UPDATE users SET status = "deleted" WHERE id = ?', [id]);
             return result.affectedRows > 0; // Returns true if a row was deleted
         } catch (error) {
             console.error("Error deleting user:", error);

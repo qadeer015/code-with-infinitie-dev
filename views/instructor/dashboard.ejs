@@ -1,0 +1,71 @@
+<%- include('partials/_header', { title: 'Admin Dashboard' }) %>
+    <div class="row pt-4 pb-3">
+                    <div class="col-lg-4 col-md-4 my-2">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-title">Students</div>
+                                <div id="total-students-count" class="card-subtitle mb-2 text-muted"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-4 col-md-4 my-2">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="card-title">Courses</div>
+                                <div id="total-courses-count" class="card-subtitle mb-2 text-muted"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+    <script>
+        const totalStudentsCount = document.getElementById('total-students-count');
+        const totalCoursesCount = document.getElementById('total-courses-count');
+        document.addEventListener("DOMContentLoaded", function () {
+            fetchStudents();
+            fetchCourses();
+        })
+
+        function fetchStudents() {
+            const response = fetch("/users/instructor/get-students", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                cache: "no-cache",
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                return response.json();
+            }).then(data => {
+                totalStudentsCount.textContent = data.length;
+            }).catch(error => {
+                console.error("Error fetching students:", error);
+            });
+        }
+
+
+        function fetchCourses(){
+const response = fetch("/users/instructor/courses/get-all", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                cache: "no-cache",
+            }).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                return response.json();
+            }).then(data => {
+                totalCoursesCount.textContent = data.length;
+            }).catch(error => {
+                console.error("Error fetching courses:", error);
+            });
+        }
+    </script>
+    <%- include('partials/_footer') %>

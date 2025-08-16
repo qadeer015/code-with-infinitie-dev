@@ -34,6 +34,7 @@
                         </div>
                     </div>
                     <%}%>
+                    
                     <% if(user.role==="admin"){ %>
                     <div class="form-group">
                         <label for="email" class="form-label fw-bold">Email</label>
@@ -42,34 +43,114 @@
                     <div class="form-group">
                         <label for="role" class="form-label fw-bold">Role</label>
                         <select id="role" name="role" class="form-control">
-                            <option value="<%= userProfile.role %>"><%= userProfile.role %></option>
-                            <option value="student">Student</option>
-                            <option value="teacher">Teacher</option>
-                            <option value="admin">Admin</option>
+                            <% const roles = ['student', 'instructor', 'admin']; %>
+                            <% roles.forEach(role => { %>
+                                <% if (role !== userProfile.role) { %>
+                                    <option value="<%= role %>"><%= role.charAt(0).toUpperCase() + role.slice(1) %></option>
+                                <% } %>
+                            <% }); %>
+                            <option value="<%= userProfile.role %>" selected><%= userProfile.role.charAt(0).toUpperCase() + userProfile.role.slice(1) %></option>
                         </select>
                     </div>
                     <% } %>
+                    
                     <%if(user.role==="admin" || user.repository_link ==''){%>
                     <div class="form-group">
                         <label for="repository_link" class="form-label fw-bold">Repository Link</label>
                         <input type="text" id="repository_link" name="repository_link" value="<%= userProfile.repository_link %>" class="form-control">
                     </div>
                     <%}%>
+                    
                     <%if(user.role==="admin" || user.page_link ==''){%>
                     <div class="form-group">
                         <label for="page_link" class="form-label fw-bold">Page Link</label>
                         <input type="text" id="page_link" name="page_link" value="<%= userProfile.page_link %>" class="form-control">
                     </div>
                     <%}%>
+                    
                     <div class="form-group">
-                        <button type="submit" class="btn btn-sm btn-primary mt-3">update</button>
+                        <button type="submit" class="btn btn-sm btn-primary mt-3">Update</button>
                         <a href="/users/<%= userProfile.id %>/profile" class="btn btn-sm btn-secondary mt-3">Cancel</a>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    
+    <% if(userProfile.role === "instructor") { %>
+    <div class="col-lg-6">
+        <div class="card">
+            <div class="card-header">
+                <h2>Instructor Details</h2>
+            </div>
+            <div class="card-body">
+                <form id="instructorForm" action="/users/admin/<%= userProfile.id %>/instructor/create" method="post" enctype="multipart/form-data">
+                    <div class="form-group mb-2">
+                        <label for="qualification" class="form-label fw-bold">Qualification</label>
+                        <input type="text" id="qualification" name="qualification" 
+                               value="<%= instructorProfile?.qualification || '' %>" 
+                               class="form-control">
+                    </div>
+                    
+                    <div class="form-group mb-2">
+                        <label for="specialization" class="form-label fw-bold">Specialization</label>
+                        <input type="text" id="specialization" name="specialization" 
+                               value="<%= instructorProfile?.specialization || '' %>" 
+                               class="form-control">
+                    </div>
+                    
+                    <div class="form-group mb-2">
+                        <label for="phone" class="form-label fw-bold">Phone</label>
+                        <input type="text" id="phone" name="phone" 
+                               value="<%= instructorProfile?.phone || '' %>" 
+                               class="form-control">
+                    </div>
+                    
+                    <% if(user.role === "admin") { %>
+                    <div class="form-group mb-2">
+                        <label for="salary" class="form-label fw-bold">Salary</label>
+                        <input type="number" id="salary" name="salary" 
+                               value="<%= instructorProfile?.salary || '' %>" 
+                               class="form-control">
+                    </div>
+                    <% } %>
+                    
+                    <div class="form-group mb-2">
+                        <label for="hire_date" class="form-label fw-bold">Hire Date</label>
+                        <input type="date" id="hire_date" name="hire_date" 
+                               value="<%= instructorProfile?.hire_date ? new Date(instructorProfile.hire_date).toISOString().split('T')[0] : '' %>" 
+                               class="form-control">
+                    </div>
+                    
+                    <div class="form-group mb-2">
+                        <label for="document" class="form-label fw-bold">Qualification Document</label>
+                        <% if(instructorProfile?.document_image) { %>
+                            <div class="mb-2">
+                                <a href="<%= instructorProfile.document_image %>" target="_blank" class="btn btn-sm btn-outline-info">
+                                    View Current Document
+                                </a>
+                            </div>
+                        <% } %>
+                        <input type="file" id="document" name="document" class="form-control" accept=".pdf,.jpg,.jpeg,.png">
+                    </div>
+
+                    <div class="form-group mb-2">
+                        <label for="address" class="form-label fw-bold">Address</label>
+                        <input type="text" id="address" name="address" 
+                               value="<%= instructorProfile?.address || '' %>" 
+                               class="form-control">
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-sm btn-primary mt-3">Update Instructor Details</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <% } %>
 </div>
+
 <script>
 document.getElementById('avatar').addEventListener('change', function(event) {
     const file = event.target.files[0];
@@ -81,76 +162,102 @@ document.getElementById('avatar').addEventListener('change', function(event) {
         reader.readAsDataURL(file);
     }
 });
-    const editUserForm = document.getElementById("editUserForm");
+// Handle instructor form submission
+const instructorForm = document.getElementById("instructorForm");
+if (instructorForm) {
+    instructorForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const formData = new FormData(instructorForm);
+        
+        try {
+            const response = await fetch(instructorForm.action, {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            
+            if (data.success) {
+                showAlert(data.message, 'success');
+            } else {
+                showAlert(data.message, 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showAlert('Error saving instructor data', 'error');
+        }
+    });
+}
+
+
+// Handle user form submission
+const editUserForm = document.getElementById("editUserForm");
 </script>
+
 
 
 <% if(!userProfile.signature){%>
-        <script src="/js/utils/sketchPad.js"></script>
+    <script src="/js/utils/sketchPad.js"></script>
         <script src="/js/utils/draw.js"></script>
         <script>
-            const label = "Signature";
-            const sketchPadContainer = document.getElementById("sketchPadContainer");
-            const undoBtn = document.getElementById("undoBtn");
-            const sketchPad = new SketchPad(sketchPadContainer, undoBtn);
-            instructions.innerHTML = `<span><strong>${label} here!</strong></span>`;
+    const label = "Signature";
+    const sketchPadContainer = document.getElementById("sketchPadContainer");
+    const undoBtn = document.getElementById("undoBtn");
+    const sketchPad = new SketchPad(sketchPadContainer, undoBtn);
+    instructions.innerHTML = `<span><strong>${label} here!</strong></span>`;
+    
+    editUserForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        const signature = sketchPad.paths;
+        const formData = new FormData(editUserForm);
+        formData.append("signature", JSON.stringify(signature));
+        
+        try {
+            const response = await fetch(editUserForm.action, {
+                method: 'POST',
+                body: formData
+            });
             
-
-            let signature = document.getElementById("signature");
+            const data = await response.json();
             
-            editUserForm.addEventListener("submit",async (event)=>{
-                event.preventDefault();
-                const signature = sketchPad.paths;
-                const formData = new FormData(editUserForm);
-                formData.append("signature", JSON.stringify(signature));
-                fetch(editUserForm.action, {
-                    method: 'POST',
-                    body: formData
-                })
-                    .then(response => response.text())
-                    .then(data  => {
-                        if(data.success){
-                            showAlert(data.message, 'success');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('Error saving data');
-                    });
-            })
-
-        </script>
+            if (data.success) {
+                showAlert(data.message, 'success');
+            } else {
+                showAlert(data.message, 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showAlert('Error saving data', 'error');
+        }
+    });
+</script>
 
 <%} else{%>
-<script>
+    <script>
     editUserForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const formData = new FormData(editUserForm);
-    
-    try {
-        const response = await fetch(editUserForm.action, {
-            method: 'POST',
-            body: formData
-        });
-
-        // First check if the response is OK
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-
-        // Parse the JSON response
-        const data = await response.json();
+        event.preventDefault();
+        const formData = new FormData(editUserForm);
         
-        if (data.success) {
-            showAlert(data.message, 'success');
-        } else {
-            showAlert(data.message, 'error');
+        try {
+            const response = await fetch(editUserForm.action, {
+                method: 'POST',
+                body: formData
+            });
+
+            const data = await response.json();
+            
+            if (data.success) {
+                showAlert(data.message, 'success');
+            } else {
+                showAlert(data.message, 'error');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showAlert('Error saving data', 'error');
         }
-    } catch (error) {
-        console.error('Error:', error);
-        showAlert('Error saving data', 'error');
-    }
-});
+    });
 </script>
+
 <%}%>
+
 <%- include('partials/_footer') %>

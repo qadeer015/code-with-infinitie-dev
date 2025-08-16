@@ -15,11 +15,13 @@ const announcementRoutes = require("./routes/announcementRoutes.js");
 const courseRoutes = require("./routes/coursesRoutes.js");
 const assignmentsRoutes = require("./routes/assignmentsRoutes.js");
 const adminRoutes = require("./routes/adminRoutes.js");
+const instructorRoutes = require("./routes/instructorRoutes.js");
 const lecturesRoutes = require("./routes/lecturesRoutes.js");
 const certificatesRoutes = require('./routes/certificatesRoutes.js');
 
 const auththenticateUser = require("./middleware/auththenticateUser.js");
 const isAdmin = require('./middleware/isAdmin.js');
+const isInstructor = require('./middleware/isInstructor.js');
 
 const FeaturedCourse = require('./models/FeaturedCourse.js');
 
@@ -113,9 +115,11 @@ app.use("/users", userRoutes);
 app.use("/announcements", announcementRoutes);
 app.use("/courses", courseRoutes);
 app.use("/assignments", assignmentsRoutes);
-app.use("/users/admin", isAdmin, adminRoutes);
 app.use("/lectures", lecturesRoutes);
 app.use('/certificates', certificatesRoutes);
+app.use("/users/admin", isAdmin, adminRoutes);
+app.use("/users/instructor", isInstructor, instructorRoutes);
+
 
 app.get("/about", (req, res) => {
     res.render("pages/about", { viewName: 'about' });

@@ -1,7 +1,6 @@
 const cloudinary = require('cloudinary').v2;
 const User = require('../models/User');
 require('dotenv').config();
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 
 // Configure Cloudinary (if not already done in another file)
