@@ -70,20 +70,20 @@ function renderInstructors(instructor) {
                         <i class="bi bi-three-dots-vertical"></i>
                     </button>
                     <ul class="dropdown-menu">
+                        <a class="text-decoration-none text-dark" href="/users/${instructor.user_id}/profile">
                         <li class="dropdown-item mb-1">
-                            <a class="text-decoration-none text-dark" href="/users/${instructor.user_id}/profile">
                                 <i class="bi bi-eye"></i>
                                 View
-                            </a>
                         </li>
+                        </a>
                         <li class="dropdown-item mb-1">
-                            <button class="bg-transparent border-0 outline-0 block-instructor" 
+                            <button class="text-start w-100 bg-transparent border-0 outline-0 block-instructor" 
                                     data-id="${instructor.user_id}" data-blocked="${isBlocked}">
                                 ${isBlocked ? '<i class="bi bi-unlock"></i> Unblock' : '<i class="bi bi-lock"></i> Block'}
                             </button>
                         </li>
                         <li class="dropdown-item mb-1">
-                            <button class="bg-transparent border-0 outline-0 delete-instructor" data-id="${instructor.user_id}">
+                            <button class="text-start w-100 bg-transparent border-0 outline-0 delete-instructor" data-id="${instructor.user_id}">
                                 <i class="bi bi-trash"></i>
                                 Delete
                             </button>

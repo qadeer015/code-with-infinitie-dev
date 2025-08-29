@@ -58,8 +58,8 @@ function renderStudents(student) {
                         ${student.name}
                     </td>
                     <td>${student.email}</td>
-                    <td><a href="${student.repository_link}" target="_blank">Visit Repo</a></td>
-                    <td><a href="${student.page_link}" target="_blank">Visit Page</a></td>
+                    <td>${student.repository_link ? '<a href="${student.repository_link}" target="_blank">Visit Repo</a>' : '-' }</td>
+                    <td>${student.page_link ? '<a href="${student.page_link}" target="_blank">Visit Page</a>' : '-' }</td>
                     <td>
                         <span class="badge ${isBlocked ? 'bg-danger' : 'bg-success'}">
                             ${isBlocked ? 'Blocked' : 'Active'}
@@ -71,20 +71,20 @@ function renderStudents(student) {
                                 <i class="bi bi-three-dots-vertical"></i>
                             </button>
                             <ul class="dropdown-menu">
+                                <a class="text-decoration-none text-dark" href="/users/${student.id}/profile">
                                 <li class="dropdown-item mb-1">
-                                    <a class="text-decoration-none text-dark" href="/users/${student.id}/profile">
                                         <i class="bi bi-eye"></i>
                                         View
-                                    </a>
                                 </li>
+                                </a>
                                 <li class="dropdown-item mb-1">
-                                    <button class="bg-transparent border-0 outline-0 block-student" 
+                                    <button class="text-start w-100 bg-transparent border-0 outline-0 block-student" 
                                             data-id="${student.id}" data-blocked="${isBlocked}">
                                         ${isBlocked ? '<i class="bi bi-unlock"></i> Unblock' : '<i class="bi bi-lock"></i> Block'}
                                     </button>
                                 </li>
                                 <li class="dropdown-item mb-1">
-                                    <button class="bg-transparent border-0 outline-0 delete-student" data-id="${student.id}">
+                                    <button class="text-start w-100 bg-transparent border-0 outline-0 delete-student" data-id="${student.id}">
                                         <i class="bi bi-trash"></i>
                                         Delete
                                     </button>
@@ -142,7 +142,7 @@ function toggleBlockStudent(id, isBlocked, button) {
 
         // Update status badge
         const row = document.getElementById(`student-${id}`);
-        const statusBadge = row.querySelector('td:nth-child(6) span');
+        const statusBadge = row.querySelector('td:nth-child(5) span');
         statusBadge.className = `badge ${newBlockedStatus ? 'bg-danger' : 'bg-success'}`;
         statusBadge.textContent = newBlockedStatus ? 'Blocked' : 'Active';
 

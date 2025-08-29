@@ -1,11 +1,11 @@
 const db = require('../config/db');
 
 class FeaturedCourse {
-    static async create(course_id, difficulty_lvl) {
+    static async create(course_id, difficulty_lvl, session_id) {
         try {
             const [result] = await db.execute(
-                'INSERT INTO featured_courses (course_id, difficulty_lvl) VALUES (?, ?)',
-                [course_id, difficulty_lvl]
+                'INSERT INTO featured_courses (course_id, difficulty_lvl, session_id) VALUES (?, ?, ?)',
+                [course_id, difficulty_lvl, session_id]
             );
             return result;
         } catch (error) {
@@ -46,22 +46,25 @@ class FeaturedCourse {
 }
 
 
-
-    static async delete(id) {
+     static async delete(session_id, course_id) {
         try {
-            const [result] = await db.execute('DELETE FROM featured_courses WHERE id = ?', [id]);
+            const [result] = await db.execute(
+                'DELETE FROM featured_courses WHERE session_id = ? AND course_id = ?',
+                [session_id, course_id]
+            );
             return result.affectedRows > 0;
         } catch (error) {
-            console.error("Error deleting featured course:", error);
+            console.error("Error removing course from session:", error);
             throw error;
         }
     }
 
-    static async update(id, course_id, difficulty_lvl) {
+
+    static async update(id, course_id, difficulty_lvl, session_id) {
         try {
             const [result] = await db.execute(
-                'UPDATE featured_courses SET course_id = ?, difficulty_lvl = ? WHERE id = ?',
-                [course_id, difficulty_lvl, id]
+                'UPDATE featured_courses SET course_id = ?, difficulty_lvl = ? session_id = ? WHERE id = ?',
+                [course_id, difficulty_lvl, session_id, id]
             );
             return result.affectedRows > 0; // Returns true if at least one row is updated
         } catch (error) {

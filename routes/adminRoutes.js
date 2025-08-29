@@ -9,8 +9,9 @@ const lecturesController = require('../controllers/lecturesController.js');
 const videosController = require('../controllers/videosController');
 const quizzController = require('../controllers/quizzController.js');
 const instructorController = require('../controllers/instructorController.js');
+const sessionController = require('../controllers/sessionController.js');
 const upload = require('../middleware/cloudinaryUpload.js');
-console.log(upload)
+
 
 const Course = require('../models/Course');
 const Video = require('../models/Video');
@@ -39,7 +40,7 @@ router.get("/courses/get-all", coursesController.getAllCourses);
 router.get("/courses/:id/edit", coursesController.editCourse);
 router.post("/courses/:id/update", coursesController.updateCourse);
 router.post("/courses/create", coursesController.createCourse);
-router.post("/courses/delete", coursesController.deleteCourse);
+router.delete("/courses/:id/delete", coursesController.deleteCourse);
 
 // Featured Courses
 router.get("/featured-courses", (req, res) => {
@@ -184,6 +185,17 @@ router.delete(
     '/:userId/profile',
     instructorController.deleteInstructorProfile
 );
+
+router.get("/sessions", (req, res) => {
+    res.render("admin/session/index")
+});
+
+router.get("/sessions/get-all", sessionController.getAllSessions);
+router.get("/sessions/new", async (req, res) => { res.render("admin/session/new", { courses: await Course.getAll() }) });
+router.post("/sessions/create", sessionController.createSession);
+router.get("/sessions/:id/edit", sessionController.editSession);
+router.post("/sessions/:id/update", sessionController.updateSession);
+router.post("/sessions/:id/delete", sessionController.deleteSession);
 
 
 module.exports = router;

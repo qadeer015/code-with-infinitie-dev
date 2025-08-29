@@ -19,7 +19,7 @@
                           Change Password
                         </button>
                         <% if(userProfile.id==user.id ){ %>
-                        <a class="btn btn-outline-danger rounded-0 fw-bold" href="/auth/logout">
+                        <a class="btn btn-outline-danger rounded-0 fw-bold" href="/auth/logout" onclick="return confirm('Are you sure you want to sign out?')">
                             <i class="bi bi-box-arrow-right me-1"></i>
                             Sign Out
                         </a>
@@ -49,6 +49,11 @@
             <label for="confirmPassword" class="form-label">Confirm Password</label>
             <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" placeholder="Confirm your new password" required>
           </div>
+          <div class="mb-3">
+            <input type="checkbox" name="showPassword" id="showPassword" class="form-check-input">
+            <label for="showPassword" class="form-check-label me-2">Show Password</label>
+          </div>
+
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-primary">Update</button>
@@ -180,14 +185,28 @@
 <script>
     const signatureData = <%- JSON.stringify(userProfile.signature) %>;
     if(signatureData != null) {
-            const canvas = document.getElementById('signatureCanvas');
-const ctx = canvas.getContext('2d');
-
-// Draw the signature
-draw.paths(ctx,signatureData);
+      const canvas = document.getElementById('signatureCanvas');
+      const ctx = canvas.getContext('2d');
+      // Draw the signature
+      draw.paths(ctx,signatureData);
     }
-
 </script>
+
+<script>
+    const showPasswordCheckbox = document.getElementById('showPassword');
+    const passwordInputs = document.querySelectorAll('input[type="password"], input[type="text"]');
+
+    showPasswordCheckbox.addEventListener('change', function() {
+        passwordInputs.forEach(input => {
+            if (this.checked) {
+                input.type = 'text';
+            } else {
+                input.type = 'password';
+            }
+        });
+    });
+</script>
+
 
 <script>
  const changePasswordForm = document.getElementById('changePasswordForm');

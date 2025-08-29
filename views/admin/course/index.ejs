@@ -3,17 +3,10 @@
                     <h4 class="fw-bold pt-4 pb-1">Courses</h4>
                     <a href="/users/admin/courses/new" class="btn btn-primary">New Course</a>
                 </div>
-                <div class="col-12 table-responsive">
+                <div class="col-12 table-responsive min-vh-100">
                     <table class="table">
                         <thead>
                             <tr>
-                                <th>
-                                    <div class="form-check form-check-muted m-0">
-                                        <label class="form-check-label">
-                                            <input type="checkbox" class="form-check-input" id="check-all">
-                                        </label>
-                                    </div>
-                                </th>
                                 <th>Title</th>
                                 <th>Description</th>
                                 <th>Duration</th>
@@ -67,14 +60,7 @@
 
         function renderCourses(course) {
             return `
-                <tr>
-                    <td>
-                        <div class="form-check form-check-muted m-0">
-                            <label class="form-check-label">
-                                <input type="checkbox" class="form-check-input" id="check-all">
-                            </label>
-                        </div>
-                    </td>
+                <tr id="course-${course.id}">
                     <td>${course.title}</td>
                     <td>${course.description}</td>
                     <td>${course.course_duration}</td>
@@ -93,14 +79,14 @@
                                 <i class="bi bi-three-dots-vertical"></i>
                             </button>
                             <ul class="dropdown-menu">
+                                <a class="text-decoration-none text-dark" href="/users/admin/courses/${course.id}/edit">
                                 <li class="dropdown-item mb-1">
-                                    <a class="text-decoration-none text-dark" href="/users/admin/courses/${course.id}/edit">
-                                        <i class="bi bi-pencil"></i>
-                                        Edit
-                                    </a>
+                                    <i class="bi bi-pencil"></i>
+                                    Edit
                                 </li>
+                                </a>
                                 <li class="dropdown-item mb-1">
-                                    <button class="bg-transparent border-0 outline-0 delete-course" data-id="${course.id}">
+                                    <button class="w-100 text-start bg-transparent border-0 outline-0 delete-course" data-id="${course.id}">
                                         <i class="bi bi-trash"></i>
                                         Delete
                                     </button>
@@ -111,5 +97,37 @@
                 </tr>
             `;
         }
+
+
+         document.addEventListener('click', function (e) {
+        if (e.target.classList.contains('delete-course')) {
+            const id = e.target.getAttribute('data-id');
+            deleteCourse(id);
+        }
+    });
+
+        function deleteCourse(id) {
+    if (!confirm('Are you sure you want to delete this course?')) {
+        return;
+    }
+
+    fetch(`/users/admin/courses/${id}/delete`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json",
+        },
+    }).then(response => {
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.json();
+    }).then(data => {
+        document.getElementById(`course-${id}`).remove();
+        showAlert('Student deleted successfully!');
+    }).catch(error => {
+        console.error("Error deleting course:", error);
+        showAlert('Failed to delete course.', 'danger');
+    });
+}
     </script>
     <%- include('../partials/_footer') %>

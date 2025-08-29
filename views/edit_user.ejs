@@ -131,6 +131,11 @@
                                 </a>
                             </div>
                         <% } %>
+                        <% if(instructorProfile?.document_image) { %>
+                            <div class="mb-2">
+                                <img src="<%= instructorProfile.document_image %>" class="img-fluid" width="200" height="200">
+                            </div>
+                        <% } %>
                         <input type="file" id="document" name="document" class="form-control" accept=".pdf,.jpg,.jpeg,.png">
                     </div>
 

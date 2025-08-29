@@ -1,11 +1,11 @@
 const db = require('../config/db');
 
 class Video {
-    static async create(title, description, iframe_link, totalSeconds) {
+    static async create(title, iframe_link) {
         try {
             const [result] = await db.execute(
-                'INSERT INTO videos (title, description, iframe_link) VALUES (?, ?, ?, ?)',
-                [title, description, iframe_link, totalSeconds]
+                'INSERT INTO videos (title, iframe_link) VALUES (?, ?)',
+                [title, iframe_link]
             );
             return result;
         } catch (error) {
@@ -14,21 +14,19 @@ class Video {
         }
     }
 
-   static async searchByTitle(query) {
-    try {
-        const likeQuery = `%${query.toLowerCase()}%`;
-        const [rows] = await db.execute(
-            'SELECT id, title FROM videos WHERE LOWER(title) LIKE ? ORDER BY id DESC LIMIT 10',
-            [likeQuery]
-        );
-        return rows;
-    } catch (error) {
-        console.error("Error searching videos:", error);
-        throw error;
+    static async searchByTitle(query) {
+        try {
+            const likeQuery = `%${query.toLowerCase()}%`;
+            const [rows] = await db.execute(
+                'SELECT id, title FROM videos WHERE LOWER(title) LIKE ? ORDER BY id DESC LIMIT 10',
+                [likeQuery]
+            );
+            return rows;
+        } catch (error) {
+            console.error("Error searching videos:", error);
+            throw error;
+        }
     }
-}
-
-
 
     static async findById(id) {
         try {
@@ -50,13 +48,13 @@ class Video {
         }
     }
 
-    static async updateVideo(id, title, description, iframe_link, totalSeconds) {
+    static async updateVideo(id, title, iframe_link) {
         try {
             const [result] = await db.execute(
-                'UPDATE videos SET title = ?, description = ?, iframe_link = ?, duration = ? WHERE id = ?',
-                [title, description, iframe_link, totalSeconds, id]
+                'UPDATE videos SET title = ?, iframe_link = ? WHERE id = ?',
+                [title, iframe_link, id]
             );
-            return result.affectedRows > 0; // Returns true if at least one row is updated
+            return result.affectedRows > 0;
         } catch (error) {
             console.error("Error updating video:", error);
             throw error;
@@ -66,7 +64,7 @@ class Video {
     static async deleteVideo(id) {
         try {
             const [result] = await db.execute('DELETE FROM videos WHERE id = ?', [id]);
-            return result.affectedRows > 0; // Returns true if a row was deleted
+            return result.affectedRows > 0;
         } catch (error) {
             console.error("Error deleting video:", error);
             throw error;

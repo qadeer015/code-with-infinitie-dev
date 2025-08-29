@@ -24,6 +24,7 @@ const isAdmin = require('./middleware/isAdmin.js');
 const isInstructor = require('./middleware/isInstructor.js');
 
 const FeaturedCourse = require('./models/FeaturedCourse.js');
+const Course = require("./models/Course.js")
 
 // Set up EJS as the view engine
 app.set('views', path.join(__dirname, 'views'));
@@ -70,30 +71,7 @@ app.get("/", async (req, res) => {
     try {
         if (req.user) {
             // User is logged in - fetch courses using promise-based query
-            const [courses] = await db.execute(
-                `SELECT 
-    c.*,
-    uc.status AS enrollment_status,
-    (
-        SELECT COUNT(*) 
-        FROM assignments a
-        LEFT JOIN assignment_submissions asub 
-            ON a.id = asub.assignment_id AND asub.user_id = ?
-        WHERE 
-            a.course_id = c.id AND
-            (asub.id IS NULL OR (asub.status = 'pending' AND a.due_date > NOW()))
-    ) AS unsubmitted_count,
-    (
-        SELECT COUNT(*)
-        FROM announcements ann
-        WHERE ann.course_id = c.id
-    ) AS announcements_count
-  FROM courses c
-  JOIN user_courses uc ON c.id = uc.course_id
-  WHERE uc.user_id = ?`,
-                [req.user.id, req.user.id]
-            );
-
+            const courses = await Course.getUserCourses(req.user.id);
             res.render("dashboard", {
                 user: req.user,
                 courses,

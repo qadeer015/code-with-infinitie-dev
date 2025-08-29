@@ -21,33 +21,9 @@
                 <input type="text" class="form-control" id="title" name="title" placeholder="Enter video title">
               </div>
               <div class="form-group">
-                <label for="description" class="form-label fw-bold">Description</label>
-                <textarea type="text" class="form-control" id="description" name="description"
-                  placeholder="Enter video description"></textarea>
-              </div>
-              <div class="form-group">
                 <label for="iframe_link" class="form-label fw-bold">Iframe Link</label>
                 <textarea class="form-control" id="iframe_link" name="iframe_link"
                   placeholder="Enter video iframe link"></textarea>
-              </div>
-              <div class="form-group">
-                <label for="minutes">Minutes:</label>
-                <select name="minutes" id="minutes">
-                  <% for (let i=0; i <=59; i++) { %>
-                    <option value="<%= i %>">
-                      <%= i %>
-                    </option>
-                    <% } %>
-                </select>
-
-                <label for="seconds">Seconds:</label>
-                <select name="seconds" id="seconds">
-                  <% for (let i=0; i <=59; i++) { %>
-                    <option value="<%= i %>">
-                      <%= i %>
-                    </option>
-                    <% } %>
-                </select>
               </div>
           </div>
           <div class="modal-footer">
@@ -103,41 +79,8 @@
                                   value="<%= video.title %>" placeholder="Enter video title">
                               </div>
                               <div class="form-group">
-                                <label for="description" class="form-label fw-bold">Description</label>
-                                <textarea type="text" class="form-control" id="description" name="description"
-                                  value="<%= video.description %>" placeholder="Enter video description">
-                                                <%= video.description %>
-                                            </textarea>
-                              </div>
-                              <div class="form-group">
                                 <label for="iframe_link" class="form-label fw-bold">Iframe Link</label>
-                                <textarea class="form-control" id="iframe_link" name="iframe_link"
-                                  value="<%= video.iframe_link %>" placeholder="Enter video iframe link">
-                                              <%= video.iframe_link %>
-                                          </textarea>
-                              </div>
-                              <div class="form-group">
-                                <label for="duration" class="form-label fw-bold">Duration</label>
-                                <%= video.duration %> seconds
-                              </div>
-                              <div class="form-group">
-                                <label for="minutes">Minutes:</label>
-                                <select name="minutes" id="minutes">
-                                  <% for (let i=0; i <=59; i++) { %>
-                                    <option value="<%= i %>">
-                                      <%= i %>
-                                    </option>
-                                    <% } %>
-                                </select>
-                
-                                <label for="seconds">Seconds:</label>
-                                <select name="seconds" id="seconds">
-                                  <% for (let i=0; i <=59; i++) { %>
-                                    <option value="<%= i %>">
-                                      <%= i %>
-                                    </option>
-                                    <% } %>
-                                </select>
+                                <textarea class="form-control" id="iframe_link" name="iframe_link" value="<%= video.iframe_link %>" placeholder="Enter video iframe link"><%= video.iframe_link.trim() %></textarea>
                               </div>
                           </div>
                           <div class="modal-footer">

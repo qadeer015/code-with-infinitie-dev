@@ -63,23 +63,23 @@ class Course {
             throw error;
         }
     }
-    
+
 
     static async getCourse(userId, courseId) {
-    try {
-        const [result] = await db.execute(
-            `SELECT c.*, uc.progress , uc.status
+        try {
+            const [result] = await db.execute(
+                `SELECT c.*, uc.progress , uc.status
              FROM courses c
              LEFT JOIN user_courses uc ON c.id = uc.course_id AND uc.user_id = ?
              WHERE c.id = ?`,
-            [userId, courseId]
-        );
-        return result[0];
-    } catch (error) {
-        console.log("Error getting course:", error);
-        throw error;
+                [userId, courseId]
+            );
+            return result[0];
+        } catch (error) {
+            console.log("Error getting course:", error);
+            throw error;
+        }
     }
-}
 
     static async deleteCourse(id) {
         try {
@@ -100,6 +100,25 @@ class Course {
             return result.affectedRows > 0; // Returns true if at least one row is updated
         } catch (error) {
             console.error("Error updating Course:", error);
+            throw error;
+        }
+    }
+
+    static async getUserCourses(userId) {
+        try {
+            const [courses] = await db.execute(
+            `SELECT c.*, uc.status AS enrollment_status, ( SELECT COUNT(*) FROM assignments a LEFT JOIN assignment_submissions asub 
+            ON a.id = asub.assignment_id AND asub.user_id = ?
+            WHERE a.course_id = c.id AND (asub.id IS NULL OR (asub.status = 'pending' AND a.due_date > NOW())) ) AS unsubmitted_count,
+            ( SELECT COUNT(*) FROM announcements ann WHERE ann.course_id = c.id ) AS announcements_count
+            FROM courses c
+            JOIN user_courses uc ON c.id = uc.course_id
+            WHERE uc.user_id = ?`,
+                [userId, userId]
+            );
+            return courses;
+        } catch (error) {
+            console.error("Error getting user courses:", error);
             throw error;
         }
     }

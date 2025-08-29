@@ -86,7 +86,7 @@
                             <input type="hidden" name="user_id" value="<%= assignment.user_id %>">
                             <div class="mb-3">
                                 <label for="feedback" class="form-label">Feedback</label>
-                                <textarea class="form-control" id="feedback" value="<%= assignment.feedback || '' %>" name="feedback" rows="3"><%= assignment.feedback.trim() || '' %></textarea>
+                                <textarea class="form-control" id="feedback" value="<%= assignment.feedback || '' %>" name="feedback" rows="3"><%= assignment.feedback || '' %></textarea>
                             </div>
                             <button type="submit" class="btn btn-success">Submit Grade</button>
                         </form>

@@ -52,49 +52,54 @@ const signup = async (req, res) => {
 const login = async (req, res) => {
     try {
         const { email, password, rememberMe } = req.body;
-        
+
         // Find user by email
         const user = await User.findByEmail(email);
         if (!user) {
-            return res.status(401).json({ message: 'Invalid email.' });
+            return res.status(401).json({ status: 'error', message: 'Invalid email.' });
         }
-        
+
         if (user.status === "deleted") {
-            return res.status(401).json({ message: 'No user found with this email.' });
+            return res.status(401).json({ status: 'error', message: 'No user found with this email.' });
         }
-        
+
         if (user.status === "blocked") {
-            return res.status(401).json({ message: 'Your account has been blocked. Please contact the admin.' });
+            return res.status(401).json({ status: 'error', message: 'Your account has been blocked. Please contact the admin.' });
         }
-        
+
         // Validate password
         const isPasswordValid = await bcrypt.compare(password, user.password);
         if (!isPasswordValid) {
-            return res.status(401).json({ message: 'Invalid email or password' });
+            return res.status(401).json({ status: 'error', message: 'Invalid email or password' });
         }
 
-        // Generate JWT token with different expiration based on "Remember Me"
+        // Generate JWT token
         const token = jwt.sign(
             { id: user.id, role: user.role, email: user.email, name: user.name, avatar: user.avatar },
             process.env.JWT_SECRET,
             { expiresIn: rememberMe ? '30d' : '1h' }
         );
 
-        // Store token in HTTP-only cookie
+        // Store token in cookie
         res.cookie("token", token, getCookieOptions(rememberMe));
 
+        // ✅ Send JSON response with redirect path based on role
+        let redirectPath = '/';
         if (user.role === "admin") {
-            return res.redirect('/users/admin/dashboard');
+            redirectPath = '/users/admin/dashboard';
+        } else if (user.role === "instructor") {
+            redirectPath = '/users/instructor/dashboard';
         }
-        if (user.role === "instructor") {
-            return res.redirect('/users/instructor/dashboard');
-        }
-        
-        // Redirect to home page
-        res.redirect('/');
+
+        return res.json({
+            status: 'success',
+            message: 'Login successful',
+            redirect: redirectPath
+        });
+
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error logging in' });
+        res.status(500).json({ status: 'error', message: 'Error logging in' });
     }
 };
 

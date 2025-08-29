@@ -1,7 +1,6 @@
-// academic sessions (table to hold sessions)
+// academic sessions (table to keep sessions data)
 // admin or instructor can create academic sessions and can set its(start_date, end_date, available_courses, each_course's assignments and quizzes, create lectures schedule etc)
 // instructor can be assigned to one or multiple courses and can have access to related students activity like( check submitted assignments, view quizzes)
-// at the end of the session take exam of the courses in which the user is enrolled and calculate his/her marks and generate certificate for course result
-// new students and instructors can be created by admin only
+// at the end of the session take exam of the courses in which the user is enrolled and calculate marks and generate certificate for course result
+// new students and instructors can be created by admin
 // instructors can also create new students
-// when there is no session created then no any student can enroll in any new course

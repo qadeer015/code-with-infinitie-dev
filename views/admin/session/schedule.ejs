@@ -1,0 +1,129 @@
+<%- include('../partials/_header') %>
+
+<h2><%= session.name %> - Schedule</h2>
+<p><strong>Duration:</strong> <%= session.start_date %> to <%= session.end_date %></p>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Add New Schedule Item</h5>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Course</label>
+                        <select class="form-select" name="course_id" required>
+                            <% courses.forEach(course => { %>
+                                <option value="<%= course.id %>"><%= course.title %></option>
+                            <% }) %>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Title</label>
+                        <input type="text" class="form-control" name="title" required>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Description</label>
+                        <textarea class="form-control" name="description"></textarea>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Type</label>
+                        <select class="form-select" name="type" required>
+                            <option value="lecture">Lecture</option>
+                            <option value="assignment">Assignment</option>
+                            <option value="exam">Exam</option>
+                            <option value="quiz">Quiz</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label class="form-label">Date</label>
+                        <input type="date" class="form-control" name="schedule_date" required>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Start Time (optional)</label>
+                            <input type="time" class="form-control" name="start_time">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">End Time (optional)</label>
+                            <input type="time" class="form-control" name="end_time">
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary mt-3">Add to Schedule</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5>Schedule Calendar</h5>
+            </div>
+            <div class="card-body">
+                <div id="calendar"></div>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5>Schedule List</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Course</th>
+                                <th>Title</th>
+                                <th>Type</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% schedule.forEach(item => { %>
+                            <tr>
+                                <td><%= item.schedule_date %></td>
+                                <td><%= item.course_title %></td>
+                                <td><%= item.title %></td>
+                                <td><span class="badge bg-<%= 
+                                    item.type === 'lecture' ? 'primary' : 
+                                    item.type === 'assignment' ? 'warning' : 
+                                    item.type === 'exam' ? 'danger' : 'secondary' 
+                                %>"><%= item.type %></span></td>
+                                <td><%= item.start_time %> - <%= item.end_time %></td>
+                            </tr>
+                            <% }) %>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@5.10.1/main.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const calendarEl = document.getElementById('calendar');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'dayGridMonth',
+        events: '/api/sessions/<%= session.id %>/calendar',
+        eventClick: function(info) {
+            alert('Event: ' + info.event.title + '\n' + info.event.extendedProps.description);
+        }
+    });
+    calendar.render();
+});
+</script>
+
+<%- include('../partials/_footer') %>

@@ -37,7 +37,6 @@ router.get("/", async (req, res) => {
             // Refresh course data after update
             course = await Course.getCourse(userId, courseId);
         }
-
         res.render("lectures", {
             lectures,
             course,
