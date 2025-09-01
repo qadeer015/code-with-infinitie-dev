@@ -46,7 +46,6 @@
                 return response.json();
             }).then(data => {
                 sessionsData.innerHTML = '';
-                console.log(data);
                 data.forEach(lecture => {
                     sessionsData.innerHTML += renderSessions(lecture);
                 });

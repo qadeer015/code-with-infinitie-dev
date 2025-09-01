@@ -1,0 +1,28 @@
+<%- include('../partials/_header', { title: 'Edit Session Course' }) %>
+    <h4 class="fw-bold pt-4 pb-1">Edit session Course </h4>
+    <div class="row pb-5">
+        <form action="/users/admin/session-courses/<%= session_id %>/update" method="post">
+    <div class="form-group mb-4">
+        <% sessionCourse.forEach(course=> { %>
+            <div class="mb-3 p-3 border rounded">
+                <label class="form-label fw-bold mb-2">
+                    <%= course.title %>
+                </label>
+                <select name="difficulty_lvl[<%= course.id %>]" class="form-select">
+                    <option value="" <%= !course.difficulty_lvl ? 'selected' : '' %>>Select Difficulty Level</option>
+                    <option value="beginner" <%= course.difficulty_lvl==='beginner' ? 'selected' : '' %>>Beginner</option>
+                    <option value="intermediate" <%= course.difficulty_lvl==='intermediate' ? 'selected' : '' %>>Intermediate</option>
+                    <option value="advanced" <%= course.difficulty_lvl==='advanced' ? 'selected' : '' %>>Advanced</option>
+                </select>
+            </div>
+        <% }) %>
+    </div>
+
+    <div class="d-flex gap-2 justify-content-end pt-2">
+        <a href="/users/admin/session-courses" class="btn btn-outline-secondary">Cancel</a>
+        <button type="submit" class="btn btn-primary">Update Session Course</button>
+    </div>
+</form>
+
+    </div>
+    <%- include('../partials/_footer') %>

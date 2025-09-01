@@ -4,7 +4,7 @@ const userController = require('../controllers/userController');
 const coursesController = require('../controllers/coursesController.js');
 const announcementsController = require('../controllers/announcementController');
 const assignmentsController = require('../controllers/assignmentsController.js');
-const featuredCoursesController = require('../controllers/featuredCoursesController.js');
+const sessionCoursesController = require('../controllers/sessionCoursesController.js');
 const lecturesController = require('../controllers/lecturesController.js');
 const videosController = require('../controllers/videosController');
 const quizzController = require('../controllers/quizzController.js');
@@ -40,14 +40,14 @@ router.post("/courses/delete", coursesController.deleteCourse);
 
 // Featured Courses
 router.get("/featured-courses", (req, res) => {
-    res.render("instructor/featuredCourse/index")
+    res.render("instructor/sessionCourse/index")
 });
-router.get("/featured-courses/get-all", featuredCoursesController.getAllFeaturedCourses);
-router.get("/featured-courses/new", async (req, res) => { res.render("instructor/featuredCourse/new", { courses: await Course.getAll() }) });
-router.post("/featured-courses/create", featuredCoursesController.createFeaturedCourse);
-router.get("/featured-courses/:id/edit", featuredCoursesController.editFeaturedCourse);
-router.post("/featured-courses/:id/update", featuredCoursesController.updateFeaturedCourse);
-router.post("/featured-courses/:id/delete", featuredCoursesController.deleteFeaturedCourse);
+router.get("/featured-courses/get-all", sessionCoursesController.getAllSessionCourses);
+router.get("/featured-courses/new", async (req, res) => { res.render("instructor/sessionCourse/new", { courses: await Course.getAll() }) });
+router.post("/featured-courses/create", sessionCoursesController.createSessionCourse);
+router.get("/featured-courses/:id/edit", sessionCoursesController.editSessionCourse);
+router.post("/featured-courses/:id/update", sessionCoursesController.updateSessionCourse);
+router.post("/featured-courses/:id/delete", sessionCoursesController.deleteSessionCourse);
 
 // Assignments
 router.get("/assignments", (req, res) => {
@@ -91,7 +91,6 @@ router.get("/lectures/new", async (req, res) => {
     res.render("instructor/lecture/new", { courses: await Course.getAll(), videos: await Video.getAll() })
 })
 router.get("/lectures/:id/edit", async (req, res) => {
-    console.log("lecture id : ",req.params.id);
     res.render("instructor/lecture/edit", { lectureId: req.params.id, courses: await Course.getAll(), videos: await Video.getAll(), lecture: await Lecture.getLectureDetails(req.params.id) })
 });
 router.post("/lectures/create", lecturesController.createLecture);

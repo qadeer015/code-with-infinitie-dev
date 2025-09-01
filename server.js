@@ -23,7 +23,8 @@ const auththenticateUser = require("./middleware/auththenticateUser.js");
 const isAdmin = require('./middleware/isAdmin.js');
 const isInstructor = require('./middleware/isInstructor.js');
 
-const FeaturedCourse = require('./models/FeaturedCourse.js');
+const SessionCourse = require('./models/SessionCourse.js');
+const Session = require('./models/Session.js');
 const Course = require("./models/Course.js")
 
 // Set up EJS as the view engine
@@ -78,9 +79,14 @@ app.get("/", async (req, res) => {
                 viewName: 'dashboard'
             });
         } else {
-            const featuredCourses = await FeaturedCourse.getAll();
-            // User is not logged in
-            res.render("index", { featuredCourses, viewName: 'index' });
+            const activeSession = await Session.getActiveSession();
+            if (activeSession) { 
+                const sessionCourses = await SessionCourse.getBySessionId(activeSession.id);
+                res.render("index", { sessionCourses, viewName: 'index' });
+            }else{
+                const sessionCourses = [];
+                res.render("index", { sessionCourses, viewName: 'index' });
+            }
         }
     } catch (err) {
         console.error("Error in root route:", err);

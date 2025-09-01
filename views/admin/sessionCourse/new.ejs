@@ -1,0 +1,48 @@
+<%- include('../partials/_header', { title: 'New session Course' }) %>
+    <h4 class="fw-bold pt-4 pb-1">New session Course </h4>
+    <div class="row pb-5">
+        <form action="/users/admin/session-courses/create" method="post" class="col-4">
+            <div class="form-group mb-3">
+                <select name="session_id" id="session_id" class="form-select">
+                    <option value="">Select Session</option>
+                    <% sessions.forEach(session => { %>
+                        <option value="<%= session.id %>"><%= session.name %></option>
+                    <% }) %>
+                </select>
+            </div>
+            <div class="form-group mb-3">
+                <select name="difficulty_lvl" id="difficulty_lvl" class="form-select">
+                    <option value="">Select Difficulty Level</option>
+                    <option value="beginner">Beginner</option>
+                    <option value="intermediate">Intermediate</option>
+                    <option value="advanced">Advanced</option>
+                </select>
+            </div>
+            <div class="form-group mb-3">
+                <select name="course_id" id="course_id" class="form-select">
+                    <option value="">Select Course</option>
+                    <div id="courses"></div>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a href="/users/admin/session-courses" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+    </div>
+
+    <script>
+        const session_id = document.querySelector('#session_id');
+        const courses = document.querySelector('#courses');
+
+        session_id.addEventListener('change', async () => {
+            const response = await fetch(`/users/admin/session-courses/${session_id.value}`);
+            const data = await response.json();
+            courses.innerHTML = '';
+            data.forEach(course => {
+                const option = document.createElement('option');
+                option.value = course.id;
+                option.textContent = course.title;
+                courses.appendChild(option);
+            });
+        });
+    </script>
+<%- include('../partials/_footer') %>

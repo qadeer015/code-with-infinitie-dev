@@ -15,19 +15,53 @@ class Session {
     }
 
     static async findById(id) {
-        try {
-            const [rows] = await db.execute(`
-                SELECT s.*, u.name as created_by_name 
-                FROM sessions s 
-                JOIN users u ON s.created_by = u.id 
-                WHERE s.id = ?
-            `, [id]);
-            return rows.length > 0 ? rows[0] : null;
-        } catch (error) {
-            console.error("Error finding session:", error);
-            throw error;
-        }
+    try {
+        const [rows] = await db.execute(`
+            SELECT 
+                s.*, 
+                u.name AS created_by_name,
+                c.id AS course_id,
+                c.title AS course_title
+            FROM sessions s
+            JOIN users u ON s.created_by = u.id
+            LEFT JOIN session_courses sc ON s.id = sc.session_id
+            LEFT JOIN courses c ON sc.course_id = c.id
+            WHERE s.id = ?
+        `, [id]);
+
+        if (rows.length === 0) return null;
+
+        // Build response: one session object with array of courses
+        const session = {
+            id: rows[0].id,
+            name: rows[0].name,
+            status: rows[0].status,
+            description: rows[0].description,
+            created_by: rows[0].created_by,
+            created_by_name: rows[0].created_by_name,
+            start_date: rows[0].start_date,
+            end_date: rows[0].end_date,
+            courses: []
+        };
+
+        rows.forEach(row => {
+            if (row.course_id) {
+                session.courses.push({
+                    id: row.course_id,
+                    title: row.course_title
+                });
+            }
+        });
+
+        return session;
+
+    } catch (error) {
+        console.error("Error finding session:", error);
+        throw error;
     }
+}
+
+    
 
     static async findAll() {
         try {
@@ -87,7 +121,7 @@ class Session {
         try {
             const [rows] = await db.execute(`
                 SELECT c.* 
-                FROM featured_courses sc 
+                FROM session_courses sc 
                 JOIN courses c ON sc.course_id = c.id 
                 WHERE sc.session_id = ?
             `, [session_id]);
@@ -104,7 +138,7 @@ class Session {
                 SELECT c.* 
                 FROM courses c 
                 WHERE c.id NOT IN (
-                    SELECT course_id FROM featured_courses WHERE session_id = ?
+                    SELECT course_id FROM session_courses WHERE session_id = ?
                 )
             `, [session_id]);
             return rows;
@@ -121,7 +155,7 @@ class Session {
 
             const [courses] = await db.execute(`
                 SELECT c.* 
-                FROM featured_courses sc 
+                FROM session_courses sc 
                 JOIN courses c ON sc.course_id = c.id 
                 WHERE sc.session_id = ?
             `, [id]);
@@ -145,6 +179,19 @@ class Session {
             return result.affectedRows > 0;
         } catch (error) {
             console.error("Error updating session status:", error);
+            throw error;
+        }
+    }
+
+    static async getActiveSession(){
+        try {
+            const [result] = await db.execute(
+                'SELECT * FROM sessions WHERE status = ?',
+                ['active']
+            );
+            return result[0];
+        } catch (error) {
+            console.log("Error getting active session:", error);
             throw error;
         }
     }

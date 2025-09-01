@@ -21,7 +21,6 @@ const createInstructorProfile = async (req, res) => {
             salary, 
             hire_date 
         } = req.body;
-        console.log(req.body);
         // Check if user exists and is an instructor
         const user = await User.findById(userId);
         if (!user) {
@@ -47,9 +46,6 @@ const createInstructorProfile = async (req, res) => {
         if (req.file) {
             documentImageUrl = req.file.path;
         }
-
-        console.log(" documentImageUrl: ", documentImageUrl);
-        console.log(" userId: ", userId);
 
         const newProfile = await Instructor.create(userId, {
             qualification,
