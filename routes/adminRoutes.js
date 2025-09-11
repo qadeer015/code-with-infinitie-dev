@@ -10,6 +10,7 @@ const videosController = require('../controllers/videosController');
 const quizzController = require('../controllers/quizzController.js');
 const instructorController = require('../controllers/instructorController.js');
 const sessionController = require('../controllers/sessionController.js');
+const todoScheduleController = require('../controllers/todoScheduleController');
 const upload = require('../middleware/cloudinaryUpload.js');
 
 
@@ -197,6 +198,22 @@ router.post("/sessions/create", sessionController.createSession);
 router.get("/sessions/:id/edit", sessionController.editSession);
 router.post("/sessions/:id/update", sessionController.updateSession);
 router.post("/sessions/:id/delete", sessionController.deleteSession);
+
+
+// todo schedule
+router.get("/todo_schedules",(req, res) => {
+    res.render("admin/todoSchedule/index");
+});
+router.get("/todo_schedules/get-all", todoScheduleController.getAllSchedules);
+router.get('/todo_schedules/new',  todoScheduleController.newSchedule);
+// Create a new schedule
+router.post('/todo_schedules/create',  todoScheduleController.createSchedule);
+// Edit a schedule
+router.get('/todo_schedules/:id/edit', todoScheduleController.editSchedule);
+// Update a schedule
+router.post('/todo_schedules/:id/update',  todoScheduleController.updateSchedule);
+// Delete a schedule
+router.delete('/todo_schedules/:id/delete',  todoScheduleController.deleteSchedule);
 
 
 module.exports = router;

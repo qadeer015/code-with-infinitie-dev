@@ -1,4 +1,4 @@
-<%- include('partials/_header') %>
+<%- include('../partials/_header') %>
     <% if(quizResults.length > 0) { %>
     <%- include('partials/_breadcrumb', { course: course }) %>
     <div id="quiz-results-container" class="mt-4">
@@ -136,4 +136,4 @@
 <% if(quizData.length > 0){%>
 <script src="/js/takeQuizz.js"></script>
 <%}%>
-<%- include('partials/_footer') -%>
+<%- include('../partials/_footer') -%>

@@ -1,13 +1,13 @@
 const db = require('../config/db');
 
 class TodoSchedule {
-    static async create(session_id, course_id, title, description, type, schedule_date, start_time, end_time, created_by, status = 'scheduled') {
+    static async create(session_id, course_id, title, description, type, start_date, end_date, created_by, status = 'scheduled') {
         try {
             const [result] = await db.execute(
                 `INSERT INTO todo_schedules 
-                (session_id, course_id, title, description, type, schedule_date, start_time, end_time, created_by, status) 
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-                [session_id, course_id, title, description, type, schedule_date, start_time, end_time, created_by, status]
+                (session_id, course_id, title, description, type, start_date, end_date, created_by, status) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                [session_id, course_id, title, description, type, start_date, end_date, created_by, status]
             );
             return result;
         } catch (error) {
@@ -16,10 +16,26 @@ class TodoSchedule {
         }
     }
 
+    static async findAll() {
+        try {
+            const [rows] = await db.execute(`
+                SELECT ts.*, c.title as course_title, u.name as created_by_name 
+                FROM todo_schedules ts 
+                JOIN courses c ON ts.course_id = c.id 
+                JOIN users u ON ts.created_by = u.id 
+                ORDER BY ts.start_date, ts.end_date
+            `);
+            return rows;
+        } catch (error) {
+            console.error("Error fetching all todo schedules:", error);
+            throw error;
+        }
+    }
+
     static async findById(id) {
         try {
             const [rows] = await db.execute(`
-                SELECT ts.*, c.title as course_title, c.code as course_code, u.username as created_by_name 
+                SELECT ts.*, c.title as course_title, u.name as created_by_name 
                 FROM todo_schedules ts 
                 JOIN courses c ON ts.course_id = c.id 
                 JOIN users u ON ts.created_by = u.id 
@@ -35,12 +51,12 @@ class TodoSchedule {
     static async findBySession(session_id) {
         try {
             const [rows] = await db.execute(`
-                SELECT ts.*, c.title as course_title, c.code as course_code, u.username as created_by_name 
+                SELECT ts.*, c.title as course_title, u.name as created_by_name 
                 FROM todo_schedules ts 
                 JOIN courses c ON ts.course_id = c.id 
                 JOIN users u ON ts.created_by = u.id 
                 WHERE ts.session_id = ? 
-                ORDER BY ts.schedule_date, ts.start_time
+                ORDER BY ts.start_date, ts.end_date
             `, [session_id]);
             return rows;
         } catch (error) {
@@ -52,11 +68,11 @@ class TodoSchedule {
     static async findBySessionAndCourse(session_id, course_id) {
         try {
             const [rows] = await db.execute(`
-                SELECT ts.*, c.title as course_title, c.code as course_code 
+                SELECT ts.*, c.title as course_title
                 FROM todo_schedules ts 
                 JOIN courses c ON ts.course_id = c.id 
                 WHERE ts.session_id = ? AND ts.course_id = ? 
-                ORDER BY ts.schedule_date, ts.start_time
+                ORDER BY ts.start_date, ts.end_date
             `, [session_id, course_id]);
             return rows;
         } catch (error) {
@@ -68,11 +84,11 @@ class TodoSchedule {
     static async findByDateRange(session_id, start_date, end_date) {
         try {
             const [rows] = await db.execute(`
-                SELECT ts.*, c.title as course_title, c.code as course_code 
+                SELECT ts.*, c.title as course_title
                 FROM todo_schedules ts 
                 JOIN courses c ON ts.course_id = c.id 
-                WHERE ts.session_id = ? AND ts.schedule_date BETWEEN ? AND ? 
-                ORDER BY ts.schedule_date, ts.start_time
+                WHERE ts.session_id = ? AND ts.start_date BETWEEN ? AND ? 
+                ORDER BY ts.start_date, ts.end_date
             `, [session_id, start_date, end_date]);
             return rows;
         } catch (error) {
@@ -84,11 +100,11 @@ class TodoSchedule {
     static async findByType(session_id, type) {
         try {
             const [rows] = await db.execute(`
-                SELECT ts.*, c.title as course_title, c.code as course_code 
+                SELECT ts.*, c.title as course_title 
                 FROM todo_schedules ts 
                 JOIN courses c ON ts.course_id = c.id 
                 WHERE ts.session_id = ? AND ts.type = ? 
-                ORDER BY ts.schedule_date, ts.start_time
+                ORDER BY ts.start_date, ts.end_date
             `, [session_id, type]);
             return rows;
         } catch (error) {
@@ -97,14 +113,14 @@ class TodoSchedule {
         }
     }
 
-    static async update(id, session_id, course_id, title, description, type, schedule_date, start_time, end_time, status) {
+    static async update(id, session_id, course_id, title, description, type, start_date, end_date, status) {
         try {
             const [result] = await db.execute(
                 `UPDATE todo_schedules 
                 SET session_id = ?, course_id = ?, title = ?, description = ?, type = ?, 
-                    schedule_date = ?, start_time = ?, end_time = ?, status = ?, updated_at = CURRENT_TIMESTAMP 
+                    start_date = ?, end_date = ?, status = ? 
                 WHERE id = ?`,
-                [session_id, course_id, title, description, type, schedule_date, start_time, end_time, status, id]
+                [session_id, course_id, title, description, type, start_date, end_date, status, id]
             );
             return result.affectedRows > 0;
         } catch (error) {
@@ -136,7 +152,7 @@ class TodoSchedule {
     static async updateStatus(id, status) {
         try {
             const [result] = await db.execute(
-                'UPDATE todo_schedules SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+                'UPDATE todo_schedules SET status = ? WHERE id = ?',
                 [status, id]
             );
             return result.affectedRows > 0;
@@ -154,26 +170,26 @@ class TodoSchedule {
                     ts.title,
                     ts.description,
                     ts.type,
-                    ts.schedule_date as start,
-                    ts.start_time,
-                    ts.end_time,
+                    ts.start_date,
+                    ts.end_date,
                     c.title as course_title,
-                    c.code as course_code,
-                    ts.status
+                    ts.status,
+                    ts.course_id
                 FROM todo_schedules ts 
                 JOIN courses c ON ts.course_id = c.id 
                 WHERE ts.session_id = ? 
-                ORDER BY ts.schedule_date, ts.start_time
+                ORDER BY ts.start_date, ts.end_date
             `, [session_id]);
 
             return rows.map(item => ({
                 id: item.id,
-                title: `${item.course_code} - ${item.title}`,
-                start: `${item.start}${item.start_time ? 'T' + item.start_time : ''}`,
-                end: item.end_time ? `${item.start}T${item.end_time}` : null,
+                title: `${item.course_title} - ${item.title}`,
+                start: item.start_date,
+                end: item.end_date,
                 description: item.description,
                 type: item.type,
                 status: item.status,
+                course_id: item.course_id,
                 className: `event-${item.type} event-${item.status}`
             }));
         } catch (error) {
@@ -185,11 +201,13 @@ class TodoSchedule {
     static async getUpcomingEvents(session_id, limit = 10) {
         try {
             const [rows] = await db.execute(`
-                SELECT ts.*, c.title as course_title, c.code as course_code 
+                SELECT ts.*, c.title as course_title
                 FROM todo_schedules ts 
                 JOIN courses c ON ts.course_id = c.id 
-                WHERE ts.session_id = ? AND ts.schedule_date >= CURDATE() AND ts.status = 'scheduled'
-                ORDER BY ts.schedule_date, ts.start_time 
+                WHERE ts.session_id = ? 
+                  AND ts.start_date >= NOW() 
+                  AND ts.status = 'scheduled'
+                ORDER BY ts.start_date 
                 LIMIT ?
             `, [session_id, limit]);
             return rows;
@@ -202,11 +220,11 @@ class TodoSchedule {
     static async getEventsByStatus(session_id, status) {
         try {
             const [rows] = await db.execute(`
-                SELECT ts.*, c.title as course_title, c.code as course_code 
+                SELECT ts.*, c.title as course_title
                 FROM todo_schedules ts 
                 JOIN courses c ON ts.course_id = c.id 
                 WHERE ts.session_id = ? AND ts.status = ? 
-                ORDER BY ts.schedule_date, ts.start_time
+                ORDER BY ts.start_date, ts.end_date
             `, [session_id, status]);
             return rows;
         } catch (error) {
@@ -223,16 +241,15 @@ class TodoSchedule {
                 schedule.title,
                 schedule.description,
                 schedule.type,
-                schedule.schedule_date,
-                schedule.start_time,
-                schedule.end_time,
+                schedule.start_date,
+                schedule.end_date,
                 schedule.created_by,
                 schedule.status || 'scheduled'
             ]);
 
             const [result] = await db.query(
                 `INSERT INTO todo_schedules 
-                (session_id, course_id, title, description, type, schedule_date, start_time, end_time, created_by, status) 
+                (session_id, course_id, title, description, type, start_date, end_date, created_by, status) 
                 VALUES ?`,
                 [values]
             );

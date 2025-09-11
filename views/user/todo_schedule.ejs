@@ -1,0 +1,325 @@
+<%- include('../partials/_header') -%>
+    
+    <!-- FullCalendar CSS -->
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.css' rel='stylesheet' />
+    
+    <style>
+        :root {
+            --lecture-color: #3498db;
+            --assignment-color: #e74c3c;
+            --exam-color: #9b59b6;
+            --quiz-color: #f39c12;
+            --other-color: #2ecc71;
+            --scheduled-color: #3498db;
+            --completed-color: #2ecc71;
+            --cancelled-color: #e74c3c;
+        }
+        
+        .calendar-container {
+            margin-bottom: 20px;
+        }
+        
+        .legend {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 20px;
+            justify-content: center;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin-right: 15px;
+        }
+        
+        .legend-color {
+            width: 15px;
+            height: 15px;
+            border-radius: 3px;
+            margin-right: 5px;
+        }
+        
+        .lecture { background-color: var(--lecture-color); }
+        .assignment { background-color: var(--assignment-color); }
+        .exam { background-color: var(--exam-color); }
+        .quiz { background-color: var(--quiz-color); }
+        .other { background-color: var(--other-color); }
+        
+        .event-lecture {
+            background-color: var(--lecture-color);
+            border-color: var(--lecture-color);
+        }
+        
+        .event-assignment {
+            background-color: var(--assignment-color);
+            border-color: var(--assignment-color);
+        }
+        
+        .event-exam {
+            background-color: var(--exam-color);
+            border-color: var(--exam-color);
+        }
+        
+        .event-quiz {
+            background-color: var(--quiz-color);
+            border-color: var(--quiz-color);
+        }
+        
+        .event-other {
+            background-color: var(--other-color);
+            border-color: var(--other-color);
+        }
+        
+        .event-scheduled {
+            border-left: 5px solid var(--scheduled-color);
+        }
+        
+        .event-completed {
+            border-left: 5px solid var(--completed-color);
+        }
+        
+        .event-cancelled {
+            border-left: 5px solid var(--cancelled-color);
+        }
+        
+        .fc-event {
+            cursor: pointer;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.4);
+        }
+        
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            max-width: 600px;
+            border-radius: 8px;
+            position: relative;
+        }
+        
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+            position: absolute;
+            top: 15px;
+            right: 15px;
+        }
+        
+        .close:hover {
+            color: black;
+        }
+        
+        .event-details {
+            margin-top: 15px;
+        }
+        
+        .event-detail-item {
+            margin-bottom: 10px;
+        }
+        
+        .event-detail-label {
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        
+        .status-badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        .status-scheduled { background-color: var(--scheduled-color); }
+        .status-completed { background-color: var(--completed-color); }
+        .status-cancelled { background-color: var(--cancelled-color); }
+    </style>
+    <div class="container">
+        <h1>Schedule Calendar</h1>
+        
+        <div class="legend">
+            <div class="legend-item">
+                <div class="legend-color lecture"></div>
+                <span>Lecture</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color assignment"></div>
+                <span>Assignment</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color exam"></div>
+                <span>Exam</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color quiz"></div>
+                <span>Quiz</span>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color other"></div>
+                <span>Other</span>
+            </div>
+        </div>
+        
+        <div class="calendar-container">
+            <div id="calendar"></div>
+        </div>
+    </div>
+    
+    <!-- Event Details Modal -->
+    <div id="eventModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2 id="modalTitle"></h2>
+            <div class="event-details" id="modalDetails"></div>
+        </div>
+    </div>
+    
+    <!-- FullCalendar JS -->
+    <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.11.3/main.min.js'></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const events = <%- events %>;
+            console.log(events);
+            const calendarEl = document.getElementById('calendar');
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                headerToolbar: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'dayGridMonth,timeGridWeek,timeGridDay,listMonth'
+                },
+                displayEventTime: false,
+                events: events,
+                eventClick: function(info) {
+                    const event = info.event;
+                    showEventDetails(event);
+                }
+            });
+            
+            calendar.render();
+            
+            // Modal functionality
+            const modal = document.getElementById('eventModal');
+            const closeBtn = document.querySelector('.close');
+            
+            closeBtn.onclick = function() {
+                modal.style.display = 'none';
+            }
+            
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = 'none';
+                }
+            }
+            
+            function showEventDetails(event) {
+                const extendedProps = event.extendedProps;
+                const titleEl = document.getElementById('modalTitle');
+                const detailsEl = document.getElementById('modalDetails');
+                
+                titleEl.textContent = event.title;
+                
+                let detailsHTML = `
+                    <div class="event-detail-item">
+                        <span class="event-detail-label">Type:</span>
+                        <span>${extendedProps.type}</span>
+                    </div>
+                    <div class="event-detail-item">
+                        <span class="event-detail-label">Status:</span>
+                        <span class="status-badge status-${extendedProps.status}">${extendedProps.status}</span>
+                    </div>
+                    <div class="event-detail-item">
+                        <span class="event-detail-label">Start Date:</span>
+                        <span>${event.start.toLocaleDateString()}</span>
+                    </div>
+                    <div class="event-detail-item">
+                        <span class="event-detail-label">EndDate:</span>
+                        <span>${event.end.toLocaleDateString()}</span>
+                    </div>
+                    <div class="event-detail-item">
+                        <span class="event-detail-label">Reamining Time:</span>
+                        <span>${formateRemaining(event.end - Date.now())}</span>
+                    </div>
+                `;
+                
+                if (extendedProps.description) {
+                    detailsHTML += `
+                        <div class="event-detail-item">
+                            <span class="event-detail-label">Description:</span>
+                            <span>${extendedProps.description}</span>
+                        </div>
+                    `;
+                }
+                
+                if (extendedProps.type === 'assignment') {
+                    detailsHTML += `
+                        <div class="event-detail-item">
+                            <form action="/assignments" method="get" class="position-relative">
+                                <input type="hidden" name="course_id" value="${extendedProps.course_id}">
+                                <button type="submit" class="btn btn-sm btn-primary w-100">
+                                  Submit Assignment
+                                </button>
+                            </form>
+                        </div>
+                    `;
+                }
+                
+                if (extendedProps.type === 'quiz') {
+                    detailsHTML += `
+                        <div class="event-detail-item">
+                            <form action="/quizzes" method="get" class="position-relative">
+                                <input type="hidden" name="course_id" value="${extendedProps.course_id}">
+                                <button type="submit" class="btn btn-sm btn-primary w-100">
+                                  Take Quiz
+                                </button>
+                            </form>
+                        </div>
+                    `;
+                }
+
+                if (extendedProps.type === 'lecture') {
+                    detailsHTML += `
+                        <div class="event-detail-item">   
+                            <form action="/lectures" method="get">
+                                <input type="hidden" name="course_id" value="${extendedProps.course_id}">
+                                <button type="submit" class="btn btn-sm btn-primary w-100">
+                                    Watch Lecture
+                                </button>
+                            </form>                
+                        </div>
+                    `;
+                }
+                
+                detailsEl.innerHTML = detailsHTML;
+                modal.style.display = 'block';
+            }
+        });
+
+        function formateRemaining(remaining) {
+            const days = Math.floor(remaining / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((remaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((remaining % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((remaining % (1000 * 60)) / 1000);
+            
+            return `${days}d ${hours}h ${minutes}m`;
+        }
+    </script>
+<%- include('../partials/_footer') -%>

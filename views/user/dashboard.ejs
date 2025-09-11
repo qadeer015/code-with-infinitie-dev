@@ -1,14 +1,14 @@
-<%- include('partials/_header', { title: 'Dashboard' }) %>
+<%- include('../partials/_header', { title: 'Dashboard' }) %>
   <div class="row py-3">
     <div class="col-12">
-      <h4 class="fw-bold">My Courses</h4>
+      <h2 class="fw-bold">My Courses <span class="text-muted" style="font-size: 16px;">(<%= currentSession.name || 'Session End' %>)</span></h2>
     </div>
   </div>
   <div class="row">
     <% if (courses.length > 0) { %>
       <% courses.forEach(course => { %>
         <% if (course.enrollment_status === 'enrolled') { %>
-        <div class="col-lg-6 col-md-6 mb-4">
+        <div class="col-lg-6 col-md-12 mb-4">
           <div class="card h-100 shadow-sm">
             <form action="/lectures" method="get">
               <input type="hidden" name="course_id" value="<%= course.id %>">
@@ -62,4 +62,4 @@
       </div>
     <% } %>
   </div>
-<%- include('partials/_footer') %>
+<%- include('../partials/_footer') %>

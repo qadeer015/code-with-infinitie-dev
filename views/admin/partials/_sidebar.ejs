@@ -29,6 +29,54 @@
     </li>
 
     <li class="nav-item mb-3">
+      <div class="accordion" id="SessionsAccordion">
+        <div class="accordion-item bg-transparent border-0 outline-0">
+          <h5 class="accordion-header">
+            <button class="bg-transparent border-0 outline-0 text-white" style="padding: 0px 20px;" type="button"
+              data-bs-toggle="collapse" data-bs-target="#sessionsCollapse" aria-expanded="true"
+              aria-controls="sessionsCollapse">
+              <i class="bi bi-clock circle"></i>
+              <span class="nav-title" >Sessions</span>
+            </button>
+          </h5>
+          <div id="sessionsCollapse" class="accordion-collapse collapse" data-bs-parent="#SessionsAccordion">
+            <div class="sidebar-item accordion-body position-relative ps-4">
+              <a href="/users/admin/sessions" class="nav-link position-relative ps-3  text-white">
+                All
+              </a>
+              <a href="/users/admin/sessions/new" class="nav-link position-relative ps-3  text-white">
+                New
+              </a>
+              <div class="accordion mt-2" id="TodoSchedulesAccordion">
+                <div class="accordion-item bg-transparent border-0 outline-0">
+                  <h5 class="accordion-header">
+                    <button class="bg-transparent border-0 outline-0 text-white" style="padding: 0px 20px;" type="button"
+                      data-bs-toggle="collapse" data-bs-target="#todoSchedulesCollapse" aria-expanded="true"
+                      aria-controls="todoSchedulesCollapse">
+                      <i class="bi bi-calendar circle"></i>
+                      <span class="nav-title">Todo Schedules</span>
+                    </button>
+                  </h5>
+                  <div id="todoSchedulesCollapse" class="accordion-collapse collapse"
+                    data-bs-parent="#TodoSchedulesAccordion">
+                    <div class="sidebar-item accordion-body position-relative ps-4">
+                      <a href="/users/admin/todo_schedules" class="nav-link position-relative ps-3  text-white">
+                        All
+                      </a>
+                      <a href="/users/admin/todo_schedules/new" class="nav-link position-relative ps-3  text-white">
+                        New
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </li>
+
+    <li class="nav-item mb-3">
       <div class="accordion" id="CoursesAccordion">
         <div class="accordion-item bg-transparent border-0 outline-0">
           <h5 class="accordion-header">
@@ -47,18 +95,18 @@
               <a href="/users/admin/courses/new" class="nav-link position-relative ps-3  text-white">
                 New
               </a>
-              <div class="accordion mt-2" id="FeaturedCoursesAccordion">
+              <div class="accordion mt-2" id="SessionCoursesAccordion">
                 <div class="accordion-item bg-transparent border-0 outline-0">
                   <h5 class="accordion-header">
                     <button class="bg-transparent border-0 outline-0 text-white" style="padding: 0px 20px;" type="button"
-                      data-bs-toggle="collapse" data-bs-target="#featuredCoursesCollapse" aria-expanded="true"
-                      aria-controls="featuredCoursesCollapse">
+                      data-bs-toggle="collapse" data-bs-target="#sessionCoursesCollapse" aria-expanded="true"
+                      aria-controls="sessionCoursesCollapse">
                       <i class="bi bi-book circle"></i>
                       <span class="nav-title">Session Courses</span>
                     </button>
                   </h5>
-                  <div id="featuredCoursesCollapse" class="accordion-collapse collapse"
-                    data-bs-parent="#FeaturedCoursesAccordion">
+                  <div id="sessionCoursesCollapse" class="accordion-collapse collapse"
+                    data-bs-parent="#SessionCoursesAccordion">
                     <div class="sidebar-item accordion-body position-relative ps-4">
                       <a href="/users/admin/session-courses" class="nav-link position-relative ps-3  text-white">
                         All

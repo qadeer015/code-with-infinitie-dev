@@ -1,6 +1,5 @@
 const express = require('express');
 const coursesController = require('../controllers/coursesController.js');
-const Course = require('../models/Course');
 const Session = require('../models/Session');
 const SessionCourse = require('../models/SessionCourse');
 const router = express.Router();
@@ -9,10 +8,11 @@ router.get("/", async (req, res) => {
     const activeSession = await Session.getActiveSession();
     if(activeSession) {
         const courses = await SessionCourse.getAll(activeSession.id, req.user.id);
-        res.render("courses", {courses, viewName: 'courses'});
+        console.log(activeSession)
+        res.render("courses", {courses, currentSession: activeSession, viewName: 'courses'});
     }else{
         const courses = [];
-        res.render("courses", {courses, viewName: 'courses'});
+        res.render("courses", {courses, currentSession: null, viewName: 'courses'});
     }
 });
 router.post("/:id/join",coursesController.joinCourse)

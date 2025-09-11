@@ -16,7 +16,7 @@ router.get("/edit/:id", async (req, res) => {
         // Check if the current user has permission to edit this profile
         if (userId != req.user.id && req.user.role != "admin") {
             const userProfile = await User.findById(req.user.id);
-            return res.render("edit_user", { 
+            return res.render("user/edit_user", { 
                 user: req.user,
                 userProfile, 
                 viewName: 'edit_user' 
@@ -34,7 +34,7 @@ router.get("/edit/:id", async (req, res) => {
             instructorProfile = await Instructor.findByUserId(userId);
         }
 
-        res.render("edit_user", { 
+        res.render("user/edit_user", { 
             user: req.user,
             userProfile, 
             instructorProfile,
@@ -54,7 +54,7 @@ router.get("/:id/profile", async (req, res) => {
         if(userId != req.user.id && req.user.role != "admin") {
             const userProfile = await User.findById(req.user.id);
             const courses = await getCourses(req.user.id);
-            return res.render("profile", { userProfile, courses, viewName: 'profile' });
+            return res.render("user/profile", { userProfile, courses, viewName: 'profile' });
         }
         if (!userProfile) {
             return res.status(404).send("User not found");
@@ -62,7 +62,7 @@ router.get("/:id/profile", async (req, res) => {
 
         const courses = await getCourses(userId);
 
-        res.render("profile", { userProfile, courses, viewName: 'profile' });
+        res.render("user/profile", { userProfile, courses, viewName: 'profile' });
     } catch (error) {
         console.error(error);
         res.status(500).send("Error retrieving user");
@@ -72,7 +72,7 @@ router.get("/:id/profile", async (req, res) => {
 router.get("/progress", async (req, res) => {
     try {
         const userCourses = await UserCourse.findUserCourses(req.user.id);
-        res.render("progress", { userCourses, currentCourseId: userCourses.length>0 ? userCourses[0].course_id : null, viewName: 'progress' });
+        res.render("user/progress", { userCourses, currentCourseId: userCourses.length>0 ? userCourses[0].course_id : null, viewName: 'progress' });
     } catch (error) {
         console.error(error);
         res.status(500).send("Error retrieving progress data");
@@ -82,7 +82,7 @@ router.get("/progress", async (req, res) => {
 router.get("/achievements", async (req, res) => {
     try {
         const userCompletedCourses = await UserCourse.getCompletedCourses(req.user.id);
-        res.render("achievements", { userCompletedCourses, viewName: 'achievements' });
+        res.render("user/achievements", { userCompletedCourses, viewName: 'achievements' });
     } catch (error) {
         console.error(error);
         res.status(500).send("Error retrieving achievements data");

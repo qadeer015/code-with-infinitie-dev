@@ -384,7 +384,7 @@ sup {
     top: -.5em
 }
 
-a {
+/* a {
     color: rgba(var(--bs-link-color-rgb), var(--bs-link-opacity, 1));
     text-decoration: underline
 }
@@ -397,7 +397,7 @@ a:not([href]):not([class]),
 a:not([href]):not([class]):hover {
     color: inherit;
     text-decoration: none
-}
+} */
 
 code,
 kbd,

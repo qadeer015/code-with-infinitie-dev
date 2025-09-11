@@ -25,6 +25,15 @@
           <span>Home</span>
         </a>
       </li>
+
+      <li class="nav-item mb-2 list-group-item-primary list-group-item-action rounded">
+        <a class="nav-link d-flex align-items-center py-0 px-4 <%= url === '/todo_schedule' ? 'active list-group-item text-white' : 'text-muted' %>" 
+          href="/todo_schedule">
+          <i class="bi bi-calendar me-2"></i>
+          <span>TodoSchedule</span>
+        </a>
+      </li>
+
       <li class="nav-item mb-2 list-group-item-primary list-group-item-action rounded">
         <a class="nav-link d-flex align-items-center py-0 px-4 <%= url === '/users/progress' ? 'active list-group-item text-white' : 'text-muted' %>"
           href="/users/progress">

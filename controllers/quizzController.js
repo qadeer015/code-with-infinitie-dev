@@ -49,7 +49,7 @@ const showQuizz = async (req, res) => {
             }
         }
         
-        res.status(200).render('quizz', {
+        res.status(200).render('user/quizz', {
             title: course.title,
             quizData,
             course,

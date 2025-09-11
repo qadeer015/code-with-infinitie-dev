@@ -18,6 +18,7 @@ const adminRoutes = require("./routes/adminRoutes.js");
 const instructorRoutes = require("./routes/instructorRoutes.js");
 const lecturesRoutes = require("./routes/lecturesRoutes.js");
 const certificatesRoutes = require('./routes/certificatesRoutes.js');
+const todoScheduleRoutes = require('./routes/todoScheduleRoutes.js');
 
 const auththenticateUser = require("./middleware/auththenticateUser.js");
 const isAdmin = require('./middleware/isAdmin.js');
@@ -70,16 +71,17 @@ app.use((req, res, next) => {
 // server.js
 app.get("/", async (req, res) => {
     try {
+        const activeSession = await Session.getActiveSession();
         if (req.user) {
             // User is logged in - fetch courses using promise-based query
             const courses = await Course.getUserCourses(req.user.id);
-            res.render("dashboard", {
+            res.render("user/dashboard", {
                 user: req.user,
                 courses,
+                currentSession: activeSession || null,
                 viewName: 'dashboard'
             });
         } else {
-            const activeSession = await Session.getActiveSession();
             if (activeSession) { 
                 const sessionCourses = await SessionCourse.getBySessionId(activeSession.id);
                 res.render("index", { sessionCourses, viewName: 'index' });
@@ -101,6 +103,7 @@ app.use("/courses", courseRoutes);
 app.use("/assignments", assignmentsRoutes);
 app.use("/lectures", lecturesRoutes);
 app.use('/certificates', certificatesRoutes);
+app.use("/todo_schedule", todoScheduleRoutes);
 app.use("/users/admin", isAdmin, adminRoutes);
 app.use("/users/instructor", isInstructor, instructorRoutes);
 

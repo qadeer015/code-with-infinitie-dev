@@ -1,0 +1,80 @@
+<%- include('../partials/_header', { title: 'New Todo Schedule' }) %>
+
+<h2 class="pt-4">New Todo Schedule</h2>
+
+<form action="/users/admin/todo_schedules/create" method="POST" class="row g-3">
+    <div class="col-md-4">
+        <label for="title" class="form-label fw-semibold">Title</label>
+        <input type="text" id="title" class="form-control" name="title" required>
+    </div>
+    
+    <div class="col-md-4">
+        <label for="session_id" class="form-label fw-semibold">Select Session</label>
+        <select name="session_id" id="session_id" class="form-select" required>
+            <% sessions.forEach(session => { %>
+            <option value="<%= session.id %>" <%= session.id == activeSession.id ? 'selected' : ''  %>>
+                <%= session.name %>
+            </option>
+            <% }) %>
+        </select>
+    </div>
+    
+    <div class="col-md-4">
+        <label for="course_id" class="form-label fw-semibold">Select Course</label>
+        <select name="course_id" id="course_id" class="form-select" required>
+            <option value=""></option>
+            <% courses.forEach(course => { %>
+            <option value="<%= course.id %>">
+                <%= course.title %>
+            </option>
+            <% }) %>
+        </select>
+    </div>
+    
+    <div class="col-md-6">
+        <label class="form-label fw-semibold" for="type">Choose Type</label>
+        <div class="d-flex flex-wrap gap-3">
+ <div class="form-group">
+            <input type="radio" name="type" value="lecture" id="lecture" class="form-check-input">
+            <label for="lecture" class="form-check-label">Lecture</label>
+        </div>
+        <div class="form-group">
+            <input type="radio" name="type" value="assignment" id="assignment" class="form-check-input">
+            <label for="assignment" class="form-check-label">Assignment</label>
+        </div>
+        <div class="form-group">
+            <input type="radio" name="type" value="quiz" id="quiz" class="form-check-input">
+            <label for="quiz" class="form-check-label">Quiz</label>
+        </div>
+        <div class="form-group">
+            <input type="radio" name="type" value="exam" id="exam" class="form-check-input">
+            <label for="exam" class="form-check-label">Exam</label>
+        </div>
+        <div class="form-group">
+            <input type="radio" name="type" value="other" id="other" class="form-check-input">
+            <label for="other" class="form-check-label">Other</label>
+        </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <label class="form-label fw-semibold">Start Date</label>
+        <input type="datetime-local" class="form-control" name="start_date" required>
+    </div>
+    
+    <div class="col-md-3">
+        <label class="form-label fw-semibold">End Date</label>
+        <input type="datetime-local" class="form-control" name="end_date" required>
+    </div>
+
+    <div class="col-md-12">
+        <label class="form-label fw-semibold">Description</label>
+        <textarea class="form-control" name="description"></textarea>
+    </div>
+    
+    <div class="col-12">
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a href="/users/admin/todo_schedules" class="btn btn-secondary">Cancel</a>
+    </div>
+</form>
+<%- include('../partials/_footer') %>
