@@ -17,7 +17,7 @@ const createInstructorProfile = async (req, res) => {
             qualification, 
             specialization, 
             address, 
-            phone, 
+            phone,
             salary, 
             hire_date 
         } = req.body;
@@ -72,71 +72,61 @@ const createInstructorProfile = async (req, res) => {
 };
 
 const updateInstructorProfile = async (req, res) => {
-    try {
-        const { userId } = req.params;
-        const { 
-            qualification, 
-            specialization, 
-            address, 
-            phone, 
-            salary, 
-            hire_date 
+   try {
+        const id = req.params.userId; // <-- FIXED (no destructuring)
+        const {
+            name, email, role, page_link, repository_link, signature,
+            qualification, specialization, address, phone, salary, hire_date
         } = req.body;
-
-        // Check if profile exists
-        const existingProfile = await Instructor.findByUserId(userId);
-        if (!existingProfile) {
-            return res.status(404).json({ 
-                success: false, 
-                message: 'Instructor profile not found' 
-            });
+        
+        const userProfile = await User.findById(id);
+        if (!userProfile) {
+            return res.status(404).json({ success: false, message: "User not found" });
         }
 
-        let documentImageUrl = existingProfile.document_image;
-        // If new document was uploaded
-        if (req.file) {
-            // Delete old document if it exists and is from Cloudinary
-            if (existingProfile.document_image && 
-                existingProfile.document_image.includes('res.cloudinary.com')) {
-                try {
-                    const publicId = existingProfile.document_image.split('/').slice(-2).join('/').split('.')[0];
-                    await cloudinary.uploader.destroy(publicId);
-                } catch (err) {
-                    console.error('Error deleting old document:', err);
-                }
+        // Handle avatar
+        let avatarUrl = userProfile.avatar;
+        if (req.files?.avatar) {
+            avatarUrl = req.files.avatar[0].path;
+        }
+        // Update user
+        await User.updateUser(
+            id,
+            name ?? userProfile.name,
+            email ?? userProfile.email,
+            role ?? userProfile.role,
+            avatarUrl,
+            page_link ?? userProfile.page_link,
+            repository_link ?? userProfile.repository_link,
+            signature ?? userProfile.signature
+        );
+
+        // If user is instructor → also update instructor profile
+        if (role === "instructor" || userProfile.role === "instructor") {
+            const instructorProfile = await Instructor.findByUserId(id);
+            if(!instructorProfile) {
+                return res.status(404).json({ success: false, message: "Instructor profile not found" });
             }
-            documentImageUrl = req.file.path;
-        }
+            let documentImageUrl = instructorProfile?.document_image;
+            if (req.files?.document) {
+                documentImageUrl = req.files.document[0].path;
+            }
 
-        const updated = await Instructor.update(userId, {
-            qualification: qualification || existingProfile.qualification,
-            specialization: specialization || existingProfile.specialization,
-            address: address || existingProfile.address,
-            phone: phone || existingProfile.phone,
-            salary: salary ? parseFloat(salary) : existingProfile.salary,
-            document_image: documentImageUrl,
-            hire_date: hire_date || existingProfile.hire_date
-        });
-
-        if (updated) {
-            const updatedProfile = await Instructor.findByUserId(userId);
-            res.status(200).json({ 
-                success: true, 
-                message: 'Profile updated successfully',
-                profile: updatedProfile
-            });
-        } else {
-            res.status(400).json({ 
-                success: false, 
-                message: 'Failed to update profile' 
+            await Instructor.update(id, {
+                qualification: qualification ?? instructorProfile?.qualification,
+                specialization: specialization ?? instructorProfile?.specialization,
+                address: address ?? instructorProfile?.address,
+                phone: phone ?? instructorProfile?.phone,
+                salary: salary ? parseFloat(salary) : instructorProfile?.salary,
+                document_image: documentImageUrl,
+                hire_date: hire_date ?? instructorProfile?.hire_date
             });
         }
+
+        res.json({ success: true, message: "Profile updated successfully" });
     } catch (error) {
-        console.error('Error updating instructor profile:', error);
-        res.status(500).json({ 
-            success: false, 
-            message: 'Error updating instructor profile' 
-        });
+        console.error("Error updating full profile:", error);
+        res.status(500).json({ success: false, message: "Error updating profile" });
     }
 };
 
@@ -223,10 +213,15 @@ const deleteInstructorProfile = async (req, res) => {
     }
 };
 
+const editInstructorProfile = async (req, res) => {
+    
+};
+
 module.exports = {
     createInstructorProfile,
     updateInstructorProfile,
     getInstructorProfile,
     getAllInstructors,
-    deleteInstructorProfile
+    deleteInstructorProfile,
+    editInstructorProfile
 };

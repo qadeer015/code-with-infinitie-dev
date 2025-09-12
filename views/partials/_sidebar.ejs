@@ -11,8 +11,8 @@
     <hr class="m-0 text-muted mb-2">
     <% if(user && user.role==="admin" ){ %>
       <li class="nav-item mb-2 list-group-item-primary list-group-item-action rounded">
-        <a class="nav-link d-flex align-items-center py-0 px-4 <%= url === '/users/admin/dashboard' ? 'active list-group-item text-white' : 'text-muted' %>" 
-          href="/users/admin/dashboard">
+        <a class="nav-link d-flex align-items-center py-0 px-4 <%= url === '/admin/dashboard' ? 'active list-group-item text-white' : 'text-muted' %>" 
+          href="/admin/dashboard">
           <i class="bi bi-speedometer2 me-2"></i>
           <span>Dashboard</span>
         </a>

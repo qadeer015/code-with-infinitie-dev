@@ -86,9 +86,9 @@ const login = async (req, res) => {
         // ✅ Send JSON response with redirect path based on role
         let redirectPath = '/';
         if (user.role === "admin") {
-            redirectPath = '/users/admin/dashboard';
+            redirectPath = '/admin/dashboard';
         } else if (user.role === "instructor") {
-            redirectPath = '/users/instructor/dashboard';
+            redirectPath = '/instructor/dashboard';
         }
 
         return res.json({

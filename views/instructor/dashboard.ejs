@@ -28,7 +28,7 @@
         })
 
         function fetchStudents() {
-            const response = fetch("/users/instructor/get-students", {
+            const response = fetch("/instructor/get-students", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -49,7 +49,7 @@
 
 
         function fetchCourses(){
-const response = fetch("/users/instructor/courses/get-all", {
+const response = fetch("/instructor/courses/get-all", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

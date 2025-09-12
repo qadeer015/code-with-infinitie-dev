@@ -1,5 +1,7 @@
 const cloudinary = require('cloudinary').v2;
 const User = require('../models/User');
+const Instructor = require('../models/Instructor');
+const Course = require('../models/Course');
 require('dotenv').config();
 const bcrypt = require('bcryptjs');
 
@@ -10,18 +12,71 @@ cloudinary.config({
     api_secret: process.env.CLOUDINARY_API_SECRET
 });
 
-// userController.js
 const editUser = async (req, res) => {
+    try {
+        const userId = req.params.id;
+
+        let userProfile = await User.findById(userId);
+        if (!userProfile) {
+            return res.status(404).redirect('/');
+        }
+
+        // ================== ACCESS RULES ==================
+
+        // --- Admin editing rules ---
+        if (req.user.role === "admin") {
+            // Admin cannot edit other admins
+            if (userProfile.role === "admin" && req.user.id != userId) {
+                return res.status(403).redirect('/');
+            }
+        }
+
+        // --- Instructor editing rules ---
+        else if (req.user.role === "instructor") {
+            if (userProfile.role === "admin") {
+                return res.status(403).redirect('/');
+            }
+            if (userProfile.role === "instructor") {
+                return res.status(403).redirect('/');
+            }
+            // If student → instructor can edit
+        }
+
+        // --- Student editing rules ---
+        else if (req.user.role === "student") {
+            return res.status(403).redirect('/');
+        }
+
+        // ===================================================
+
+        let instructorProfile = null;
+        if (userProfile.role === "instructor") {
+            instructorProfile = await Instructor.findByUserId(userId);
+        }
+
+        res.render("user/edit_user", {
+            user: req.user,
+            userProfile,
+            instructorProfile,
+            viewName: 'edit_user'
+        });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error retrieving user");
+    }
+};
+
+
+// userController.js
+const updateUser = async (req, res) => {
     try {
         const { id } = req.params; // Fixed destructuring
         const { name, email, role, page_link, repository_link, signature } = req.body;
-
         const userProfile = await User.findById(id);
-
         if (!userProfile) {
             return res.status(404).json({ message: 'User not found' });
         }
-
         let avatarUrl = userProfile.avatar;
         // If new file was uploaded
         if (req.file) {
@@ -136,7 +191,7 @@ const changePassword = async (req, res) => {
         const { id } = req.params;
         const { oldPassword, newPassword, confirmPassword } = req.body;
         const user = await User.findById(id);
-        
+
         if (req.user.id != id && req.user.role != 'admin') {
             return res.status(401).json({ success: false, message: 'Unauthorized access' });
         }
@@ -144,7 +199,7 @@ const changePassword = async (req, res) => {
         if (req.user.role !== 'admin') {
             const isPasswordValid = await bcrypt.compare(oldPassword, user.password);
             if (!isPasswordValid) {
-                return res.status(401).json({success: false, message: 'Invalid old password. Please enter your correct old password to update your password.' });
+                return res.status(401).json({ success: false, message: 'Invalid old password. Please enter your correct old password to update your password.' });
             }
 
             if (newPassword !== confirmPassword) {
@@ -155,7 +210,7 @@ const changePassword = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         const updatedPassword = await User.changePassword(id, hashedPassword);
-        
+
         if (updatedPassword) {
             res.status(200).json({ success: true, message: 'Password updated successfully' });
         } else {
@@ -167,4 +222,92 @@ const changePassword = async (req, res) => {
     }
 }
 
-module.exports = { editUser, getStudents, deleteUser, blockUser, unblockUser, editUserSignature, changePassword };
+const userProfile = async (req, res) => {
+    try {
+        const userId = req.params.id;
+        let userProfile = await User.findById(userId);
+        let courses = [];
+
+        if (!userProfile) {
+            return res.status(404).redirect('/'); // User not found
+        }
+        
+        // --- Admin profile rules ---
+        if (userProfile.role === "admin") {
+            if (req.user.role !== "admin" || req.user.id != userId) {
+                return res.status(403).redirect('/');
+            }
+        }
+
+        // --- Instructor profile rules ---
+        if (userProfile.role === "instructor") {
+            if (req.user.role === "admin") {
+                // Admin can view any instructor profile
+                const instructor = await Instructor.findByUserId(userId);
+                if (instructor) {
+                    userProfile = { ...userProfile, instructor };
+                }
+            } else if (req.user.role === "instructor") {
+                if (req.user.id != userId) {
+                    return res.status(403).redirect('/');
+                }
+                // Attach own instructor data
+                const instructor = await Instructor.findByUserId(userId);
+                if (instructor) {
+                    userProfile = { ...userProfile, instructor };
+                }
+            } else {
+                // Students cannot access instructor profiles
+                return res.status(403).redirect('/');
+            }
+        }
+
+        // --- Student profile rules ---
+        if (userProfile.role === "student") {
+            if (req.user.role === "student" && req.user.id != userId) {
+                return res.status(403).redirect('/');
+            }
+            // Admins and instructors can view students freely
+        }
+
+        courses = await Course.getUserCourses(userId);
+
+        res.render("user/profile", { userProfile, courses, viewName: 'profile' });
+
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Error retrieving user");
+    }
+};
+
+
+// const getCourses = async function(userId) {
+//      const [courses] = await db.execute(
+//                 `SELECT 
+//         c.*,
+//         (
+//             SELECT COUNT(*) 
+//             FROM assignments a
+//             LEFT JOIN assignment_submissions asub ON 
+//                 a.id = asub.assignment_id AND 
+//                 asub.user_id = ?
+//             WHERE 
+//                 a.course_id = c.id AND
+//                 (asub.id IS NULL OR (asub.status = 'pending' AND a.due_date > NOW()))
+//         ) AS unsubmitted_count,
+//         (
+//             SELECT COUNT(*)
+//             FROM announcements ann
+//             WHERE ann.course_id = c.id
+//         ) AS announcements_count
+//     FROM courses c
+//     JOIN user_courses uc ON c.id = uc.course_id
+//     WHERE uc.user_id = ?`,
+//                 [userId, userId]
+//             );
+
+//     return courses
+// }
+
+
+module.exports = { userProfile, editUser, updateUser, getStudents, deleteUser, blockUser, unblockUser, editUserSignature, changePassword };

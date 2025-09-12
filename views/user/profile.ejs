@@ -6,18 +6,21 @@
                 <img src="<%= userProfile.avatar %>" alt="<%= userProfile.name %>'s profile picture" 
                     width="120" height="120" class="rounded-circle object-fit-cover border border-3 border-primary">
                 <div class="text-center text-md-start">
-                    <h1 class="fw-bold mb-2"><%= userProfile.name %></h1>
+                    <h1 class="fw-bold mb-2"><%= userProfile.name %> <span class="text-muted" style="font-size: 16px;">(<%= userProfile.role %>)</span></h1>
                     
-                    <% if(userProfile.id==user.id || user.role=="admin" ){ %>
                     <div class="d-flex gap-2 justify-content-center justify-content-md-start">
-                        <a class="btn btn-outline-primary rounded-0 fw-bold" href="/users/edit/<%=userProfile.id%>">
+                      <% if( user.role=="admin" || user.role=="instructor" && userProfile.role != "instructor" ){ %>
+                        <a class="btn btn-outline-primary rounded-0 fw-bold" href="/<%=  user.role=='admin' ? 'admin' : 'instructor'%>/users/<%=userProfile.id%>/profile/edit">
                             <i class="bi bi-pencil-fill me-1"></i>
                             Edit Profile
                         </a>
+                      <% } %>
+                      <% if( user.role=="admin" || user.role=="instructor" || user.id==userProfile.id ){ %>
                         <button class="btn btn-outline-primary rounded-0 fw-bold" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
                           <i class="bi bi-lock me-1"></i>
                           Change Password
                         </button>
+                      <% } %>
                         <% if(userProfile.id==user.id ){ %>
                         <a class="btn btn-outline-danger rounded-0 fw-bold" href="/auth/logout" onclick="return confirm('Are you sure you want to sign out?')">
                             <i class="bi bi-box-arrow-right me-1"></i>
@@ -25,7 +28,6 @@
                         </a>
                         <% } %>
                     </div>
-                    <% } %>
                 </div>
             </div>
 <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
@@ -141,41 +143,86 @@
 
                 <!-- Settings Tab -->
                 <div class="tab-pane fade" id="settings" role="tabpanel">
-                    <div class="mb-4">
-                                <h6 class="fw-bold">Email</h6>
-                                <p class="text-muted"><%= userProfile.email %></p>  
-                            </div>
-                           
-                            <div class="mb-4">
-                                <h6 class="fw-bold">Signature</h6>
-                                <% if(userProfile.signature != null) { %>
-                                <canvas id="signatureCanvas" width="250" height="125"></canvas>
-                                <% } else { %>
-                                <p class="text-muted">No signature found. Please edit your profile to add your signature.</p>
-                                <% } %>
-                            </div>
-                          <%if(userProfile.page_link){%>
-                            <div class="mb-4">
-                                <h6 class="fw-bold">Page link</h6>
-                                <a href="<%= userProfile.page_link %>" target="_blank" class="text-muted"><%= userProfile.page_link %></a>
-                            </div>
-                          <%}%>
-                          <%if(userProfile.repository_link){%>
-                            <div class="mb-4">
-                                <h6 class="fw-bold">Repository link</h6>
-                                <a href="<%= userProfile.repository_link %>" target="_blank" class="text-muted"><%= userProfile.repository_link %></a>
-                            </div>
-                          <%}%>
-                            <div class="border-top pt-4 mt-4">
-                                <h5 class="fw-bold mb-3">Delete Account</h5>
-                                <form action="/users/delete/<%=userProfile.id%>" method="POST" 
-                                    onsubmit="return confirm('Are you sure you want to permanently delete this account? This action cannot be undone.')">
-                                    <button type="submit" class="btn btn-danger rounded-0 fw-bold">
-                                        <i class="bi bi-trash-fill me-1"></i>
-                                        Delete Account
-                                    </button>
-                                </form>
-                            </div>
+                  <div class="row">
+                    <div class="col-md-6">
+                      <div class="mb-4">
+                        <h6 class="fw-bold">Email</h6>
+                        <p class="text-muted"><%= userProfile.email %></p>  
+                      </div>
+                      
+                      <div class="mb-4">
+                          <h6 class="fw-bold">Signature</h6>
+                          <% if(userProfile.signature != null) { %>
+                          <canvas id="signatureCanvas" width="250" height="125"></canvas>
+                          <% } else { %>
+                          <p class="text-muted">No signature found. Please edit your profile to add your signature.</p>
+                          <% } %>
+                      </div>
+                      <%if(userProfile.page_link){%>
+                        <div class="mb-4">
+                            <h6 class="fw-bold">Page link</h6>
+                            <a href="<%= userProfile.page_link %>" target="_blank" class="text-muted"><%= userProfile.page_link %></a>
+                        </div>
+                      <%}%>
+                      <%if(userProfile.repository_link){%>
+                        <div class="mb-4">
+                            <h6 class="fw-bold">Repository link</h6>
+                            <a href="<%= userProfile.repository_link %>" target="_blank" class="text-muted"><%= userProfile.repository_link %></a>
+                        </div>
+                      <%}%>
+                      <div class="border-top pt-4 my-4">
+                          <h5 class="fw-bold mb-3">Delete Account</h5>
+                          <form action="/users/delete/<%=userProfile.id%>" method="POST" 
+                              onsubmit="return confirm('Are you sure you want to permanently delete this account? This action cannot be undone.')">
+                              <button type="submit" class="btn btn-danger rounded-0 fw-bold">
+                                  <i class="bi bi-trash-fill me-1"></i>
+                                  Delete Account
+                              </button>
+                          </form>
+                      </div>
+                    </div>
+                    <% if(userProfile.role == "instructor"){ %>
+                    <div class="col-md-6">
+                      <div class="mb-4">
+                        <h6 class="fw-bold">Qualification</h6>
+                        <p class="text-muted"><%= userProfile.instructor.qualification %></p>  
+                      </div>
+                      
+                      <div class="mb-4">
+                          <h6 class="fw-bold">Specialization</h6>
+                          <p class="text-muted"><%= userProfile.instructor.specialization %></p>  
+                      </div>
+
+                      <div class="mb-4">
+                          <h6 class="fw-bold">Phone</h6>
+                          <p class="text-muted"><%= userProfile.instructor.phone %></p>  
+                      </div>
+
+                      <div class="mb-4">
+                          <h6 class="fw-bold">Salary</h6>
+                          <p class="text-muted"><%= userProfile.instructor.salary %></p>  
+                      </div>
+
+                      <div class="mb-4">
+                          <h6 class="fw-bold">Hire Date</h6>
+                          <p class="text-muted"><%= userProfile.instructor.hire_date.toISOString().split('T')[0] %></p>  
+                      </div>
+
+                      <div class="mb-4">
+                          <h6 class="fw-bold">Address</h6>
+                          <p class="text-muted"><%= userProfile.instructor.address %></p>  
+                      </div>
+                      <div class="mb-4">
+                          <h6 class="fw-bold">Qualification Document</h6>
+                          <% if(userProfile.instructor?.document_image) { %>
+                          <a href="<%= userProfile.instructor.document_image %>" target="_blank" class="text-decoration-none">
+                              <img src="<%= userProfile.instructor.document_image %>" class="img-fluid" width="200" height="200">
+                          </a>
+                          <% } %>
+                      </div>
+                    </div>
+                    <%}%>
+                  </div>
                 </div>
             </div>
     </div>

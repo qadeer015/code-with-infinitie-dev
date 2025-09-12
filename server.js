@@ -104,8 +104,8 @@ app.use("/assignments", assignmentsRoutes);
 app.use("/lectures", lecturesRoutes);
 app.use('/certificates', certificatesRoutes);
 app.use("/todo_schedule", todoScheduleRoutes);
-app.use("/users/admin", isAdmin, adminRoutes);
-app.use("/users/instructor", isInstructor, instructorRoutes);
+app.use("/admin", isAdmin, adminRoutes);
+app.use("/instructor", isInstructor, instructorRoutes);
 
 
 app.get("/about", (req, res) => {

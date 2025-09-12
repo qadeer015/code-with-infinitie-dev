@@ -64,7 +64,7 @@ document.querySelectorAll(".edit-question-btn").forEach(button => {
             if (!newText) return alert("Question text cannot be empty!");
 
             // Send update request
-            const response = await fetch(`/users/admin/lectures/${lectureId}/questions/${questionId}/update`, {
+            const response = await fetch(`/admin/lectures/${lectureId}/questions/${questionId}/update`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({ question_text: newText, question_id: questionId })
@@ -198,7 +198,7 @@ document.addEventListener('click', function(e) {
             if (!newText) return alert("Option text cannot be empty!");
 
             try {
-                const response = await fetch(`/users/admin/lectures/${lectureId}/options/${optionId}/update`, {
+                const response = await fetch(`/admin/lectures/${lectureId}/options/${optionId}/update`, {
                     method: "POST",
                     headers: { 
                         "Content-Type": "application/json",
@@ -227,7 +227,7 @@ document.addEventListener('click', function(e) {
                                 </li>
                                 <li class="dropdown-item text-danger">
                                     <form class="delete-option" data-option-id="${optionId}"
-                                        action="/users/admin/lectures/<%= lecture.id %>/questions/<%= question.id %>/options/${optionId}/delete"
+                                        action="/admin/lectures/<%= lecture.id %>/questions/<%= question.id %>/options/${optionId}/delete"
                                         method="post">
                                         <button type="submit" class="bg-transparent border-0 outline-0">
                                             <i class="bi bi-trash"></i>

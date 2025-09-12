@@ -1,5 +1,5 @@
 const express = require('express');
-const upload = require('../middleware/cloudinaryUpload'); // Update this line
+const { upload } = require('../middleware/cloudinaryUpload'); // Update this line
 const { signup, login, logout, showTerms, showPrivacy } = require('../controllers/authController');
 const { vi } = require('date-fns/locale');
 
@@ -11,7 +11,7 @@ router.get('/register', (req, res) => {
 });
 
 // Handle signup form submission with Cloudinary upload
-router.post('/signup', upload('avatar'), signup);
+router.post('/signup', upload.single('avatar'), signup);
 
 // Render login page
 router.get('/login', (req, res) => {

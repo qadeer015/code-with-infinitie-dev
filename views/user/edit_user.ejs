@@ -1,18 +1,77 @@
 <%- include('../partials/_header', { title: "Edit Profile" }) %>
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-12">
         <div class="card">
             <div class="card-header">
                 <h1>Edit Profile</h1>
             </div>
             <div class="card-body">
-                <form id="editUserForm" action="/users/<%= userProfile.id %>/edit" method="post" enctype="multipart/form-data">
-                    <div class="form-group text-center mb-3">
+  <% if(userProfile.role === "instructor") { %>
+        <form id="instructorForm"
+                      action="/admin/instructor/<%= userProfile.id %>/update" 
+                      method="post" 
+                      enctype="multipart/form-data">
+                <div class="row mb-3">
+                        <div class="form-group col-md-6  mb-3">
+                            <label for="name" class="form-label fw-bold">Name</label>
+                            <input type="text" id="name" name="name" value="<%= userProfile.name %>" class="form-control" required>
+                        </div>
+                        <div class="form-group col-md-6  mb-3">
+                            <label for="email" class="form-label fw-bold">Email</label>
+                            <input type="email" id="email" name="email" value="<%= userProfile.email %>" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="row  mb-3">
+                        <div class="form-group col-md-6  mb-3">
+                            <label for="role" class="form-label fw-bold">Role</label>
+                            <select id="role" name="role" class="form-control">
+                                <% const roles = ['student', 'instructor', 'admin']; %>
+                                <% roles.forEach(role => { %>
+                                    <% if (role !== userProfile.role) { %>
+                                        <option value="<%= role %>"><%= role.charAt(0).toUpperCase() + role.slice(1) %></option>
+                                    <% } %>
+                                <% }); %>
+                                <option value="<%= userProfile.role %>" selected><%= userProfile.role.charAt(0).toUpperCase() + userProfile.role.slice(1) %></option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                         <div class="form-group col-md-6  mb-3">
+                        <label for="repository_link" class="form-label fw-bold">Repository Link</label>
+                        <input type="text" id="repository_link" name="repository_link" value="<%= userProfile.repository_link %>" class="form-control">
+                    </div>
+                    
+                    <div class="form-group col-md-6 mb-3">
+                        <label for="page_link" class="form-label fw-bold">Page Link</label>
+                        <input type="text" id="page_link" name="page_link" value="<%= userProfile.page_link %>" class="form-control">
+                    </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                    <% if(!userProfile.signature){%>
+                    <div class="card-text col-md-6">
+                        <div id="content">
+                            <span id="instructions"></span>
+                            <div id="sketchPadContainer"></div>
+                            <button type="button" id="undoBtn" class="undoBtn">UNDO</button>
+                        </div>
+                    </div>
+                    <%}else{%>
+                        <div class="col-md-6">
+                                <strong class="fw-bold fs-5">Signature</strong>
+                                <% if(userProfile.signature != null) { %>
+                                <canvas id="signatureCanvas" width="250" height="125"></canvas>
+                                <% } else { %>
+                                <p class="text-muted">No signature found. Please edit your profile to add your signature.</p>
+                                <% } %>
+                            </div>
+                    <%}%>
+                    <div class="form-group text-center col-md-6">
                         <div class="avatar-preview-container">
                             <img id="avatarPreview" 
                                  src="<%= userProfile.avatar || '/img/default-avatar.png' %>" 
                                  alt="Avatar Preview" 
-                                 class="img-thumbnail rounded-circle mb-2" 
+                                 class="img-thumbnail rounded-circle mb-3" 
                                  style="width: 150px; height: 150px; object-fit: cover;">
                         </div>
                         <input type="file" id="avatar" name="avatar" class="form-control d-none" accept="image/*">
@@ -20,141 +79,160 @@
                             Change Avatar
                         </button>
                     </div>
-                    <div class="form-group mb-2">
-                        <label for="name" class="form-label fw-bold">Name</label>
-                        <input type="text" id="name" name="name" value="<%= userProfile.name %>" class="form-control" required>
+                    </div>
+                    <!-- Instructor Fields (conditional) -->
+                    <% if(userProfile.role === "instructor") { %>
+                    <hr>
+                    <h4 class="mt-3">Instructor Details</h4>
+                    <div class="row mb-3">
+                        <div class="form-group mb-3 col-md-6">
+                            <label for="qualification" class="form-label fw-bold">Qualification</label>
+                            <input type="text" id="qualification" name="qualification" 
+                                   value="<%= instructorProfile?.qualification || '' %>" 
+                                   class="form-control">
+                        </div>
+
+                        <div class="form-group mb-3 col-md-6">
+                            <label for="specialization" class="form-label fw-bold">Specialization</label>
+                            <input type="text" id="specialization" name="specialization" 
+                                   value="<%= instructorProfile?.specialization || '' %>" 
+                                   class="form-control">
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="form-group mb-3 col-md-6">
+                            <label for="phone" class="form-label fw-bold">Phone</label>
+                            <input type="text" id="phone" name="phone" 
+                               value="<%= instructorProfile?.phone || '' %>" 
+                               class="form-control">
+                        </div>
+
+                        <div class="form-group mb-3 col-md-6">
+                            <label for="salary" class="form-label fw-bold">Salary</label>
+                            <input type="number" id="salary" name="salary" 
+                                   value="<%= instructorProfile?.salary || '' %>" 
+                                   class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="form-group mb-3 col-md-6">
+                            <label for="hire_date" class="form-label fw-bold">Hire Date</label>
+                            <input type="date" id="hire_date" name="hire_date" 
+                                   value="<%= instructorProfile?.hire_date ? new Date(instructorProfile.hire_date).toISOString().split('T')[0] : '' %>" 
+                                   class="form-control">
+                        </div>
+
+                        <div class="form-group mb-3 col-md-3">
+                            <label for="document" class="form-label fw-bold">Qualification Document</label>
+                            <% if(instructorProfile?.document_image) { %>
+                                <div class="mb-3">
+                                    <a href="<%= instructorProfile.document_image %>" target="_blank" class="text-decoration-none">
+                                        <img src="<%= instructorProfile.document_image %>" class="img-fluid" width="200" height="200">
+                                    </a>
+                                </div>
+                            <% } %>
+                            <input type="file" id="document" name="document" class="form-control" accept=".pdf,.jpg,.jpeg,.png">
+                        </div>
                     </div>
 
+                    <div class="form-group mb-3 col-md-12">
+                        <label for="address" class="form-label fw-bold">Address</label>
+                        <textarea name="address" id="address" class="form-control" rows="3" value="<%= instructorProfile?.address || '' %>"><%= instructorProfile?.address || '' %></textarea>
+                    </div>
+                    <% } %>
+
+                    <!-- Actions -->
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-sm btn-primary mt-3">Update</button>
+                        <a href="/users/<%= userProfile.id %>/profile" class="btn btn-sm btn-secondary mt-3">Cancel</a>
+                    </div>
+                </form>
+    <% }else{ %> 
+                <form id="editUserForm" action="/<%= user.role==='admin'?'admin':'instructor'%>/users/<%= userProfile.id %>/profile/update" method="post" enctype="multipart/form-data">
+                    <div class="row mb-3">
+                        <div class="form-group col-md-6  mb-3">
+                            <label for="name" class="form-label fw-bold">Name</label>
+                            <input type="text" id="name" name="name" value="<%= userProfile.name %>" class="form-control" required>
+                        </div>
+                        <div class="form-group col-md-6  mb-3">
+                            <label for="email" class="form-label fw-bold">Email</label>
+                            <input type="email" id="email" name="email" value="<%= userProfile.email %>" class="form-control" required>
+                        </div>
+                    </div>
+                    <div class="row  mb-3">
+                        <% if(user.role === "admin"){%>
+                        <div class="form-group col-md-6  mb-3">
+                            <label for="role" class="form-label fw-bold">Role</label>
+                            <select id="role" name="role" class="form-control">
+                                <% const roles = ['student', 'instructor', 'admin']; %>
+                                <% roles.forEach(role => { %>
+                                    <% if (role !== userProfile.role) { %>
+                                        <option value="<%= role %>"><%= role.charAt(0).toUpperCase() + role.slice(1) %></option>
+                                    <% } %>
+                                <% }); %>
+                                <option value="<%= userProfile.role %>" selected><%= userProfile.role.charAt(0).toUpperCase() + userProfile.role.slice(1) %></option>
+                            </select>
+                        </div>
+                        <%}%>
+                    </div>
+                    <div class="row mb-3">
+                         <div class="form-group col-md-6  mb-3">
+                        <label for="repository_link" class="form-label fw-bold">Repository Link</label>
+                        <input type="text" id="repository_link" name="repository_link" value="<%= userProfile.repository_link %>" class="form-control">
+                    </div>
+                    
+                    <div class="form-group col-md-6 mb-3">
+                        <label for="page_link" class="form-label fw-bold">Page Link</label>
+                        <input type="text" id="page_link" name="page_link" value="<%= userProfile.page_link %>" class="form-control">
+                    </div>
+                    </div>
+                    
+                    <div class="row mb-3">
                     <% if(!userProfile.signature){%>
-                    <div class="card-text">
+                    <div class="card-text col-md-6">
                         <div id="content">
                             <span id="instructions"></span>
                             <div id="sketchPadContainer"></div>
                             <button type="button" id="undoBtn" class="undoBtn">UNDO</button>
                         </div>
                     </div>
-                    <%}%>
-                    
-                    <% if(user.role==="admin"){ %>
-                    <div class="form-group">
-                        <label for="email" class="form-label fw-bold">Email</label>
-                        <input type="email" id="email" name="email" value="<%= userProfile.email %>" class="form-control" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="role" class="form-label fw-bold">Role</label>
-                        <select id="role" name="role" class="form-control">
-                            <% const roles = ['student', 'instructor', 'admin']; %>
-                            <% roles.forEach(role => { %>
-                                <% if (role !== userProfile.role) { %>
-                                    <option value="<%= role %>"><%= role.charAt(0).toUpperCase() + role.slice(1) %></option>
+                    <%}else{%>
+                        <div class="col-md-6">
+                                <strong class="fw-bold fs-5">Signature</strong>
+                                <% if(userProfile.signature != null) { %>
+                                <canvas id="signatureCanvas" width="250" height="125"></canvas>
+                                <% } else { %>
+                                <p class="text-muted">No signature found. Please edit your profile to add your signature.</p>
                                 <% } %>
-                            <% }); %>
-                            <option value="<%= userProfile.role %>" selected><%= userProfile.role.charAt(0).toUpperCase() + userProfile.role.slice(1) %></option>
-                        </select>
-                    </div>
-                    <% } %>
-                    
-                    <%if(user.role==="admin" || user.repository_link ==''){%>
-                    <div class="form-group">
-                        <label for="repository_link" class="form-label fw-bold">Repository Link</label>
-                        <input type="text" id="repository_link" name="repository_link" value="<%= userProfile.repository_link %>" class="form-control">
-                    </div>
+                            </div>
                     <%}%>
-                    
-                    <%if(user.role==="admin" || user.page_link ==''){%>
-                    <div class="form-group">
-                        <label for="page_link" class="form-label fw-bold">Page Link</label>
-                        <input type="text" id="page_link" name="page_link" value="<%= userProfile.page_link %>" class="form-control">
+                    <div class="form-group text-center col-md-6">
+                        <div class="avatar-preview-container">
+                            <img id="avatarPreview" 
+                                 src="<%= userProfile.avatar || '/img/default-avatar.png' %>" 
+                                 alt="Avatar Preview" 
+                                 class="img-thumbnail rounded-circle mb-3" 
+                                 style="width: 150px; height: 150px; object-fit: cover;">
+                        </div>
+                        <input type="file" id="avatar" name="avatar" class="form-control d-none" accept="image/*">
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="document.getElementById('avatar').click()">
+                            Change Avatar
+                        </button>
                     </div>
-                    <%}%>
+                    </div>
                     
                     <div class="form-group">
                         <button type="submit" class="btn btn-sm btn-primary mt-3">Update</button>
                         <a href="/users/<%= userProfile.id %>/profile" class="btn btn-sm btn-secondary mt-3">Cancel</a>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
-    
-    <% if(userProfile.role === "instructor") { %>
-    <div class="col-lg-6">
-        <div class="card">
-            <div class="card-header">
-                <h2>Instructor Details</h2>
-            </div>
-            <div class="card-body">
-                <form id="instructorForm" action="/users/admin/<%= userProfile.id %>/instructor/create" method="post" enctype="multipart/form-data">
-                    <div class="form-group mb-2">
-                        <label for="qualification" class="form-label fw-bold">Qualification</label>
-                        <input type="text" id="qualification" name="qualification" 
-                               value="<%= instructorProfile?.qualification || '' %>" 
-                               class="form-control">
-                    </div>
-                    
-                    <div class="form-group mb-2">
-                        <label for="specialization" class="form-label fw-bold">Specialization</label>
-                        <input type="text" id="specialization" name="specialization" 
-                               value="<%= instructorProfile?.specialization || '' %>" 
-                               class="form-control">
-                    </div>
-                    
-                    <div class="form-group mb-2">
-                        <label for="phone" class="form-label fw-bold">Phone</label>
-                        <input type="text" id="phone" name="phone" 
-                               value="<%= instructorProfile?.phone || '' %>" 
-                               class="form-control">
-                    </div>
-                    
-                    <% if(user.role === "admin") { %>
-                    <div class="form-group mb-2">
-                        <label for="salary" class="form-label fw-bold">Salary</label>
-                        <input type="number" id="salary" name="salary" 
-                               value="<%= instructorProfile?.salary || '' %>" 
-                               class="form-control">
-                    </div>
-                    <% } %>
-                    
-                    <div class="form-group mb-2">
-                        <label for="hire_date" class="form-label fw-bold">Hire Date</label>
-                        <input type="date" id="hire_date" name="hire_date" 
-                               value="<%= instructorProfile?.hire_date ? new Date(instructorProfile.hire_date).toISOString().split('T')[0] : '' %>" 
-                               class="form-control">
-                    </div>
-                    
-                    <div class="form-group mb-2">
-                        <label for="document" class="form-label fw-bold">Qualification Document</label>
-                        <% if(instructorProfile?.document_image) { %>
-                            <div class="mb-2">
-                                <a href="<%= instructorProfile.document_image %>" target="_blank" class="btn btn-sm btn-outline-info">
-                                    View Current Document
-                                </a>
-                            </div>
-                        <% } %>
-                        <% if(instructorProfile?.document_image) { %>
-                            <div class="mb-2">
-                                <img src="<%= instructorProfile.document_image %>" class="img-fluid" width="200" height="200">
-                            </div>
-                        <% } %>
-                        <input type="file" id="document" name="document" class="form-control" accept=".pdf,.jpg,.jpeg,.png">
-                    </div>
-
-                    <div class="form-group mb-2">
-                        <label for="address" class="form-label fw-bold">Address</label>
-                        <input type="text" id="address" name="address" 
-                               value="<%= instructorProfile?.address || '' %>" 
-                               class="form-control">
-                    </div>
-                    
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-sm btn-primary mt-3">Update Instructor Details</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
     <% } %>
+            </div>
+        </div>
+    </div>
 </div>
+
 
 <script>
 document.getElementById('avatar').addEventListener('change', function(event) {
@@ -167,7 +245,11 @@ document.getElementById('avatar').addEventListener('change', function(event) {
         reader.readAsDataURL(file);
     }
 });
-// Handle instructor form submission
+</script>
+
+<% if(userProfile.role==="instructor"){ %>
+<script>
+    // Handle instructor form submission
 const instructorForm = document.getElementById("instructorForm");
 if (instructorForm) {
     instructorForm.addEventListener("submit", async (event) => {
@@ -193,29 +275,42 @@ if (instructorForm) {
         }
     });
 }
-
-
-// Handle user form submission
-const editUserForm = document.getElementById("editUserForm");
 </script>
+<% } %>
 
-
-
-<% if(!userProfile.signature){%>
     <script src="/js/utils/sketchPad.js"></script>
-        <script src="/js/utils/draw.js"></script>
+    <script src="/js/utils/draw.js"></script>
+
+    <% if(!userProfile.signature){%>
         <script>
     const label = "Signature";
     const sketchPadContainer = document.getElementById("sketchPadContainer");
     const undoBtn = document.getElementById("undoBtn");
     const sketchPad = new SketchPad(sketchPadContainer, undoBtn);
     instructions.innerHTML = `<span><strong>${label} here!</strong></span>`;
+</script>
+<%}else{%>
+<script>
+    const signatureData = <%- JSON.stringify(userProfile.signature) %>;
+    if(signatureData != null) {
+      const canvas = document.getElementById('signatureCanvas');
+      const ctx = canvas.getContext('2d');
+      // Draw the signature
+      draw.paths(ctx,signatureData);
+    }
+</script>
+<%}%>
+<% if(userProfile.role=="student" || userProfile.role=="admin"){ %>
+<script>
+// Handle user form submission
+const editUserForm = document.getElementById("editUserForm");
     
     editUserForm.addEventListener("submit", async (event) => {
         event.preventDefault();
-        const signature = sketchPad.paths;
+        // const signature = sketchPad.paths;
         const formData = new FormData(editUserForm);
-        formData.append("signature", JSON.stringify(signature));
+        
+        // formData.append("signature", JSON.stringify(signature));
         
         try {
             const response = await fetch(editUserForm.action, {
@@ -236,33 +331,7 @@ const editUserForm = document.getElementById("editUserForm");
         }
     });
 </script>
-
-<%} else{%>
-    <script>
-    editUserForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const formData = new FormData(editUserForm);
-        
-        try {
-            const response = await fetch(editUserForm.action, {
-                method: 'POST',
-                body: formData
-            });
-
-            const data = await response.json();
-            
-            if (data.success) {
-                showAlert(data.message, 'success');
-            } else {
-                showAlert(data.message, 'error');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            showAlert('Error saving data', 'error');
-        }
-    });
-</script>
-
 <%}%>
+
 
 <%- include('../partials/_footer') %>

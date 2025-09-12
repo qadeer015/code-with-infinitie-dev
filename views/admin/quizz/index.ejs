@@ -36,7 +36,7 @@
                                         </li>
                                         <li class="dropdown-item text-danger">
                                             <form class="delete-question" data-question-id="<%= question.id %>"
-                                                action="/users/admin/lectures/<%= lecture.id %>/questions/<%= question.id %>/delete"
+                                                action="/admin/lectures/<%= lecture.id %>/questions/<%= question.id %>/delete"
                                                 method="post">
                                                 <button type="submit" class="bg-transparent border-0 outline-0">
                                                     <i class="bi bi-trash"></i>
@@ -75,7 +75,7 @@
 
                                                 <li class="dropdown-item text-danger">
                                                     <form class="delete-option" data-option-id="<%= option.id %>"
-                                                        action="/users/admin/lectures/<%= lecture.id %>/options/<%= option.id %>/delete"
+                                                        action="/admin/lectures/<%= lecture.id %>/options/<%= option.id %>/delete"
                                                         method="post">
                                                         <button type="submit" class="bg-transparent border-0 outline-0">
                                                             <i class="bi bi-trash"></i>
@@ -90,7 +90,7 @@
                             </ul>
                             <% if (question.options.length <=3) { %>
                                 <form class="option-form"
-                                    action="/users/admin/lectures/<%= lecture.id %>/questions/<%= question.id %>/options/create"
+                                    action="/admin/lectures/<%= lecture.id %>/questions/<%= question.id %>/options/create"
                                     method="post">
                                     <input type="text" name="option_text" class="form-control mt-3"
                                         placeholder="Enter Option text" required>

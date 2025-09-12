@@ -12,11 +12,11 @@
                   <th class="text-white">#</th>
                   <th class="text-white">Title</th>
                   <th class="text-white">Details</th>
-                  <th class="text-white">Due Date</th>
-                  <th class="text-white">Open Date</th>
-                  <th class="text-white">Total Marks</th>
+                  <th class="text-white">OpenDate</th>
+                  <th class="text-white">DueDate</th>
                   <th class="text-white">Status</th>
-                  <th class="text-white">Gained Marks</th>
+                  <th class="text-white">TotalMarks</th>
+                  <th class="text-white">GainedMarks</th>
                   <th class="text-white">Actions</th>
                 </tr>
               </thead>
@@ -26,9 +26,8 @@
                     <td><%- index + 1 %></td>
                     <td><%- assignment.title %></td>
                     <td><%- assignment.details %> </td>
+                    <td><%- assignment.open_date %></td>
                     <td><%- assignment.due_date %></td>
-                    <td><%- assignment.created_at %></td>
-                    <td><%- assignment.total_marks %></td>
                     <td>
                       <% if(assignment.status) { %> 
                         <% if(assignment.status=="submitted"){%>
@@ -40,6 +39,7 @@
                           <span class="badge bg-secondary">Pending</span>
                         <% } %>
                     </td>
+                    <td><%- assignment.total_marks %></td>
                     <td class="text-center">
                       <% if(assignment.status) { %>
                         <% if(assignment.status=="submitted" && !assignment.gained_marks){ %>

@@ -1,7 +1,7 @@
 <%- include('../partials/_header', { title: 'Edit Announcement' }) %>
     <h4 class="fw-bold pt-4 pb-1">Edit Announcement</h4>
     <div class="row pb-5">
-        <form action="/users/admin/announcements/<%= announcement.id %>/update" method="post">
+        <form action="/admin/announcements/<%= announcement.id %>/update" method="post">
             <div class="mb-3">
                 <label for="course_id" class="form-label">Select Course</label>
                 <select name="course_id" id="course_id" class="form-select">
@@ -24,7 +24,7 @@
                 <%- include('../partials/_richTextEditor', { name: 'content' , content: announcement.content }) %>
             </div>
             <button type="submit" class="btn btn-primary">Update</button>
-            <a href="/users/admin/announcements" class="btn btn-outline-secondary">Cancel</a>
+            <a href="/admin/announcements" class="btn btn-outline-secondary">Cancel</a>
         </form>
     </div>
     <%- include('../partials/_footer') %>

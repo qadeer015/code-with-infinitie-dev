@@ -42,7 +42,7 @@
                                 <%= assignment.gained_marks || '-' %>
                             </td>
                             <td>
-                                <form action="/users/admin/assignments/submitted/<%= assignment.id %>">
+                                <form action="/admin/assignments/submitted/<%= assignment.id %>">
                                     <input type="hidden" name="course_id" id="<%= courseId %>" value="<%= courseId %>">
                                     <input type="submit" value="View Details" class="btn btn-sm btn-primary">
                                 </form>

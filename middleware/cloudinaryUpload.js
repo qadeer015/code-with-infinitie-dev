@@ -31,4 +31,8 @@ const upload = multer({
   }
 });
 
-module.exports = (fieldName) => upload.single(fieldName);
+// Export both
+module.exports = {
+  upload,
+  single: (fieldName) => upload.single(fieldName)
+};

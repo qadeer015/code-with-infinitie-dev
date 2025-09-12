@@ -1,7 +1,7 @@
 <%- include('../partials/_header', { title: 'Courses' }) %>
                 <div class="d-flex align-items-center justify-content-between">
                     <h4 class="fw-bold pt-4 pb-1">Courses</h4>
-                    <a href="/users/admin/courses/new" class="btn btn-primary">New Course</a>
+                    <a href="/admin/courses/new" class="btn btn-primary">New Course</a>
                 </div>
                 <div class="col-12 table-responsive min-vh-100">
                     <table class="table">
@@ -30,7 +30,7 @@
         })
 
         function fetchCourses() {
-            const response = fetch("/users/admin/courses/get-all", {
+            const response = fetch("/admin/courses/get-all", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -67,7 +67,7 @@
                     <td>${course.course_fee}</td>
                     <td> <span class="badge ${course.status === 'active' ? 'bg-success' : 'bg-danger'}"> ${course.status} </span></td>
                     <td>
-                        <form action="/users/admin/assignments/submitted" class="nav-link position-relative ps-3">
+                        <form action="/admin/assignments/submitted" class="nav-link position-relative ps-3">
                             <input type="hidden" name="course_id" value="${course.id}">
                             <input type="submit" class="btn btn-primary" value="View">
                         </form>
@@ -79,7 +79,7 @@
                                 <i class="bi bi-three-dots-vertical"></i>
                             </button>
                             <ul class="dropdown-menu">
-                                <a class="text-decoration-none text-dark" href="/users/admin/courses/${course.id}/edit">
+                                <a class="text-decoration-none text-dark" href="/admin/courses/${course.id}/edit">
                                 <li class="dropdown-item mb-1">
                                     <i class="bi bi-pencil"></i>
                                     Edit
@@ -111,7 +111,7 @@
         return;
     }
 
-    fetch(`/users/admin/courses/${id}/delete`, {
+    fetch(`/admin/courses/${id}/delete`, {
         method: "DELETE",
         headers: {
             "Content-Type": "application/json",

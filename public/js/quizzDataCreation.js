@@ -87,7 +87,7 @@ async function createQuestionWithOptions(questionData, buttonId) {
     try {
 
         // 1. Create the question
-        const questionResponse = await fetch(`/users/admin/lectures/${lectureId}/questions/create`, {
+        const questionResponse = await fetch(`/admin/lectures/${lectureId}/questions/create`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ 
@@ -117,7 +117,7 @@ async function createQuestionWithOptions(questionData, buttonId) {
                 <ul class="list-group" id="options-container-${questionResult.question.id}" data-option-count="0"></ul>
                 
                 <!-- Form to create an option -->
-                <form class="option-form" action="/users/admin/lectures/${lectureId}/questions/${questionResult.question.id}/options/create" method="post">
+                <form class="option-form" action="/admin/lectures/${lectureId}/questions/${questionResult.question.id}/options/create" method="post">
                     <input type="text" name="option_text" class="form-control mt-3" placeholder="Enter Option text" required>
                     <select name="is_correct" class="form-select mt-3">
                         <option value="0">Incorrect</option>

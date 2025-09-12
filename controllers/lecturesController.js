@@ -5,7 +5,7 @@ const createLecture = async (req, res) => {
     try {
         const { title, course_id, video_id, description, tasks, notes, status="closed" } = req.body;
         await Lecture.createLecture(title, course_id, video_id, description, tasks, notes, status);
-        res.status(201).redirect('/users/admin/lectures/');
+        res.status(201).redirect('/admin/lectures/');
     } catch (err) {
         console.error(err);
     }
@@ -49,7 +49,7 @@ const updateLecture = async (req, res) => {
             status
         );
         
-        res.status(200).redirect('/users/admin/lectures/');
+        res.status(200).redirect('/admin/lectures/');
     } catch (err) {
         console.error(err);
         res.status(500).json({ error: err.message });
@@ -82,7 +82,7 @@ const deleteLecture = async (req, res) => {
     try {
         const { id } = req.params;
         const lecture = await Lecture.deleteLecture(id);
-        res.status(200).redirect('/users/admin/lectures/');
+        res.status(200).redirect('/admin/lectures/');
     } catch (err) {
         console.error(err);
     }

@@ -73,7 +73,7 @@ exports.createSchedule = async (req, res) => {
             session_id, course_id, title, description, type, start_date, end_date, created_by, status
         );
         
-        res.status(201).redirect(`/users/admin/todo_schedules`);
+        res.status(201).redirect(`/admin/todo_schedules`);
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }
@@ -92,7 +92,7 @@ exports.updateSchedule = async (req, res) => {
             return res.status(404).json({ success: false, message: 'Schedule not found' });
         }
         
-        res.status(200).redirect(`/users/admin/todo_schedules`);
+        res.status(200).redirect(`/admin/todo_schedules`);
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
     }

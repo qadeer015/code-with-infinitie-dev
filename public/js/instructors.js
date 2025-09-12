@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function fetchInstructors() {
-    fetch("/users/admin/get-instructors", {
+    fetch("/admin/get-instructors", {
         method: "GET",
         headers: {
             "Content-Type": "application/json",
@@ -100,7 +100,7 @@ function deleteInstructor(id) {
         return;
     }
 
-    fetch(`/users/admin/delete/${id}`, {
+    fetch(`/admin/delete/${id}`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -122,7 +122,7 @@ function deleteInstructor(id) {
 
 function toggleBlockInstructor(id, isBlocked, button) {
     const action = isBlocked ? 'unblock' : 'block';
-    const url = `/users/admin/${action}/${id}`;
+    const url = `/admin/${action}/${id}`;
     
     fetch(url, {
         method: "POST",

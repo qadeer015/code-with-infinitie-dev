@@ -1,34 +1,45 @@
 <%- include('../partials/_header', { title: 'New Assignment' }) %>
-      <h4 class="fw-bold pt-4 pb-1">New Assignment</h4>
-                <div class="row pb-5">
-                    <form action="/users/admin/assignments/create" method="post">
-                        <div class="mb-3">
-                            <label for="course_id" class="form-label">Select Course</label>
-                            <select name="course_id" id="course_id" class="form-select">
-                                <option value=""></option>
-                                <% courses.forEach(course => { %>
-                                    <option value="<%= course.id %>"><%= course.title %></option>
-                                <% }) %>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="title" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="title" name="title">
-                        </div>
-                        <div class="mb-3">
-                            <label for="due_date" class="form-label">Due Date</label>
-                            <input type="date" class="form-control" name="due_date" id="due_date">
-                        </div>
-                        <div class="mb-3">
-                            <label for="total_marks" class="form-label">Total Marks</label>
-                            <input type="number" class="form-control" id="total_marks" name="total_marks">
-                        </div>
-                        <div class="mb-3">
-                            <label for="details" class="form-label">Details</label>
-                            <%- include('../partials/_richTextEditor', { name: 'details' }) %>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Create</button>
-                        <a href="/users/admin/assignments" class="btn btn-outline-secondary">Cancel</a>
-                    </form>
+    <h4 class="fw-bold pt-4 pb-1">New Assignment</h4>
+    <div class="row pb-5">
+        <form action="/admin/assignments/create" method="post">
+            <div class="row">
+                <div class="mb-3 col-md-6">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" name="title">
                 </div>
-<%- include('../partials/_footer') %>
+                <div class="mb-3 col-md-6">
+                    <label for="course_id" class="form-label">Select Course</label>
+                    <select name="course_id" id="course_id" class="form-select">
+                        <option value=""></option>
+                        <% courses.forEach(course=> { %>
+                            <option value="<%= course.id %>">
+                                <%= course.title %>
+                            </option>
+                            <% }) %>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mb-3 col-md-4">
+                    <label for="open_date" class="form-label">Open Date</label>
+                    <input type="date" class="form-control" name="open_date" id="open_date">
+                </div>
+                <div class="mb-3 col-md-4">
+                    <label for="due_date" class="form-label">Due Date</label>
+                    <input type="date" class="form-control" name="due_date" id="due_date">
+                </div>
+                <div class="mb-3 col-md-4">
+                    <label for="total_marks" class="form-label">Total Marks</label>
+                    <input type="number" class="form-control" id="total_marks" name="total_marks">
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label for="details" class="form-label">Details</label>
+                <%- include('../partials/_richTextEditor', { name: 'details' }) %>
+            </div>
+            <button type="submit" class="btn btn-primary">Create</button>
+            <a href="/admin/assignments" class="btn btn-outline-secondary">Cancel</a>
+        </form>
+    </div>
+    <%- include('../partials/_footer') %>

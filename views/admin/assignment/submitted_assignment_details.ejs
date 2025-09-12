@@ -42,7 +42,7 @@
                 </h5>
                 
                 <% if (file.isMedia) { %>
-                    <a href="/users/admin/assignments/files/<%= assignment.id %>/<%= encodeURIComponent(file.originalName) %>" 
+                    <a href="/admin/assignments/files/<%= assignment.id %>/<%= encodeURIComponent(file.originalName) %>" 
                        class="btn btn-sm btn-primary" download>
                         Download Media File
                     </a>
@@ -76,7 +76,7 @@
             <div class="row">
                 <div class="col-12">
                         <h5>Grading</h5>
-                        <form id="gradeForm" action="/users/admin/assignments/<%= assignment.assignment_id %>/users/<%= assignment.user_id %>/grade" method="POST">
+                        <form id="gradeForm" action="/admin/assignments/<%= assignment.assignment_id %>/users/<%= assignment.user_id %>/grade" method="POST">
                             <div class="mb-3">
                                 <label for="marks" class="form-label">Marks</label>
                                 <input type="number" step="0.01" class="form-control" id="marks" 

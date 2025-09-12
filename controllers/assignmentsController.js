@@ -15,7 +15,8 @@ const showCourseAssignments = async (req, res) => {
         const assignments = courseAssignments.map(assignment => ({
             ...assignment,
             created_at: formateTime.formatRelativeTime(assignment.created_at),
-            due_date: formateTime.formatDate(assignment.due_date)
+            due_date: formateTime.formatDate(assignment.due_date),
+            open_date: formateTime.formatDate(assignment.open_date)
         }))
         res.render("assignments", { assignments, token, viewName: 'assignments'});
     } catch (error) {
@@ -30,7 +31,8 @@ const getAllAssignments = async (req, res) => {
         const assignments = allAssignments.map(assignment => ({
             ...assignment,
             created_at: formateTime.formatRelativeTime(assignment.created_at),
-            due_date: formateTime.formatDate(assignment.due_date)
+            due_date: formateTime.formatDate(assignment.due_date),
+            open_date: formateTime.formatDate(assignment.open_date)
         }))
         res.status(200).json(assignments);
     } catch (error) {
@@ -53,10 +55,10 @@ const getUnsubmittedAssignemntCountsByCourseId = async (req, res) => {
 
 const createAssignment = async (req, res) => {
     try {
-        const { course_id, title, details, due_date, total_marks } = req.body;
+        const { course_id, title, details, open_date, due_date, total_marks } = req.body;
 
-        await Assignment.createAssignment(course_id, title, details, due_date, total_marks);
-        res.redirect('/users/admin/assignments/');
+        await Assignment.createAssignment(course_id, title, details, open_date, due_date, total_marks);
+        res.redirect('/admin/assignments/');
     } catch (error) {
         console.error("Error creating assignment:", error);
         res.status(500).json({ message: 'Error creating assignment' });
@@ -194,6 +196,7 @@ const getSubmittedAssignmentDetails = async (req, res) => {
             submission_date: formateTime.formatDate(submission.submission_date),
             created_at: formateTime.formatDate(submission.created_at),
             due_date: formateTime.formatDate(submission.due_date),
+            open_date: formateTime.formatDate(submission.open_date),
             updated_at: formateTime.formatDate(submission.updated_at)
 
         };
@@ -291,11 +294,11 @@ const gradeAssignment = async (req, res) => {
 
 const updateAssignment = async (req, res) => {
     const { assignment_id } = req.params;
-    const { title, course_id, details, due_date, total_marks } = req.body;
+    const { title, course_id, details, open_date, due_date, total_marks } = req.body;
     try {
-        const result = await Assignment.updateAssignment(assignment_id, course_id, title, details, due_date, total_marks);
+        const result = await Assignment.updateAssignment(assignment_id, course_id, title, details, open_date, due_date, total_marks);
         if (result) {
-            return res.status(200).redirect('/users/admin/assignments/');
+            return res.status(200).redirect('/admin/assignments/');
         } else {
             return res.status(400).json({ message: 'Error updating assignment' });
         }
@@ -310,7 +313,7 @@ const deleteAssignment = async (req, res) => {
     try {
         const result = await Assignment.deleteAssignment(assignment_id);
         if (result) {
-            return res.status(200).redirect('/users/admin/assignments/');
+            return res.status(200).redirect('/admin/assignments/');
         } else {
             return res.status(400).json({ message: 'Error deleting assignment' });
         }

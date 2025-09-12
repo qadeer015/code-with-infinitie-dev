@@ -15,7 +15,7 @@ const createSession = async (req, res) => {
             await SessionCourse.create(course, '', session.insertId);
         })
 
-        res.status(201).redirect('/users/admin/sessions');
+        res.status(201).redirect('/admin/sessions');
     } catch (err) {
         console.error(err);
         res.status(500).send('Error creating session');
@@ -81,7 +81,7 @@ const updateSession = async (req, res) => {
             await SessionCourse.delete(courseToRemove.session_course_id, courseToRemove.id); // Delete by session_course id
         }
         
-        res.status(200).redirect('/users/admin/sessions');
+        res.status(200).redirect('/admin/sessions');
     } catch (err) {
         console.error(err);
         res.status(500).send('Error updating session');
@@ -92,7 +92,7 @@ const deleteSession = async (req, res) => {
     try {
         const { id } = req.params;
         await Session.delete(id);
-        res.status(200).redirect('/users/admin/sessions');
+        res.status(200).redirect('/admin/sessions');
     } catch (err) {
         console.error(err);
     }

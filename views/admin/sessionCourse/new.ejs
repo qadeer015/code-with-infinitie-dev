@@ -1,7 +1,7 @@
 <%- include('../partials/_header', { title: 'New session Course' }) %>
     <h4 class="fw-bold pt-4 pb-1">New session Course </h4>
     <div class="row pb-5">
-        <form action="/users/admin/session-courses/create" method="post" class="col-4">
+        <form action="/admin/session-courses/create" method="post" class="col-4">
             <div class="form-group mb-3">
                 <select name="session_id" id="session_id" class="form-select">
                     <option value="">Select Session</option>
@@ -25,7 +25,7 @@
                 </select>
             </div>
             <button type="submit" class="btn btn-primary">Create</button>
-            <a href="/users/admin/session-courses" class="btn btn-outline-secondary">Cancel</a>
+            <a href="/admin/session-courses" class="btn btn-outline-secondary">Cancel</a>
         </form>
     </div>
 
@@ -34,7 +34,7 @@
         const courses = document.querySelector('#courses');
 
         session_id.addEventListener('change', async () => {
-            const response = await fetch(`/users/admin/session-courses/${session_id.value}`);
+            const response = await fetch(`/admin/session-courses/${session_id.value}`);
             const data = await response.json();
             courses.innerHTML = '';
             data.forEach(course => {

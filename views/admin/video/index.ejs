@@ -15,7 +15,7 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-            <form action="/users/admin/videos/create" method="post">
+            <form action="/admin/videos/create" method="post">
               <div class="form-group">
                 <label for="title" class="form-label fw-bold">Video Title</label>
                 <input type="text" class="form-control" id="title" name="title" placeholder="Enter video title">
@@ -48,7 +48,7 @@
                   </iframe>
                 </div>
                 <div class="card-title">
-                  <a href="/users/admin/videos/<%= video.id %>" class="text-decoration-none text-dark fw-bold">
+                  <a href="/admin/videos/<%= video.id %>" class="text-decoration-none text-dark fw-bold">
                     <%= video.title %>
                   </a>
                   <% if(user.role=="admin" ){ %>
@@ -57,7 +57,7 @@
                         data-bs-target="#editModel_<%= video.id %>">
                         Edit Video
                       </button>
-                      <form action="/users/admin/videos/<%= video.id %>/delete" method="post"
+                      <form action="/admin/videos/<%= video.id %>/delete" method="post"
                         onclick="return confirm('Are you sure you want to delete this video?')">
                         <button type="submit" class="btn btn-sm btn-danger m-2">Delete Video</button>
                       </form>
@@ -72,7 +72,7 @@
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                           </div>
                           <div class="modal-body">
-                            <form action="/users/admin/videos/<%= video.id %>/update" method="post">
+                            <form action="/admin/videos/<%= video.id %>/update" method="post">
                               <div class="form-group">
                                 <label for="title" class="form-label fw-bold">Video Title</label>
                                 <input type="text" class="form-control" id="title" name="title"

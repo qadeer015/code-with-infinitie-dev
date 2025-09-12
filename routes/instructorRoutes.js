@@ -8,6 +8,7 @@ const sessionCoursesController = require('../controllers/sessionCoursesControlle
 const lecturesController = require('../controllers/lecturesController.js');
 const videosController = require('../controllers/videosController');
 const quizzController = require('../controllers/quizzController.js');
+const { upload } = require('../middleware/cloudinaryUpload.js');
 
 const Course = require('../models/Course');
 const Video = require('../models/Video');
@@ -19,6 +20,12 @@ const Announcement = require('../models/Announcement.js');
 router.get('/dashboard', (req, res) => {
     res.render('instructor/dashboard',{req:req.session.user || null});
 });
+
+// Users
+
+router.get("/users/:id/profile", userController.userProfile);
+router.get("/users/:id/profile/edit", userController.editUser);
+router.post("/users/:id/profile/update",upload.single('avatar'), userController.updateUser);
 
 // Students
 router.get("/students",(req, res) => {

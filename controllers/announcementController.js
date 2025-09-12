@@ -45,7 +45,7 @@ const createAnnouncement = async (req, res) => {
         const { title, content, course_id } = req.body;
 
         await Announcement.createAnnouncement(title, content, course_id);
-        res.redirect('/users/admin/announcements');
+        res.redirect('/admin/announcements');
     } catch (error) {
         console.error("Error creating announcement:", error);
         res.status(500).json({ message: 'Error creating announcement' });
@@ -56,7 +56,7 @@ const updateAnnouncement = async (req, res) => {
     try {
         const {title, content, course_id } = req.body;
         await Announcement.updateAnnouncement(req.params.announcement_id, title, content, course_id);
-        res.redirect('/users/admin/announcements/');
+        res.redirect('/admin/announcements/');
     } catch (error) {
         console.error("Error updating announcement:", error);
         res.status(500).json({ message: 'Error updating announcement' });
@@ -67,7 +67,7 @@ const deleteAnnouncement = async (req, res) => {
     try {
         const { announcement_id } = req.params;
         await Announcement.deleteAnnouncement(announcement_id);
-        res.redirect('/users/admin/announcements');
+        res.redirect('/admin/announcements');
     } catch (error) {
         console.error("Error deleting announcement:", error);
         res.status(500).json({ message: 'Error deleting announcement' });

@@ -1,11 +1,11 @@
 const db = require('../config/db');
 
 class Assignment {
-    static async createAssignment(course_id, title, details, due_date, total_marks) {
+    static async createAssignment(course_id, title, details, open_date, due_date, total_marks) {
         try {
             const [result] = await db.execute(
-                'INSERT INTO assignments (course_id, title, details, due_date, total_marks) VALUES (?, ?, ?, ?, ?)',
-                [course_id, title, details, due_date, total_marks]
+                'INSERT INTO assignments (course_id, title, details, open_date, due_date, total_marks) VALUES (?, ?, ?, ?, ?, ?)',
+                [course_id, title, details, open_date, due_date, total_marks]
             );
             return result;
         } catch (error) {
@@ -53,11 +53,11 @@ class Assignment {
         }
     }
 
-    static async updateAssignment(id, course_id, title, details, due_date, total_marks) {
+    static async updateAssignment(id, course_id, title, details, open_date, due_date, total_marks) {
         try {
             const [result] = await db.execute(
-                'UPDATE assignments SET course_id = ?, title = ?, details = ?, due_date = ?, total_marks = ? WHERE id = ?',
-                [course_id, title, details, due_date, total_marks, id]
+                'UPDATE assignments SET course_id = ?, title = ?, details = ?, open_date = ?, due_date = ?, total_marks = ? WHERE id = ?',
+                [course_id, title, details, open_date, due_date, total_marks, id]
             );
             return result.affectedRows > 0; // Returns true if at least one row is updated
         } catch (error) {

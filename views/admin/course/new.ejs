@@ -1,7 +1,7 @@
 <%- include('../partials/_header', { title: 'New Course' }) %>
    <h4 class="fw-bold pt-4 pb-1">New Course</h4>
                 <div class="row pb-5">
-                    <form action="/users/admin/courses/create" method="post">
+                    <form action="/admin/courses/create" method="post">
                         <div class="mb-3">
                             <label for="title" class="form-label">Title</label>
                             <input type="text" class="form-control" id="title" name="title">
@@ -26,7 +26,7 @@
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Create</button>
-                        <a href="/users/admin/courses" class="btn btn-outline-secondary">Cancel</a>
+                        <a href="/admin/courses" class="btn btn-outline-secondary">Cancel</a>
                     </form>
                 </div>
 

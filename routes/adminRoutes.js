@@ -11,7 +11,7 @@ const quizzController = require('../controllers/quizzController.js');
 const instructorController = require('../controllers/instructorController.js');
 const sessionController = require('../controllers/sessionController.js');
 const todoScheduleController = require('../controllers/todoScheduleController');
-const upload = require('../middleware/cloudinaryUpload.js');
+const { upload } = require('../middleware/cloudinaryUpload.js');
 
 
 const Course = require('../models/Course');
@@ -26,11 +26,16 @@ router.get('/dashboard', (req, res) => {
     res.render('admin/dashboard',{req:req.session.user || null});
 });
 
+//users
+router.get("/users/:id/profile", userController.userProfile);
+router.get("/users/:id/profile/edit", userController.editUser);
+router.post("/users/:id/profile/update", upload.single('avatar'), userController.updateUser);
+
 // Students
 router.get("/students",(req, res) => {
     res.render("admin/student/index");
 });
-router.get("/get-students",userController.getStudents);
+router.get("/get-students", userController.getStudents);
 router.post("/block/:id", userController.blockUser);
 router.post("/unblock/:id", userController.unblockUser);
 router.post("/delete/:id", userController.deleteUser);
@@ -164,27 +169,22 @@ router.get(
 
 // Create instructor profile
 router.post(
-    '/:userId/instructor/create',
-    upload('document'),
+    '/instructor/:userId/create',
+    upload.single('document'),
     instructorController.createInstructorProfile
 );
-
-// Update instructor profile
-router.put(
-    '/:userId/profile',
-    upload('document'),
-    instructorController.updateInstructorProfile
-);
-
-// Get instructor profile
-router.get(
-    '/:userId/profile',
-    instructorController.getInstructorProfile
+router.post(
+  '/instructor/:userId/update',
+  upload.fields([
+    { name: 'avatar', maxCount: 1 },
+    { name: 'document', maxCount: 1 }
+  ]),
+  instructorController.updateInstructorProfile
 );
 
 // Delete instructor profile
 router.delete(
-    '/:userId/profile',
+    '/instructor/:userId/delete',
     instructorController.deleteInstructorProfile
 );
 

@@ -6,7 +6,7 @@ const createSessionCourse = async (req, res) => {
     try {
         const { course_id, difficulty_lvl, session_id } = req.body;
         await SessionCourse.create(course_id, difficulty_lvl, session_id);
-        res.status(201).redirect('/users/admin/session-courses/');
+        res.status(201).redirect('/admin/session-courses/');
     } catch (err) {
         console.error(err);
     }
@@ -57,7 +57,7 @@ const deleteSessionCourse = async (req, res) => {
         const { id } = req.params;
     try {
         await SessionCourse.delete(id);
-        res.status(200).redirect('/users/admin/session-courses/');
+        res.status(200).redirect('/admin/session-courses/');
     } catch (err) {
         console.error(err);
     }
@@ -73,7 +73,7 @@ const updateSessionCourse = async (req, res) => {
             await SessionCourse.updateDifficulty(session_id, course_id, level);
         }
 
-        res.status(200).redirect('/users/admin/session-courses/');
+        res.status(200).redirect('/admin/session-courses/');
     } catch (err) {
         console.error("Error updating session courses:", err);
         res.status(500).send("Failed to update session courses");

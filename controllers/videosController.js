@@ -15,7 +15,7 @@ const createVideo = async (req, res) => {
     try {
         const { title, iframe_link } = req.body;
         await Video.create(title, iframe_link);
-        res.redirect('/users/admin/videos/');
+        res.redirect('/admin/videos/');
     } catch (error) {
         console.error("Error creating video:", error);
         res.status(500).json({ message: 'Error creating video' });
@@ -28,7 +28,7 @@ const updateVideo = async (req, res) => {
         const { title, iframe_link } = req.body;
         const updated = await Video.updateVideo(id, title, iframe_link);
         if (updated) {
-            res.redirect('/users/admin/videos/');
+            res.redirect('/admin/videos/');
         } else {
             res.status(400).json({ message: 'Failed to update video' });
         }
@@ -43,7 +43,7 @@ const deleteVideo = async (req, res) => {
         const { id } = req.params;
         const deleted = await Video.deleteVideo(id);
         if (deleted) {
-            res.redirect('/users/admin/videos/');
+            res.redirect('/admin/videos/');
         } else {
             res.status(400).json({ message: 'Failed to delete video' });
         }
