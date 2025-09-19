@@ -1,0 +1,263 @@
+<%- include('../partials/_header', { title: 'Profile' }) %>
+<div class="container py-4">
+    <div class="row">
+        <!-- Profile Header -->
+        <div class="d-flex flex-column flex-md-row align-items-center gap-4 mb-4">
+            <img src="<%= userProfile.avatar %>" alt="<%= userProfile.name %>'s profile picture" 
+                width="120" height="120" class="rounded-circle object-fit-cover border border-3 border-primary">
+            <div class="text-center text-md-start">
+                <h1 class="fw-bold mb-2"><%= userProfile.name %> <span class="text-muted" style="font-size: 16px;">(<%= userProfile.role %>)</span></h1>
+                <div class="d-flex gap-2 justify-content-center justify-content-md-start">
+                    <a class="btn btn-outline-primary rounded-0 fw-bold" href="/admin/users/<%=userProfile.id%>/profile/edit">
+                        <i class="bi bi-pencil-fill me-1"></i>
+                        Edit Profile
+                    </a>
+                    <button class="btn btn-outline-primary rounded-0 fw-bold" type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#changePasswordModal">
+                        <i class="bi bi-lock me-1"></i>
+                        Change Password
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="changePasswordModal" tabindex="-1" aria-labelledby="changePasswordModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="changePasswordModalLabel">Change Password</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="changePasswordForm" action="/admin/users/<%= userProfile.id %>/change-password" method="POST">
+                            <div class="mb-3">
+                                <label for="oldPassword" class="form-label">Old Password</label>
+                                <input type="password" name="oldPassword" id="oldPassword" class="form-control" placeholder="Enter your old password" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="newPassword" class="form-label">New Password</label>
+                                <input type="password" name="newPassword" id="newPassword" class="form-control" placeholder="Enter your new password" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="confirmPassword" class="form-label">Confirm Password</label>
+                                <input type="password" name="confirmPassword" id="confirmPassword" class="form-control" placeholder="Confirm your new password" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="checkbox" name="showPassword" id="showPassword" class="form-check-input">
+                                <label for="showPassword" class="form-check-label me-2">Show Password</label>
+                            </div>
+                        
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="submit" class="btn btn-primary">Update</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Tabs Navigation -->
+        <ul class="nav nav-tabs mb-4" id="profileTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active fw-bold text-primary" id="courses-tab" data-bs-toggle="tab" data-bs-target="#courses" type="button" role="tab">
+                    <i class="bi bi-book me-1"></i>Courses
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-bold text-primary" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab">
+                    <i class="bi bi-gear me-1"></i>Settings
+                </button>
+            </li>
+        </ul>
+
+        <!-- Tab Content -->
+        <div class="tab-content" id="profileTabsContent">
+            <!-- Courses Tab -->
+            <div class="tab-pane fade show active" id="courses" role="tabpanel">
+            <%if(courses.length > 0 ){%>
+                <div class="row g-3">
+                <% courses.forEach(course => { %>
+                    <div class="col-lg-6 col-md-6 mb-4">
+                      <div class="card h-100 shadow-sm">
+                        <div class="card-header bg-primary">
+                          <form action="/lectures" method="get">
+                            <input type="hidden" name="course_id" value="<%= course.id %>">
+                            <button type="submit" class="bg-transparent border-0 outline-0">
+                              <h5 class="card-title fw-bold text-white">
+                                <%= course.title %>
+                              </h5>
+                            </button>
+                          </form>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text text-muted" style="font-size: 15px; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;">
+                              <%= course.description %>
+                            </p>
+                        </div>
+                        <div class="card-footer bg-transparent d-flex gap-3 align-items-center">
+                          <form action="/assignments" method="get" class="position-relative">
+                            <% if(course.unsubmitted_count > 0) { %>
+                            <div class="notification-badge">
+                                <%= course.unsubmitted_count%>
+                            </div>
+                            <% } %>
+                            <input type="hidden" name="course_id" value="<%= course.id %>">
+                            <button type="submit" class="btn btn-sm btn-primary w-100">
+                                <i class="bi bi-person-workspace me-1"></i>
+                                Assignments
+                            </button>
+                          </form>
+                          <form action="/announcements" method="get" class="position-relative">
+                            <% if(course.announcements_count > 0) { %>
+                            <div class="notification-badge">
+                                <%= course.announcements_count%>
+                            </div>
+                            <% } %>
+                            <input type="hidden" name="course_id" value="<%= course.id %>">
+                            <button type="submit" class="btn btn-sm btn-primary w-100">
+                                <i class="bi bi-megaphone me-1"></i>
+                                Announcements
+                            </button>
+                          </form>
+                        </div>
+                      </div>
+                    </div>
+                <% }); %>
+                </div>
+                <%} else { %>
+                <div class="alert alert-info">
+                    <p class="m-0">You haven't enrolled in any courses yet.</p>
+                </div>
+                <%}%>
+            </div>
+
+            <!-- Settings Tab -->
+            <div class="tab-pane fade" id="settings" role="tabpanel">
+              <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-4">
+                        <h6 class="fw-bold">Email</h6>
+                        <p class="text-muted"><%= userProfile.email %></p>  
+                    </div>
+                    <div class="mb-4">
+                        <h6 class="fw-bold">Signature</h6>
+                        <% if(userProfile.signature != null) { %>
+                        <canvas id="signatureCanvas" width="250" height="125"></canvas>
+                        <% } else { %>
+                        <p class="text-muted">No signature found. Please edit your profile to add your signature.</p>
+                        <% } %>
+                    </div>
+                    <%if(userProfile.page_link){%>
+                        <div class="mb-4">
+                            <h6 class="fw-bold">Page link</h6>
+                            <a href="<%= userProfile.page_link %>" target="_blank" class="text-muted"><%= userProfile.page_link %></a>
+                        </div>
+                    <%}%>
+                    <%if(userProfile.repository_link){%>
+                        <div class="mb-4">
+                            <h6 class="fw-bold">Repository link</h6>
+                            <a href="<%= userProfile.repository_link %>" target="_blank" class="text-muted"><%= userProfile.repository_link %></a>
+                        </div>
+                    <%}%>
+                </div>
+                <% if(userProfile.role == "instructor"){ %>
+                <div class="col-md-6">
+                    <div class="mb-4">
+                        <h6 class="fw-bold">Qualification</h6>
+                        <p class="text-muted"><%= userProfile.instructor.qualification %></p>  
+                    </div>
+
+                    <div class="mb-4">
+                        <h6 class="fw-bold">Specialization</h6>
+                        <p class="text-muted"><%= userProfile.instructor.specialization %></p>  
+                    </div>
+                    <div class="mb-4">
+                        <h6 class="fw-bold">Phone</h6>
+                        <p class="text-muted"><%= userProfile.instructor.phone %></p>  
+                    </div>
+                    <div class="mb-4">
+                        <h6 class="fw-bold">Salary</h6>
+                        <p class="text-muted"><%= userProfile.instructor.salary %></p>  
+                    </div>
+                    <div class="mb-4">
+                        <h6 class="fw-bold">Hire Date</h6>
+                        <p class="text-muted"><%= userProfile.instructor.hire_date.toISOString().split('T')[0] %></p>  
+                    </div>
+                    <div class="mb-4">
+                        <h6 class="fw-bold">Address</h6>
+                        <p class="text-muted"><%= userProfile.instructor.address %></p>  
+                    </div>
+                    <div class="mb-4">
+                        <h6 class="fw-bold">Qualification Document</h6>
+                        <% if(userProfile.instructor?.document_image) { %>
+                        <a href="<%= userProfile.instructor.document_image %>" target="_blank" class="text-decoration-none">
+                            <img src="<%= userProfile.instructor.document_image %>" class="img-fluid" width="200" height="200">
+                        </a>
+                        <% } %>
+                    </div>
+                </div>
+                <%}%>
+              </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <script src="/js/utils/sketchPad.js"></script>
+    <script src="/js/utils/draw.js"></script>
+    <script>
+        const signatureData = <%- JSON.stringify(userProfile.signature) %>;
+        if(signatureData != null) {
+          const canvas = document.getElementById('signatureCanvas');
+          const ctx = canvas.getContext('2d');
+          // Draw the signature
+          draw.paths(ctx,signatureData);
+        }
+    </script>
+
+    <script>
+        const showPasswordCheckbox = document.getElementById('showPassword');
+        const passwordInputs = document.querySelectorAll('input[type="password"], input[type="text"]');
+    
+        showPasswordCheckbox.addEventListener('change', function() {
+            passwordInputs.forEach(input => {
+                if (this.checked) {
+                    input.type = 'text';
+                } else {
+                    input.type = 'password';
+                }
+            });
+        });
+    </script>
+
+    <script>
+        const changePasswordForm = document.getElementById('changePasswordForm');
+        changePasswordForm.addEventListener('submit', function(event) {
+            event.preventDefault();
+            const oldPassword = document.getElementById('oldPassword').value;
+            const newPassword = document.getElementById('newPassword').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            document.getElementById('oldPassword').value = '';
+            document.getElementById('newPassword').value = '';
+            document.getElementById('confirmPassword').value = '';
+            fetch(changePasswordForm.action, {
+                method: 'POST',
+                body: JSON.stringify({ oldPassword, newPassword, confirmPassword }),
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showAlert(data.message, 'success');
+                    // Close the modal on success
+                    bootstrap.Modal.getInstance(document.getElementById('changePasswordModal')).hide();
+                } else {
+                    showAlert(data.message, 'danger');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showAlert('An error occurred while changing password', 'danger');
+            });
+        });
+    </script>
+<%- include('../partials/_footer') %>

@@ -11,6 +11,7 @@ const quizzController = require('../controllers/quizzController.js');
 const instructorController = require('../controllers/instructorController.js');
 const sessionController = require('../controllers/sessionController.js');
 const todoScheduleController = require('../controllers/todoScheduleController');
+const authController = require('../controllers/authController.js');
 const { upload } = require('../middleware/cloudinaryUpload.js');
 
 
@@ -27,8 +28,13 @@ router.get('/dashboard', (req, res) => {
 });
 
 //users
+router.get("/users/new", (req, res) => {
+    res.render("admin/user/new");
+});
+router.post("/users/create", upload.single('avatar'), authController.signup);
 router.get("/users/:id/profile", userController.userProfile);
 router.get("/users/:id/profile/edit", userController.editUser);
+router.post("/users/:id/change-password", userController.changePassword);
 router.post("/users/:id/profile/update", upload.single('avatar'), userController.updateUser);
 
 // Students
@@ -36,11 +42,13 @@ router.get("/students",(req, res) => {
     res.render("admin/student/index");
 });
 router.get("/get-students", userController.getStudents);
+router.get("/get-students-count", userController.getStudentsCount);
 router.post("/block/:id", userController.blockUser);
 router.post("/unblock/:id", userController.unblockUser);
 router.post("/delete/:id", userController.deleteUser);
 
-// Courses
+// Courses  
+router.get("/get-courses-count", coursesController.getCoursesCount);
 router.get("/courses", (req, res) => {res.render("admin/course/index")});
 router.get("/courses/new", (req, res) => {res.render("admin/course/new")});
 router.get("/courses/get-all", coursesController.getAllCourses);

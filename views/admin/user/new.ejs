@@ -1,0 +1,135 @@
+<%- include('../partials/_header', { title: 'Register New Account' , user: user }) %>
+    <div class="col-md-6">
+        <div class="p-4 p-md-5">
+            <div class="text-center mb-5">
+                <h2 class="fw-bold text-primary">Create Account</h2>
+                <p class="text-muted">Get started by creating your account</p>
+            </div>
+
+            <form action="/admin/users/create" method="post">
+                <!-- Name Input -->
+                <div class="mb-4">
+                    <label for="name" class="form-label fw-semibold">Full Name</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-person-fill"></i>
+                        </span>
+                        <input type="text" id="name" name="name" class="form-control form-control-lg"
+                            placeholder="Enter your full name" required>
+                    </div>
+                </div>
+
+                <!-- Email Input -->
+                <div class="mb-4">
+                    <label for="email" class="form-label fw-semibold">Email Address</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-envelope-fill"></i>
+                        </span>
+                        <input type="email" id="email" name="email" class="form-control form-control-lg"
+                            placeholder="Enter your email" required>
+                    </div>
+                </div>
+
+                <!-- Password Input -->
+                <div class="mb-4">
+                    <label for="password" class="form-label fw-semibold">Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-lock-fill"></i>
+                        </span>
+                        <input type="password" id="password" name="password" class="form-control form-control-lg"
+                            placeholder="Create a password" required>
+                        <button class="btn btn-outline-secondary toggle-password" type="button">
+                            <i class="bi bi-eye-fill"></i>
+                        </button>
+                    </div>
+                    <div class="form-text">Use 8 or more characters with a mix of letters,
+                        numbers & symbols</div>
+                </div>
+
+                <!-- Confirm Password Input -->
+                <div class="mb-4">
+                    <label for="confirmPassword" class="form-label fw-semibold">Confirm
+                        Password</label>
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i class="bi bi-lock-fill"></i>
+                        </span>
+                        <input type="password" id="confirmPassword" name="confirmPassword"
+                            class="form-control form-control-lg" placeholder="Confirm your password" required>
+                    </div>
+                </div>
+
+                <!-- Avatar Upload -->
+                <div class="mb-4">
+                    <label for="avatar" class="form-label fw-semibold">Profile Picture
+                        (Optional)</label>
+                    <div class="input-group">
+                        <input type="file" class="form-control form-control-lg" id="avatar" name="avatar"
+                            accept="image/*">
+                    </div>
+                    <div class="form-text">JPG, GIF or PNG. Max size 2MB</div>
+                </div>
+
+                <!-- Terms Agreement -->
+                <div class="mb-4 form-check">
+                    <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
+                    <label class="form-check-label" for="terms">I agree to the <a href="/auth/terms"
+                            class="text-decoration-none">Terms of Service</a>
+                        and <a href="/auth/privacy" class="text-decoration-none">Privacy
+                            Policy</a></label>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="d-grid mb-4">
+                    <button type="submit" class="btn btn-primary btn-lg fw-semibold py-2">Create
+                        Account</button>
+                </div>
+                <!-- Login Link -->
+                <div class="text-center">
+                    <p class="mb-0">Already have an account?
+                        <a href="/auth/login" class="text-decoration-none fw-semibold">Log
+                            in</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <%- include('../partials/_footer') %>
+
+        <script>
+            // Toggle password visibility (consistent with login page)
+            document.querySelectorAll('.toggle-password').forEach(button => {
+                button.addEventListener('click', function () {
+                    const passwordInput = this.parentElement.querySelector('input');
+                    const icon = this.querySelector('i');
+
+                    if (passwordInput.type === 'password') {
+                        passwordInput.type = 'text';
+                        icon.classList.remove('bi-eye-fill');
+                        icon.classList.add('bi-eye-slash-fill');
+                    } else {
+                        passwordInput.type = 'password';
+                        icon.classList.remove('bi-eye-slash-fill');
+                        icon.classList.add('bi-eye-fill');
+                    }
+                });
+            });
+
+            // Password confirmation validation
+            const password = document.getElementById('password');
+            const confirmPassword = document.getElementById('confirmPassword');
+
+            function validatePassword() {
+                if (password.value !== confirmPassword.value) {
+                    confirmPassword.setCustomValidity("Passwords don't match");
+                } else {
+                    confirmPassword.setCustomValidity('');
+                }
+            }
+
+            password.onchange = validatePassword;
+            confirmPassword.onkeyup = validatePassword;
+        </script>

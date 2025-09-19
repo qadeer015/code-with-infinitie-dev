@@ -64,6 +64,16 @@ class Course {
         }
     }
 
+     static async getCount() {
+        try {
+            const result = await db.execute('SELECT COUNT(id) AS courses_count  FROM courses');
+            return result[0];
+        } catch (error) {
+            console.error("Database query error:", error);
+            throw error;
+        }
+    }
+
 
     static async getCourse(userId, courseId) {
         try {

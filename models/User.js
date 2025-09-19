@@ -34,6 +34,16 @@ class User {
         }
     }
 
+    static async getCount(role = 'student') {
+        try {
+            const result = await db.execute('SELECT COUNT(id) AS students_count FROM users WHERE role = ?', [role]);
+            return result[0];
+        } catch (error) {
+            console.error("Database query error:", error);
+            throw error;
+        }
+    }
+
     static async findAll(role) {
         try {
             const [rows] = await db.execute('SELECT * FROM users WHERE role = ? AND status != "deleted"', [role]);
@@ -45,26 +55,26 @@ class User {
     }
 
     static async updateUser(id, name, email, role, avatar, page_link, repository_link, signature) {
-    try {
-        const [result] = await db.execute(
-            'UPDATE users SET name = ?, email = ?, role = ?, avatar = ?, page_link = ?, repository_link = ?, signature = ? WHERE id = ?',
-            [
-                name, 
-                email, 
-                role, 
-                avatar, 
-                page_link, 
-                repository_link, 
-                typeof signature === 'object' ? JSON.stringify(signature) : signature,
-                id
-            ]
-        );
-        return result.affectedRows > 0;
-    } catch (error) {
-        console.error("Error updating user:", error);
-        throw error;
+        try {
+            const [result] = await db.execute(
+                'UPDATE users SET name = ?, email = ?, role = ?, avatar = ?, page_link = ?, repository_link = ?, signature = ? WHERE id = ?',
+                [
+                    name,
+                    email,
+                    role,
+                    avatar,
+                    page_link,
+                    repository_link,
+                    typeof signature === 'object' ? JSON.stringify(signature) : signature,
+                    id
+                ]
+            );
+            return result.affectedRows > 0;
+        } catch (error) {
+            console.error("Error updating user:", error);
+            throw error;
+        }
     }
-}
 
     static async deleteUser(id) {
         try {

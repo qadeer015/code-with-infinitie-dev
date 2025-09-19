@@ -75,6 +75,7 @@ function formatTime(dateString) {
 
 // Add this new function to format dates as DD/MM/YYYY
 function formatDate(dateString) {
+    console.log(dateString);
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
         day: 'numeric',

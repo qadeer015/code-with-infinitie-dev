@@ -19,10 +19,11 @@ class TodoSchedule {
     static async findAll() {
         try {
             const [rows] = await db.execute(`
-                SELECT ts.*, c.title as course_title, u.name as created_by_name 
+                SELECT ts.*, c.title as course_title, u.name as created_by_name, s.name as session_name 
                 FROM todo_schedules ts 
                 JOIN courses c ON ts.course_id = c.id 
-                JOIN users u ON ts.created_by = u.id 
+                JOIN users u ON ts.created_by = u.id
+                JOIN sessions s ON ts.session_id = s.id
                 ORDER BY ts.start_date, ts.end_date
             `);
             return rows;

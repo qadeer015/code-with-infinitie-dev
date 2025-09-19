@@ -20,6 +20,15 @@ const getAllCourses = async (req, res) => {
     }
 }
 
+const getCoursesCount = async (req, res) => {
+    try {
+        const courses = await Course.getCount();
+        res.status(200).json(courses);
+    } catch (err) {
+        console.error(err);
+    }
+}
+
 const getUserCourses = async (req, res) => {
     try {
         const userCourses = await UserCourse.findUserCourses(req.user.id);
@@ -90,5 +99,6 @@ module.exports = {
     getAllCourses,
     editCourse,
     updateCourse,
-    deleteCourse
+    deleteCourse,
+    getCoursesCount
 }

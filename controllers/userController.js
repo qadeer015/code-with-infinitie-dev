@@ -54,12 +54,21 @@ const editUser = async (req, res) => {
             instructorProfile = await Instructor.findByUserId(userId);
         }
 
-        res.render("user/edit_user", {
+        if(req.user.role === 'admin'){ 
+            res.render("admin/user/edit", {
             user: req.user,
             userProfile,
             instructorProfile,
             viewName: 'edit_user'
         });
+        } else {
+            res.render("user/edit_user", {
+            user: req.user,
+            userProfile,
+            instructorProfile,
+            viewName: 'edit_user'
+        });
+        }
 
     } catch (error) {
         console.error(error);
@@ -124,6 +133,17 @@ const getStudents = async (req, res) => {
         res.status(500).json({ message: 'Error retrieving students' });
     }
 }
+
+const getStudentsCount = async (req, res) => {
+    try {
+        const students = await User.getCount('student');
+        res.status(200).json(students);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error retrieving students' });
+    }
+}
+
 
 const deleteUser = async (req, res) => {
     try {
@@ -205,7 +225,6 @@ const changePassword = async (req, res) => {
             if (newPassword !== confirmPassword) {
                 return res.status(400).json({ success: false, message: 'New password and confirm password do not match. Please enter the same password in both fields.' });
             }
-
         }
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -271,9 +290,11 @@ const userProfile = async (req, res) => {
         }
 
         courses = await Course.getUserCourses(userId);
-
-        res.render("user/profile", { userProfile, courses, viewName: 'profile' });
-
+        if(req.user.role === 'admin'){ 
+            res.render("admin/user/profile", { userProfile, courses, viewName: 'profile' });
+        } else {
+            res.render("user/profile", { userProfile, courses, viewName: 'profile' });
+        }
     } catch (error) {
         console.error(error);
         res.status(500).send("Error retrieving user");
@@ -281,33 +302,4 @@ const userProfile = async (req, res) => {
 };
 
 
-// const getCourses = async function(userId) {
-//      const [courses] = await db.execute(
-//                 `SELECT 
-//         c.*,
-//         (
-//             SELECT COUNT(*) 
-//             FROM assignments a
-//             LEFT JOIN assignment_submissions asub ON 
-//                 a.id = asub.assignment_id AND 
-//                 asub.user_id = ?
-//             WHERE 
-//                 a.course_id = c.id AND
-//                 (asub.id IS NULL OR (asub.status = 'pending' AND a.due_date > NOW()))
-//         ) AS unsubmitted_count,
-//         (
-//             SELECT COUNT(*)
-//             FROM announcements ann
-//             WHERE ann.course_id = c.id
-//         ) AS announcements_count
-//     FROM courses c
-//     JOIN user_courses uc ON c.id = uc.course_id
-//     WHERE uc.user_id = ?`,
-//                 [userId, userId]
-//             );
-
-//     return courses
-// }
-
-
-module.exports = { userProfile, editUser, updateUser, getStudents, deleteUser, blockUser, unblockUser, editUserSignature, changePassword };
+module.exports = { userProfile, getStudentsCount, editUser, updateUser, getStudents, deleteUser, blockUser, unblockUser, editUserSignature, changePassword };

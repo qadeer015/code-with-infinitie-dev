@@ -1,11 +1,16 @@
 const TodoSchedule = require('../models/TodoSchedule');
 const Session = require('../models/Session');
 const SessionCourse = require('../models/SessionCourse');
+const { formatDate } = require('../middleware/formateTime');
 
-// Get all todo schedules for a session
 exports.getAllSchedules = async (req, res) => {
     try {
-        const todoSchedules = await TodoSchedule.findAll();
+        let todoSchedules = await TodoSchedule.findAll();
+        todoSchedules = todoSchedules.map(schedule => ({
+            ...schedule,
+            start_date: formatDate(schedule.start_date),
+            end_date: formatDate(schedule.end_date)
+        }));
         res.json(todoSchedules);
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -47,7 +52,6 @@ exports.editSchedule = async (req, res) => {
     }
 };
 
-// Get a single todo schedule by ID
 exports.getSchedule = async (req, res) => {
     try {
         const { id } = req.params;
@@ -63,11 +67,10 @@ exports.getSchedule = async (req, res) => {
     }
 };
 
-// Create a new todo schedule
 exports.createSchedule = async (req, res) => {
     try {
         const { session_id, course_id, title, description, type, start_date, end_date, status } = req.body;
-        const created_by = req.user.id; // Assuming user is authenticated and user ID is available
+        const created_by = req.user.id;
         
         const result = await TodoSchedule.create(
             session_id, course_id, title, description, type, start_date, end_date, created_by, status
@@ -79,7 +82,6 @@ exports.createSchedule = async (req, res) => {
     }
 };
 
-// Update a todo schedule
 exports.updateSchedule = async (req, res) => {
     try {
         const { id } = req.params;
@@ -98,7 +100,6 @@ exports.updateSchedule = async (req, res) => {
     }
 };
 
-// Delete a todo schedule
 exports.deleteSchedule = async (req, res) => {
     try {
         const { id } = req.params;
@@ -114,7 +115,6 @@ exports.deleteSchedule = async (req, res) => {
     }
 };
 
-// Get calendar events
 exports.getCalendarEvents = async (req, res) => {
     try {
         const { session_id } = req.params;
@@ -125,7 +125,6 @@ exports.getCalendarEvents = async (req, res) => {
     }
 };
 
-// Get upcoming events
 exports.getUpcomingEvents = async (req, res) => {
     try {
         const { session_id } = req.params;
@@ -137,7 +136,6 @@ exports.getUpcomingEvents = async (req, res) => {
     }
 };
 
-// Update status of a schedule
 exports.updateStatus = async (req, res) => {
     try {
         const { id } = req.params;
@@ -155,7 +153,6 @@ exports.updateStatus = async (req, res) => {
     }
 };
 
-// Render calendar page
 exports.renderCalendar = async (req, res) => {
     try {
         const activeSession = await Session.getActiveSession();

@@ -28,7 +28,7 @@
         })
 
         function fetchStudents() {
-            const response = fetch("/admin/get-students", {
+            const response = fetch("/admin/get-students-count", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -41,7 +41,7 @@
 
                 return response.json();
             }).then(data => {
-                totalStudentsCount.textContent = data.length;
+                totalStudentsCount.textContent = data[0].students_count ;
             }).catch(error => {
                 console.error("Error fetching students:", error);
             });
@@ -49,7 +49,7 @@
 
 
         function fetchCourses(){
-const response = fetch("/admin/courses/get-all", {
+        const response = fetch("/admin/get-courses-count", {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -62,7 +62,7 @@ const response = fetch("/admin/courses/get-all", {
 
                 return response.json();
             }).then(data => {
-                totalCoursesCount.textContent = data.length;
+                totalCoursesCount.textContent = data[0].courses_count;
             }).catch(error => {
                 console.error("Error fetching courses:", error);
             });

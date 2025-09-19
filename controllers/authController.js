@@ -17,6 +17,8 @@ const getCookieOptions = (rememberMe) => {
 const signup = async (req, res) => {
     try {
         const { name, password, email, confirmPassword, terms } = req.body;
+        console.log(req.file);
+        console.log(req.body);
         const avatarUrl = req.file ? req.file.path : null;        // Validate required fields
 
         if (!terms || terms !== 'on') {
@@ -29,7 +31,7 @@ const signup = async (req, res) => {
 
         const existingUser = await User.findByEmail(email);
         if (existingUser) {
-            return res.status(400).json({ message: "Email already exists" });
+            return res.status(400).json({ message: "User with this email already exists." });
         }
         const hashedPassword = await bcrypt.hash(password, 10);
         
@@ -55,6 +57,7 @@ const login = async (req, res) => {
 
         // Find user by email
         const user = await User.findByEmail(email);
+        console.log(user);
         if (!user) {
             return res.status(401).json({ status: 'error', message: 'Invalid email.' });
         }

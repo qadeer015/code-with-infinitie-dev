@@ -10,6 +10,7 @@
                                 <th>Title</th>
                                 <th>Description</th>
                                 <th>Course</th>
+                                <th>Session</th>
                                 <th>StartDate</th>
                                 <th>EndDate</th>
                                 <th>Status</th>
@@ -66,8 +67,9 @@
                     <td>${todo.title}</td>
                     <td>${todo.description}</td>
                     <td>${todo.course_title}</td>
+                    <td>${todo.session_name}</td>
                     <td>${todo.start_date}</td>
-                    <td>${todo.start_date}</td>
+                    <td>${todo.end_date}</td>
                     <td> <span class="badge ${todo.status === 'scheduled' ? 'bg-info' : 'bg-success'}"> ${todo.status} </span></td>
                     <td>${todo.type}</td>
                     <td>${todo.created_by_name}</td>

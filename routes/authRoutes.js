@@ -5,14 +5,6 @@ const { vi } = require('date-fns/locale');
 
 const router = express.Router();
 
-// Render signup page
-router.get('/register', (req, res) => {
-    res.render('auth/signup', { user: req.session.user || null, viewName: 'signup' });
-});
-
-// Handle signup form submission with Cloudinary upload
-router.post('/signup', upload.single('avatar'), signup);
-
 // Render login page
 router.get('/login', (req, res) => {
     res.render('auth/login', { user: req.session.user || null, viewName: 'login' });

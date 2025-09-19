@@ -71,7 +71,7 @@ function renderStudents(student) {
                                 <i class="bi bi-three-dots-vertical"></i>
                             </button>
                             <ul class="dropdown-menu">
-                                <a class="text-decoration-none text-dark" href="/users/${student.id}/profile">
+                                <a class="text-decoration-none text-dark" href="/admin/users/${student.id}/profile">
                                 <li class="dropdown-item mb-1">
                                         <i class="bi bi-eye"></i>
                                         View

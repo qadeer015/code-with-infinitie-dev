@@ -70,7 +70,7 @@ function renderInstructors(instructor) {
                         <i class="bi bi-three-dots-vertical"></i>
                     </button>
                     <ul class="dropdown-menu">
-                        <a class="text-decoration-none text-dark" href="/users/${instructor.user_id}/profile">
+                        <a class="text-decoration-none text-dark" href="/admin/users/${instructor.user_id}/profile">
                         <li class="dropdown-item mb-1">
                                 <i class="bi bi-eye"></i>
                                 View
