@@ -8,7 +8,6 @@ router.get("/", async (req, res) => {
     const activeSession = await Session.getActiveSession();
     if(activeSession) {
         const courses = await SessionCourse.getAll(activeSession.id, req.user.id);
-        console.log(activeSession)
         res.render("courses", {courses, currentSession: activeSession, viewName: 'courses'});
     }else{
         const courses = [];

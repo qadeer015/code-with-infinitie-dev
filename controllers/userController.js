@@ -81,7 +81,10 @@ const editUser = async (req, res) => {
 const updateUser = async (req, res) => {
     try {
         const { id } = req.params; // Fixed destructuring
-        const { name, email, role, page_link, repository_link, signature } = req.body;
+        const { name, email, role, page_link, repository_link } = req.body;
+         // Get signature from form data
+        const signature = req.body.signature;
+        
         const userProfile = await User.findById(id);
         if (!userProfile) {
             return res.status(404).json({ message: 'User not found' });
