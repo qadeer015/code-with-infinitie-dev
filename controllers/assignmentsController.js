@@ -52,7 +52,6 @@ const getUnsubmittedAssignemntCountsByCourseId = async (req, res) => {
     }
 }
 
-
 const createAssignment = async (req, res) => {
     try {
         const { course_id, title, details, open_date, due_date, total_marks } = req.body;
@@ -64,7 +63,6 @@ const createAssignment = async (req, res) => {
         res.status(500).json({ message: 'Error creating assignment' });
     }
 };
-
 
 const submitAssignment = async (req, res) => {
     try {
