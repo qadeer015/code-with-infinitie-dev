@@ -3,6 +3,8 @@ const User = require('../models/User');
 const Instructor = require('../models/Instructor');
 const Course = require('../models/Course');
 require('dotenv').config();
+const sendEmail = require("../utils/emailService");
+const renderTemplate = require("../utils/templateRenderer");
 const bcrypt = require('bcryptjs');
 
 // Configure Cloudinary (if not already done in another file)
@@ -232,8 +234,21 @@ const changePassword = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
         const updatedPassword = await User.changePassword(id, hashedPassword);
-
+        const resetLink = `https://yourApp.com/reset-password/ikj98bhjjhb8g`;
+         
         if (updatedPassword) {
+             const htmlContent = renderTemplate("forgot-password.html", {
+               user_name: user.name,
+               reset_link: resetLink,
+               year: new Date().getFullYear(),
+               app_name: "Infinitidev"
+             });
+           
+             await sendEmail({
+               subject: "Reset Your Password",
+               htmlContent,
+               to: user.email
+             });
             res.status(200).json({ success: true, message: 'Password updated successfully' });
         } else {
             res.status(400).json({ success: false, message: 'Failed to update password' });

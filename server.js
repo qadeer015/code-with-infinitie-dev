@@ -7,8 +7,7 @@ const cookieParser = require('cookie-parser');
 app.use(cookieParser());
 const cors = require('cors');
 app.use(cors());
-//https://code-with-infinitie-dev-git-main-abdulqadeeeers-projects.vercel.app/assignments?course_id=30001
-const db = require("./config/db.js");
+
 const authRoutes = require("./routes/authRoutes.js");
 const userRoutes = require("./routes/userRoutes.js");
 const announcementRoutes = require("./routes/announcementRoutes.js");
