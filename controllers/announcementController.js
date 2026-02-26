@@ -1,5 +1,5 @@
 const Announcement = require('../models/Announcement');
-const formateTime = require('../middleware/formateTime');
+const formateTime = require('../middlewares/formateTime');
 require('dotenv').config();
 
 const showCourseAnnouncements = async (req, res) => {
@@ -10,7 +10,7 @@ const showCourseAnnouncements = async (req, res) => {
             ...announcement,
             created_at: formateTime.formatRelativeTime(announcement.created_at)
         }))
-        res.render("announcements", { announcements, viewName: 'announcements' });
+        res.render("application/announcements", { announcements, viewName: 'announcements' });
     } catch (error) {
         console.error("Error retrieving announcements:", error);
         res.status(500).json({ message: 'Error retrieving announcements', error: error.message });
@@ -54,7 +54,7 @@ const createAnnouncement = async (req, res) => {
 
 const updateAnnouncement = async (req, res) => {
     try {
-        const {title, content, course_id } = req.body;
+        const { title, content, course_id } = req.body;
         await Announcement.updateAnnouncement(req.params.announcement_id, title, content, course_id);
         res.redirect('/admin/announcements/');
     } catch (error) {
@@ -74,4 +74,4 @@ const deleteAnnouncement = async (req, res) => {
     }
 };
 
-module.exports = {showCourseAnnouncements, getAllAnnouncements, createAnnouncement, updateAnnouncement, deleteAnnouncement};
+module.exports = { showCourseAnnouncements, getAllAnnouncements, createAnnouncement, updateAnnouncement, deleteAnnouncement };

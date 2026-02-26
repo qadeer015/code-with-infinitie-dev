@@ -1,7 +1,7 @@
 const TodoSchedule = require('../models/TodoSchedule');
 const Session = require('../models/Session');
 const SessionCourse = require('../models/SessionCourse');
-const { formatDate } = require('../middleware/formateTime');
+const { formatDate } = require('../middlewares/formateTime');
 
 exports.getAllSchedules = async (req, res) => {
     try {
@@ -56,11 +56,11 @@ exports.getSchedule = async (req, res) => {
     try {
         const { id } = req.params;
         const schedule = await TodoSchedule.findById(id);
-        
+
         if (!schedule) {
             return res.status(404).json({ success: false, message: 'Schedule not found' });
         }
-        
+
         res.json({ success: true, data: schedule });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -71,11 +71,11 @@ exports.createSchedule = async (req, res) => {
     try {
         const { session_id, course_id, title, description, type, start_date, end_date, status } = req.body;
         const created_by = req.user.id;
-        
+
         const result = await TodoSchedule.create(
             session_id, course_id, title, description, type, start_date, end_date, created_by, status
         );
-        
+
         res.status(201).redirect(`/admin/todo_schedules`);
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -89,11 +89,11 @@ exports.updateSchedule = async (req, res) => {
         const updated = await TodoSchedule.update(
             id, session_id, course_id, title, description, type, start_date, end_date, status
         );
-        
+
         if (!updated) {
             return res.status(404).json({ success: false, message: 'Schedule not found' });
         }
-        
+
         res.status(200).redirect(`/admin/todo_schedules`);
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -104,11 +104,11 @@ exports.deleteSchedule = async (req, res) => {
     try {
         const { id } = req.params;
         const deleted = await TodoSchedule.delete(id);
-        
+
         if (!deleted) {
             return res.status(404).json({ success: false, message: 'Schedule not found' });
         }
-        
+
         res.json({ success: true, message: 'Schedule deleted successfully' });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -140,13 +140,13 @@ exports.updateStatus = async (req, res) => {
     try {
         const { id } = req.params;
         const { status } = req.body;
-        
+
         const updated = await TodoSchedule.updateStatus(id, status);
-        
+
         if (!updated) {
             return res.status(404).json({ success: false, message: 'Schedule not found' });
         }
-        
+
         res.json({ success: true, message: 'Status updated successfully' });
     } catch (error) {
         res.status(500).json({ success: false, message: error.message });
@@ -157,15 +157,15 @@ exports.renderCalendar = async (req, res) => {
     try {
         const activeSession = await Session.getActiveSession();
         if (activeSession) {
-        const events = await TodoSchedule.getCalendarEvents(activeSession.id);
-        res.render('user/todo_schedule', {
-            title: 'Schedule Calendar',
-            session_id: activeSession.id,
-            events: JSON.stringify(events),
-            viewName: 'todo_schedule' 
-        });
-        }else{
-            res.render('user/todo_schedule', {
+            const events = await TodoSchedule.getCalendarEvents(activeSession.id);
+            res.render('application/user/todo_schedule', {
+                title: 'Schedule Calendar',
+                session_id: activeSession.id,
+                events: JSON.stringify(events),
+                viewName: 'todo_schedule'
+            });
+        } else {
+            res.render('application/user/todo_schedule', {
                 title: 'Schedule Calendar',
                 session_id: null,
                 events: [],

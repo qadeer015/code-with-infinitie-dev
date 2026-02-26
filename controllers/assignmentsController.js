@@ -1,6 +1,6 @@
 const Assignment = require('../models/Assignment');
 const AssignmentSubmission = require('../models/AssignmentSubmission');
-const formateTime = require('../middleware/formateTime');
+const formateTime = require('../middlewares/formateTime');
 require('dotenv').config();
 const path = require('path');
 const fs = require('fs');
@@ -18,7 +18,7 @@ const showCourseAssignments = async (req, res) => {
             due_date: formateTime.formatDate(assignment.due_date),
             open_date: formateTime.formatDate(assignment.open_date)
         }))
-        res.render("assignments", { assignments, token, viewName: 'assignments'});
+        res.render("application/assignments", { assignments, token, viewName: 'assignments' });
     } catch (error) {
         console.error("Error retrieving assignments:", error);
         res.status(500).json({ message: 'Error retrieving assignments' });
@@ -131,7 +131,7 @@ const getSubmittedAssignments = async (req, res) => {
                 ? JSON.parse(assignment.file_path)
                 : assignment.file_path
         })).sort((a, b) => a.assignment_id - b.assignment_id);  // Add this sort
-        
+
         res.render("admin/assignment/submitted_assignments", {
             assignments: formattedAssignments,
             courseId: course_id

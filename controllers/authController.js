@@ -49,6 +49,19 @@ const signup = async (req, res) => {
     }
 };
 
+const signWithGoogle = async (req, res) => {
+    const user = req.user;
+    
+    // Redirect based on role
+    if (user.role === "admin") {
+        req.flash("success", "Welcome Admin! You have logged in successfully");
+        return res.redirect("/admin/dashboard");
+    }
+
+    req.flash("success", "You have logged in successfully");
+    return res.redirect("/");
+};
+
 const login = async (req, res) => {
     try {
         const { email, password, rememberMe } = req.body;
@@ -110,11 +123,11 @@ const logout = (req, res) => {
 
 // Terms and Privacy Policy pages
 const showTerms = (req, res) => {
-    res.render('auth/terms', { title: 'Terms of Service', user: req.user, viewName: 'terms' });
+    res.render('application/auth/terms', { title: 'Terms of Service', user: req.user, viewName: 'terms' });
 };
 
 const showPrivacy = (req, res) => {
-    res.render('auth/privacy', { title: 'Privacy Policy', user: req.user, viewName: 'privacy' });
+    res.render('application/auth/privacy', { title: 'Privacy Policy', user: req.user, viewName: 'privacy' });
 };
 
 module.exports = { 
@@ -122,5 +135,6 @@ module.exports = {
     login, 
     logout,
     showTerms,
-    showPrivacy
+    showPrivacy,
+    signWithGoogle
 };
