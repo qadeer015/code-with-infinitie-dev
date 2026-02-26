@@ -12,6 +12,7 @@ const instructorController = require('../controllers/instructorController.js');
 const sessionController = require('../controllers/sessionController.js');
 const todoScheduleController = require('../controllers/todoScheduleController.js');
 const authController = require('../controllers/authController.js');
+const analyticsController = require('../controllers/analytics.controller.js');
 const { upload } = require('../middlewares/cloudinaryUpload.js');
 
 const Course = require('../models/Course.js');
@@ -222,5 +223,7 @@ router.post('/todo_schedules/:id/update', todoScheduleController.updateSchedule)
 // Delete a schedule
 router.delete('/todo_schedules/:id/delete', todoScheduleController.deleteSchedule);
 
+router.get("/analytics", analyticsController.getAnalyticsDashboard);
+router.get("/analytics/realtime", analyticsController.getRealtimeData);
 
 module.exports = router;
