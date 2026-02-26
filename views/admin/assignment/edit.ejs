@@ -1,4 +1,3 @@
-<%- include('../partials/_header', { title: 'Edit Assignment' }) %>
     <h4 class="fw-bold pt-4 pb-1">Edit Assignment</h4>
     <div class="row pb-5">
         <form action="/admin/assignments/<%= assignment.id %>/update" method="post">
@@ -42,4 +41,3 @@
             <a href="/admin/assignments" class="btn btn-outline-secondary">Cancel</a>
         </form>
     </div>
-    <%- include('../partials/_footer') %>

@@ -49,7 +49,7 @@ const showQuizz = async (req, res) => {
             }
         }
         
-        res.status(200).render('user/quizz', {
+        res.status(200).render('application/user/quizz', {
             title: course.title,
             quizData,
             course,
@@ -206,7 +206,7 @@ const takeQuizz = async (req, res) => {
     try {
         const course = await Course.findById(req.params.course_id);
         const quizData = await Question.getQuestionsAndOptions(req.params.id);
-        res.status(200).render('takeQuizz', { title: course.title, quizData, course  });
+        res.status(200).render('application/takeQuizz', { title: course.title, quizData, course  });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

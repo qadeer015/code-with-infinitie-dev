@@ -1,0 +1,163 @@
+<!-- Hero Section -->
+<div class="container-fluid bg-primary text-white py-5">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6">
+        <h1 class="display-4 fw-bold mb-4">Master Web Development</h1>
+        <p class="lead mb-4">Join thousands of students learning the latest web technologies from industry experts.</p>
+        <div class="d-flex gap-3">
+          <a href="/auth/register" class="btn btn-light btn-lg px-4">Get Started</a>
+          <a href="/courses" class="btn btn-outline-light btn-lg px-4">Browse Courses</a>
+        </div>
+      </div>
+      <div class="col-lg-6 d-none d-lg-block">
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Featured Courses -->
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <h2 class="fw-bold">Featured Courses</h2>
+    <p class="text-muted">Start your learning journey today</p>
+  </div>
+  
+  <div class="row g-4">
+    <% sessionCourses.forEach(course => { %>
+<div class="col-md-4">
+      <div class="card h-100 shadow-sm">
+        <div class="card-body">
+          <span class="badge mb-2 <%= course.difficulty_lvl === 'beginner' ? 'bg-success' : course.difficulty_lvl === 'intermediate' ? 'bg-warning' : 'bg-danger' %> "><%= course.difficulty_lvl %></span>
+          <h5 class="card-title"><%= course.title %></h5>
+          <p class="card-text text-muted"><%= course.description %></p>
+        </div>
+        <div class="card-footer bg-transparent border-top-0 d-flex justify-content-between align-items-center">
+          <div>
+            <span class="text-warning">
+                <% for (let i = 0; i < 5; i++) { %>
+  <% if (i < course.ratting) { %>
+    ★
+  <% } else { %>
+    ☆
+  <% } %>
+<% } %>
+
+            </span>
+            <span class="text-muted ms-1">(124)</span>
+          </div>
+          <form action="/courses/30014/join" method="post">
+            <input type="hidden" name="user_id" value="<%= user %>">
+            <input type="hidden" name="course_id" value="<%= course.id %>">
+            <button type="submit" class="btn btn-sm btn-outline-primary">Enroll Now</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    <% }) %>
+  </div>
+  
+  <div class="text-center mt-4">
+    <a href="/courses" class="btn btn-primary px-4">View All Courses</a>
+  </div>
+</div>
+
+<!-- Why Choose Us -->
+<div class="container-fluid bg-light py-5">
+  <div class="container">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold">Why Choose Our Platform?</h2>
+      <p class="text-muted">We provide the best learning experience</p>
+    </div>
+    
+    <div class="row g-4">
+      <div class="col-md-4 text-center">
+        <div class="p-4 bg-white rounded-3 shadow-sm h-100">
+          <div class="mb-3">
+            <span class="fs-1 text-primary">📚</span>
+          </div>
+          <h4>Comprehensive Curriculum</h4>
+          <p class="text-muted">Courses covering all aspects of modern web development from beginner to advanced levels.</p>
+        </div>
+      </div>
+      
+      <div class="col-md-4 text-center">
+        <div class="p-4 bg-white rounded-3 shadow-sm h-100">
+          <div class="mb-3">
+            <span class="fs-1 text-primary">👨‍🏫</span>
+          </div>
+          <h4>Expert Instructors</h4>
+          <p class="text-muted">Learn from industry professionals with years of real-world experience.</p>
+        </div>
+      </div>
+      
+      <div class="col-md-4 text-center">
+        <div class="p-4 bg-white rounded-3 shadow-sm h-100">
+          <div class="mb-3">
+            <span class="fs-1 text-primary">🤝</span>
+          </div>
+          <h4>Community Support</h4>
+          <p class="text-muted">Join our active community of learners and get help when you need it.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Testimonials -->
+<div class="container py-5">
+  <div class="text-center mb-5">
+    <h2 class="fw-bold">What Our Students Say</h2>
+    <p class="text-muted">Success stories from our community</p>
+  </div>
+  
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="p-4 border rounded-3 h-100">
+        <div class="d-flex align-items-center mb-3">
+          <img src="https://via.placeholder.com/50" class="rounded-circle me-3" alt="Student">
+          <div>
+            <h5 class="mb-0">Alex Johnson</h5>
+            <small class="text-muted">Web Developer at TechCorp</small>
+          </div>
+        </div>
+        <p class="mb-0">"The React course completely transformed my career. I went from knowing basics to landing a developer job in 3 months!"</p>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="p-4 border rounded-3 h-100">
+        <div class="d-flex align-items-center mb-3">
+          <img src="https://via.placeholder.com/50" class="rounded-circle me-3" alt="Student">
+          <div>
+            <h5 class="mb-0">Sarah Miller</h5>
+            <small class="text-muted">Freelance Developer</small>
+          </div>
+        </div>
+        <p class="mb-0">"The project-based approach helped me build a portfolio that got me my first clients. Highly recommended!"</p>
+      </div>
+    </div>
+    
+    <div class="col-md-4">
+      <div class="p-4 border rounded-3 h-100">
+        <div class="d-flex align-items-center mb-3">
+          <img src="https://via.placeholder.com/50" class="rounded-circle me-3" alt="Student">
+          <div>
+            <h5 class="mb-0">David Chen</h5>
+            <small class="text-muted">Frontend Engineer</small>
+          </div>
+        </div>
+        <p class="mb-0">"The JavaScript course filled all the gaps in my knowledge. The instructors explain complex concepts in simple terms."</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Call to Action -->
+<div class="container-fluid bg-secondary text-white py-5">
+  <div class="container text-center">
+    <h2 class="fw-bold mb-4">Ready to Start Your Journey?</h2>
+    <p class="lead mb-4">Join thousands of students learning web development today</p>
+    <a href="/auth/register" class="btn btn-light btn-lg px-5">Create Free Account</a>
+  </div>
+</div>

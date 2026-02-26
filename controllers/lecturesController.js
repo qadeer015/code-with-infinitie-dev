@@ -61,7 +61,7 @@ const showLecture = async (req, res) => {
         const { id } = req.params;
         const course = await Course.findCourse(req.query.course_id);
         const lecture = await Lecture.getUserLectureDetails(id, req.user.id);
-        res.status(200).render('lectures_viewer', { lecture, course, viewName: 'lectures_viewer' });
+        res.status(200).render('application/lectures_viewer', { lecture, course, viewName: 'lectures_viewer' });
     } catch (err) {
         console.error(err);
     }
@@ -72,7 +72,7 @@ const showLectureContent = async (req, res) => {
         const { id } = req.params;
         const course = await Course.findCourse(req.query.course_id);
         const lecture = await Lecture.getUserLectureDetails(id, req.user.id);
-        res.status(200).render('lecture_content', { lecture, course, viewName: 'lecture_content' });
+        res.status(200).render('application/lecture_content', { lecture, course, viewName: 'lecture_content' });
     } catch (err) {
         console.error(err);
     }

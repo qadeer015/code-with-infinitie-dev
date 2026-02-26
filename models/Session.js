@@ -4,7 +4,7 @@ class Session {
     static async create(name, description, start_date, end_date, created_by, status = 'upcoming') {
         try {
             const [result] = await db.execute(
-                'INSERT INTO sessions (name, description, start_date, end_date, created_by, status) VALUES (?, ?, ?, ?, ?, ?)',
+                'INSERT INTO academic_sessions (name, description, start_date, end_date, created_by, status) VALUES (?, ?, ?, ?, ?, ?)',
                 [name, description, start_date, end_date, created_by, status]
             );
             return result;
@@ -22,7 +22,7 @@ class Session {
                 u.name AS created_by_name,
                 c.id AS course_id,
                 c.title AS course_title
-            FROM sessions s
+            FROM academic_sessions s
             JOIN users u ON s.created_by = u.id
             LEFT JOIN session_courses sc ON s.id = sc.session_id
             LEFT JOIN courses c ON sc.course_id = c.id
@@ -67,7 +67,7 @@ class Session {
         try {
             const [rows] = await db.execute(`
                 SELECT s.*, u.name as created_by_name 
-                FROM sessions s 
+                FROM academic_sessions s 
                 JOIN users u ON s.created_by = u.id 
                 ORDER BY s.start_date DESC
             `);
@@ -82,7 +82,7 @@ class Session {
         try {
             const [rows] = await db.execute(`
                 SELECT s.*, u.name as created_by_name 
-                FROM sessions s 
+                FROM academic_sessions s 
                 JOIN users u ON s.created_by = u.id 
                 WHERE s.status = ? 
                 ORDER BY s.start_date DESC
@@ -97,7 +97,7 @@ class Session {
     static async update(id, name, description, start_date, end_date, status) {
         try {
             const [result] = await db.execute(
-                'UPDATE sessions SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+                'UPDATE academic_sessions SET name = ?, description = ?, start_date = ?, end_date = ?, status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
                 [name, description, start_date, end_date, status, id]
             );
             return result.affectedRows > 0;
@@ -109,7 +109,7 @@ class Session {
 
     static async delete(id) {
         try {
-            const [result] = await db.execute('DELETE FROM sessions WHERE id = ?', [id]);
+            const [result] = await db.execute('DELETE FROM academic_sessions WHERE id = ?', [id]);
             return result.affectedRows > 0;
         } catch (error) {
             console.error("Error deleting session:", error);
@@ -150,7 +150,7 @@ class Session {
 
     static async getSessionWithCourses(id) {
         try {
-            const [session] = await db.execute('SELECT * FROM sessions WHERE id = ?', [id]);
+            const [session] = await db.execute('SELECT * FROM academic_sessions WHERE id = ?', [id]);
             if (session.length === 0) return null;
 
             const [courses] = await db.execute(`
@@ -173,7 +173,7 @@ class Session {
     static async updateStatus(id, status) {
         try {
             const [result] = await db.execute(
-                'UPDATE sessions SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
+                'UPDATE academic_sessions SET status = ?, updated_at = CURRENT_TIMESTAMP WHERE id = ?',
                 [status, id]
             );
             return result.affectedRows > 0;
@@ -186,7 +186,7 @@ class Session {
     static async getActiveSession(){
         try {
             const [result] = await db.execute(
-                'SELECT * FROM sessions WHERE status = ?',
+                'SELECT * FROM academic_sessions WHERE status = ?',
                 ['active']
             );
             return result[0];
@@ -200,7 +200,7 @@ class Session {
         try {
             const [rows] = await db.execute(`
                 SELECT s.*, u.name as created_by_name 
-                FROM sessions s 
+                FROM academic_sessions s 
                 JOIN users u ON s.created_by = u.id 
                 WHERE s.status = 'active' 
                 ORDER BY s.start_date DESC

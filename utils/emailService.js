@@ -24,8 +24,8 @@ const sendEmail = async ({ subject, htmlContent, to, name = "User" }) => {
     sendSmtpEmail.subject = subject;
     sendSmtpEmail.htmlContent = htmlContent;
     sendSmtpEmail.sender = {
-      name: "infinitidev",
-      email: "support@codewithinfinitidev.online"
+      name: process.env.BREVO_SMTP_SENDER_NAME,
+      email: process.env.BREVO_SMTP_SENDER
     };
 
     sendSmtpEmail.to = [{ email: to, name }];

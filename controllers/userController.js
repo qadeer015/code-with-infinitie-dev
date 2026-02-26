@@ -64,7 +64,7 @@ const editUser = async (req, res) => {
             viewName: 'edit_user'
         });
         } else {
-            res.render("user/edit_user", {
+            res.render("application/user/edit_user", {
             user: req.user,
             userProfile,
             instructorProfile,
@@ -311,7 +311,7 @@ const userProfile = async (req, res) => {
         if(req.user.role === 'admin'){ 
             res.render("admin/user/profile", { userProfile, courses, viewName: 'profile' });
         } else {
-            res.render("user/profile", { userProfile, courses, viewName: 'profile' });
+            res.render("application/user/profile", { userProfile, courses, viewName: 'profile' });
         }
     } catch (error) {
         console.error(error);
