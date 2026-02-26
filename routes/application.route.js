@@ -1,35 +1,33 @@
-// routes/applicationRoutes.js
-const path = require("path");
 const { authenticate, authorize } = require("../middlewares/auththenticate.js");
 
+// Manually import all route files
+const pageRoutes = require("./page.route.js");
+const authRoutes = require("./auth.route.js");
+const userRoutes = require("./user.route.js");
+const announcementRoutes = require("./announcement.route.js");
+const courseRoutes = require("./course.route.js");
+const assignmentRoutes = require("./assignment.route.js");
+const lectureRoutes = require("./lecture.route.js");
+const certificateRoutes = require("./certificate.route.js");
+const todoScheduleRoutes = require("./todoSchedule.route.js");
+const adminRoutes = require("./admin.route.js");
+const instructorRoutes = require("./instructor.route.js");
+
 module.exports = (app) => {
+    // Public routes (no authentication required)
+    app.use("/", pageRoutes);
+    app.use("/auth", authRoutes);
 
-    const routesConfig = [
-        { file: "page.route.js", path: "/", public: true },
-        { file: "auth.route.js", path: "/auth", public: true },
-        { file: "user.route.js", path: "/users" },
-        { file: "announcement.route.js", path: "/announcements" },
-        { file: "course.route.js", path: "/courses" },
-        { file: "assignment.route.js", path: "/assignments" },
-        { file: "lecture.route.js", path: "/lectures" },
-        { file: "certificate.route.js", path: "/certificates" },
-        { file: "todoSchedule.route.js", path: "/todo_schedule" },
-        { file: "admin.route.js", path: "/admin", role: "admin" },
-        { file: "instructor.route.js", path: "/instructor", role: "instructor" }
-    ];
+    // Protected routes (authentication required)
+    app.use("/users", authenticate, userRoutes);
+    app.use("/announcements", authenticate, announcementRoutes);
+    app.use("/courses", authenticate, courseRoutes);
+    app.use("/assignments", authenticate, assignmentRoutes);
+    app.use("/lectures", authenticate, lectureRoutes);
+    app.use("/certificates", authenticate, certificateRoutes);
+    app.use("/todo_schedule", authenticate, todoScheduleRoutes);
 
-    routesConfig.forEach(({ file, path: routePath, public, role }) => {
-        const route = require(path.join(__dirname, file));
-        
-        if (public) {
-            app.use(routePath, route);
-        }
-        else if (role) {
-            app.use(routePath, authenticate, authorize(role), route);
-        }
-        else {
-            app.use(routePath, authenticate, route);
-        }
-
-    });
+    // Role‑protected routes
+    app.use("/admin", authenticate, authorize("admin"), adminRoutes);
+    app.use("/instructor", authenticate, authorize("instructor"), instructorRoutes);
 };
