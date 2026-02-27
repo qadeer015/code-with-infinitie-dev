@@ -1,3 +1,4 @@
+// controllers/authController.js
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
@@ -51,15 +52,18 @@ const signup = async (req, res) => {
 
 const signWithGoogle = async (req, res) => {
     const user = req.user;
-    
-    // Redirect based on role
-    if (user.role === "admin") {
-        req.flash("success", "Welcome Admin! You have logged in successfully");
-        return res.redirect("/admin/dashboard");
-    }
 
-    req.flash("success", "You have logged in successfully");
-    return res.redirect("/");
+    const token = jwt.sign(
+        { id: user.id, role: user.role, email: user.email, name: user.name, avatar: user.profile_photo },
+        process.env.JWT_SECRET,
+        { expiresIn: '30d' }
+    );
+
+    res.cookie("token", token, getCookieOptions(true)); // 30 days
+
+    if (user.role === "admin") return res.redirect("/admin/dashboard");
+    if (user.role === "instructor") return res.redirect("/instructor/dashboard");
+    res.redirect("/");
 };
 
 const login = async (req, res) => {

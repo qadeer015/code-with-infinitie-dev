@@ -1,7 +1,7 @@
-// === config/passport.js ===
+//config/passport.js
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const db = require('./db'); // Make sure this path is correct
+const db = require('./db');
 require('dotenv').config();
 
 // Google OAuth Strategy
@@ -11,7 +11,7 @@ passport.use(new GoogleStrategy({
     callbackURL: process.env.GOOGLE_CALLBACK_URL
 },
     // In GoogleStrategy
-    async (accessToken, refreshToken, profile, done) => {  // Add missing params
+    async (accessToken, refreshToken, profile, done) => {
         try {
             const email = profile.emails[0].value;
             const [users] = await db.query(
@@ -34,7 +34,7 @@ passport.use(new GoogleStrategy({
 
             // New user
             const [result] = await db.query(
-                'INSERT INTO users (google_id, name, email, profile_photo, email_verified) VALUES (?, ?, ?, ?, ?)',
+                'INSERT INTO users (google_id, name, email, profile_photo, email_verified, password) VALUES (?, ?, ?, ?, ?, "")',
                 [
                     profile.id,
                     profile.displayName,
@@ -56,23 +56,5 @@ passport.use(new GoogleStrategy({
         }
     }
 ));
-
-// Serialize and deserialize user
-passport.serializeUser((user, done) => {
-    done(null, user.id);
-});
-
-// In config/passport.js
-passport.deserializeUser(async (id, done) => {
-    try {
-        const [users] = await db.query('SELECT * FROM users WHERE id = ?', [id]);
-        if (users.length === 0) {
-            return done(new Error('User not found'));
-        }
-        done(null, users[0]);
-    } catch (error) {
-        done(error);
-    }
-});
 
 module.exports = passport;

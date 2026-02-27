@@ -18,11 +18,10 @@ const Announcement = require('../models/Announcement.js');
 
 // home page
 router.get('/dashboard', (req, res) => {
-    res.render('instructor/dashboard', { req: req.session.user || null });
+    res.render('instructor/dashboard');
 });
 
 // Users
-
 router.get("/users/:id/profile", userController.userProfile);
 router.get("/users/:id/profile/edit", userController.editUser);
 router.post("/users/:id/profile/update", upload.single('avatar'), userController.updateUser);

@@ -4,14 +4,14 @@ const app = express();
 const path = require('path');
 require('dotenv').config();
 const morgan = require("morgan");
-const session = require('express-session');
+const passport = require('passport');
 const cookieParser = require('cookie-parser');
 const methodOverride = require("method-override");
 const expressLayouts = require("express-ejs-layouts");
 app.use(cookieParser());
 const cors = require('cors');
 app.use(cors());
-
+require('./passport.js');
 const { bindUser } = require("../middlewares/auththenticate.js");
 
 const applicationRoutes = require("../routes/application.route.js");
@@ -24,12 +24,7 @@ app.set("layout", "layouts/application");
 app.set('views', path.join(__dirname, '../views'));
 app.set('view engine', 'ejs');
 
-app.use(session({
-    secret: process.env.JWT_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }
-}));
+app.set('trust proxy', 1);
 
 app.use(express.json());
 app.use(morgan('dev'));
@@ -41,6 +36,8 @@ app.use(express.urlencoded({ limit: '50mb', extended: true }));
 app.use(express.static(path.join(__dirname, '../public')));
 app.use('/img', express.static(path.join(__dirname, '../public/img')));
 app.use('/uploads', express.static(path.join(__dirname, '../public/uploads')));
+
+app.use(passport.initialize());
 
 app.use((err, req, res, next) => {
     console.error('Error:', err);
