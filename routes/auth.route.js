@@ -1,12 +1,13 @@
+// routes/auth.route.js
 const express = require('express');
-const { signup, login, logout, showTerms, showPrivacy, signWithGoogle } = require('../controllers/authController');
+const { login, logout, showTerms, showPrivacy, signWithGoogle } = require('../controllers/authController');
 const passport = require('passport');
 
 const router = express.Router();
 
 // Render login page
 router.get('/login', (req, res) => {
-    res.render('application/auth/login', { user: req.session.user || null, viewName: 'login' });
+    res.render('application/auth/login', { viewName: 'login' });
 });
 
 // Handle login form submission
@@ -19,8 +20,9 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 
 router.get('/google/callback',
     passport.authenticate('google', {
-        failureRedirect: '/auth/signin',
-        failureFlash: true
+        failureRedirect: '/auth/login',
+        failureFlash: true,
+        session: false,
     }),
     signWithGoogle
 );

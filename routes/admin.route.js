@@ -24,7 +24,7 @@ const Session = require('../models/Session.js');
 
 // home page
 router.get('/dashboard', (req, res) => {
-    res.render('admin/dashboard', { req: req.session.user || null });
+    res.render('admin/dashboard');
 });
 
 //users

@@ -8,7 +8,7 @@
     "dev": "npx nodemon server.js",
     "db:reset": "mysql -u root -p < db_schema/schema.sql",
     "db:seed": "mysql -u root -p infiniti_dev < db_schema/seed.sql",
-    "db:fresh": "npm run db:reset && npm run db:seed"
+    "db:migrate": "mysql -u root -p infiniti_dev < db_schema/migrate.sql"
   },
   "keywords": [],
   "author": "Abdul Qadeer , Rana Zaheer Ahmed",
@@ -45,6 +45,7 @@
     "nodemailer": "^7.0.11",
     "nodemon": "^3.1.9",
     "passport": "^0.7.0",
+    "passport-google-oauth20": "^2.0.0",
     "path": "^0.12.7",
     "pdfkit": "^0.17.1",
     "socket.io": "^4.8.1",
