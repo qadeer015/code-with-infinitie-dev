@@ -2,3 +2,6 @@ node_modules/
 db_schema
 .env
 schema.txt
+schema.js
+.github
+.vscode
