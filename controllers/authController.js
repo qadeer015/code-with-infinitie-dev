@@ -2,6 +2,8 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
+const { sendEmail } = require("../api/emailService");
+const renderTemplate = require("../utils/templateRenderer");
 const dotenv = require("dotenv");
 dotenv.config();
 
@@ -60,6 +62,19 @@ const signWithGoogle = async (req, res) => {
     );
 
     res.cookie("token", token, getCookieOptions(true)); // 30 days
+
+    const html = renderTemplate("welcome.html", {
+        user_name: user.name,
+        year: new Date().getFullYear(),
+        app_name: "Code with Infinitidev",
+    });
+
+    sendEmail({
+        to: user.email,
+        subject: "Sign in to Code with Infinitidev",
+        text: "You have signed in to Code with Infinitidev",
+        html,
+    }).catch((err) => console.error("Error sending email:", err));
 
     if (user.role === "admin") return res.redirect("/admin/dashboard");
     if (user.role === "instructor") return res.redirect("/instructor/dashboard");

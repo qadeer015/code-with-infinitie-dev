@@ -3,7 +3,7 @@ const User = require('../models/User');
 const Instructor = require('../models/Instructor');
 const Course = require('../models/Course');
 require('dotenv').config();
-const sendEmail = require("../utils/emailService");
+const sendEmail = require("../api/emailService");
 const renderTemplate = require("../utils/templateRenderer");
 const bcrypt = require('bcryptjs');
 
@@ -264,18 +264,15 @@ const userProfile = async (req, res) => {
         const userId = req.params.id;
         let userProfile = await User.findById(userId);
         let courses = [];
-
         if (!userProfile) {
             return res.status(404).redirect('/'); // User not found
         }
-        
         // --- Admin profile rules ---
         if (userProfile.role === "admin") {
             if (req.user.role !== "admin" || req.user.id != userId) {
                 return res.status(403).redirect('/');
             }
         }
-
         // --- Instructor profile rules ---
         if (userProfile.role === "instructor") {
             if (req.user.role === "admin") {
@@ -306,7 +303,6 @@ const userProfile = async (req, res) => {
             }
             // Admins and instructors can view students freely
         }
-
         courses = await Course.getUserCourses(userId);
         if(req.user.role === 'admin'){ 
             res.render("admin/user/profile", { userProfile, courses, viewName: 'profile' });
