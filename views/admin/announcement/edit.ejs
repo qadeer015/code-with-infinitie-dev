@@ -1,28 +1,27 @@
-    <h4 class="fw-bold pt-4 pb-1">Edit Announcement</h4>
-    <div class="row pb-5">
-        <form action="/admin/announcements/<%= announcement.id %>/update" method="post">
-            <div class="mb-3">
-                <label for="course_id" class="form-label">Select Course</label>
-                <select name="course_id" id="course_id" class="form-select">
-                    <option selected value="<%= announcement.course_id %>">
-                        <%= announcement.course_title %>
+<div class="row pb-5">
+    <form action="/admin/announcements/<%= announcement.id %>/update" method="post">
+        <div class="mb-3">
+            <label for="course_id" class="form-label">Select Course</label>
+            <select name="course_id" id="course_id" class="form-select">
+                <option selected value="<%= announcement.course_id %>">
+                    <%= announcement.course_title %>
+                </option>
+                <% courses.forEach(course=> { %>
+                    <option value="<%= course.id %>">
+                        <%= course.title %>
                     </option>
-                    <% courses.forEach(course=> { %>
-                        <option value="<%= course.id %>">
-                            <%= course.title %>
-                        </option>
-                        <% }) %>
-                </select>
-            </div>
-            <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" value="<%= announcement.title %>" name="title">
-            </div>
-            <div class="mb-3">
-                <label for="content" class="form-label">Message</label>
-                <%- include('../partials/_richTextEditor', { name: 'content' , content: announcement.content }) %>
-            </div>
-            <button type="submit" class="btn btn-primary">Update</button>
-            <a href="/admin/announcements" class="btn btn-outline-secondary">Cancel</a>
-        </form>
-    </div>
+                    <% }) %>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" value="<%= announcement.title %>" name="title">
+        </div>
+        <div class="mb-3">
+            <label for="content" class="form-label">Message</label>
+            <%- include('../partials/_richTextEditor', { name: 'content' , content: announcement.content }) %>
+        </div>
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="/admin/announcements" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>

@@ -1,66 +1,62 @@
-    <div class="d-flex align-items-center justify-content-between">
-        <h4 class="fw-bold pt-4 pb-1">Assignments</h4>
-        <a href="/admin/assignments/new" class="btn btn-primary">New Assignment</a>
+<div class="row pb-5">
+    <div class="col-12 table-responsive min-vh-100">
+        <table class="table" style="border: 1px solid; border-collapse: collapse">
+            <thead>
+                <tr>
+                    <th scope="col">Title</th>
+                    <th scope="col">Course</th>
+                    <th scope="col">Marks</th>
+                    <th scope="col">Details</th>
+                    <th scope="col">OpenDate</th>
+                    <th scope="col">DueDate</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="assignments-data" class="table-group-divider">
+                <!-- assignment details will go here -->
+            </tbody>
+        </table>
     </div>
-    <div class="row pb-5">
-        <div class="col-12 table-responsive min-vh-100">
-            <table class="table" style="border: 1px solid; border-collapse: collapse">
-                <thead>
-                    <tr>
-                        <th scope="col">Title</th>
-                        <th scope="col">Course</th>
-                        <th scope="col">Marks</th>
-                        <th scope="col">Details</th>
-                        <th scope="col">OpenDate</th>
-                        <th scope="col">DueDate</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="assignments-data" class="table-group-divider">
-                    <!-- assignment details will go here -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <script>
+</div>
+<script>
 
-        const assignmentsData = document.getElementById('assignments-data');
+    const assignmentsData = document.getElementById('assignments-data');
 
-        document.addEventListener("DOMContentLoaded", function () {
-            fetchCourses();
-        })
+    document.addEventListener("DOMContentLoaded", function () {
+        fetchCourses();
+    })
 
-        function fetchCourses() {
-            const response = fetch("/admin/assignments/get-all", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                cache: "no-cache",
-            }).then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+    function fetchCourses() {
+        const response = fetch("/admin/assignments/get-all", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cache: "no-cache",
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
-                return response.json();
-            }).then(data => {
-                assignmentsData.innerHTML = '';
-                data.forEach(assignment => {
-                    assignmentsData.innerHTML += renderAssignments(assignment);
-                });
-            }).catch(error => {
-                console.error("Error fetching assignments:", error);
-                assignmentsData.innerHTML = `
+            return response.json();
+        }).then(data => {
+            assignmentsData.innerHTML = '';
+            data.forEach(assignment => {
+                assignmentsData.innerHTML += renderAssignments(assignment);
+            });
+        }).catch(error => {
+            console.error("Error fetching assignments:", error);
+            assignmentsData.innerHTML = `
                     <div class="error-message">
                         <p>Failed to load assignments. Please try again later.</p>
                     </div>
                 `;
-            });
-        }
+        });
+    }
 
 
-        function renderAssignments(assignment) {
-            return `
+    function renderAssignments(assignment) {
+        return `
                 <tr>
                     <td>${assignment.title}</td>
                     <td>${assignment.course_title}</td>
@@ -91,5 +87,5 @@
                     </td>
                 </tr>
             `;
-        }
-    </script>
+    }
+</script>

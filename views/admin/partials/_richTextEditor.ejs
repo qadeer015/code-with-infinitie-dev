@@ -1,5 +1,5 @@
 <div class="editor-container">
-    <div class="toolbar">
+    <div class="toolbar px-2">
         <button type="button" id="bold-btn" title="Bold (Ctrl+B)"><b>B</b></button>
         <button type="button" id="italic-btn" title="Italic (Ctrl+I)"><i>I</i></button>
         <select id="font-style" title="Font Family">
@@ -61,7 +61,7 @@
             </button>
         </div>
     </div>
-    <div id="editor" contenteditable="true" class="editor-content" spellcheck="true">
+    <div id="editor" contenteditable="true" class="editor-content form-control" spellcheck="true">
         <%- typeof content !== 'undefined' ? content : '' %>
     </div>
     <textarea id="editor-content" name="<%= name || 'content' %>" style="display: none;"></textarea>
@@ -96,4 +96,4 @@
     </div>
 </div>
 
-    <script src="/js/richTextEditor.js"></script>
+<script src="/js/richTextEditor.js"></script>

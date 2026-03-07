@@ -1,31 +1,52 @@
-    <h4 class="fw-bold pt-4 pb-1">Edit Course</h4>
-    <div class="row pb-5">
-        <form action="/admin/courses/<%= course.id %>/update" method="post">
-            <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" name="title" value="<%= course.title %>">
+<div class="row pb-5">
+    <form action="/admin/courses/<%= course.id %>/update" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" name="title" value="<%= course.title %>">
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <input type="text" class="form-control" id="description" name="description" value="<%= course.description %>">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="course_duration" class="form-label">Course Duration</label>
+                    <input type="text" class="form-control" id="course_duration" name="course_duration"
+                        value="<%= course.course_duration %>">
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="course_duration" class="form-label">Course Duration</label>
-                <input type="text" class="form-control" id="course_duration" name="course_duration" value="<%= course.course_duration %>">
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="status" class="form-label">Course Status</label>
+                    <select name="status" id="status" class="form-select">
+                        <option value="<%= course.status %>">
+                            <%= course.status %>
+                        </option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="course_fee" class="form-label">Course Fee</label>
-                <input type="text" class="form-control" id="course_fee" name="course_fee" value="<%= course.course_fee %>">
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="course_fee" class="form-label">Course Fee</label>
+                    <input type="text" class="form-control" id="course_fee" name="course_fee"
+                        value="<%= course.course_fee %>">
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="status" class="form-label">Course Status</label>
-                <select name="status" id="status" class="form-select">
-                    <option value="<%= course.status %>"><%= course.status %></option>
-                    <option value="active">Active</option>
-                    <option value="inactive">Inactive</option>
-                </select>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="description" class="form-label">Description</label>
+                    <%- include('../partials/_richTextEditor', { name: 'description' , content: course.description }) %>
+                </div>
             </div>
-            <button type="submit" class="btn btn-primary">Update</button>
-            <a href="/admin/courses" class="btn btn-outline-secondary">Cancel</a>
-        </form>
-    </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary">Update</button>
+        <a href="/admin/courses" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>

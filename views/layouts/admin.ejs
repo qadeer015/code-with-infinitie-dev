@@ -10,27 +10,69 @@
     <title>
         <%= title %>
     </title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
-    <link rel="stylesheet" href="/css/styles.css">
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-
+    <!-- Favicons -->
+    <link href="assets/img/favicon.png" rel="icon">
+    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    
+    <!-- Google Fonts - Nunito Sans + Poppins + JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Nunito+Sans:wght@400;500;600;700;800&family=Poppins:wght@500;600;700&display=swap"
+        rel="stylesheet">
+    
+    <!-- Vendor CSS Files -->
+    <link href="/admin/theme/vendors/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/admin/theme/vendors/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="/admin/theme/vendors/remixicon/remixicon.css" rel="stylesheet">
+    <link href="/admin/theme/vendors/fontawesome-free/css/all.min.css" rel="stylesheet">
+    <link href="/admin/theme/vendors/phosphor-icons/phosphor-icons.css" rel="stylesheet">
+    <link href="/admin/theme/vendors/lucide-icons/lucide.css" rel="stylesheet">
+    <link href="/admin/theme/vendors/simple-datatables/style.css" rel="stylesheet">
+    <link href="/admin/theme/vendors/quill/quill.snow.css" rel="stylesheet">
+    <link href="/admin/theme/vendors/quill/quill.bubble.css" rel="stylesheet">
+    <link href="/admin/theme/vendors/choices.js/choices.min.css" rel="stylesheet">
+    <link href="/admin/theme/vendors/flatpickr/flatpickr.min.css" rel="stylesheet">
+    
+    <!-- Template Main CSS File -->
+    <link href="/admin/theme/assets/css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="/css/richtexteditor.css">
 </head>
 
 <body>
+    <%- include('../admin/partials/_header') %>
+    <%- include('../admin/partials/_sidebar') %>
+    <main class="main">
+        <div class="main-content page-dashboard-sales">
+            <%- include('../admin/partials/_breadcrumb') %>
+            <%- body %>
+        </div>
+    </main>
 
-    <div class="row m-0">
-        <div class="col-2 min-vh-100 position-fixed bg-secondary">
-            <%- include('../admin/partials/_sidebar') %>
-        </div>
-        <div class="col-10 bg-light p-0 min-vh-100" style="margin-left: auto;">
-            <%- include('../admin/partials/_navbar') %>
-            <div class="col-12 px-3">
-                <%- body %>
-            </div>
-        </div>
-    </div>
     <%- include('../shared/_js') %>
     <%- include('../admin/partials/_footer') %>
+
+    <!-- Vendor JS Files -->
+    <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
+    <script src="/admin/theme/vendors/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/admin/theme/vendors/chart.js/chart.umd.js"></script>
+    <script src="/admin/theme/vendors/echarts/echarts.min.js"></script>
+    <script src="/admin/theme/vendors/tinymce/tinymce.min.js"></script>
+    <script src="/admin/theme/vendors/choices.js/choices.min.js"></script>
+    <script src="/admin/theme/vendors/flatpickr/flatpickr.min.js"></script>
+    <script src="/admin/theme/vendors/php-email-form/validate.js"></script>
+    
+    <!-- Template Main JS Files -->
+    <script src="/admin/theme/assets/js/theme.js"></script>
+    <script src="/admin/theme/assets/js/main.js"></script>
+    
+    <!-- App Sidebar Toggle (for app pages with sidebars) -->
+    <script src="/admin/theme/assets/js/apps-sidebar-toggle.js"></script>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
+    <script>
+        const socket = io();
+    </script> -->
 </body>
 
 </html>

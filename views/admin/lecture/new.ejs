@@ -1,159 +1,162 @@
-    <h4 class="fw-bold pt-4 pb-1">New Lecture</h4>
-    <div class="row pb-5">
-        <form action="/admin/lectures/create" method="post">
-            <div class="mb-3">
-                <label for="course_id" class="form-label">Select Course</label>
-                <select name="course_id" id="course_id" class="form-select" required>
-                    <option value=""></option>
-                    <% courses.forEach(course=> { %>
-                        <option value="<%= course.id %>">
-                            <%= course.title %>
-                        </option>
-                        <% }) %>
-                </select>
-            </div>
+<div class="row pb-5">
+    <form action="/admin/lectures/create" method="post">
+        <div class="mb-3">
+            <label for="course_id" class="form-label">Select Course</label>
+            <select name="course_id" id="course_id" class="form-select" required>
+                <option value=""></option>
+                <% courses.forEach(course=> { %>
+                    <option value="<%= course.id %>">
+                        <%= course.title %>
+                    </option>
+                    <% }) %>
+            </select>
+        </div>
 
-            <div class="mb-3">
-                <label for="title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="title" name="title" required>
-            </div>
+        <div class="mb-3">
+            <label for="title" class="form-label">Title</label>
+            <input type="text" class="form-control" id="title" name="title" required>
+        </div>
 
-            <div class="mb-3">
-                <label for="video_search" class="form-label">Search Video</label>
-                <input type="text" id="video_search" class="form-control" placeholder="Start typing video title..." required>
-                <div id="video_results" class="list-group position-absolute w-50" style="z-index:1000;"></div>
-                <input type="hidden" name="video_id" id="video_id" required>
-            </div>
+        <div class="mb-3">
+            <label for="video_search" class="form-label">Search Video</label>
+            <input type="text" id="video_search" class="form-control" placeholder="Start typing video title..."
+                required>
+            <div id="video_results" class="list-group position-absolute w-50" style="z-index:1000;"></div>
+            <input type="hidden" name="video_id" id="video_id" required>
+        </div>
 
-            <!-- Notes Field with Tag Input -->
-            <div class="mb-3">
-                <label for="notes" class="form-label">Notes (Comma separated important links/instructions)</label>
-                <input type="text" class="form-control" id="notes" name="notes" placeholder="Enter notes separated by commas">
-                <small class="text-muted">Example: https://example.com/link1, https://example.com/link2, Important: Read chapter 3</small>
-                <div id="notes-tags" class="d-flex flex-wrap gap-2 mt-2"></div>
-            </div>
+        <!-- Notes Field with Tag Input -->
+        <div class="mb-3">
+            <label for="notes" class="form-label">Notes (Comma separated important links/instructions)</label>
+            <input type="text" class="form-control" id="notes" name="notes"
+                placeholder="Enter notes separated by commas">
+            <small class="text-muted">Example: https://example.com/link1, https://example.com/link2, Important: Read
+                chapter 3</small>
+            <div id="notes-tags" class="d-flex flex-wrap gap-2 mt-2"></div>
+        </div>
 
-            <!-- Tasks Field with Tag Input -->
-            <div class="mb-3">
-                <label for="tasks" class="form-label">Tasks (Comma separated practice tasks)</label>
-                <input type="text" class="form-control" id="tasks" name="tasks" placeholder="Enter tasks separated by commas">
-                <small class="text-muted">Example: Solve problem 1.2, Read chapter 4, Complete quiz</small>
-                <div id="tasks-tags" class="d-flex flex-wrap gap-2 mt-2"></div>
-            </div>
+        <!-- Tasks Field with Tag Input -->
+        <div class="mb-3">
+            <label for="tasks" class="form-label">Tasks (Comma separated practice tasks)</label>
+            <input type="text" class="form-control" id="tasks" name="tasks"
+                placeholder="Enter tasks separated by commas">
+            <small class="text-muted">Example: Solve problem 1.2, Read chapter 4, Complete quiz</small>
+            <div id="tasks-tags" class="d-flex flex-wrap gap-2 mt-2"></div>
+        </div>
 
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <%- include('../partials/_richTextEditor', { name: 'description' }) %>
-            </div>
+        <div class="mb-3">
+            <label for="description" class="form-label">Description</label>
+            <%- include('../partials/_richTextEditor', { name: 'description' }) %>
+        </div>
 
-            <button type="submit" class="btn btn-primary">Create</button>
-            <a href="/admin/lectures" class="btn btn-outline-secondary">Cancel</a>
-        </form>
-    </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a href="/admin/lectures" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>
 
-    <script>
-        const searchInput = document.getElementById("video_search");
-        const resultsBox = document.getElementById("video_results");
-        const hiddenInput = document.getElementById("video_id");
+<script>
+    const searchInput = document.getElementById("video_search");
+    const resultsBox = document.getElementById("video_results");
+    const hiddenInput = document.getElementById("video_id");
 
-        let debounceTimer;
+    let debounceTimer;
 
-        searchInput.addEventListener("input", function () {
-            const query = this.value.trim();
+    searchInput.addEventListener("input", function () {
+        const query = this.value.trim();
 
-            clearTimeout(debounceTimer);
-            if (query.length === 0) {
-                resultsBox.innerHTML = "";
-                return;
-            }
-
-            debounceTimer = setTimeout(() => {
-                fetch(`/admin/videos/search?q=${encodeURIComponent(query)}`)
-                    .then(res => res.json())
-                    .then(data => {
-                        resultsBox.innerHTML = "";
-
-                        if (data.length === 0) {
-                            resultsBox.innerHTML = "<div class='list-group-item'>No results found</div>";
-                            return;
-                        }
-
-                        data.forEach(video => {
-                            const item = document.createElement("div");
-                            item.classList.add("list-group-item", "list-group-item-action");
-                            item.textContent = video.title;
-                            item.dataset.id = video.id;
-
-                            item.addEventListener("click", () => {
-                                searchInput.value = video.title;
-                                hiddenInput.value = video.id;
-                                resultsBox.innerHTML = "";
-                            });
-
-                            resultsBox.appendChild(item);
-                        });
-                    });
-            }, 300); // debounce delay
-        });
-
-        document.addEventListener("click", function (e) {
-            if (!resultsBox.contains(e.target) && e.target !== searchInput) {
-                resultsBox.innerHTML = "";
-            }
-        });
-
-        // Notes and Tasks Tag Input Functionality
-        function setupTagInput(inputId, tagsContainerId) {
-            const input = document.getElementById(inputId);
-            const tagsContainer = document.getElementById(tagsContainerId);
-
-            input.addEventListener('keydown', function(e) {
-                if (e.key === ',' || e.key === 'Enter') {
-                    e.preventDefault();
-                    addTag(this.value.trim().replace(/,+$/, ''));
-                    this.value = '';
-                }
-            });
-
-            input.addEventListener('blur', function() {
-                if (this.value.trim()) {
-                    addTag(this.value.trim());
-                    this.value = '';
-                }
-            });
-
-            function addTag(text) {
-                if (!text) return;
-                
-                const tag = document.createElement('div');
-                tag.className = 'badge bg-primary rounded-pill d-flex align-items-center';
-                
-                const tagText = document.createElement('span');
-                tagText.textContent = text;
-                
-                const closeBtn = document.createElement('button');
-                closeBtn.className = 'btn-close btn-close-white ms-2';
-                closeBtn.style.fontSize = '0.5rem';
-                closeBtn.addEventListener('click', () => tag.remove());
-                
-                tag.appendChild(tagText);
-                tag.appendChild(closeBtn);
-                tagsContainer.appendChild(tag);
-                
-                // Update the hidden input value
-                updateHiddenInput();
-            }
-
-            function updateHiddenInput() {
-                const tags = Array.from(tagsContainer.querySelectorAll('.badge span'))
-                    .map(span => span.textContent.trim())
-                    .filter(text => text.length > 0);
-                
-                document.getElementById(inputId).value = tags.join(', ');
-            }
+        clearTimeout(debounceTimer);
+        if (query.length === 0) {
+            resultsBox.innerHTML = "";
+            return;
         }
 
-        // Initialize both tag inputs
-        setupTagInput('notes', 'notes-tags');
-        setupTagInput('tasks', 'tasks-tags');
-    </script>
+        debounceTimer = setTimeout(() => {
+            fetch(`/admin/videos/search?q=${encodeURIComponent(query)}`)
+                .then(res => res.json())
+                .then(data => {
+                    resultsBox.innerHTML = "";
+
+                    if (data.length === 0) {
+                        resultsBox.innerHTML = "<div class='list-group-item'>No results found</div>";
+                        return;
+                    }
+
+                    data.forEach(video => {
+                        const item = document.createElement("div");
+                        item.classList.add("list-group-item", "list-group-item-action");
+                        item.textContent = video.title;
+                        item.dataset.id = video.id;
+
+                        item.addEventListener("click", () => {
+                            searchInput.value = video.title;
+                            hiddenInput.value = video.id;
+                            resultsBox.innerHTML = "";
+                        });
+
+                        resultsBox.appendChild(item);
+                    });
+                });
+        }, 300); // debounce delay
+    });
+
+    document.addEventListener("click", function (e) {
+        if (!resultsBox.contains(e.target) && e.target !== searchInput) {
+            resultsBox.innerHTML = "";
+        }
+    });
+
+    // Notes and Tasks Tag Input Functionality
+    function setupTagInput(inputId, tagsContainerId) {
+        const input = document.getElementById(inputId);
+        const tagsContainer = document.getElementById(tagsContainerId);
+
+        input.addEventListener('keydown', function (e) {
+            if (e.key === ',' || e.key === 'Enter') {
+                e.preventDefault();
+                addTag(this.value.trim().replace(/,+$/, ''));
+                this.value = '';
+            }
+        });
+
+        input.addEventListener('blur', function () {
+            if (this.value.trim()) {
+                addTag(this.value.trim());
+                this.value = '';
+            }
+        });
+
+        function addTag(text) {
+            if (!text) return;
+
+            const tag = document.createElement('div');
+            tag.className = 'badge bg-primary rounded-pill d-flex align-items-center';
+
+            const tagText = document.createElement('span');
+            tagText.textContent = text;
+
+            const closeBtn = document.createElement('button');
+            closeBtn.className = 'btn-close btn-close-white ms-2';
+            closeBtn.style.fontSize = '0.5rem';
+            closeBtn.addEventListener('click', () => tag.remove());
+
+            tag.appendChild(tagText);
+            tag.appendChild(closeBtn);
+            tagsContainer.appendChild(tag);
+
+            // Update the hidden input value
+            updateHiddenInput();
+        }
+
+        function updateHiddenInput() {
+            const tags = Array.from(tagsContainer.querySelectorAll('.badge span'))
+                .map(span => span.textContent.trim())
+                .filter(text => text.length > 0);
+
+            document.getElementById(inputId).value = tags.join(', ');
+        }
+    }
+
+    // Initialize both tag inputs
+    setupTagInput('notes', 'notes-tags');
+    setupTagInput('tasks', 'tasks-tags');
+</script>

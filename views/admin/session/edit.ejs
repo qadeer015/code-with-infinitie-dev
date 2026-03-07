@@ -1,6 +1,3 @@
-
-<h2 class="pt-4">Edit Session</h2>
-
 <form action="/admin/sessions/<%= session.id %>/update" method="POST" class="row g-3">
     <div class="col-md-3">
         <label class="form-label fw-semibold">Session Name</label>
@@ -10,58 +7,53 @@
     <div class="col-md-3">
         <label class="form-label fw-semibold" for="status">Status</label>
         <select class="form-select" name="status" required>
-            <option value="active" <%= session.status == 'active' ? 'selected' : '' %>>Active</option>
-            <option value="upcoming" <%= session.status == 'upcoming' ? 'selected' : '' %>>Upcoming</option>
-            <option value="completed" <%= session.status == 'completed' ? 'selected' : '' %>>Completed</option>
+            <option value="active" <%=session.status=='active' ? 'selected' : '' %>>Active</option>
+            <option value="upcoming" <%=session.status=='upcoming' ? 'selected' : '' %>>Upcoming</option>
+            <option value="completed" <%=session.status=='completed' ? 'selected' : '' %>>Completed</option>
         </select>
     </div>
-    
+
     <div class="col-md-3">
         <label class="form-label fw-semibold">Start Date</label>
-        <input type="date" class="form-control" name="start_date" 
-       value="<%= session.start_date ? session.start_date.toISOString().split('T')[0] : '' %>" required>
+        <input type="date" class="form-control" name="start_date"
+            value="<%= session.start_date ? session.start_date.toISOString().split('T')[0] : '' %>" required>
     </div>
-    
+
     <div class="col-md-3">
         <label class="form-label fw-semibold">End Date</label>
-        <input type="date" class="form-control" name="end_date" 
-       value="<%= session.end_date ? session.end_date.toISOString().split('T')[0] : '' %>" required>
+        <input type="date" class="form-control" name="end_date"
+            value="<%= session.end_date ? session.end_date.toISOString().split('T')[0] : '' %>" required>
     </div>
 
     <div class="col-md-6">
         <label class="form-label fw-semibold">Description</label>
         <textarea class="form-control" name="description" required><%= session.description %></textarea>
     </div>
-    
-    <%= session.status %>
-    
-    <div class="col-12">
-    <label class="form-label fw-semibold">Session Courses</label>
-    <div class="row">
-        <% courses.forEach(course => { 
-            const isSelected = session.courses.some(sc => sc.id === course.id);
-        %>
-            <div class="col-md-4 mb-2">
-                <div class="form-check">
-                    <input 
-                        class="form-check-input" 
-                        type="checkbox" 
-                        name="courses" 
-                        value="<%= course.id %>" 
-                        id="course<%= course.id %>"
-                        <%= isSelected ? "checked" : "" %>>
-                    <label class="form-check-label" for="course<%= course.id %>">
-                        <%= course.title %>
-                    </label>
-                </div>
-            </div>
-        <% }) %>
-    </div>
-</div>
 
-    
-    <div class="col-12">
-        <button type="submit" class="btn btn-primary">Update Session</button>
-        <a href="/admin/sessions/" class="btn btn-secondary">Cancel</a>
-    </div>
+    <%= session.status %>
+
+        <div class="col-12">
+            <label class="form-label fw-semibold">Session Courses</label>
+            <div class="row">
+                <% courses.forEach(course=> {
+                    const isSelected = session.courses.some(sc => sc.id === course.id);
+                    %>
+                    <div class="col-md-4 mb-2">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" name="courses" value="<%= course.id %>"
+                                id="course<%= course.id %>" <%=isSelected ? "checked" : "" %>>
+                            <label class="form-check-label" for="course<%= course.id %>">
+                                <%= course.title %>
+                            </label>
+                        </div>
+                    </div>
+                    <% }) %>
+            </div>
+        </div>
+
+
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Update Session</button>
+            <a href="/admin/sessions/" class="btn btn-secondary">Cancel</a>
+        </div>
 </form>

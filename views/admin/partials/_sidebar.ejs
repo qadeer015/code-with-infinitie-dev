@@ -1,229 +1,178 @@
-<div class="side-nav">
-  <ul class="nav flex-column">
-    <li class="border-bottom border-primary border-2 mb-3 w-100 d-flex justify-content-center">
-      <a href="/" class="text-decoration-none d-block w-100 text-center">
-        <img src="/img/codewithinfinitidev.png" alt="logo" class="img-fluid" style="max-width: 100%; height: auto;">
-      </a>
-    </li>
+<!-- Sidebar -->
+<aside class="sidebar">
+  <div class="sidebar-shell">
+    <button class="sidebar-close" type="button" aria-label="Close sidebar">
+      <i class="bi bi-x-lg"></i>
+    </button>
 
-    <li class="nav-item mb-3">
-      <a class="nav-link py-0 text-white" style="padding-left: 1.3rem!important;padding-right: 1.3rem!important;"
-        href="/admin/dashboard">
-        <i class="bi bi-speedometer2 circle"></i>
-        <span class="nav-title">Dashboard</span>
-      </a>
-    </li>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar-nav">
+      <ul class="nav-menu">
 
-    <li class="nav-item mb-3">
-      <a class="nav-link py-0 text-white" style="padding-left: 1.3rem!important;padding-right: 1.3rem!important;"
-        href="/admin/analytics">
-        <i class="bi bi-bar-chart circle"></i>
-        <span class="nav-title">Analytics</span>
-      </a>
-    </li>
+        <li class="nav-item">
+          <a class="nav-link " href="/admin/dashboard">
+            <span class="nav-icon"><i class="ph-light ph-squares-four"></i></span>
+            <span class="nav-text">Dashboard</span>
+            <span class="nav-meta">Home</span>
+          </a>
+        </li>
 
-    <li class="nav-item mb-3">
-      <a href="/admin/students" class="nav-link text-white py-0" style="padding-left: 1.3rem!important;padding-right: 1.3rem!important;">
-        <i class="bi bi-people circle"></i>
-        <span class="nav-title" >Students</span>
-      </a>
-    </li>
+        <li class="nav-item">
+          <a class="nav-link " href="/admin/analytics">
+            <span class="nav-icon"><i class="ph-light ph-chart-bar"></i></span>
+            <span class="nav-text">Analytics</span>
+            <span class="nav-meta">Stats</span>
+          </a>
+        </li>
+       
+        <li class="nav-heading"><span>Users</span></li>
 
-     <li class="nav-item mb-3">
-      <a href="/admin/instructors" class="nav-link text-white py-0" style="padding-left: 1.3rem!important;padding-right: 1.3rem!important;">
-        <i class="bi bi-people circle"></i>
-        <span class="nav-title" >Instructors</span>
-      </a>
-    </li>
+        <li class="nav-item has-submenu ">
+          <a class="nav-link" href="#" aria-expanded="false">
+            <span class="nav-icon"><i class="ph-light ph-users-three"></i></span>
+            <span class="nav-text">Users</span>
+            <span class="nav-arrow"><i class="bi bi-chevron-right"></i></span>
+          </a>
+          <ul class="nav-submenu ">
+            <li><a class="nav-link " href="/admin/students"><span class="nav-dot"></span>Students</a></li>
+            <li><a class="nav-link " href="/admin/instructors"><span class="nav-dot"></span>Instructors</a></li>
+          </ul>
+        </li>
 
-    <li class="nav-item mb-3">
-      <div class="accordion" id="SessionsAccordion">
-        <div class="accordion-item bg-transparent border-0 outline-0">
-          <h5 class="accordion-header">
-            <button class="bg-transparent border-0 outline-0 text-white" style="padding: 0px 20px;" type="button"
-              data-bs-toggle="collapse" data-bs-target="#sessionsCollapse" aria-expanded="true"
-              aria-controls="sessionsCollapse">
-              <i class="bi bi-clock circle"></i>
-              <span class="nav-title" >Sessions</span>
-            </button>
-          </h5>
-          <div id="sessionsCollapse" class="accordion-collapse collapse" data-bs-parent="#SessionsAccordion">
-            <div class="sidebar-item accordion-body position-relative ps-4">
-              <a href="/admin/sessions" class="nav-link position-relative ps-3  text-white">
-                All
+        <li class="nav-heading"><span>Academic Session</span></li>
+
+        <li class="nav-item has-submenu ">
+          <a class="nav-link" href="#" aria-expanded="false">
+            <span class="nav-icon"><i class="ph-light ph-stack"></i></span>
+            <span class="nav-text">Sessions</span>
+            <span class="nav-arrow"><i class="bi bi-chevron-right"></i></span>
+          </a>
+          <ul class="nav-submenu ">
+            <li><a class="nav-link" href="/admin/sessions/new"><span class="nav-dot"></span>New Session</a></li>
+            <li><a class="nav-link" href="/admin/sessions"><span class="nav-dot"></span>All Sessions</a></li>
+            <li class="has-submenu ">
+              <a class="nav-link" href="#" aria-expanded="false">
+                <span class="nav-dot"></span>Todo Schedules
+                <span class="nav-arrow"><i class="bi bi-chevron-right"></i></span>
               </a>
-              <a href="/admin/sessions/new" class="nav-link position-relative ps-3  text-white">
-                New
+              <ul class="nav-submenu ">
+                <li><a class="nav-link " href="/admin/todo_schedules/new"><span class="nav-dot"></span>New</a></li>
+                <li><a class="nav-link " href="/admin/todo_schedules"><span class="nav-dot"></span>All</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-heading"><span>Announcements</span></li>
+        
+        <li class="nav-item has-submenu ">
+          <a class="nav-link" href="#" aria-expanded="false">
+            <span class="nav-icon"><i class="ph-light ph-puzzle-piece"></i></span>
+            <span class="nav-text">Announcements</span>
+            <span class="nav-arrow"><i class="bi bi-chevron-right"></i></span>
+          </a>
+          <ul class="nav-submenu ">
+            <li><a class="nav-link " href="/admin/announcements/new"><span class="nav-dot"></span>New</a></li>
+            <li><a class="nav-link " href="/admin/announcements"><span class="nav-dot"></span>All</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-heading"><span>Assignments</span></li>
+        
+        <li class="nav-item has-submenu ">
+          <a class="nav-link" href="#" aria-expanded="false">
+            <span class="nav-icon"><i class="ph-light ph-puzzle-piece"></i></span>
+            <span class="nav-text">Assignments</span>
+            <span class="nav-arrow"><i class="bi bi-chevron-right"></i></span>
+          </a>
+          <ul class="nav-submenu ">
+            <li><a class="nav-link " href="/admin/assignments/new"><span class="nav-dot"></span>New</a></li>
+            <li><a class="nav-link " href="/admin/assignments"><span class="nav-dot"></span>All</a></li>
+          </ul>
+        </li>
+
+        <li class="nav-heading"><span>Lectures</span></li>
+        
+        <li class="nav-item has-submenu ">
+          <a class="nav-link" href="#" aria-expanded="false">
+            <span class="nav-icon"><i class="ph-light ph-stack"></i></span>
+            <span class="nav-text">Lectures</span>
+            <span class="nav-arrow"><i class="bi bi-chevron-right"></i></span>
+          </a>
+          <ul class="nav-submenu ">
+            <li><a class="nav-link" href="/admin/lectures/new"><span class="nav-dot"></span>New</a></li>
+            <li><a class="nav-link" href="/admin/lectures"><span class="nav-dot"></span>All</a></li>
+            <li class="has-submenu ">
+              <a class="nav-link" href="#" aria-expanded="false">
+                <span class="nav-dot"></span>Videos
+                <span class="nav-arrow"><i class="bi bi-chevron-right"></i></span>
               </a>
-              <div class="accordion mt-2" id="TodoSchedulesAccordion">
-                <div class="accordion-item bg-transparent border-0 outline-0">
-                  <h5 class="accordion-header">
-                    <button class="bg-transparent border-0 outline-0 text-white" style="padding: 0px 20px;" type="button"
-                      data-bs-toggle="collapse" data-bs-target="#todoSchedulesCollapse" aria-expanded="true"
-                      aria-controls="todoSchedulesCollapse">
-                      <i class="bi bi-calendar circle"></i>
-                      <span class="nav-title">Todo Schedules</span>
-                    </button>
-                  </h5>
-                  <div id="todoSchedulesCollapse" class="accordion-collapse collapse"
-                    data-bs-parent="#TodoSchedulesAccordion">
-                    <div class="sidebar-item accordion-body position-relative ps-4">
-                      <a href="/admin/todo_schedules" class="nav-link position-relative ps-3  text-white">
-                        All
-                      </a>
-                      <a href="/admin/todo_schedules/new" class="nav-link position-relative ps-3  text-white">
-                        New
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
+              <ul class="nav-submenu ">
+                <li><a class="nav-link " href="/admin/videos"><span class="nav-dot"></span>All</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-heading"><span>Courses</span></li>
+        
+        <li class="nav-item has-submenu ">
+          <a class="nav-link" href="#" aria-expanded="false">
+            <span class="nav-icon"><i class="ph-light ph-stack"></i></span>
+            <span class="nav-text">Courses</span>
+            <span class="nav-arrow"><i class="bi bi-chevron-right"></i></span>
+          </a>
+          <ul class="nav-submenu ">
+            <li><a class="nav-link" href="/admin/courses/new"><span class="nav-dot"></span>New</a></li>
+            <li><a class="nav-link" href="/admin/courses"><span class="nav-dot"></span>All</a></li>
+            <li class="has-submenu ">
+              <a class="nav-link" href="#" aria-expanded="false">
+                <span class="nav-dot"></span>Session course
+                <span class="nav-arrow"><i class="bi bi-chevron-right"></i></span>
+              </a>
+              <ul class="nav-submenu ">
+                <li><a class="nav-link" href="/admin/session-courses/new"><span class="nav-dot"></span>New</a></li>
+                <li><a class="nav-link" href="/admin/session-courses"><span class="nav-dot"></span>All</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+
+    <!-- Sidebar Footer -->
+    <div class="sidebar-footer">
+      <div class="sidebar-account">
+        <a href="/admin/users/<%= user.id %>/profile" class="sidebar-account-main">
+          <img src="<%= user.avatar %>" alt="User" class="sidebar-account-avatar">
+          <div class="sidebar-account-meta">
+            <div class="sidebar-account-name"><%= user.name %></div>
+            <div class="sidebar-account-role"><%= user.role %></div>
           </div>
+        </a>
+        <div class="sidebar-account-actions">
+          <a href="/admin/settings" class="sidebar-account-action" title="Settings">
+            <i class="bi bi-gear"></i>
+          </a>
+          <a href="/auth/logout" class="sidebar-account-action sidebar-account-logout" title="Logout">
+            <i class="bi bi-box-arrow-right"></i>
+          </a>
         </div>
       </div>
-    </li>
 
-    <li class="nav-item mb-3">
-      <div class="accordion" id="CoursesAccordion">
-        <div class="accordion-item bg-transparent border-0 outline-0">
-          <h5 class="accordion-header">
-            <button class="bg-transparent border-0 outline-0 text-white" style="padding: 0px 20px;" type="button"
-              data-bs-toggle="collapse" data-bs-target="#coursesCollapse" aria-expanded="true"
-              aria-controls="coursesCollapse">
-              <i class="bi bi-book circle"></i>
-              <span class="nav-title" >Courses</span>
-            </button>
-          </h5>
-          <div id="coursesCollapse" class="accordion-collapse collapse" data-bs-parent="#CoursesAccordion">
-            <div class="sidebar-item accordion-body position-relative ps-4">
-              <a href="/admin/courses" class="nav-link position-relative ps-3  text-white">
-                All
-              </a>
-              <a href="/admin/courses/new" class="nav-link position-relative ps-3  text-white">
-                New
-              </a>
-              <div class="accordion mt-2" id="SessionCoursesAccordion">
-                <div class="accordion-item bg-transparent border-0 outline-0">
-                  <h5 class="accordion-header">
-                    <button class="bg-transparent border-0 outline-0 text-white" style="padding: 0px 20px;" type="button"
-                      data-bs-toggle="collapse" data-bs-target="#sessionCoursesCollapse" aria-expanded="true"
-                      aria-controls="sessionCoursesCollapse">
-                      <i class="bi bi-book circle"></i>
-                      <span class="nav-title">Session Courses</span>
-                    </button>
-                  </h5>
-                  <div id="sessionCoursesCollapse" class="accordion-collapse collapse"
-                    data-bs-parent="#SessionCoursesAccordion">
-                    <div class="sidebar-item accordion-body position-relative ps-4">
-                      <a href="/admin/session-courses" class="nav-link position-relative ps-3  text-white">
-                        All
-                      </a>
-                      <a href="/admin/session-courses/new" class="nav-link position-relative ps-3  text-white">
-                        New
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <div class="sidebar-footer-links">
+        <a href="apps-support.html" class="sidebar-footer-link">
+          <i class="ph-light ph-headset"></i>
+          <span>Support Desk</span>
+        </a>
+        <a href="notifications.html" class="sidebar-footer-link">
+          <i class="ph-light ph-bell"></i>
+          <span>Alerts</span>
+        </a>
       </div>
-    </li>
+    </div>
+  </div>
+</aside>
 
-    <li class="nav-item mb-3">
-      <div class="accordion" id="AssignmentsAccordion">
-        <div class="accordion-item bg-transparent border-0 outline-0">
-          <h5 class="accordion-header">
-            <button class="bg-transparent border-0 outline-0  text-white" style="padding: 0px 20px;" type="button"
-              data-bs-toggle="collapse" data-bs-target="#AssignmentsCollapse" aria-expanded="true"
-              aria-controls="AssignmentsCollapse">
-              <i class="bi bi-person-workspace circle"></i>
-              <span class="nav-title">Assignments</span>
-            </button>
-          </h5>
-          <div id="AssignmentsCollapse" class="accordion-collapse collapse" data-bs-parent="#AssignmentsAccordion">
-            <div class="sidebar-item accordion-body  position-relative ps-4">
-              <a href="/admin/assignments/" class="nav-link position-relative ps-3 text-white">
-                All
-              </a>
-              <a href="/admin/assignments/new" class="nav-link position-relative ps-3 text-white">
-                New
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </li>
-
-    <li class="nav-item mb-3">
-      <div class="accordion" id="AnnouncementsAccordion">
-        <div class="accordion-item bg-transparent border-0 outline-0">
-          <h5 class="accordion-header">
-            <button class="bg-transparent border-0 outline-0 text-white" style="padding: 0px 20px;" type="button"
-              data-bs-toggle="collapse" data-bs-target="#AnnouncementsCollapse" aria-expanded="true"
-              aria-controls="AnnouncementsCollapse">
-              <i class="bi bi-megaphone circle"></i>
-              <span class="nav-title">Announcements</span>
-            </button>
-          </h5>
-          <div id="AnnouncementsCollapse" class="accordion-collapse collapse" data-bs-parent="#AnnouncementsAccordion">
-            <div class="sidebar-item accordion-body  position-relative ps-4">
-              <a href="/admin/announcements/" class="nav-link position-relative ps-3 text-white">
-                All
-              </a>
-              <a href="/admin/announcements/new" class="nav-link position-relative ps-3 text-white">
-                New
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </li>
-
-    <li class="nav-item mb-3">
-      <div class="accordion" id="LecturesAccordion">
-        <div class="accordion-item bg-transparent border-0 outline-0">
-          <h5 class="accordion-header">
-            <button class="bg-transparent border-0 outline-0 text-white" style="padding: 0px 20px;" type="button"
-              data-bs-toggle="collapse" data-bs-target="#LecturesCollapse" aria-expanded="true"
-              aria-controls="LecturesCollapse">
-              <i class="bi bi-journals circle"></i>
-              <span class="nav-title">Lectures</span>
-            </button>
-          </h5>
-          <div id="LecturesCollapse" class="accordion-collapse collapse" data-bs-parent="#LecturesAccordion">
-            <div class="sidebar-item accordion-body  position-relative ps-4">
-              <a href="/admin/lectures/" class="nav-link position-relative ps-3 text-white">
-                All
-              </a>
-              <a href="/admin/lectures/new" class="nav-link position-relative ps-3 text-white">
-                New
-              </a>
-              <div class="accordion mt-2" id="VideosAccordion">
-                <div class="accordion-item bg-transparent border-0 outline-0">
-                  <h5 class="accordion-header">
-                    <button class="bg-transparent border-0 outline-0 text-white" style="padding: 0px 20px;" type="button"
-                      data-bs-toggle="collapse" data-bs-target="#VideosCollapse" aria-expanded="true"
-                      aria-controls="VideosCollapse">
-                      <i class="bi bi-play circle"></i>
-                      <span class="nav-title">Videos</span>
-                    </button>
-                  </h5>
-                  <div id="VideosCollapse" class="accordion-collapse collapse" data-bs-parent="#VideosAccordion">
-                    <div class="sidebar-item accordion-body position-relative ps-4">
-                      <a href="/admin/videos" class="nav-link position-relative ps-3 text-white">
-                        All
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </li>
-  </ul>
-</div>
+<!-- Sidebar Overlay (Mobile) -->
+<div class="sidebar-overlay"></div>
