@@ -1,78 +1,73 @@
-    <div class="d-flex align-items-center justify-content-between">
-        <h4 class="fw-bold pt-4 pb-1">Session Courses</h4>
-        <a href="/admin/session-courses/new" class="btn btn-primary">New Session Course</a>
-    </div>
- <!-- Difficulty Level Legend -->
 <div class="d-flex align-items-center gap-4 mb-3">
-  <span>
-    <span class="badge rounded-pill bg-success">B</span> Beginner
-  </span>
-  <span>
-    <span class="badge rounded-pill bg-warning text-dark">I</span> Intermediate
-  </span>
-  <span>
-    <span class="badge rounded-pill bg-danger">A</span> Advanced
-  </span>
+    <span>
+        <span class="badge rounded-pill bg-success">B</span> Beginner
+    </span>
+    <span>
+        <span class="badge rounded-pill bg-warning text-dark">I</span> Intermediate
+    </span>
+    <span>
+        <span class="badge rounded-pill bg-danger">A</span> Advanced
+    </span>
 </div>
 
-    <div class="col-12 table-responsive min-vh-100">
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Description</th>
-                    <th>StartDate</th>
-                    <th>EndDate</th>
-                    <th>CreatedBy</th>
-                    <th>Status</th>
-                    <th>Courses</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody id="courses-data" class="table-group-divider">
-            </tbody>
-        </table>
-    </div>
+<div class="col-12 table-responsive min-vh-100">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>StartDate</th>
+                <th>EndDate</th>
+                <th>CreatedBy</th>
+                <th>Status</th>
+                <th>Courses</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="courses-data" class="table-group-divider">
+        </tbody>
+    </table>
+</div>
 
-    <script>
+<script>
 
-        const coursesData = document.getElementById('courses-data');
+    const coursesData = document.getElementById('courses-data');
 
-        document.addEventListener("DOMContentLoaded", function () {
-            fetchCourses();
-        })
+    document.addEventListener("DOMContentLoaded", function () {
+        fetchCourses();
+    })
 
-        function fetchCourses() {
-            const response = fetch("/admin/session-courses/get-all", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                cache: "no-cache",
-            }).then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+    function fetchCourses() {
+        const response = fetch("/admin/session-courses/get-all", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cache: "no-cache",
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
-                return response.json();
-            }).then(data => {
-                coursesData.innerHTML = '';
-                data.forEach(session => {
-                    coursesData.innerHTML += renderSessionDetails(session);
-                });
-            }).catch(error => {
-                console.error("Error fetching courses:", error);
-                coursesData.innerHTML = `
+            return response.json();
+        }).then(data => {
+            coursesData.innerHTML = '';
+            data.forEach(session => {
+                coursesData.innerHTML += renderSessionDetails(session);
+            });
+        }).catch(error => {
+            console.error("Error fetching courses:", error);
+            coursesData.innerHTML = `
                     <div class="error-message">
                         <p>Failed to load courses. Please try again later.</p>
                     </div>
                 `;
-            });
-        }
+        });
+    }
 
 
-        function renderSessionDetails(session) {
-            return `
+    function renderSessionDetails(session) {
+        return `
                 <tr>
                     <td>${session.name}</td>
                     <td>${session.description}</td>
@@ -106,5 +101,5 @@
                     </td>
                 </tr>
             `;
-        }
-    </script>
+    }
+</script>

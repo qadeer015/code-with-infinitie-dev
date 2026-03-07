@@ -1,67 +1,63 @@
-                <div class="d-flex align-items-center justify-content-between">
-                    <h4 class="fw-bold pt-4 pb-1">Todo Schedules</h4>
-                    <a href="/admin/todo_schedules/new" class="btn btn-primary">New Todo Schedule</a>
-                </div>
-                <div class="col-12 table-responsive min-vh-100">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th>Title</th>
-                                <th>Description</th>
-                                <th>Course</th>
-                                <th>Session</th>
-                                <th>StartDate</th>
-                                <th>EndDate</th>
-                                <th>Status</th>
-                                <th>Type</th>
-                                <th>Created</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="todoSchedule-data" class="table-group-divider">
-                        </tbody>
-                    </table>
-                </div>
+<div class="col-12 table-responsive min-vh-100">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Course</th>
+                <th>Session</th>
+                <th>StartDate</th>
+                <th>EndDate</th>
+                <th>Status</th>
+                <th>Type</th>
+                <th>Created</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="todoSchedule-data" class="table-group-divider">
+        </tbody>
+    </table>
+</div>
 
-    <script>
+<script>
 
-        const todoSchedule = document.getElementById('todoSchedule-data');
+    const todoSchedule = document.getElementById('todoSchedule-data');
 
-        document.addEventListener("DOMContentLoaded", function () {
-            fetchTodoSchedules();
-        })
+    document.addEventListener("DOMContentLoaded", function () {
+        fetchTodoSchedules();
+    })
 
-        function fetchTodoSchedules() {
-            const response = fetch("/admin/todo_schedules/get-all", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                cache: "no-cache",
-            }).then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+    function fetchTodoSchedules() {
+        const response = fetch("/admin/todo_schedules/get-all", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cache: "no-cache",
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
-                return response.json();
-            }).then(data => {
-                todoSchedule.innerHTML = '';
-                data.forEach(todo => {
-                    todoSchedule.innerHTML += renderTodo(todo);
-                });
-            }).catch(error => {
-                console.error("Error fetching courses:", error);
-                todoSchedule.innerHTML = `
+            return response.json();
+        }).then(data => {
+            todoSchedule.innerHTML = '';
+            data.forEach(todo => {
+                todoSchedule.innerHTML += renderTodo(todo);
+            });
+        }).catch(error => {
+            console.error("Error fetching courses:", error);
+            todoSchedule.innerHTML = `
                     <div class="error-message">
                         <p>Failed to load courses. Please try again later.</p>
                     </div>
                 `;
-            });
-        }
+        });
+    }
 
 
-        function renderTodo(todo) {
-            return `
+    function renderTodo(todo) {
+        return `
                 <tr id="todo-${todo.id}">
                     <td>${todo.title}</td>
                     <td>${todo.description}</td>
@@ -95,37 +91,37 @@
                     </td>
                 </tr>
             `;
-        }
+    }
 
 
-         document.addEventListener('click', function (e) {
+    document.addEventListener('click', function (e) {
         if (e.target.classList.contains('delete-todo')) {
             const id = e.target.getAttribute('data-id');
             deleteTodo(id);
         }
     });
 
-        function deleteTodo(id) {
-    if (!confirm('Are you sure you want to delete this todo?')) {
-        return;
-    }
-
-    fetch(`/admin/todo_schedules/${id}/delete`, {
-        method: "DELETE",
-        headers: {
-            "Content-Type": "application/json",
-        },
-    }).then(response => {
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+    function deleteTodo(id) {
+        if (!confirm('Are you sure you want to delete this todo?')) {
+            return;
         }
-        return response.json();
-    }).then(data => {
-        document.getElementById(`todo-${id}`).remove();
-        showAlert('Student deleted successfully!');
-    }).catch(error => {
-        console.error("Error deleting todo:", error);
-        showAlert('Failed to delete todo.', 'danger');
-    });
-}
-    </script>
+
+        fetch(`/admin/todo_schedules/${id}/delete`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+            },
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return response.json();
+        }).then(data => {
+            document.getElementById(`todo-${id}`).remove();
+            showAlert('Student deleted successfully!');
+        }).catch(error => {
+            console.error("Error deleting todo:", error);
+            showAlert('Failed to delete todo.', 'danger');
+        });
+    }
+</script>

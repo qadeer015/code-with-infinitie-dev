@@ -1,89 +1,49 @@
-   <h4 class="fw-bold pt-4 pb-1">New Course</h4>
-                <div class="row pb-5">
-                    <form action="/admin/courses/create" method="post">
-                        <div class="mb-3">
-                            <label for="title" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="title" name="title">
-                        </div>
-                        <div class="mb-3">
-                            <label for="description" class="form-label">Description</label>
-                            <input type="text" class="form-control" id="description" name="description">
-                        </div>
-                        <div class="mb-3">
-                            <label for="course_duration" class="form-label">Course Duration</label>
-                            <input type="text" class="form-control" id="course_duration" name="course_duration">
-                        </div>
-                        <div class="mb-3">
-                            <label for="course_fee" class="form-label">Course Fee</label>
-                            <input type="text" class="form-control" id="course_fee" name="course_fee">
-                        </div>
-                        <div class="mb-3">
-                            <select name="status" id="status" class="form-select">
-                                <option value="">Select Status</option>
-                                <option value="active">Active</option>
-                                <option value="inactive">Inactive</option>
-                            </select>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Create</button>
-                        <a href="/admin/courses" class="btn btn-outline-secondary">Cancel</a>
-                    </form>
+<div class="row pb-5">
+    <form action="/admin/courses/create" method="post">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="title" class="form-label">Title</label>
+                    <input type="text" class="form-control" id="title" name="title">
                 </div>
-
-
-
-
-
-
-    <script>
-
-        const coursesData = document.getElementById('courses-data');
-
-        document.addEventListener("DOMContentLoaded", function () {
-            fetchCourses();
-        })
-
-        function fetchCourses() {
-            const response = fetch("/courses/get-all", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                cache: "no-cache",
-            }).then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                return response.json();
-            }).then(data => {
-                coursesData.innerHTML = '';
-                data.forEach(course => {
-                    coursesData.innerHTML += renderCourses(course);
-                });
-            }).catch(error => {
-                console.error("Error fetching courses:", error);
-                coursesData.innerHTML = `
-                    <div class="error-message">
-                        <p>Failed to load courses. Please try again later.</p>
-                    </div>
-                `;
-            });
-        }
-
-
-        function renderCourses(course) {
-            return `
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="card-title">${course.title}</div>
-                            <div class="card-subtitle mb-2 text-muted">${course.description}</div>
-                            <div class="card-subtitle mb-2 text-muted">${course.course_duration}</div>
-                            <div class="card-subtitle mb-2 text-muted">${course.course_fee}</div>
-                            <div class="card-subtitle mb-2 text-muted">${course.status}</div>
-                        </div>
-                    </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="course_duration" class="form-label">Course Duration</label>
+                    <input type="text" class="form-control" id="course_duration" name="course_duration">
                 </div>
-            `;
-        }
-    </script>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="course_fee" class="form-label">Course Fee</label>
+                    <input type="text" class="form-control" id="course_fee" name="course_fee">
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label for="status" class="form-label">Select Status</label>
+                    <select name="status" id="status" class="form-select">
+                        <option value=""></option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+       
+        <div class="row">
+            <div class="col-12">
+                <div class="form-group">
+                    <label for="description" class="form-label">Description</label>
+                    <%- include('../partials/_richTextEditor', { name: 'description' }) %>
+                </div>
+            </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary">Create</button>
+        <a href="/admin/courses" class="btn btn-outline-secondary">Cancel</a>
+    </form>
+</div>

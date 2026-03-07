@@ -49,6 +49,8 @@ app.use(bindUser);
 
 app.use((req, res, next) => {
     res.locals.url = req.path;
+    res.locals.path = req.originalUrl;
+    
     res.locals.user = req.user || null;
     res.locals.title = "Infinitidev - " + (req.path === "/" ? "Home" : req.path.substring(1).charAt(0).toUpperCase() + req.path.substring(2));
     res.locals.layout = "layouts/application";

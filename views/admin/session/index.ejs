@@ -1,65 +1,61 @@
-    <div class="d-flex align-items-center justify-content-between">
-        <h4 class="fw-bold pt-4 pb-1">Lectures</h4>
-        <a href="/admin/sessions/new" class="btn btn-primary">New Session</a>
+<div class="row pb-5">
+    <div class="col-12 table-responsive min-vh-100">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Description</th>
+                    <th scope="col">Start Date</th>
+                    <th scope="col">End Date</th>
+                    <th scope="col">Status</th>
+                    <th scope="col">CreatedBy</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody id="sessions-data" class="table-group-divider">
+                <!-- lecture details will go here -->
+            </tbody>
+        </table>
     </div>
-    <div class="row pb-5">
-        <div class="col-12 table-responsive min-vh-100">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Description</th>
-                        <th scope="col">Start Date</th>
-                        <th scope="col">End Date</th>
-                        <th scope="col">Status</th>
-                        <th scope="col">CreatedBy</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="sessions-data" class="table-group-divider">
-                    <!-- lecture details will go here -->
-                </tbody>
-            </table>
-        </div>
-    </div>
-    <script>
+</div>
+<script>
 
-        const sessionsData = document.getElementById('sessions-data');
+    const sessionsData = document.getElementById('sessions-data');
 
-        document.addEventListener("DOMContentLoaded", function () {
-            fetchCourses();
-        })
+    document.addEventListener("DOMContentLoaded", function () {
+        fetchCourses();
+    })
 
-        function fetchCourses() {
-            const response = fetch("/admin/sessions/get-all", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                cache: "no-cache",
-            }).then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
+    function fetchCourses() {
+        const response = fetch("/admin/sessions/get-all", {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            cache: "no-cache",
+        }).then(response => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
-                return response.json();
-            }).then(data => {
-                sessionsData.innerHTML = '';
-                data.forEach(lecture => {
-                    sessionsData.innerHTML += renderSessions(lecture);
-                });
-            }).catch(error => {
-                console.error("Error fetching assignments:", error);
-                sessionsData.innerHTML = `
+            return response.json();
+        }).then(data => {
+            sessionsData.innerHTML = '';
+            data.forEach(lecture => {
+                sessionsData.innerHTML += renderSessions(lecture);
+            });
+        }).catch(error => {
+            console.error("Error fetching assignments:", error);
+            sessionsData.innerHTML = `
                     <div class="error-message">
                         <p>Failed to load assignments. Please try again later.</p>
                     </div>
                 `;
-            });
-        }
+        });
+    }
 
-        function renderSessions(session) {
-            return `
+    function renderSessions(session) {
+        return `
                 <tr>
                     <td>${session.name}</td>
                     <td>${session.description}</td>
@@ -90,5 +86,5 @@
                     </td>
                 </tr>
             `;
-        }
-    </script>
+    }
+</script>

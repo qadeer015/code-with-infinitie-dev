@@ -1,0 +1,134 @@
+<!-- Header -->
+<header class="header">
+    <div class="header-left">
+        <button class="sidebar-toggle" title="Toggle Sidebar" aria-label="Toggle sidebar">
+            <span class="menu-lines" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+            </span>
+        </button>
+
+        <a href="/admin/dashboard" class="header-brand" aria-label="codewithinfinitidev home">
+            <span class="header-logo">
+                <img src="/img/codewithinfinitidev.png" alt="codewithinfinitidev" width="100">
+            </span>
+            <span class="header-context">
+                <strong class="header-context-title">codewithinfinitidev</strong>
+            </span>
+        </a>
+    </div>
+
+    <div class="header-search-wrap">
+        <form class="search-form" action="/admin/search" method="GET">
+            <i class="bi bi-search search-icon"></i>
+            <input type="search" name="q" placeholder="Search projects, invoices, users..." autocomplete="off">
+            <kbd class="search-shortcut">/</kbd>
+        </form>
+    </div>
+
+    <div class="header-right">
+        <div class="header-actions-desktop">
+            <button class="header-action theme-toggle" title="Toggle Theme">
+                <i class="ph-light ph-moon-stars theme-icon-dark"></i>
+                <i class="ph-light ph-sun theme-icon-light"></i>
+            </button>
+
+            <div class="header-action-wrap dropdown user-dropdown">
+                <button class="dropdown-toggle user-trigger" data-bs-toggle="dropdown" aria-expanded="false">
+                    <img src="<%= user.avatar %>" alt="User" class="user-avatar">
+                    <div class="user-brief">
+                        <span class="user-name"><%= user.name %></span>
+                        <span class="user-role"><%= user.role %></span>
+                    </div>
+                </button>
+
+                <div class="dropdown-menu dropdown-menu-end user-menu">
+                    <div class="user-menu-header">
+                        <img src="<%= user.avatar %>" alt="User" class="user-menu-avatar">
+                        <div class="user-menu-info">
+                            <div class="user-menu-name"><%= user.name %></div>
+                            <div class="user-menu-email"><a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                                    data-cfemail="6f05000701410b000a2f0a170e021f030a410c0002"><%= user.email %></a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="user-menu-body">
+                        <a class="user-menu-item" href="/admin/users/<%= user.id %>/profile">
+                            <i class="bi bi-person"></i>
+                            <span>My Profile</span>
+                        </a>
+                        <a class="user-menu-item" href="/admin/settings">
+                            <i class="bi bi-sliders"></i>
+                            <span>Preferences</span>
+                        </a>
+                    </div>
+                    <div class="user-menu-footer">
+                        <a class="user-menu-logout" href="/auth/logout">
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Sign Out</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="header-actions-mobile">
+            <button class="header-action search-toggle" title="Search">
+                <i class="bi bi-search"></i>
+            </button>
+
+            <button class="header-action mobile-menu-toggle" title="More">
+                <i class="bi bi-three-dots"></i>
+            </button>
+        </div>
+    </div>
+</header>
+
+<div class="mobile-search">
+    <form class="search-form" action="/admin/search" method="GET">
+        <input type="search" name="q" placeholder="Search..." autocomplete="off">
+        <button type="submit"><i class="bi bi-search"></i></button>
+    </form>
+</div>
+
+<div class="mobile-header-menu">
+    <div class="mobile-header-menu-content">
+        <button class="mobile-menu-item theme-toggle" title="Toggle Theme">
+            <i class="ph-light ph-moon-stars theme-icon-dark"></i>
+            <i class="ph-light ph-sun theme-icon-light"></i>
+            <span class="mobile-menu-label">Theme</span>
+        </button>
+
+        <a href="notifications.html" class="mobile-menu-item">
+            <i class="bi bi-bell"></i>
+            <span class="badge">4</span>
+            <span class="mobile-menu-label">Alerts</span>
+        </a>
+
+        <a href="apps-chat.html" class="mobile-menu-item">
+            <i class="bi bi-chat-left-text"></i>
+            <span class="mobile-menu-label">Messages</span>
+        </a>
+
+        <a href="apps-calendar.html" class="mobile-menu-item">
+            <i class="bi bi-calendar3"></i>
+            <span class="mobile-menu-label">Calendar</span>
+        </a>
+
+        <a href="profile.html" class="mobile-menu-item">
+            <i class="bi bi-person"></i>
+            <span class="mobile-menu-label">Profile</span>
+        </a>
+
+        <a href="settings.html" class="mobile-menu-item">
+            <i class="bi bi-sliders"></i>
+            <span class="mobile-menu-label">Settings</span>
+        </a>
+
+        <a href="auth-login.html" class="mobile-menu-item mobile-menu-item-danger">
+            <i class="bi bi-box-arrow-right"></i>
+            <span class="mobile-menu-label">Sign Out</span>
+        </a>
+    </div>
+</div>
