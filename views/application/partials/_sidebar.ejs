@@ -1,25 +1,20 @@
-<ul class="nav flex-column pt-3 d-flex justify-content-start min-vh-100">
-    <% if(user){%>
+<ul class="nav flex-column d-flex justify-content-start min-vh-100 position-relative">
+  <logo class="navbar navbar-logo">
+    <a href="/">
+    <img src="/img/codewithinfinitidev.png" alt="logo" class="img-fluid" style="max-height:150px;">
+    </a>
+  </logo>
+  <% if(user && user.role==="admin" ){ %>
     <li class="nav-item mb-2 list-group-item-primary list-group-item-action rounded">
-      <a class="nav-link d-flex align-items-center py-0 px-4 <%- url === '/users/' + user.id + '/profile' ? 'active list-group-item text-white' : 'text-muted' %>" 
-   href="/users/<%= user.id %>/profile">
-   <img src="<%= user.avatar %>" width="20" height="20" class="rounded-circle me-2" alt="<%= user.name %>'s profile picture">
-   <span class="overflow-hidden text-nowrap"><%= user.name %></span>
-</a>
+      <a class="nav-link d-flex align-items-center py-1 px-2 <%= url === '/admin/dashboard' ? 'active list-group-item text-white' : 'text-muted' %>"
+        href="/admin/dashboard">
+        <i class="bi bi-speedometer2 me-2"></i>
+        <span>Dashboard</span>
+      </a>
     </li>
     <% } %>
-    <hr class="m-0 text-muted mb-2">
-    <% if(user && user.role==="admin" ){ %>
       <li class="nav-item mb-2 list-group-item-primary list-group-item-action rounded">
-        <a class="nav-link d-flex align-items-center py-0 px-4 <%= url === '/admin/dashboard' ? 'active list-group-item text-white' : 'text-muted' %>" 
-          href="/admin/dashboard">
-          <i class="bi bi-speedometer2 me-2"></i>
-          <span>Dashboard</span>
-        </a>
-      </li>
-    <% } %>
-      <li class="nav-item mb-2 list-group-item-primary list-group-item-action rounded">
-        <a class="nav-link d-flex align-items-center py-0 px-4 <%= url === '/' ? 'active list-group-item text-white' : 'text-muted' %>" 
+        <a class="nav-link d-flex align-items-center py-1 px-2 <%= url === '/' ? 'active list-group-item text-white' : 'text-muted' %>"
           href="/">
           <i class="bi bi-house me-2"></i>
           <span>Home</span>
@@ -27,7 +22,7 @@
       </li>
 
       <li class="nav-item mb-2 list-group-item-primary list-group-item-action rounded">
-        <a class="nav-link d-flex align-items-center py-0 px-4 <%= url === '/todo_schedule' ? 'active list-group-item text-white' : 'text-muted' %>" 
+        <a class="nav-link d-flex align-items-center py-1 px-2 <%= url === '/todo_schedule' ? 'active list-group-item text-white' : 'text-muted' %>"
           href="/todo_schedule">
           <i class="bi bi-calendar me-2"></i>
           <span>TodoSchedule</span>
@@ -35,24 +30,48 @@
       </li>
 
       <li class="nav-item mb-2 list-group-item-primary list-group-item-action rounded">
-        <a class="nav-link d-flex align-items-center py-0 px-4 <%= url === '/users/progress' ? 'active list-group-item text-white' : 'text-muted' %>"
+        <a class="nav-link d-flex align-items-center py-1 px-2 <%= url === '/users/progress' ? 'active list-group-item text-white' : 'text-muted' %>"
           href="/users/progress">
           <i class="bi bi-graph-up-arrow me-2"></i>
           <span>Progress</span>
         </a>
       </li>
       <li class="nav-item mb-2 list-group-item-primary list-group-item-action rounded">
-        <a class="nav-link d-flex align-items-center py-0 px-4 <%= url === '/users/achievements' ? 'active list-group-item text-white' : 'text-muted' %>"
+        <a class="nav-link d-flex align-items-center py-1 px-2 <%= url === '/users/achievements' ? 'active list-group-item text-white' : 'text-muted' %>"
           href="/users/achievements">
           <i class="bi bi-award me-2"></i>
           <span>Achievments</span>
         </a>
       </li>
       <li class="nav-item mb-2 list-group-item-primary list-group-item-action rounded">
-        <a class="nav-link d-flex align-items-center py-0 px-4 <%= url === '/courses' ? 'active list-group-item text-white' : 'text-muted' %>"
+        <a class="nav-link d-flex align-items-center py-1 px-2 <%= url === '/courses' ? 'active list-group-item text-white' : 'text-muted' %>"
           href="/courses">
           <i class="bi bi-book me-2"></i>
           <span>Courses</span>
         </a>
       </li>
+
+
+      <% if(user){%>
+        <div class="position-absolute bottom-0 w-100">
+          <hr class="m-0 text-muted mb-2">
+          <li class="nav-item mb-2 list-group-item-primary list-group-item-action rounded">
+            <a class="nav-link d-flex align-items-center py-1 px-2 <%- url === '/users/' + user.id + '/profile' ? 'active list-group-item text-white' : 'text-muted' %>"
+              href="/users/<%= user.id %>/profile">
+              <img src="<%= user.avatar %>" width="20" height="20" class="rounded-circle me-2"
+                alt="<%= user.name %>'s profile picture">
+              <span class="overflow-hidden text-nowrap">
+                <%= user.name %>
+              </span>
+            </a>
+          </li>
+          <li class="nav-item mb-2 list-group-item-danger list-group-item-action rounded">
+            <a class="nav-link d-flex align-items-center py-1 px-2 text-danger" href="/auth/logout"
+              onclick="return confirm('Are you sure you want to sign out?')">
+              <i class="bi bi-box-arrow-right me-2"></i>
+              <span>Sign Out</span>
+            </a>
+          </li>
+        </div>
+      <% } %>
 </ul>

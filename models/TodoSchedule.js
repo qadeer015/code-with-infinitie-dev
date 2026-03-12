@@ -23,7 +23,7 @@ class TodoSchedule {
                 FROM todo_schedules ts 
                 JOIN courses c ON ts.course_id = c.id 
                 JOIN users u ON ts.created_by = u.id
-                JOIN sessions s ON ts.session_id = s.id
+                JOIN academic_sessions s ON ts.session_id = s.id
                 ORDER BY ts.start_date, ts.end_date
             `);
             return rows;
