@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const editor = document.getElementById('editor');
     const boldBtn = document.getElementById('bold-btn');
     const italicBtn = document.getElementById('italic-btn');
@@ -20,46 +20,46 @@ document.addEventListener('DOMContentLoaded', function() {
     const tableColorBtn = document.getElementById('table-color');
     const form = document.querySelector('form');
     const hiddenTextarea = document.getElementById('editor-content');
-    
+
     // Modal elements
     const modal = document.getElementById('table-modal');
     const closeBtn = document.querySelector('.close');
     const createTableBtn = document.getElementById('create-table');
-    
+
     let currentTable = null;
     let currentCell = null;
 
     // Basic formatting buttons
-    boldBtn.addEventListener('click', function() {
+    boldBtn.addEventListener('click', function () {
         document.execCommand('bold', false, null);
         boldBtn.classList.toggle('active');
     });
-    
-    italicBtn.addEventListener('click', function() {
+
+    italicBtn.addEventListener('click', function () {
         document.execCommand('italic', false, null);
         italicBtn.classList.toggle('active');
     });
-    
-    ulBtn.addEventListener('click', function() {
+
+    ulBtn.addEventListener('click', function () {
         document.execCommand('insertUnorderedList', false, null);
         olBtn.classList.remove('active');
         ulBtn.classList.toggle('active');
     });
-    
-    olBtn.addEventListener('click', function() {
+
+    olBtn.addEventListener('click', function () {
         document.execCommand('insertOrderedList', false, null);
         ulBtn.classList.remove('active');
         olBtn.classList.toggle('active');
     });
-    
-    fontStyle.addEventListener('change', function() {
+
+    fontStyle.addEventListener('change', function () {
         document.execCommand('fontName', false, this.value);
     });
-    
-    fontSize.addEventListener('change', function() {
+
+    fontSize.addEventListener('change', function () {
         const selectedSize = this.value;
         document.execCommand('fontSize', false, selectedSize);
-        
+
         // Fix for Firefox
         const fontElements = editor.getElementsByTagName('font');
         for (let i = 0; i < fontElements.length; i++) {
@@ -69,72 +69,72 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    
+
     // Alignment functions
-    alignLeftBtn.addEventListener('click', function() {
+    alignLeftBtn.addEventListener('click', function () {
         document.execCommand('justifyLeft', false, null);
         updateAlignmentButtons('left');
     });
-    
-    alignCenterBtn.addEventListener('click', function() {
+
+    alignCenterBtn.addEventListener('click', function () {
         document.execCommand('justifyCenter', false, null);
         updateAlignmentButtons('center');
     });
-    
-    alignRightBtn.addEventListener('click', function() {
+
+    alignRightBtn.addEventListener('click', function () {
         document.execCommand('justifyRight', false, null);
         updateAlignmentButtons('right');
     });
-    
-    alignJustifyBtn.addEventListener('click', function() {
+
+    alignJustifyBtn.addEventListener('click', function () {
         document.execCommand('justifyFull', false, null);
         updateAlignmentButtons('justify');
     });
-    
+
     function updateAlignmentButtons(alignment) {
         alignLeftBtn.classList.toggle('active', alignment === 'left');
         alignCenterBtn.classList.toggle('active', alignment === 'center');
         alignRightBtn.classList.toggle('active', alignment === 'right');
         alignJustifyBtn.classList.toggle('active', alignment === 'justify');
     }
-    
+
     // Table creation modal
-    insertTableBtn.addEventListener('click', function() {
+    insertTableBtn.addEventListener('click', function () {
         modal.style.display = 'block';
     });
-    
-    closeBtn.addEventListener('click', function() {
+
+    closeBtn.addEventListener('click', function () {
         modal.style.display = 'none';
     });
-    
-    window.addEventListener('click', function(event) {
+
+    window.addEventListener('click', function (event) {
         if (event.target === modal) {
             modal.style.display = 'none';
         }
     });
-    
-    createTableBtn.addEventListener('click', function(e) {
+
+    createTableBtn.addEventListener('click', function (e) {
         e.preventDefault(); // Add this line to prevent default behavior
-        
+
         const rows = document.getElementById('rows').value;
         const cols = document.getElementById('cols').value;
         const borderSize = document.getElementById('border-size').value;
         const borderColor = document.getElementById('border-color').value;
         const cellPadding = document.getElementById('cell-padding').value;
-        
+
         const tableHtml = generateTableHtml(
-            parseInt(rows), 
-            parseInt(cols), 
-            parseInt(borderSize), 
-            borderColor, 
+            parseInt(rows),
+            parseInt(cols),
+            parseInt(borderSize),
+            borderColor,
             parseInt(cellPadding)
         );
-        
+
         document.execCommand('insertHTML', false, tableHtml);
         modal.style.display = 'none';
         showTableOptions();
     });
-    
+
     function generateTableHtml(rows, cols, borderSize, borderColor, cellPadding) {
         let html = `<table style="width: 100%; border-collapse: collapse; margin: 10px 0; border: ${borderSize}px solid ${borderColor};">`;
         for (let i = 0; i < rows; i++) {
@@ -147,16 +147,16 @@ document.addEventListener('DOMContentLoaded', function() {
         html += '</table>';
         return html;
     }
-    
+
     // Table editing functions
     function showTableOptions() {
         tableOptions.style.display = 'inline-block';
     }
-    
+
     function hideTableOptions() {
         tableOptions.style.display = 'none';
     }
-    
+
     function getCurrentTable() {
         const selection = window.getSelection();
         if (selection.rangeCount > 0) {
@@ -168,7 +168,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         return null;
     }
-    
+
     function getCurrentCell() {
         const selection = window.getSelection();
         if (selection.rangeCount > 0) {
@@ -180,8 +180,8 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         return null;
     }
-    
-    addRowBtn.addEventListener('click', function() {
+
+    addRowBtn.addEventListener('click', function () {
         const table = getCurrentTable();
         if (table) {
             const row = table.insertRow(-1);
@@ -196,8 +196,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    
-    addColBtn.addEventListener('click', function() {
+
+    addColBtn.addEventListener('click', function () {
         const table = getCurrentTable();
         if (table) {
             for (let i = 0; i < table.rows.length; i++) {
@@ -210,8 +210,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    
-    deleteRowBtn.addEventListener('click', function() {
+
+    deleteRowBtn.addEventListener('click', function () {
         const cell = getCurrentCell();
         if (cell) {
             const row = cell.parentNode;
@@ -224,13 +224,13 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    
-    deleteColBtn.addEventListener('click', function() {
+
+    deleteColBtn.addEventListener('click', function () {
         const cell = getCurrentCell();
         if (cell) {
             const colIndex = cell.cellIndex;
             const table = cell.parentNode.parentNode;
-            
+
             for (let i = 0; i < table.rows.length; i++) {
                 if (table.rows[i].cells.length > 1) {
                     table.rows[i].deleteCell(colIndex);
@@ -243,8 +243,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    
-    tableBorderBtn.addEventListener('click', function() {
+
+    tableBorderBtn.addEventListener('click', function () {
         const table = getCurrentTable();
         if (table) {
             const currentBorder = table.style.border;
@@ -263,8 +263,8 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    
-    tableColorBtn.addEventListener('click', function() {
+
+    tableColorBtn.addEventListener('click', function () {
         const cell = getCurrentCell();
         if (cell) {
             const color = prompt('Enter color (name, hex, or rgb):', cell.style.backgroundColor || '');
@@ -273,9 +273,9 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    
+
     // Keyboard shortcuts
-    document.addEventListener('keydown', function(e) {
+    document.addEventListener('keydown', function (e) {
         if (e.ctrlKey || e.metaKey) {
             switch (e.key.toLowerCase()) {
                 case 'b':
@@ -305,50 +305,50 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    
+
     // Highlight buttons when text has corresponding style
-    editor.addEventListener('mouseup', function() {
+    editor.addEventListener('mouseup', function () {
         const selection = window.getSelection();
         if (selection.rangeCount > 0) {
             const range = selection.getRangeAt(0);
             const parentElement = range.commonAncestorContainer.parentElement;
-            
+
             // Check for bold
-            const isBold = document.queryCommandState('bold') || 
-                          (parentElement && (parentElement.tagName === 'B' || parentElement.tagName === 'STRONG'));
+            const isBold = document.queryCommandState('bold') ||
+                (parentElement && (parentElement.tagName === 'B' || parentElement.tagName === 'STRONG'));
             boldBtn.classList.toggle('active', isBold);
-            
+
             // Check for italic
-            const isItalic = document.queryCommandState('italic') || 
-                            (parentElement && (parentElement.tagName === 'I' || parentElement.tagName === 'EM'));
+            const isItalic = document.queryCommandState('italic') ||
+                (parentElement && (parentElement.tagName === 'I' || parentElement.tagName === 'EM'));
             italicBtn.classList.toggle('active', isItalic);
-            
+
             // Check for lists
             const isUL = parentElement && parentElement.tagName === 'UL';
             const isOL = parentElement && parentElement.tagName === 'OL';
             ulBtn.classList.toggle('active', isUL);
             olBtn.classList.toggle('active', isOL);
-            
+
             // Check for alignment
             const isLeftAligned = document.queryCommandState('justifyLeft');
             const isCenterAligned = document.queryCommandState('justifyCenter');
             const isRightAligned = document.queryCommandState('justifyRight');
             const isJustifyAligned = document.queryCommandState('justifyFull');
-            
+
             updateAlignmentButtons(
-                isLeftAligned ? 'left' : 
-                isCenterAligned ? 'center' : 
-                isRightAligned ? 'right' :
-                isJustifyAligned ? 'justify' : 'none'
+                isLeftAligned ? 'left' :
+                    isCenterAligned ? 'center' :
+                        isRightAligned ? 'right' :
+                            isJustifyAligned ? 'justify' : 'none'
             );
-            
+
             // Check if we're in a table
             const table = getCurrentTable();
             if (table) {
                 showTableOptions();
                 currentTable = table;
                 currentCell = getCurrentCell();
-                
+
                 // Highlight current cell
                 if (currentCell) {
                     const cells = table.getElementsByTagName('td');
@@ -364,7 +364,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         }
     });
-    
+
     // Helper function to convert legacy font size (1-7) to px
     function getFontSizeFromValue(value) {
         const sizes = {
@@ -379,8 +379,17 @@ document.addEventListener('DOMContentLoaded', function() {
         return sizes[value] || '12px';
     }
 
-    form.addEventListener('submit', function(e) {
-        // Get the HTML content from the editor
+    // 🔁 NEW: Sync editor content to hidden textarea on every change
+    editor.addEventListener('input', function () {
+        hiddenTextarea.value = editor.innerHTML;
+    });
+
+    // 🔁 NEW: Initialize hidden textarea with current editor content
+    hiddenTextarea.value = editor.innerHTML;
+
+    // The form submit handler is no longer strictly needed for the content,
+    // but we keep it to ensure the final value is there (e.g., if JavaScript fails)
+    form.addEventListener('submit', function (e) {
         hiddenTextarea.value = editor.innerHTML;
     });
 });
