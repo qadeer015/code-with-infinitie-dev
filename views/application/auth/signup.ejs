@@ -1,0 +1,196 @@
+<main class="container-fluid p-0">
+    <div class="row g-0 min-vh-100">
+        <!-- Left Column - Decorative Image (Hidden on mobile) -->
+        <div class="col-lg-6 d-none d-lg-block login-bg" style="background-image: url('/img/space_background.png'); background-size: cover; background-position: center;">
+            <div class="d-flex flex-column h-100 justify-content-center p-5 text-white overlay-dark">
+                <h1 class="display-4 fw-bold mb-4">Join Our Community</h1>
+                <p class="lead">Create an account to access exclusive content and start your learning journey with Code with Infinitidev.</p>
+            </div>
+        </div>
+        
+        <!-- Right Column - Signup Form -->
+        <div class="col-lg-6 d-flex align-items-center py-5">
+            <div class="container py-lg-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-8 col-lg-10 col-xl-8">
+                        <div class="card shadow-sm border-0">
+                            <div class="card-body p-4 p-md-5">
+                                <div class="text-center mb-4">
+                                    <h2 class="fw-bold text-primary">Create Account</h2>
+                                    <p class="text-muted">Sign up to get started</p>
+                                </div>
+                                
+                                <form id="signup-form" action="/auth/register" method="POST" enctype="multipart/form-data">
+                                    <!-- Name Input -->
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label fw-semibold">Full Name</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-person-fill"></i>
+                                            </span>
+                                            <input type="text" id="name" name="name" class="form-control form-control-lg" placeholder="Enter your full name" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Email Input -->
+                                    <div class="mb-3">
+                                        <label for="email" class="form-label fw-semibold">Email Address</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-envelope-fill"></i>
+                                            </span>
+                                            <input type="email" id="email" name="email" class="form-control form-control-lg" placeholder="Enter your email" required>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Password Input -->
+                                    <div class="mb-3">
+                                        <label for="password" class="form-label fw-semibold">Password</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-lock-fill"></i>
+                                            </span>
+                                            <input type="password" id="password" name="password" class="form-control form-control-lg" placeholder="Create a password" required minlength="6">
+                                            <button class="btn btn-outline-secondary toggle-password" type="button">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </button>
+                                        </div>
+                                        <div class="form-text">Password must be at least 6 characters long</div>
+                                    </div>
+                                    
+                                    <!-- Confirm Password Input -->
+                                    <div class="mb-3">
+                                        <label for="confirmPassword" class="form-label fw-semibold">Confirm Password</label>
+                                        <div class="input-group">
+                                            <span class="input-group-text">
+                                                <i class="bi bi-lock-fill"></i>
+                                            </span>
+                                            <input type="password" id="confirmPassword" name="confirmPassword" class="form-control form-control-lg" placeholder="Confirm your password" required>
+                                            <button class="btn btn-outline-secondary toggle-password" type="button">
+                                                <i class="bi bi-eye-fill"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Avatar Upload -->
+                                    <div class="mb-3">
+                                        <label for="avatar" class="form-label fw-semibold">Profile Picture (Optional)</label>
+                                        <input type="file" id="avatar" name="avatar" class="form-control form-control-lg" accept="image/*">
+                                    </div>
+                                    
+                                    <!-- Terms Checkbox -->
+                                    <div class="mb-4 form-check">
+                                        <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
+                                        <label class="form-check-label" for="terms">
+                                            I agree to the <a href="/auth/terms" class="text-decoration-none text-primary">Terms of Service</a> and <a href="/auth/privacy" class="text-decoration-none text-primary">Privacy Policy</a>
+                                        </label>
+                                    </div>
+                                    
+                                    <!-- Submit Button -->
+                                    <div class="d-grid mb-4">
+                                        <button type="submit" class="btn btn-primary btn-lg fw-semibold py-2">Create Account</button>
+                                    </div>
+                                    
+                                    <div class="mt-3">
+                                        <p class="text-center text-muted">Already have an account? <a href="/auth/login" class="text-decoration-none text-primary fw-semibold">Log In</a></p>
+                                    </div>
+                                    
+                                    <hr class="my-4">
+                                    
+                                    <a href="/auth/google" class="btn btn-outline-primary d-block mb-3">
+                                        <i class="bi bi-google me-2"></i> Continue with Google
+                                    </a>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<style>
+    :root {
+        --bs-body-font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    }
+    
+    .login-bg {
+        position: relative;
+    }
+    
+    .overlay-dark {
+        background-color: rgba(0, 0, 0, 0.5);
+    }
+    
+    .toggle-password {
+        cursor: pointer;
+    }
+    
+    .form-control-lg {
+        padding: 0.75rem 1rem;
+    }
+    
+    @media (max-width: 991.98px) {
+        body {
+            background-color: #f8f9fa;
+        }
+        
+        .card {
+            border: none;
+            box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.05);
+        }
+    }
+</style>
+
+<script>
+    // Toggle password visibility
+    document.querySelectorAll('.toggle-password').forEach(button => {
+        button.addEventListener('click', function() {
+            const passwordInput = this.parentElement.querySelector('input');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('bi-eye-fill');
+                icon.classList.add('bi-eye-slash-fill');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('bi-eye-slash-fill');
+                icon.classList.add('bi-eye-fill');
+            }
+        });
+    });
+
+    const signupForm = document.getElementById('signup-form');
+    signupForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        
+        const formData = new FormData(signupForm);
+        const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
+        
+        if (password !== confirmPassword) {
+            showAlert('Passwords do not match');
+            return;
+        }
+        
+        try {
+            const response = await fetch(signupForm.action, {
+                method: signupForm.method,
+                body: formData
+            });
+            
+            const data = await response.json();
+            
+            if (data.status === 'success') {
+                window.location.href = data.redirect;
+            } else {
+                showAlert(data.message);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            showAlert('An error occurred during registration');
+        }
+    });
+</script>
