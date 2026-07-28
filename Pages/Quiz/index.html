@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quiz Viewer</title>
+<style>
+  :root{
+    --ink:#1b1d23;
+    --paper:#faf7f0;
+    --panel:#ffffff;
+    --accent:#a8462d;
+    --accent-soft:#f2ddd3;
+    --line:#e4dfd3;
+    --muted:#7a7568;
+    --good:#2f6b45;
+    --good-bg:#e5f1e6;
+    --bad:#a8302a;
+    --bad-bg:#fbe6e3;
+    --radius:14px;
+    --serif: "Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+    --mono: "IBM Plex Mono","Courier New",monospace;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:var(--serif);
+    background:
+      radial-gradient(circle at 15% 10%, rgba(168,70,45,0.06), transparent 40%),
+      var(--paper);
+    color:var(--ink);
+    min-height:100vh;
+  }
+  .wrap{
+    max-width:760px;
+    margin:0 auto;
+    padding:40px 20px 80px;
+  }
+  header.top{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    border-bottom:2px solid var(--ink);
+    padding-bottom:14px;
+    margin-bottom:34px;
+  }
+  header.top h1{
+    font-size:1.5rem;
+    letter-spacing:0.02em;
+    margin:0;
+    font-weight:600;
+  }
+  header.top .tag{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+
+  /* Upload screen */
+  #uploadScreen{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding:60px 20px;
+  }
+  .drop{
+    width:100%;
+    border:1.5px dashed #c9c0aa;
+    border-radius:var(--radius);
+    background:var(--panel);
+    padding:56px 30px;
+    text-align:center;
+    cursor:pointer;
+    transition:border-color .15s ease, background .15s ease, transform .1s ease;
+  }
+  .drop:hover, .drop.drag{
+    border-color:var(--accent);
+    background:var(--accent-soft);
+  }
+  .drop .icon{
+    width:44px;height:44px;
+    margin:0 auto 18px;
+    color:var(--accent);
+  }
+  .drop h2{
+    margin:0 0 8px;
+    font-size:1.15rem;
+    font-weight:600;
+  }
+  .drop p{
+    margin:0;
+    color:var(--muted);
+    font-size:0.92rem;
+    font-family:var(--mono);
+  }
+  #fileInput{ display:none; }
+  .err{
+    margin-top:18px;
+    color:var(--bad);
+    font-family:var(--mono);
+    font-size:0.85rem;
+    text-align:center;
+  }
+
+  /* Quiz screen */
+  #quizScreen{ display:none; }
+
+  .meta-bar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:var(--mono);
+    font-size:0.78rem;
+    color:var(--muted);
+    margin-bottom:10px;
+    letter-spacing:0.02em;
+  }
+  .progress-track{
+    height:6px;
+    background:var(--line);
+    border-radius:4px;
+    overflow:hidden;
+    margin-bottom:30px;
+  }
+  .progress-fill{
+    height:100%;
+    background:var(--accent);
+    width:0%;
+    transition:width .25s ease;
+  }
+
+  .card{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    padding:34px 32px;
+    box-shadow:0 1px 2px rgba(0,0,0,0.03);
+  }
+  .qnum{
+    font-family:var(--mono);
+    font-size:0.78rem;
+    color:var(--accent);
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    margin-bottom:10px;
+  }
+  .qtext{
+    font-size:1.28rem;
+    line-height:1.5;
+    margin:0 0 26px;
+    font-weight:500;
+  }
+  .options{
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+  .option{
+    display:flex;
+    align-items:flex-start;
+    gap:14px;
+    padding:14px 16px;
+    border:1.5px solid var(--line);
+    border-radius:10px;
+    cursor:pointer;
+    transition:border-color .12s ease, background .12s ease, transform .08s ease;
+    background:var(--paper);
+  }
+  .option:hover{ border-color:var(--accent); transform:translateX(2px); }
+  .option.selected{
+    border-color:var(--accent);
+    background:var(--accent-soft);
+  }
+  .option .label{
+    font-family:var(--mono);
+    font-weight:700;
+    font-size:0.85rem;
+    width:24px;height:24px;
+    flex:none;
+    border-radius:50%;
+    border:1.5px solid var(--muted);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--muted);
+  }
+  .option.selected .label{
+    border-color:var(--accent);
+    background:var(--accent);
+    color:#fff;
+  }
+  .option .text{ padding-top:2px; line-height:1.45; }
+
+  .nav-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-top:26px;
+  }
+  .btn{
+    font-family:var(--mono);
+    font-size:0.82rem;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    padding:11px 20px;
+    border-radius:8px;
+    border:1.5px solid var(--ink);
+    background:var(--ink);
+    color:var(--paper);
+    cursor:pointer;
+    transition:opacity .12s ease, transform .08s ease;
+  }
+  .btn.ghost{
+    background:transparent;
+    color:var(--ink);
+  }
+  .btn:disabled{
+    opacity:0.35;
+    cursor:not-allowed;
+  }
+  .btn:not(:disabled):hover{ transform:translateY(-1px); }
+
+  .jumper{
+    display:flex;
+    flex-wrap:wrap;
+    gap:6px;
+    margin-top:24px;
+  }
+  .jumper button{
+    width:32px;height:32px;
+    font-family:var(--mono);
+    font-size:0.72rem;
+    border-radius:6px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    color:var(--muted);
+    cursor:pointer;
+  }
+  .jumper button.current{
+    border-color:var(--ink);
+    color:var(--ink);
+    font-weight:700;
+  }
+  .jumper button.answered{
+    background:var(--accent-soft);
+    border-color:var(--accent);
+    color:var(--accent);
+  }
+
+  /* Summary screen */
+  #summaryScreen{ display:none; }
+  .summary-header{
+    text-align:center;
+    margin-bottom:30px;
+  }
+  .summary-header .big{
+    font-size:2.6rem;
+    font-weight:700;
+    color:var(--accent);
+  }
+  .summary-header .sub{
+    font-family:var(--mono);
+    color:var(--muted);
+    font-size:0.85rem;
+    margin-top:6px;
+  }
+  .summary-item{
+    background:var(--panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:20px 22px;
+    margin-bottom:14px;
+  }
+  .summary-item .sqnum{
+    font-family:var(--mono);
+    font-size:0.72rem;
+    color:var(--muted);
+    text-transform:uppercase;
+    margin-bottom:6px;
+  }
+  .summary-item .sqtext{
+    font-weight:600;
+    margin-bottom:10px;
+    line-height:1.45;
+  }
+  .summary-item .picked{
+    font-family:var(--mono);
+    font-size:0.85rem;
+  }
+  .summary-item .picked.answered{ color:var(--accent); }
+  .summary-item .picked.unanswered{ color:var(--bad); }
+
+  .toolbar{
+    display:flex;
+    gap:10px;
+    justify-content:center;
+    margin-top:30px;
+  }
+
+  @media (max-width:520px){
+    .card{ padding:24px 20px; }
+    .qtext{ font-size:1.1rem; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <h1 id="pageTitle">Quiz Viewer</h1>
+    <div class="tag" id="courseTag">Upload a JSON file</div>
+  </header>
+
+  <!-- UPLOAD SCREEN -->
+  <div id="uploadScreen">
+    <div class="drop" id="dropZone">
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+        <path d="M12 16V4M12 4l-4 4M12 4l4 4" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h2>Drop your quiz JSON here</h2>
+      <p>or click to browse &mdash; expects an array of question objects</p>
+    </div>
+    <input type="file" id="fileInput" accept="application/json,.json">
+    <div class="err" id="errMsg"></div>
+  </div>
+
+  <!-- QUIZ SCREEN -->
+  <div id="quizScreen">
+    <div class="meta-bar">
+      <span id="metaLeft">Question 1 of N</span>
+      <span id="metaRight">0 answered</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+    <div class="card">
+      <div class="qnum" id="qNumLabel">Question 1</div>
+      <p class="qtext" id="qText"></p>
+      <div class="options" id="optionsList"></div>
+
+      <div class="nav-row">
+        <button class="btn ghost" id="prevBtn">&larr; Previous</button>
+        <button class="btn" id="nextBtn">Next &rarr;</button>
+      </div>
+    </div>
+
+    <div class="jumper" id="jumper"></div>
+
+    <div class="toolbar">
+      <button class="btn ghost" id="finishBtn">Finish &amp; Review</button>
+      <button class="btn ghost" id="reloadBtn">Upload a different file</button>
+    </div>
+  </div>
+
+  <!-- SUMMARY SCREEN -->
+  <div id="summaryScreen">
+    <div class="summary-header">
+      <div class="big" id="summaryCount">0 / 0</div>
+      <div class="sub">questions answered</div>
+    </div>
+    <div id="summaryList"></div>
+    <div class="toolbar">
+      <button class="btn ghost" id="backToQuizBtn">&larr; Back to Quiz</button>
+      <button class="btn ghost" id="reloadBtn2">Upload a different file</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+(function(){
+  const uploadScreen = document.getElementById('uploadScreen');
+  const quizScreen = document.getElementById('quizScreen');
+  const summaryScreen = document.getElementById('summaryScreen');
+  const dropZone = document.getElementById('dropZone');
+  const fileInput = document.getElementById('fileInput');
+  const errMsg = document.getElementById('errMsg');
+  const courseTag = document.getElementById('courseTag');
+  const pageTitle = document.getElementById('pageTitle');
+
+  let questions = [];
+  let current = 0;
+  let answers = {}; // index -> label
+
+  // ---- Upload handling ----
+  dropZone.addEventListener('click', () => fileInput.click());
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('drag'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag'));
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault();
+    dropZone.classList.remove('drag');
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) handleFile(e.dataTransfer.files[0]);
+  });
+  fileInput.addEventListener('change', e => {
+    if (e.target.files && e.target.files[0]) handleFile(e.target.files[0]);
+  });
+
+  function handleFile(file){
+    errMsg.textContent = '';
+    if (!file.name.toLowerCase().endsWith('.json') && file.type !== 'application/json'){
+      errMsg.textContent = 'Please upload a .json file.';
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = evt => {
+      try{
+        const data = JSON.parse(evt.target.result);
+        loadQuiz(data);
+      }catch(err){
+        errMsg.textContent = 'Could not parse JSON: ' + err.message;
+      }
+    };
+    reader.onerror = () => { errMsg.textContent = 'Could not read the file.'; };
+    reader.readAsText(file);
+  }
+
+  function normalize(data){
+    // Accept either a raw array, or an object with a questions/data/items key
+    let arr = null;
+    if (Array.isArray(data)) arr = data;
+    else if (data && Array.isArray(data.questions)) arr = data.questions;
+    else if (data && Array.isArray(data.data)) arr = data.data;
+    else if (data && Array.isArray(data.items)) arr = data.items;
+
+    if (!arr) throw new Error('JSON must be an array of question objects.');
+
+    return arr.map((q, i) => {
+      const text = q.questionText || q.question || q.text || ('Question ' + (i+1));
+      let opts = q.options || q.choices || [];
+      // normalize options into {label, text}
+      opts = opts.map((o, idx) => {
+        if (typeof o === 'string') return { label: String.fromCharCode(65+idx), text: o };
+        return { label: o.label || String.fromCharCode(65+idx), text: o.text || o.value || '' };
+      });
+      return {
+        courseCode: q.courseCode || '',
+        questionNumber: q.questionNumber ?? (i+1),
+        questionText: text,
+        options: opts
+      };
+    });
+  }
+
+  function loadQuiz(data){
+    try{
+      questions = normalize(data);
+      if (questions.length === 0) throw new Error('No questions found in file.');
+    }catch(err){
+      errMsg.textContent = err.message;
+      return;
+    }
+    current = 0;
+    answers = {};
+    courseTag.textContent = (questions[0].courseCode ? questions[0].courseCode + ' \u00b7 ' : '') + questions.length + ' questions';
+    pageTitle.textContent = questions[0].courseCode ? questions[0].courseCode + ' Quiz' : 'Quiz Viewer';
+    uploadScreen.style.display = 'none';
+    summaryScreen.style.display = 'none';
+    quizScreen.style.display = 'block';
+    buildJumper();
+    renderQuestion();
+  }
+
+  // ---- Quiz rendering ----
+  const qNumLabel = document.getElementById('qNumLabel');
+  const qText = document.getElementById('qText');
+  const optionsList = document.getElementById('optionsList');
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  const metaLeft = document.getElementById('metaLeft');
+  const metaRight = document.getElementById('metaRight');
+  const progressFill = document.getElementById('progressFill');
+  const jumper = document.getElementById('jumper');
+
+  function renderQuestion(){
+    const q = questions[current];
+    qNumLabel.textContent = 'Question ' + (q.questionNumber ?? (current+1));
+    qText.textContent = q.questionText;
+    optionsList.innerHTML = '';
+    q.options.forEach(opt => {
+      const div = document.createElement('div');
+      div.className = 'option' + (answers[current] === opt.label ? ' selected' : '');
+      div.innerHTML = '<span class="label">' + opt.label + '</span><span class="text"></span>';
+      div.querySelector('.text').textContent = opt.text;
+      div.addEventListener('click', () => {
+        answers[current] = opt.label;
+        renderQuestion();
+        updateJumper();
+        updateMeta();
+      });
+      optionsList.appendChild(div);
+    });
+
+    metaLeft.textContent = 'Question ' + (current+1) + ' of ' + questions.length;
+    prevBtn.disabled = current === 0;
+    nextBtn.textContent = current === questions.length - 1 ? 'Finish \u2192' : 'Next \u2192';
+    updateMeta();
+    updateJumper();
+  }
+
+  function updateMeta(){
+    const answeredCount = Object.keys(answers).length;
+    metaRight.textContent = answeredCount + ' of ' + questions.length + ' answered';
+    progressFill.style.width = (answeredCount / questions.length * 100) + '%';
+  }
+
+  function buildJumper(){
+    jumper.innerHTML = '';
+    questions.forEach((q, i) => {
+      const b = document.createElement('button');
+      b.textContent = i+1;
+      b.addEventListener('click', () => { current = i; renderQuestion(); });
+      jumper.appendChild(b);
+    });
+  }
+
+  function updateJumper(){
+    Array.from(jumper.children).forEach((b, i) => {
+      b.classList.toggle('current', i === current);
+      b.classList.toggle('answered', answers[i] !== undefined);
+    });
+  }
+
+  prevBtn.addEventListener('click', () => {
+    if (current > 0){ current--; renderQuestion(); }
+  });
+  nextBtn.addEventListener('click', () => {
+    if (current < questions.length - 1){ current++; renderQuestion(); }
+    else showSummary();
+  });
+
+  document.getElementById('finishBtn').addEventListener('click', showSummary);
+  document.getElementById('backToQuizBtn').addEventListener('click', () => {
+    summaryScreen.style.display = 'none';
+    quizScreen.style.display = 'block';
+    renderQuestion();
+  });
+
+  function resetToUpload(){
+    quizScreen.style.display = 'none';
+    summaryScreen.style.display = 'none';
+    uploadScreen.style.display = 'flex';
+    fileInput.value = '';
+    errMsg.textContent = '';
+    courseTag.textContent = 'Upload a JSON file';
+    pageTitle.textContent = 'Quiz Viewer';
+  }
+  document.getElementById('reloadBtn').addEventListener('click', resetToUpload);
+  document.getElementById('reloadBtn2').addEventListener('click', resetToUpload);
+
+  // ---- Summary rendering ----
+  const summaryCount = document.getElementById('summaryCount');
+  const summaryList = document.getElementById('summaryList');
+
+  function showSummary(){
+    quizScreen.style.display = 'none';
+    summaryScreen.style.display = 'block';
+    const answeredCount = Object.keys(answers).length;
+    summaryCount.textContent = answeredCount + ' / ' + questions.length;
+
+    summaryList.innerHTML = '';
+    questions.forEach((q, i) => {
+      const item = document.createElement('div');
+      item.className = 'summary-item';
+      const pickedLabel = answers[i];
+      const pickedOpt = pickedLabel ? q.options.find(o => o.label === pickedLabel) : null;
+      item.innerHTML =
+        '<div class="sqnum">Question ' + (q.questionNumber ?? (i+1)) + '</div>' +
+        '<div class="sqtext"></div>' +
+        '<div class="picked ' + (pickedOpt ? 'answered' : 'unanswered') + '"></div>';
+      item.querySelector('.sqtext').textContent = q.questionText;
+      const pickedDiv = item.querySelector('.picked');
+      pickedDiv.textContent = pickedOpt ? ('Your answer: ' + pickedOpt.label + ' \u2014 ' + pickedOpt.text) : 'Not answered';
+      item.addEventListener('click', () => {
+        current = i;
+        summaryScreen.style.display = 'none';
+        quizScreen.style.display = 'block';
+        renderQuestion();
+      });
+      item.style.cursor = 'pointer';
+      summaryList.appendChild(item);
+    });
+  }
+
+})();
+</script>
+</body>
+</html>
