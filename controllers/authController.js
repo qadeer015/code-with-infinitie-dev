@@ -17,26 +17,33 @@ const getCookieOptions = (rememberMe) => {
     };
 };
 
-const signup = async (req, res) => {
+const showSignup = (req, res) => {
+    res.render('application/auth/signup', { title: 'Sign Up', user: req.user, viewName: 'signup' });
+};
+
+const handleSignup = async (req, res) => {
     try {
         const { name, password, email, confirmPassword, terms } = req.body;
-        const avatarUrl = req.file ? req.file.path : null;        // Validate required fields
-
+        const avatarUrl = req.file ? req.file.path : null;
+        
+        // Validate required fields
         if (!terms || terms !== 'on') {
-            return res.status(400).json({ message: "You must accept the terms and conditions" });
+            return res.status(400).json({ status: 'error', message: "You must accept the terms and conditions" });
         }
         
         if (password !== confirmPassword) {
-            return res.status(400).json({ message: "Passwords do not match" });
+            return res.status(400).json({ status: 'error', message: "Passwords do not match" });
         }
 
         const existingUser = await User.findByEmail(email);
         if (existingUser) {
-            return res.status(400).json({ message: "User with this email already exists." });
+            return res.status(400).json({ status: 'error', message: "User with this email already exists." });
         }
+        
         const hashedPassword = await bcrypt.hash(password, 10);
         
         await User.create(name, hashedPassword, email, avatarUrl);
+        
         // Auto-login after signup
         const user = await User.findByEmail(email);
         const token = jwt.sign(
@@ -44,11 +51,129 @@ const signup = async (req, res) => {
             process.env.JWT_SECRET,
             { expiresIn: '1h' }
         );
+        
         res.cookie("token", token, getCookieOptions(false));
-        res.status(201).redirect('/auth/login');
+        
+        const html = renderTemplate("welcome.html", {
+            user_name: user.name,
+            year: new Date().getFullYear(),
+            app_name: "Code with Infinitidev",
+            getting_started_link: `${req.protocol}://${req.get('host')}/`,
+            unsubscribe_link: `${req.protocol}://${req.get('host')}/auth/login`
+        });
+
+        sendEmail({
+            to: user.email,
+            subject: "Welcome to Code with Infinitidev",
+            text: "Thank you for registering with Code with Infinitidev",
+            html,
+        }).catch((err) => console.error("Error sending email:", err));
+
+        return res.json({
+            status: 'success',
+            message: 'Registration successful',
+            redirect: '/'
+        });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Error creating user' });
+        res.status(500).json({ status: 'error', message: 'Error creating user' });
+    }
+};
+
+const forgotPassword = async (req, res) => {
+    try {
+        const { email } = req.body;
+        
+        if (!email) {
+            return res.status(400).json({ status: 'error', message: 'Email is required' });
+        }
+
+        const user = await User.findByEmail(email);
+        
+        // Always return success for security (don't reveal if email exists)
+        if (!user) {
+            return res.json({
+                status: 'success',
+                message: 'If an account exists with this email, a password reset link has been sent.'
+            });
+        }
+
+        // Generate reset token
+        const resetToken = jwt.sign(
+            { id: user.id, email: user.email },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
+
+        const resetLink = `${req.protocol}://${req.get('host')}/auth/reset-password/${resetToken}`;
+        
+        const html = renderTemplate("forgot-password.html", {
+            user_name: user.name,
+            reset_link: resetLink,
+            year: new Date().getFullYear(),
+            app_name: "Code with Infinitidev",
+        });
+
+        await sendEmail({
+            to: user.email,
+            subject: "Password Reset Request",
+            text: "You have requested a password reset",
+            html,
+        });
+
+        res.json({
+            status: 'success',
+            message: 'If an account exists with this email, a password reset link has been sent.'
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ status: 'error', message: 'An error occurred. Please try again.' });
+    }
+};
+
+const resetPassword = async (req, res) => {
+    try {
+        const { token } = req.params;
+        const { password, confirmPassword } = req.body;
+
+        // If GET request, show the reset password form
+        if (req.method === 'GET' || !req.body.password) {
+            try {
+                // Verify token validity
+                jwt.verify(token, process.env.JWT_SECRET);
+                return res.render('application/auth/reset-password', { 
+                    title: 'Reset Password', 
+                    user: req.user, 
+                    viewName: 'reset-password',
+                    token: token
+                });
+            } catch (err) {
+                // Redirect to login with error message if token is invalid
+                return res.redirect('/auth/login?error=invalid_token');
+            }
+        }
+
+        // POST request - process password reset
+        if (!password || password !== confirmPassword) {
+            return res.status(400).json({ status: 'error', message: 'Passwords do not match or are missing' });
+        }
+
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await User.changePassword(decoded.id, hashedPassword);
+
+        return res.json({
+            status: 'success',
+            message: 'Password has been reset successfully. You can now login.',
+            redirect: '/auth/login'
+        });
+    } catch (error) {
+        console.error(error);
+        if (error.name === 'JsonWebTokenError' || error.name === 'TokenExpiredError') {
+            return res.status(400).json({ status: 'error', message: 'Invalid or expired reset token' });
+        }
+        res.status(500).json({ status: 'error', message: 'An error occurred. Please try again.' });
     }
 };
 
@@ -150,10 +275,13 @@ const showPrivacy = (req, res) => {
 };
 
 module.exports = { 
-    signup, 
+    showSignup,
+    handleSignup,
     login, 
     logout,
     showTerms,
     showPrivacy,
-    signWithGoogle
+    signWithGoogle,
+    forgotPassword,
+    resetPassword
 };

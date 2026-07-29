@@ -31,7 +31,7 @@ router.get('/dashboard', (req, res) => {
 router.get("/users/new", (req, res) => {
     res.render("admin/user/new");
 });
-router.post("/users/create", upload.single('avatar'), authController.signup);
+router.post("/users/create", upload.single('avatar'), authController.handleSignup);
 router.get("/users/:id/profile", userController.userProfile);
 router.get("/users/:id/profile/edit", userController.editUser);
 router.post("/users/:id/change-password", userController.changePassword);
