@@ -439,6 +439,7 @@
         courseCode: q.courseCode || '',
         questionNumber: q.questionNumber ?? (i+1),
         questionText: text,
+        correctAnswer: q.correctAnswer,
         options: opts
       };
     });
@@ -476,6 +477,7 @@
 
   function renderQuestion(){
     const q = questions[current];
+    console.log(q);
     qNumLabel.textContent = 'Question ' + (q.questionNumber ?? (current+1));
     qText.textContent = q.questionText;
     optionsList.innerHTML = '';
@@ -483,7 +485,7 @@
       const div = document.createElement('div');
       div.className = 'option' + (answers[current] === opt.label ? ' selected' : '');
       div.innerHTML = '<span class="label">' + opt.label + '</span><span class="text"></span>';
-      div.querySelector('.text').textContent = opt.text;
+      div.querySelector('.text').textContent = opt.label === q.correctAnswer ? `${opt.text} \u2713 ` : opt.text;
       div.addEventListener('click', () => {
         answers[current] = opt.label;
         renderQuestion();
